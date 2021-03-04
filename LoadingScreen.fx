@@ -20,10 +20,10 @@ struct VS_OUT
 	float2 TexCoord : TEXCOORD0;
 };
 
-VS_OUT VSScreen(float3 Position : POSITION,float4 Diffuse : COLOR0,float2 TexCoord : TEXCOORD0)
+VS_OUT VSScreen(float3 Position : POSITION, float4 Diffuse : COLOR0, float2 TexCoord : TEXCOORD0)
 {
 	VS_OUT Out = (VS_OUT)0;
-	Out.Position = float4(Position.x, Position.y, 0, 1);
+	Out.Position = float4(Position.x, Position.y, 0.0, 1.0);
 	Out.Diffuse = Diffuse;
 	Out.TexCoord = TexCoord;
 	return Out;
@@ -33,7 +33,7 @@ technique Screen
 {
 	pass P0
 	{
-		VertexShader = compile vs_1_1 VSScreen();
+		VertexShader = compile vs_3_0 VSScreen();
 		PixelShader  = NULL;
 		ColorOp[0]   = Modulate;
 		ColorArg1[0] = Texture;
