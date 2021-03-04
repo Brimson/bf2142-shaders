@@ -5,60 +5,60 @@
 texture	HemiMap;
 sampler HemiMapSampler = sampler_state
 {
-	Texture = (HemiMap);
-	MipFilter = LINEAR;
-	MinFilter = LINEAR;
-	MagFilter = LINEAR;
-	AddressU  = CLAMP;
-	AddressV  = CLAMP;
+    Texture = (HemiMap);
+    MipFilter = LINEAR;
+    MinFilter = LINEAR;
+    MagFilter = LINEAR;
+    AddressU  = CLAMP;
+    AddressV  = CLAMP;
 };
 
 texture	GIMap;
 sampler GIMapSampler = sampler_state
 {
-	Texture = (GIMap);
-	MipFilter = LINEAR;
-	MinFilter = LINEAR;
-	MagFilter = LINEAR;
-	AddressU  = CLAMP;
-	AddressV  = CLAMP;
+    Texture = (GIMap);
+    MipFilter = LINEAR;
+    MinFilter = LINEAR;
+    MagFilter = LINEAR;
+    AddressU  = CLAMP;
+    AddressV  = CLAMP;
 };
 
 texture	CubeMap;
 sampler CubeMapSampler = sampler_state
 {
-	Texture = (CubeMap);
-	MipFilter = LINEAR;
-	MinFilter = LINEAR;
-	MagFilter = LINEAR;
-	AddressU  = WRAP;
-	AddressV  = WRAP;
-	AddressW  = WRAP;
+    Texture = (CubeMap);
+    MipFilter = LINEAR;
+    MinFilter = LINEAR;
+    MagFilter = LINEAR;
+    AddressU  = WRAP;
+    AddressV  = WRAP;
+    AddressW  = WRAP;
 };
 
 texture	DiffuseMap;
 sampler DiffuseMapSampler = sampler_state
 {
-	Texture 		= (DiffuseMap);
-	MipFilter 		= LINEAR;
-	MinFilter 		= FILTER_BM_DIFF_MIN;
-	MagFilter 		= FILTER_BM_DIFF_MAG;
-#ifdef FILTER_BM_DIFF_MAX_ANISOTROPY
-	MaxAnisotropy 	= FILTER_BM_DIFF_MAX_ANISOTROPY;
-#endif
-	AddressU  		= WRAP;
-	AddressV  		= WRAP;
+    Texture 		= (DiffuseMap);
+    MipFilter 		= LINEAR;
+    MinFilter 		= FILTER_BM_DIFF_MIN;
+    MagFilter 		= FILTER_BM_DIFF_MAG;
+    #ifdef FILTER_BM_DIFF_MAX_ANISOTROPY
+        MaxAnisotropy = FILTER_BM_DIFF_MAX_ANISOTROPY;
+    #endif
+    AddressU  		= WRAP;
+    AddressV  		= WRAP;
 };
 
 texture	NormalMap;
 sampler NormalMapSampler = sampler_state
 {
-	Texture = (NormalMap);
-	MipFilter = FILTER_BM_NORM_MIP;
-	MinFilter = LINEAR;
-	MagFilter = LINEAR;
-	AddressU  = CLAMP;
-	AddressV  = CLAMP;
+    Texture = (NormalMap);
+    MipFilter = FILTER_BM_NORM_MIP;
+    MinFilter = LINEAR;
+    MagFilter = LINEAR;
+    AddressU  = CLAMP;
+    AddressV  = CLAMP;
 };
 
 vec4	ObjectSpaceCamPos;
@@ -92,7 +92,7 @@ float	Reflectivity;
 mat4x3 GeomBones[52];
 struct
 {
-	mat4x4 uvMatrix[7]	: UVMatrix;
+    mat4x4 uvMatrix[7]	: UVMatrix;
 } UserData;
 
 Light Lights[1];
