@@ -135,8 +135,8 @@ OUT_vsDecalShadowed vsDecalShadowed(appdata input)
 
     Out.Color = color;
 
-    Out.ViewPortMap = 0;//shadowViewPortMaps[index];
-    Out.TexShadow =  0;//mul(vec4(Pos, 1), shadowTransformations[index]);
+    Out.ViewPortMap = 0; // shadowViewPortMaps[index];
+    Out.TexShadow =  0; // mul(vec4(Pos, 1), shadowTransformations[index]);
     Out.TexShadow.z -= 0.007;
 
     Out.Texture0 = input.TexCoordsInstanceIndexAndAlpha.xy;
@@ -306,7 +306,7 @@ technique Decal
 {
     pass p0
     {
-        //FillMode = WireFrame;
+        // FillMode = WireFrame;
         AlphaTestEnable = TRUE;
         ZEnable = TRUE;
         ZWriteEnable = FALSE;
@@ -326,7 +326,7 @@ technique Decal
 
     pass p1
     {
-        //FillMode = WireFrame;
+        // FillMode = WireFrame;
         AlphaTestEnable = TRUE;
         ZEnable = TRUE;
         ZWriteEnable = FALSE;
@@ -344,11 +344,11 @@ technique Decal
 
     pass p2
     {
-        //FillMode = WireFrame;
-        //AlphaTestEnable = TRUE;
+        // FillMode = WireFrame;
+        // AlphaTestEnable = TRUE;
         ZEnable = TRUE;
         ZWriteEnable = FALSE;
-        //AlphaRef = 0;
+        // AlphaRef = 0;
         AlphaFunc = GREATER;
         CullMode = CW;
         AlphaBlendEnable = TRUE;
