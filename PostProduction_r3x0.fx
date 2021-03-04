@@ -36,117 +36,113 @@ scalar Cutoff : cutoff = 0.8;
 
 struct APP2VS_Quad
 {
-    vec2	Pos : POSITION0;
-    vec2	TexCoord0 : TEXCOORD0;
+    vec2 Pos : POSITION0;
+    vec2 TexCoord0 : TEXCOORD0;
 };
 
 struct VS2PS_Quad
 {
-    vec4	Pos 		: POSITION;
-    vec2	TexCoord0	: TEXCOORD0;
+    vec4 Pos : POSITION;
+    vec2 TexCoord0 : TEXCOORD0;
 };
 
 struct VS2PS_Quad2
 {
-    vec4	Pos 		: POSITION;
-    vec2	TexCoord0	: TEXCOORD0;
-    vec2	TexCoord1	: TEXCOORD1;
+    vec4 Pos : POSITION;
+    vec2 TexCoord0 : TEXCOORD0;
+    vec2 TexCoord1 : TEXCOORD1;
 };
 
 struct PS2FB_Combine
 {
-    vec4	Col0 		: COLOR0;
+    vec4 Col0 : COLOR0;
 };
 
 VS2PS_Quad vsDx9_OneTexcoord(APP2VS_Quad indata)
 {
-	VS2PS_Quad outdata;	
- 	outdata.Pos = vec4(indata.Pos.x, indata.Pos.y, 0, 1);
- 	outdata.TexCoord0 = indata.TexCoord0;
-	return outdata;
+    VS2PS_Quad outdata;
+    outdata.Pos = vec4(indata.Pos.x, indata.Pos.y, 0.0, 1.0);
+    outdata.TexCoord0 = indata.TexCoord0;
+    return outdata;
 }
 
 VS2PS_Quad2 vsDx9_Tinnitus(APP2VS_Quad indata)
 {
-	VS2PS_Quad2 outdata;	
- 	outdata.Pos = vec4(indata.Pos.x, indata.Pos.y, 0, 1);
- 	outdata.TexCoord0 = indata.TexCoord0;
- 	outdata.TexCoord1 = vec2(indata.TexCoord0.x - sampleoffset.x, indata.TexCoord0.y - sampleoffset.y);	
-	return outdata;
+    VS2PS_Quad2 outdata;
+    outdata.Pos = vec4(indata.Pos.x, indata.Pos.y, 0.0, 1.0);
+    outdata.TexCoord0 = indata.TexCoord0;
+    outdata.TexCoord1 = vec2(indata.TexCoord0.x - sampleoffset.x, indata.TexCoord0.y - sampleoffset.y);
+    return outdata;
 }
 
 PS2FB_Combine psDx9_Tinnitus(VS2PS_Quad2 indata)
 {
-	PS2FB_Combine outdata;
-	
-	vec4 sample0 = tex2D(sampler0bilin, indata.TexCoord1);
-	vec4 sample1 = tex2D(sampler1bilin, indata.TexCoord1);
-	vec4 sample2 = tex2D(sampler2bilin, indata.TexCoord1);
-	vec4 sample3 = tex2D(sampler3bilin, indata.TexCoord1);
-	vec4 backbuffer = tex2D(sampler4, indata.TexCoord0);
+    PS2FB_Combine outdata;
 
-	vec4 accum = sample0 * 0.5;
-	accum += sample1 * 0.25;
-	accum += sample2 * 0.125;
-	accum += sample3 * 0.0675;
-	
-	accum = lerp(accum,backbuffer,backbufferLerpbias);
-	//accum.r += (0.25*(1-backbufferLerpbias));
+    vec4 sample0 = tex2D(sampler0bilin, indata.TexCoord1);
+    vec4 sample1 = tex2D(sampler1bilin, indata.TexCoord1);
+    vec4 sample2 = tex2D(sampler2bilin, indata.TexCoord1);
+    vec4 sample3 = tex2D(sampler3bilin, indata.TexCoord1);
+    vec4 backbuffer = tex2D(sampler4, indata.TexCoord0);
 
-	outdata.Col0 = accum;
+    vec4 accum = sample0 * 0.5;
+    accum += sample1 * 0.25;
+    accum += sample2 * 0.125;
+    accum += sample3 * 0.0675;
 
-	return outdata;
+    accum = lerp(accum,backbuffer,backbufferLerpbias);
+    //accum.r += (0.25*(1-backbufferLerpbias));
+
+    outdata.Col0 = accum;
+
+    return outdata;
 }
 
 technique Tinnitus
 {
-	pass opaque
-	{
-		ZEnable = FALSE;
-		AlphaBlendEnable = FALSE;
+    pass opaque
+    {
+        ZEnable = FALSE;
+        AlphaBlendEnable = FALSE;
+        StencilEnable = FALSE;
 
-		StencilEnable = FALSE;
-		
-		VertexShader = compile vs_1_1 vsDx9_Tinnitus();
-		PixelShader = compile PS2_EXT psDx9_Tinnitus();
-	}
+        VertexShader = compile vs_3_0 vsDx9_Tinnitus();
+        PixelShader = compile ps_3_0 psDx9_Tinnitus();
+    }
 }
 
 vec4 psDx9_Glow(VS2PS_Quad indata) : COLOR
 {
-	return tex2D(sampler0bilin, indata.TexCoord0);
+    return tex2D(sampler0bilin, indata.TexCoord0);
 }
 
 vec4 psDx9_GlowMaterial(VS2PS_Quad indata) : COLOR
 {
-	vec4 diffuse =  tex2D(sampler0bilin, indata.TexCoord0);
-	//return (1-diffuse.a);
-	return vec4(diffuse.rgb*(1-diffuse.a),1);
+    vec4 diffuse =  tex2D(sampler0bilin, indata.TexCoord0);
+    //return (1-diffuse.a);
+    return vec4(diffuse.rgb*(1-diffuse.a),1);
 }
 
 technique GlowMaterial
 {
-	pass p0
-	{
-		ZEnable = FALSE;
-		AlphaBlendEnable = TRUE;
-		SrcBlend = SRCCOLOR;
-		DestBlend = ONE;
-		
+    pass p0
+    {
+        ZEnable = FALSE;
+        AlphaBlendEnable = TRUE;
+        SrcBlend = SRCCOLOR;
+        DestBlend = ONE;
 
-		StencilEnable = TRUE;
-		StencilFunc = NOTEQUAL;
-		StencilRef = 0x80;
-		StencilMask = 0xFF;
-		StencilFail = KEEP;
-		StencilZFail = KEEP;
-		StencilPass = KEEP;
-	
+        StencilEnable = TRUE;
+        StencilFunc = NOTEQUAL;
+        StencilRef = 0x80;
+        StencilMask = 0xFF;
+        StencilFail = KEEP;
+        StencilZFail = KEEP;
+        StencilPass = KEEP;
 
-		
-		VertexShader = compile vs_1_1 vsDx9_OneTexcoord();
-		PixelShader = compile ps_1_1 psDx9_GlowMaterial();
-	}
+        VertexShader = compile vs_3_0 vsDx9_OneTexcoord();
+        PixelShader = compile ps_3_0 psDx9_GlowMaterial();
+    }
 }
 
 
@@ -154,50 +150,49 @@ technique GlowMaterial
 
 technique Glow
 {
-	pass p0
-	{
-		ZEnable = FALSE;
-		AlphaBlendEnable = TRUE;
-		SrcBlend = SRCCOLOR;
-		DestBlend = ONE;
-		
-		
-		VertexShader = compile vs_1_1 vsDx9_OneTexcoord();
-		PixelShader = compile ps_1_1 psDx9_Glow();
-	}
+    pass p0
+    {
+        ZEnable = FALSE;
+        AlphaBlendEnable = TRUE;
+        SrcBlend = SRCCOLOR;
+        DestBlend = ONE;
+
+        VertexShader = compile vs_3_0 vsDx9_OneTexcoord();
+        PixelShader = compile ps_3_0 psDx9_Glow();
+    }
 }
 
 vec4 psDx9_Fog(VS2PS_Quad indata) : COLOR
 {
-	vec3 wPos = tex2D(sampler0, indata.TexCoord0);
-	scalar uvCoord =  saturate((wPos.zzzz-fogStartAndEnd.r)/fogStartAndEnd.g);//fogColorAndViewDistance.a);
-	return saturate(vec4(fogColor.rgb,uvCoord));
-	//vec2 fogcoords = vec2(uvCoord, 0.0);
-	return tex2D(sampler1, vec2(uvCoord, 0.0))*fogColor.rgbb;
+    vec3 wPos = tex2D(sampler0, indata.TexCoord0);
+    scalar uvCoord =  saturate((wPos.zzzz-fogStartAndEnd.r)/fogStartAndEnd.g);//fogColorAndViewDistance.a);
+    return saturate(vec4(fogColor.rgb,uvCoord));
+    // vec2 fogcoords = vec2(uvCoord, 0.0);
+    return tex2D(sampler1, vec2(uvCoord, 0.0)) * fogColor.rgbb;
 }
 
 
 technique Fog
 {
-	pass p0
-	{
-		ZEnable = FALSE;
-		AlphaBlendEnable = TRUE;
-		//SrcBlend = SRCCOLOR;
-		//DestBlend = ZERO;
-		SrcBlend = SRCALPHA;
-		DestBlend = INVSRCALPHA;
-		//StencilEnable = FALSE;
-		
-		StencilEnable = TRUE;
-		StencilFunc = NOTEQUAL;
-		StencilRef = 0x00;
-		StencilMask = 0xFF;
-		StencilFail = KEEP;
-		StencilZFail = KEEP;
-		StencilPass = KEEP;
-		
-		VertexShader = compile vs_1_1 vsDx9_OneTexcoord();
-		PixelShader = compile ps_2_0 psDx9_Fog();
-	}
+    pass p0
+    {
+        ZEnable = FALSE;
+        AlphaBlendEnable = TRUE;
+        // SrcBlend = SRCCOLOR;
+        // DestBlend = ZERO;
+        SrcBlend = SRCALPHA;
+        DestBlend = INVSRCALPHA;
+        // StencilEnable = FALSE;
+
+        StencilEnable = TRUE;
+        StencilFunc = NOTEQUAL;
+        StencilRef = 0x00;
+        StencilMask = 0xFF;
+        StencilFail = KEEP;
+        StencilZFail = KEEP;
+        StencilPass = KEEP;
+
+        VertexShader = compile vs_3_0 vsDx9_OneTexcoord();
+        PixelShader = compile ps_3_0 psDx9_Fog();
+    }
 }
