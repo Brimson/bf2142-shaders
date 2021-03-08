@@ -1,19 +1,8 @@
 
-technique lightmapGeneration
+float4 blackColor() : COLOR
 {
-    pass p0
-    {
-
-        ZEnable = true;
-        ZWriteEnable = true;
-        AlphaBlendEnable = false;
-        AlphaTestEnable = true;
-        AlphaRef = 0;
-        AlphaFunc = GREATER;
-
-        VertexShader = compile vs_3_0 bumpSpecularVertexShaderBlinn1(viewProjMatrix,
-                                                                     viewInverseMatrix,
-                                                                     lightPos);
+    /*
+        Previous asm
 
         Sampler[0] = <normalSampler>;
         Sampler[1] = <dummySampler>;
@@ -26,5 +15,24 @@ technique lightmapGeneration
             def c0,0,0,0,1
             mov r0, c0		// Output black color for lightmap generation
         };
+    */
+    return float2(0.0, 1.0).xxxy;
+}
+
+technique lightmapGeneration
+{
+    pass p0
+    {
+        ZEnable = true;
+        ZWriteEnable = true;
+        AlphaBlendEnable = false;
+        AlphaTestEnable = true;
+        AlphaRef = 0;
+        AlphaFunc = GREATER;
+
+        VertexShader = compile vs_3_0 bumpSpecularVertexShaderBlinn1(viewProjMatrix,
+                                                                     viewInverseMatrix,
+                                                                     lightPos);
+        PixelShader = compile ps_3_0 blackColor();
     }
 }
