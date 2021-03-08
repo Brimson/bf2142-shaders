@@ -107,6 +107,3 @@ technique t0_usezbuffer
         PixelShader = compile ps_3_0 PShader();
     }
 }
-
-
-
