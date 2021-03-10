@@ -10,8 +10,6 @@
     #define PS_20
 */
 
-#define ASM14
-
 // Affects how transparency is claculated depending on camera height.
 // Try increasing/decreasing ADD_ALPHA slighty for different results
 #define MAX_HEIGHT 20
@@ -44,20 +42,19 @@
 
 vec4 LightMapOffset;
 
-
 scalar WaterHeight;
 
 Light Lights[1];
 
-vec4	WorldSpaceCamPos;
-vec4	WaterScroll;
+vec4 WorldSpaceCamPos;
+vec4 WaterScroll;
 
 scalar	WaterCycleTime;
 
-vec4	SpecularColor;
-scalar	SpecularPower;
-vec4	WaterColor;
-vec4	PointColor;
+vec4 SpecularColor;
+scalar SpecularPower;
+vec4 WaterColor;
+vec4 PointColor;
 
 #ifdef DEBUG
     #define _WaterColor vec4(1,0,0,1)
@@ -198,11 +195,7 @@ string InstanceParameters[] =
 };
 
 
-VS_OUTPUT_WATER waterVertexShader
-(
-vec4 inPos	: POSITION0,
-vec2 lmtex	: TEXCOORD1
-)
+VS_OUTPUT_WATER waterVertexShader(vec4 inPos : POSITION0, vec2 lmtex : TEXCOORD1)
 {
     VS_OUTPUT_WATER Out;// = (VS_OUTPUT_WATER)0;
 
@@ -254,7 +247,7 @@ vec2 lmtex	: TEXCOORD1
     return Out;
 }
 
-#define INV_LIGHTDIR vec3(0.4,0.5,0.6)
+#define INV_LIGHTDIR vec3(0.4, 0.5, 0.6)
 
 vec4 waterPixelShader(in VS_OUTPUT_WATER VsData) : COLOR
 {

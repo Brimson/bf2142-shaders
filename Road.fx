@@ -64,7 +64,7 @@ VS2PS RoadEditableVS(float4 Pos : POSITION, float2 Tex0 : TEXCOORD0, float2 Tex1
     outdata.Pos = mul(Pos, mWorldViewProj);
     outdata.Tex0 = Tex0;
     outdata.Tex1 = Tex1;
-    outdata.Tex2 = Tex1+Tex0;
+    outdata.Tex2 = Tex1 + Tex0;
     outdata.Alpha = Alpha;
     outdata.Fog = saturate(calcFog(outdata.Pos.w));
     return outdata;
@@ -78,7 +78,6 @@ float4 RoadEditablePS(VS2PS indata) : COLOR0
     float4 outcolor;
     outcolor.rgb = lerp(tex1.rgb, tex0.rgb, saturate(fBlendFactor));
     outcolor.a = tex0.a;
-
     outcolor.a *= indata.Alpha;
 
     return outcolor;
@@ -92,7 +91,7 @@ struct VS2PS_dm
     // float2 Tex0 : TEXCOORD0;
 };
 
-VS2PS_dm RoadEditableVS_dm(float4 Pos : POSITION, float2 Tex0 : TEXCOORD0, float2 Tex1 : TEXCOORD1)
+VS2PS_dm RoadEditableVS_dm(float4 Pos : POSITION, float2 Tex0 : TEXCOORD0)
 {
     VS2PS_dm outdata;
     outdata.Pos = mul(Pos, mWorldViewProj);
@@ -141,8 +140,8 @@ technique roadeditable
         ZWriteEnable = FALSE;
         FogEnable = true;
 
-        VertexShader = compile vs_1_1 RoadEditableVS();
-        PixelShader = compile ps_1_4 RoadEditablePS();
+        VertexShader = compile vs_3_0 RoadEditableVS();
+        PixelShader = compile ps_3_0 RoadEditablePS();
     }
 
     pass p1 // draw material
@@ -160,11 +159,9 @@ technique roadeditable
         ZEnable = TRUE;
         ZWriteEnable = FALSE;
 
-        VertexShader = compile vs_1_1 RoadEditableVS_dm();
-        PixelShader = compile ps_1_4 RoadEditablePS_dm();
+        VertexShader = compile vs_3_0 RoadEditableVS_dm();
+        PixelShader = compile ps_3_0 RoadEditablePS_dm();
     }
-
-
 }
 
 technique projectroad
@@ -187,6 +184,7 @@ technique projectroad
         AlphaBlendEnable = false;
         FogEnable = false;
 
+        // Todo: Port to 3_0
         VertexShader = asm
         {
             vs.1.1
