@@ -441,8 +441,10 @@ float4 bumpSpecularPixelShaderBlinn1(VS_OUTPUT input) : COLOR
     const float diffuse = 1.0;               // def c1,1,1,1,1 :: diffuse
     const float specular = 1.0;              // def c2,1,1,1,1 :: specular
 
+    // http://developer.download.nvidia.com/assets/gamedev/docs/GDC2K1_DX8_Pixel_Shaders.pdf
     // Sampler[0] = <normalSampler>;
     float4 NormalMap = tex2D(normalSampler, input.NormalMap);       // tex t0 :: NormalMap
+    // texm3x2pad and texm3x2tex depend upon eachother
     float u = dot(input.NormalMap * 2.0 - 1.0, input.LightVec);     // texm3x2pad t1, t0_bx2 :: u = N'.L'
     float v = dot(input.HalfVec * 2.0 - 1.0, input.HalfVec);        // texm3x2tex t2, t0_bx2 :: v = N'.H'
     float4 gloss = tex2D(diffuseSampler, float2(u, v));             // sample(u,v)

@@ -9,8 +9,8 @@ string GenerateStructs[] =
 // this is the common vertexElement members
 string reqVertexElement[] =
 {
-     "Position",
-     "Normal",
+    "Position",
+    "Normal",
     "Bone4Idcs",
     "Bone2Weights",
     "TBase2D",
@@ -28,7 +28,7 @@ string GlobalParameters[] =
 string TemplateParameters[] =
 {
     "DiffuseMap",
-//	"CubeMap",		//Funky name!!!
+    // "CubeMap", // Funky name!!!
 };
 
 // this is the common instance parameters
@@ -57,11 +57,11 @@ string InstanceParameters[] =
 struct SMVariableVSInput
 {
     vec4    Pos : POSITION;
-    vec3    Normal          : NORMAL;
-    scalar  BlendWeights    : BLENDWEIGHT;
-    vec4    BlendIndices    : BLENDINDICES;
-    vec2    TexCoord0       : TEXCOORD0;
-    vec3    Tan             : TANGENT;
+    vec3    Normal       : NORMAL;
+    scalar  BlendWeights : BLENDWEIGHT;
+    vec4    BlendIndices : BLENDINDICES;
+    vec2    TexCoord0    : TEXCOORD0;
+    vec3    Tan          : TANGENT;
 };
 
 struct SMVariableVSOutput
@@ -198,7 +198,7 @@ vec4 ps_BrokenCamouflage(SMVariableVSOutput input) : COLOR
 
 vec4 ps_Camouflage(SMVariableVSOutput input) : COLOR
 {
-    return vec2(0.0, 1.0).xxxy;
+    return vec4(0.0, 0.0, 0.0, 1.0);
 }
 
 technique Camouflage

@@ -27,8 +27,8 @@ sampler DiffuseMapSampler = sampler_state
 // INPUTS TO THE VERTEX SHADER FROM THE APP
 string reqVertexElement[] =
 {
-     "Position",
-     "Normal",
+    "Position",
+    "Normal",
     "TBase2D"
 };
 
@@ -42,14 +42,14 @@ float2 tex0	: TEXCOORD0
     VS_OUTPUT Out = (VS_OUTPUT)0;
 
     vec4 wPos = mul(float4(inPos.xyz, 1),World);
-    Out.Pos		= mul(wPos, ViewProjection);
+    Out.Pos = mul(wPos, ViewProjection);
 
-    Out.Fog		= calcFog(Out.Pos.w);
-    Out.Tex0    = tex0 / 32767.0f;
+    Out.Fog = calcFog(Out.Pos.w);
+    Out.Tex0 = tex0 / 32767.0f;
 
     normal = normal * 2.0f - 1.0f;
 
-    float LdotN	= saturate((dot(normal, -Lights[0].dir)));
+    float LdotN	= saturate(dot(normal, -Lights[0].dir));
 
     Out.Color.rgb = CEXP(Lights[0].color) * LdotN * (inPos.w / 32767) * (inPos.w / 32767);
     Out.Color.rgb += OverGrowthAmbient * (inPos.w / 32767);
