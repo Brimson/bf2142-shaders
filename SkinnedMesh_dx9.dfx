@@ -9,8 +9,8 @@ struct appdata_variable {
     vec3 Tan            : TANGENT;
 };
 
-#define DiffuseColor TanLightVec    // Define Alias
-#define SpecularColor TanHalfVec    // Define Alias
+#define DiffuseColor TanLightVec // Define Alias
+#define SpecularColor TanHalfVec // Define Alias
 
 struct VS_OUT_variable {
     vec4 HPos               : POSITION;
@@ -174,7 +174,7 @@ vec4 psSkinnedMesh(VS_OUT_variable indata) : COLOR
 {
     vec4 groundcolor = tex2D(sampler0, indata.GroundUVAndLerp.xy);
     vec4 hemicolor = lerp(groundcolor, skyColor, indata.GroundUVAndLerp.z);
-    vec4 normal = tex2D(sampler1, indata.Tex0) * 2 - 1;
+    vec4 normal = tex2D(sampler1, indata.Tex0) * 2.0 - 1.0;
     vec3 suncol = saturate(dot(normal.rgb, indata.SkinnedLVec)) * sunColor;
     scalar specular = pow(dot(normal.rgb, indata.HalfVec), 36);
 

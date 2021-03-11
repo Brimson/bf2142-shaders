@@ -57,7 +57,7 @@ vec4 WaterColor;
 vec4 PointColor;
 
 #ifdef DEBUG
-    #define _WaterColor vec4(1,0,0,1)
+    #define _WaterColor vec4(1.0, 0.0, 0.0, 1.0)
 #else
     #define _WaterColor WaterColor
 #endif
@@ -197,14 +197,14 @@ string InstanceParameters[] =
 
 VS_OUTPUT_WATER waterVertexShader(vec4 inPos : POSITION0, vec2 lmtex : TEXCOORD1)
 {
-    VS_OUTPUT_WATER Out;// = (VS_OUTPUT_WATER)0;
+    VS_OUTPUT_WATER Out; // = (VS_OUTPUT_WATER)0;
 
-    vec4 wPos		= mul(inPos, World);
+    vec4 wPos = mul(inPos, World);
 
     // float h = (WorldSpaceCamPos.y - WaterHeight);
     // wPos.y += h/500;
 
-    Out.Pos		= mul(wPos, ViewProjection);
+    Out.Pos = mul(wPos, ViewProjection);
 
     #ifdef PIXEL_CAMSPACE
         Out.Position = wPos;

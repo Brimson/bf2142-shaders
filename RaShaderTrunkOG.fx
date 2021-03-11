@@ -57,9 +57,12 @@ float2 tex0	: TEXCOORD0
     return Out;
 }
 
-// There will be small differences between this lighting and the one produced by the static mesh shader,
-// not enough to worry about, ambient is added here and lerped in the static mesh, etc
-// NOTE: could be an issue at some point.
+/*
+    There will be small differences between this lighting and the one produced by the static mesh shader,
+    not enough to worry about, ambient is added here and lerped in the static mesh, etc
+    NOTE: could be an issue at some point.
+*/
+
 float4 basicPixelShader(VS_OUTPUT VsOut) : COLOR
 {
     float4 diffuseMap = tex2D(DiffuseMapSampler, VsOut.Tex0) * 2.0;

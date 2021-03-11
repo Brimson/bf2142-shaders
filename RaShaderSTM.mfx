@@ -18,9 +18,9 @@ string GenerateStructs[] =
 // this is the common vertexElement members
 string reqVertexElementBase[] =
 {
-     "PositionPacked",
-     "NormalPacked8",
-     "TangentSpacePacked8",
+    "PositionPacked",
+    "NormalPacked8",
+    "TangentSpacePacked8",
     "TBasePacked2D"
 };
 

@@ -89,7 +89,7 @@ VS_OUTPUT vsSkyDome(appdata input)
     VS_OUTPUT Out;
     Out.HPos = mul(vec4(input.Pos.xyz, 1.0), viewProjMatrix);
     Out.Tex0 = input.TexCoord;
-    Out.Tex1 = (input.TexCoord1.xy + texOffset.xy);
+    Out.Tex1 = input.TexCoord1.xy + texOffset.xy;
     float dist = length(input.Pos.xyz);
     Out.FadeOut = 1.0 - saturate((dist - fadeOutDist.x) / fadeOutDist.y); // tl: TODO - optimize out division
     Out.FadeOut *= input.Pos.y > 0;
@@ -109,10 +109,10 @@ VS_OUTPUTDualClouds vsSkyDomeDualClouds(appdata input)
     VS_OUTPUTDualClouds Out;
     Out.HPos = mul(vec4(input.Pos.xyz, 1.0), viewProjMatrix);
     Out.Tex0 = input.TexCoord;
-    Out.Tex1 = (input.TexCoord1.xy + texOffset.xy);
-    Out.Tex2 = (input.TexCoord1.xy + texOffset2.xy);
+    Out.Tex1 = input.TexCoord1.xy + texOffset.xy;
+    Out.Tex2 = input.TexCoord1.xy + texOffset2.xy;
     float dist = length(input.Pos.xyz);
-    Out.FadeOut = 1.0 - saturate((dist - fadeOutDist.x) / fadeOutDist.y); //tl: TODO - optimize out division
+    Out.FadeOut = 1.0 - saturate((dist - fadeOutDist.x) / fadeOutDist.y); // tl: TODO - optimize out division
     Out.FadeOut *= input.Pos.y > 0;
     return Out;
 }
@@ -144,7 +144,6 @@ vec4 psSkyDomeDualClouds(VS_OUTPUTDualClouds indata) : COLOR
     return lerp(sky, tmp, tmp.a);
 }
 
-
 VS_OUTPUTNoClouds vsSkyDomeSunFlare(appdataNoClouds input)
 {
     VS_OUTPUTNoClouds Out;
@@ -157,15 +156,15 @@ VS_OUTPUTNoClouds vsSkyDomeSunFlare(appdataNoClouds input)
 vec4 psSkyDomeSunFlare(VS_OUTPUT indata) : COLOR
 {
     // return 1;
-    // return vec4(flareParams[0],0,0,1);
+    // return vec4(flareParams[0], 0.0, 0.0, 1.0);
     vec3 rgb = tex2D(samplerClamp, indata.Tex0).rgb * flareParams[0];
-    return vec4(rgb, 1);
+    return vec4(rgb, 1.0);
 }
 
 vec4 psSkyDomeFlareOcclude(VS_OUTPUT indata) : COLOR
 {
     vec4 p = tex2D(samplerClamp, indata.Tex0);
-    return vec4(0, 1, 0, p.a);
+    return vec4(0.0, 1.0, 0.0, p.a);
 }
 
 
