@@ -8,14 +8,13 @@
 // #define SPECULARCOLOR vec3(1,1,1)
 // #define staticLightColor vec3(0.5, 0.7, 0.0)
 
-
 #define OUTPUTSPECULAR 0
 
 struct appdata_variable {
     vec4 Pos    : POSITION;
     vec3 Normal : NORMAL;
     // vec4 LightIndex  : BLENDINDICES;
-    vec3 Tan    : TANGENT;
+    vec3 Tan        : TANGENT;
     vec2 TexLMap    : TEXCOORD0;
     vec2 TexBase    : TEXCOORD1;
     vec2 TexDetail  : TEXCOORD2;
@@ -29,19 +28,19 @@ struct appdata_variable {
 #define TexDirt	LightPos[2] // Define alias
 
 struct VS_OUT_variable {
-    vec4 HPos   : POSITION0;
-    vec4 InvDot : COLOR0;
-    // vec4 PointColor  : COLOR1;
-    vec3 TanLightVec    : TEXCOORD0;
-    vec4 TexLMapAndBase : TEXCOORD1;
+    vec4 HPos               : POSITION0;
+    vec4 InvDot             : COLOR0;
+    // vec4 PointColor      : COLOR1;
+    vec3 TanLightVec        : TEXCOORD0;
+    vec4 TexLMapAndBase     : TEXCOORD1;
     vec4 TexDetailAndCrack  : TEXCOORD2;
-    vec3 TanEyeVec  : TEXCOORD3;
-    vec4 TexPos : TEXCOORD4;
-    vec4 LightPos[3]    : TEXCOORD5;
-    scalar Fog  : FOG;
+    vec3 TanEyeVec          : TEXCOORD3;
+    vec4 TexPos             : TEXCOORD4;
+    vec4 LightPos[3]        : TEXCOORD5;
+    scalar Fog              : FOG;
 };
 
-//-- Test array for point (static) ligthmap colors
+// Test array for point (static) ligthmap colors
 static float4 light_color[6] =
 {
     float4(0.0, 0.0, 0.0, 0.0),
@@ -107,12 +106,12 @@ VS_OUT_variable vsStaticMesh(appdata_variable input)
     //if(_haspixellight_)
     if(_HASPIXELLIGHT_)
     {
-         // calculate tangent light/half/eye
-         // vec3 tanEVec = 0;
-         if(_hasbasen_||_hasdetailn_ || _hascrackn_ || _hasparallax_)
-            calculateTangentVectors(input.Normal, input.Tan, input.Pos, vsEyePosObjSpace, Out.TanLightVec, Out.TanEyeVec);
+        // calculate tangent light/half/eye
+        // vec3 tanEVec = 0;
+        if(_hasbasen_||_hasdetailn_ || _hascrackn_ || _hasparallax_)
+        calculateTangentVectors(input.Normal, input.Tan, input.Pos, vsEyePosObjSpace, Out.TanLightVec, Out.TanEyeVec);
         // if(_hasparallax_)
-        //      Out.TanEyeVec = tanEVec;
+        //     Out.TanEyeVec = tanEVec;
 
         // Out.TanHalfVec = (normalize(Out.TanLightVec) + normalize(Out.TanEyeVec)) * 0.5;
     }
@@ -131,10 +130,12 @@ VS_OUT_variable vsStaticMesh(appdata_variable input)
         // Out.SpecularColor = vec3(0,1,1);
     }
 
-    //-- Get pointlight lightmap color from index
-    //-- int4 IndexVector = D3DCOLORtoUBYTE4(input.LightIndex);
-    //-- int IndexArray[4] = (int[4])IndexVector;
-    //-- Out.PointColor = light_color[IndexArray[0]];
+    /*
+        // Get pointlight lightmap color from index
+        int4 IndexVector = D3DCOLORtoUBYTE4(input.LightIndex);
+        int IndexArray[4] = (int[4])IndexVector;
+        Out.PointColor = light_color[IndexArray[0]];
+    */
 
     // if(_haslightmap_)
     if(_HASLIGHTMAP_)
@@ -161,8 +162,7 @@ VS_OUT_variable vsStaticMesh(appdata_variable input)
 
 vec4 getLightmap(VS_OUT_variable indata)
 {
-
-    //if(_haslightmap_)
+    // if(_haslightmap_)
     if(_HASLIGHTMAP_)
     {
         vec2 atlasCoords = indata.TexLMapAndBase.xy; // * vsLightmapOffset.xy + vsLightmapOffset.zw;
@@ -257,7 +257,7 @@ vec4 getCompositeNormals(VS_OUT_variable indata, vec3 normalizedTanEyeVec)
         totalNormal = lerp(totalNormal, cracknormal, crackmask);
     }
 
-    totalNormal.xyz = totalNormal.xyz * 2 - 1;
+    totalNormal.xyz = totalNormal.xyz * 2.0 - 1.0;
 
     return totalNormal;
 }
@@ -274,7 +274,7 @@ vec4 getCompositeNormals(VS_OUT_variable indata, vec3 normalizedTanEyeVec)
 vec3 getDiffuseVertexLighting(vec4 lightmap, VS_OUT_variable indata)
 {
     // outColor.rgb = outColor.rgb * indata.DiffuseColor * lightmap.g + lightmap.a;// + indata.SpecularColor;
-    // return float4(1,1,1,1);
+    // return 1.0;
     vec3 skyDiffuse = /* 0.52 * indata.InvDot */ 0.52 * lightmap.b * vsSkyColor;
     // vec3 skyDiffuse =  0.3 * lightmap.b * skyColor + lightmap.r * indata.PointColor * 0.3;
     return lerp(skyDiffuse, indata.DiffuseColor, lightmap.g);
@@ -350,14 +350,14 @@ vec4 psStaticMesh(VS_OUT_variable indata) : COLOR
     else
     {
         vec4 lightmap = getLightmap(indata);
-        // outColor.rgb = outColor.rgb * indata.DiffuseColor * lightmap.g + lightmap.a;// + indata.SpecularColor;
+        // outColor.rgb = outColor.rgb * indata.DiffuseColor * lightmap.g + lightmap.a; // + indata.SpecularColor;
         // outColor.rgb = outColor.rgb * indata.DiffuseColor;
         outColor.rgb = outColor.rgb * getDiffuseVertexLighting(lightmap, indata);
         if(_HASLIGHTMAP_)
         {
             outColor.rgb += (psLightColors[0] * lightmap.r);
         }
-        //outColor = lightmap; //.rgb = vec3(1,0,0);
+        //outColor = lightmap; // .rgb = vec3(1.0, 0.0, 0.0);
     }
 
     return outColor;
@@ -390,24 +390,23 @@ VS_OUT_variable vsStaticMeshMultiPassLighting(appdata_variable input)
     // do lighting
     VS_OUT_variable Out = (VS_OUT_variable)0;
 
-     // output position early
-     Out.HPos = mul(input.Pos, transpose(vsWorldViewProj));
-     Out.InvDot = 1-(saturate(dot(input.Normal*0.2, -vsLightDirObjSpace)));
+    // output position early
+    Out.HPos = mul(input.Pos, transpose(vsWorldViewProj));
+    Out.InvDot = 1.0 - saturate(dot(input.Normal * 0.2, -vsLightDirObjSpace));
 
     if(_HASPIXELLIGHT_)
     {
-
-         // calculate tangent light/half/eye
-         if(_HASBASEN_||_HASDETAILN_ || _HASCRACKN_ || _HASPARALLAX_)
-         {
-             //if (_NUMPOINTLIGHTS_ > 0)
-             //{
-                 calculateTangentVectorsWithLights(input.Normal, input.Tan, input.Pos, vsEyePosObjSpace, vsLightPosObjSpace, Out.TanLightVec, Out.TanEyeVec, Out.LightPos);
-             //}
-             //else
-             //{
-                //calculateTangentVectors(input.Normal, input.Tan, input.Pos, vsEyePosObjSpace, Out.TanLightVec, tanEVec);
-            //}
+        // calculate tangent light/half/eye
+        if(_HASBASEN_||_HASDETAILN_ || _HASCRACKN_ || _HASPARALLAX_)
+        {
+            // if (_NUMPOINTLIGHTS_ > 0)
+            // {
+                    calculateTangentVectorsWithLights(input.Normal, input.Tan, input.Pos, vsEyePosObjSpace, vsLightPosObjSpace, Out.TanLightVec, Out.TanEyeVec, Out.LightPos);
+            // }
+            // else
+            // {
+            //      calculateTangentVectors(input.Normal, input.Tan, input.Pos, vsEyePosObjSpace, Out.TanLightVec, tanEVec);
+            // }
         }
     }
     else

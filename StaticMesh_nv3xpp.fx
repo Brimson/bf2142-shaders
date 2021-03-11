@@ -317,7 +317,7 @@ float4 psBaseDetailLMndetail(VS_OUT_BaseDetailLMndetail indata) : COLOR
     intensity *= lightmap.a;
 
     vec4 outColor;
-    outColor.rgb = ((intensity*sunColor) + lightmap) * color * detail + intensity.a*expandedNormal.a*dot(sunColor, 0.33);
+    outColor.rgb = ((intensity * sunColor) + lightmap) * color * detail + intensity.a * expandedNormal.a * dot(sunColor, 0.33);
     outColor.a = detail.a;
     return outColor;
 }
@@ -327,7 +327,7 @@ technique OnePassbasedetailLMndetail
     pass p0
     {
         AlphaBlendEnable = FALSE;
-        //ZWriteEnable = FALSE;
+        // ZWriteEnable = FALSE;
         ZFunc = LESSEQUAL;
         AlphaTestEnable = <alphaTest>;
         AlphaRef = 50;

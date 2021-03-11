@@ -41,8 +41,8 @@ vec4    vsEyePosObjSpace : register(vs_1_1, c6);
 vec4    vsTexProjOffset : register(vs_1_1, c7);
 mat4x4  vsShadowProjMat : register(vs_1_1, c8);
 mat4x4  vsShadowTrapMat : register(vs_1_1, c17);
-vec4    vsSunColor : register(vs_1_1, c12) = vec4(1.2,1.2,1.1,1);
-vec4    vsSkyColor : register(vs_1_1, c13) = vec4(0.55,0.55,0.7,1);
+vec4    vsSunColor : register(vs_1_1, c12) = vec4(1.2, 1.2, 1.1, 1.0);
+vec4    vsSkyColor : register(vs_1_1, c13) = vec4(0.55, 0.55, 0.7, 1.0);
 vec4    vsLightPosObjSpace[3] : register(vs_1_1, c14);
 // vec4	vsLight1PosObjSpace : register(vs_1_1, c15);
 // vec4	vsLight2PosObjSpace : register(vs_1_1, c16);
@@ -52,18 +52,18 @@ vec4    vsLightPosObjSpace[3] : register(vs_1_1, c14);
 // vec4 eyePos : EyePos : register(c8);
 
 // Uniform PS Constant inputs!
-vec4	psSunColor : register(c0) = vec4(1.2,1.2,1.1,1);
-vec4	psParallaxScaleBias : register(c1);
-vec4	psViewPortMap : register(c2);
-vec4	psSkyColor : register(c3) = vec4(0.55,0.55,0.7,1);
-vec4	psSkyNormal : register(c4) = vec4(0.78,0.52,0.65,1);
-vec3	psLightColors[3] : register(c5);
+vec4 psSunColor : register(c0) = vec4(1.2, 1.2, 1.1, 1.0);
+vec4 psParallaxScaleBias : register(c1);
+vec4 psViewPortMap : register(c2);
+vec4 psSkyColor : register(c3) = vec4(0.55, 0.55, 0.7, 1.0);
+vec4 psSkyNormal : register(c4) = vec4(0.78, 0.52, 0.65, 1.0);
+vec3 psLightColors[3] : register(c5);
 
 
-// vec4	vsEyePosObjSpace		: register(c2);
-// vec4	psLightDirObjSpace		: register(c0);
+// vec4	vsEyePosObjSpace    : register(c2);
+// vec4	psLightDirObjSpace  : register(c0);
 
-// vec4	light0pos			: register(c2);
+// vec4	light0pos   : register(c2);
 
 // vec3 skyColor = vec3(0.55,0.55,0.7);
 // vec3 skyNormal = vec3(0.78,0.52,0.65);
