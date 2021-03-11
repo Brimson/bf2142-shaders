@@ -12,7 +12,7 @@ float4 SplineVS(float4 Pos : POSITION, float3 Normal : NORMAL) : POSITION
 float4 SplinePS() : COLOR0
 {
     return vDiffuse;
-    // return float4(1, 0, 0, 0.5);
+    // return float4(1.0, 0.0, 0.0, 0.5);
 }
 
 float4 ControlPointVS(float4 Pos : POSITION) : POSITION
