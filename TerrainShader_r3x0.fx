@@ -25,12 +25,6 @@ vec4 vsDx9_zFill(APP2VS_vsDx9_zFill indata) : POSITION
 
 float4 psDx9_zFill() : COLOR
 {
-    /*
-        Original asm
-        ps.1.1
-        def c0, 0, 0, 0, 0
-        mov r0, c0
-    */
     return 0.0;
 }
 

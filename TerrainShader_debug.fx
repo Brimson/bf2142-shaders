@@ -23,12 +23,6 @@ float4 psShowTanBasis(float4 Col : COLOR) : COLOR
 
 float4 psDx9_zFill() : COLOR
 {
-    /*
-        Original asm
-        ps.1.1
-        def c0, 0, 0, 0, 0
-        mov r0, c0
-    */
     return 0.0;
 }
 

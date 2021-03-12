@@ -558,82 +558,12 @@ float4 bumpSpecularPixelShaderBlinn1(VS_OUTPUT input) : COLOR
 {
     float4 t0 = tex2D(diffuseSampler);
     return t0 * input.Diffuse;
-    /*
-        Original asm
-        Sampler[0] = <diffuseSampler>;
-        Sampler[1] = <normalSampler>;
-        Sampler[2] = <dummySampler>;
-        Sampler[3] = <colorLUTSampler>;
-
-        // PixelShaderConstant[0] = <ambColor>;
-        // PixelShaderConstant[1] = <diffColor>;
-        // PixelShaderConstant[2] = <specColor>;
-
-        PixelShader = asm
-        {
-            ps.1.1
-            def c0,0,0,0,1 // ambient
-            def c1,1,1,1,1 // diffuse
-            def c2,1,1,1,1 // specular
-
-            tex t0
-            mul r0, t0, v0
-            
-            // Commented out
-            tex t1
-            texm3x2pad t2, t1_bx2	// u = N'.L'
-            texm3x2tex t3, t1_bx2	// v = N'.H', sample(u,v)
-            mad r0, t3, c1, c0	// (diff.I * diff.C) + amb
-            mul r0, t0, r0		// diff&amb * diff.Tex
-            mul r1, t1.a, t3.a	// spec.I * gloss
-            mad r0, r1, c2, r0	// (spec.I&gloss * spec.C) + diff&ambTex
-
-            // mov r0, t3.a
-            // mul r0, r1, c2
-            // mov r0, t3.a
-    */
-    };
 }
 
 float4 spritePixelShader(VS_OUTPUT2 input) : COLOR
 {
     float4 t0 = tex2D(diffuseSampler, input.TexCoord);
     return t0 * input.Diffuse;
-    /*
-        Sampler[0] = <diffuseSampler>;
-        Sampler[1] = <normalSampler>;
-        Sampler[2] = <dummySampler>;
-        Sampler[3] = <colorLUTSampler>;
-
-        // PixelShaderConstant[0] = <ambColor>;
-        // PixelShaderConstant[1] = <diffColor>;
-        // PixelShaderConstant[2] = <specColor>;
-
-        PixelShader = asm
-        {
-            ps.1.1
-            def c0,0,0,0,1 // ambient
-            def c1,1,1,1,1 // diffuse
-            def c2,1,1,1,1 // specular
-
-            tex t0
-            mul r0, t0, v0
-            // mov r0, t0
-
-            // commented out
-            tex t1
-            texm3x2pad t2, t1_bx2	// u = N'.L'
-            texm3x2tex t3, t1_bx2	// v = N'.H', sample(u,v)
-            mad r0, t3, c1, c0	// (diff.I * diff.C) + amb
-            mul r0, t0, r0		// diff&amb * diff.Tex
-            mul r1, t1.a, t3.a	// spec.I * gloss
-            mad r0, r1, c2, r0	// (spec.I&gloss * spec.C) + diff&ambTex
-
-            // mov r0, t3.a
-            // mul r0, r1, c2
-            // mov r0, t3.a
-        }
-    */
 }
 
 technique SpotLight_States <bool Restore = true;> {

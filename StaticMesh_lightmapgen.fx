@@ -92,12 +92,7 @@ technique lightmapGenerationAlphaTest
 
 float4 psLightmapBase() : COLOR
 {
-    /*
-        Original asm
-        ps.1.1
-        def c0,0,0,0,1
-        mov r0, c0 // Output pure black color for lightmap generation
-    */
+    // Output pure black color for lightmap generation
     return float4(0.0, 0.0, 0.0, 1.0);
 }
 

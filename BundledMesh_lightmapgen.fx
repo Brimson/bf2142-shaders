@@ -1,22 +1,7 @@
 
 float4 blackColor() : COLOR
 {
-    /*
-        Previous asm
-
-        Sampler[0] = <normalSampler>;
-        Sampler[1] = <dummySampler>;
-        Sampler[2] = <colorLUTSampler>;
-        Sampler[3] = <diffuseSampler>;
-
-        PixelShader = asm
-        {
-            ps.1.1
-            def c0,0,0,0,1
-            mov r0, c0		// Output black color for lightmap generation
-        };
-    */
-    return float2(0.0, 1.0).xxxy;
+    return float4(0.0, 0.0, 0.0, 1.0);
 }
 
 technique lightmapGeneration

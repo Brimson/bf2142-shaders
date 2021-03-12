@@ -417,19 +417,14 @@ VS_OUTPUT3 VSimpleShader(appdata input, uniform mat4x4 wvp)
 
 float4 PSimpleShader(VS_OUTPUT3 input) : COLOR
 {
-    /*
-        Original asm
-        ps.1.1
-
-        def c0,1,1,1,0.8 :: ambient
-
-        tex t0 :: NormalMap
-        mul r0, t0, c0
-        // mul r0.a, t0.a,c0.x
-    */
     const float4 ambient = float4(1.0, 1.0, 1.0, 0.8);
     float4 NormalMap = tex2D(samplerWrap0, input.TexCoord);
     return NormalMap * ambient;
+    /*
+        NormalMap *= ambient;
+        Normap.a *= ambient.x;
+        return NormalMap;
+    */
 }
 
 technique alpha_one

@@ -35,13 +35,6 @@ float4 vsZOnly(appdata_ZOnly input) : POSITION
 
 float4 psZOnly() : COLOR
 {
-    /*
-        Original asm
-        ps.1.1
-        def c0, 0, 0, 0, 1
-        mov r0, c0
-        // mov r0, v0
-    */
     return float4(0.0, 0.0, 0.0, 1.0);
 }
 

@@ -1004,12 +1004,6 @@ float4 vsEditorZFill(APP2VS_vsEditorZFill indata) : POSITION
 
 float4 psEditorZFill() : COLOR
 {
-    /*
-        Original asm
-        ps.1.1
-        def c0, 0, 0, 0, 0
-        mov r0, c0
-    */
     return 0.0;
 }
 

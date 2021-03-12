@@ -69,19 +69,6 @@ VS2PS vsFFP(APP2VS indata)
 
 float4 psFFP(VS2PS input) : COLOR
 {
-    /*
-        Original asm
-        ps.1.1
-
-        tex t0
-        tex t1
-
-        // mov r0, t0
-        lrp r1, v1.a, t0, t1
-        mov r0, r1
-        // mul_x2 r0, r1, v0
-        // mul r0.a, r1.a, v0.a
-    */
     float4 t0 = tex2D(sampler0, input.tex);
     float4 t1 = tex2D(sampler1, input.tex2);
     return lerp(input.Col2.a, t0, t1);
