@@ -165,7 +165,7 @@ VS_TRAIL_OUTPUT vsTrail(appdata input, uniform mat4x4 myWV, uniform mat4x4 myWP)
 
     Out.animBFactorAndLMapIntOffset.x = input.intensityAgeAnimBlendFactorAndAlpha[2];
 
-    scalar lightMapIntensity = saturate(clamp((input.pos.y - hemiShadowAltitude) / 10.f, 0.f, 1.0f) + tParameters.m_uvRangeLMapIntensiyAndParticleMaxSize.z);
+    scalar lightMapIntensity = saturate(saturate((input.pos.y - hemiShadowAltitude) * 0.1f) + tParameters.m_uvRangeLMapIntensiyAndParticleMaxSize.z);
     // Out.animBFactorAndLMapIntOffset.y = tParameters.m_uvRangeLMapIntensiyAndParticleMaxSize.z;
     Out.animBFactorAndLMapIntOffset.yz = lightMapIntensity;
 
