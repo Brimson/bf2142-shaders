@@ -10,66 +10,66 @@
 //
 string GenerateStructs[] =
 {
-    "reqVertexElement",
-    "GlobalParameters",
-    "TemplateParameters",
-    "InstanceParameters"
+	"reqVertexElement",
+	"GlobalParameters",
+	"TemplateParameters",
+	"InstanceParameters"
 };
 
 
 //
 // this is the common vertexElement members
 //
-string reqVertexElementBase[] =
+string reqVertexElementBase[] = 
 {
-     "PositionPacked",
-     "NormalPacked8",
-    "Bone4Idcs",
-    "TBasePacked2D",
+ 	"PositionPacked",
+ 	"NormalPacked8",
+	"Bone4Idcs",
+	"TBasePacked2D",
 };
 
 //
 // this is the common global parameters
 //
-string GlobalParametersBase[] =
+string GlobalParametersBase[] = 
 {
-    "ViewProjection",
-    "SpecularPower",
-    "SpecLUT64SpecularColor",
-    "NormalizationCube",
-    "FogRange",
-    "FogColor",
-    "WorldSpaceCamPos", // should be as an "inverted specialized" instead
-    "GlobalTime"
+	"ViewProjection",
+	"SpecularPower",
+	"SpecLUT64SpecularColor",
+	"NormalizationCube",
+	"FogRange",
+	"FogColor",
+	"WorldSpaceCamPos", // should be as an "inverted specialized" instead
+	"GlobalTime"
 };
 
 //
 // this is the common template parameters
 //
-string TemplateParametersBase[] =
+string TemplateParametersBase[] = 
 {
-    "DiffuseMap",
-    "PosUnpack",
-    "TexUnpack",
-    "NormalUnpack"
+	"DiffuseMap",
+	"PosUnpack",
+	"TexUnpack",
+	"NormalUnpack"
 };
 
 //
 // this is the common instance parameters
 //
-string InstanceParametersBase[] =
+string InstanceParametersBase[] = 
 {
-    "AlphaBlendEnable",
-    "DepthWrite",
-    "AlphaTest",
-    "AlphaTestRef",
-    "SrcBlend",
-    "DestBlend",
-    "Lights",
-    "GeomBones",
-    "Transparency",
-    "simpleUVTranslation",
-    "HemiMapConstantColor",
+	"AlphaBlendEnable",
+	"DepthWrite",
+	"AlphaTest",
+	"AlphaTestRef",
+	"SrcBlend",
+	"DestBlend",
+	"Lights",
+	"GeomBones",
+	"Transparency",
+	"simpleUVTranslation",
+	"HemiMapConstantColor",
 };
 
 
@@ -81,70 +81,70 @@ const dword _nothing_	: LITERAL;
 
 const dword _hasuvanimation_	: LITERAL
 <
-    string reqVertexElement[] =
-    {
-         "TUVAnimationPacked2D"
-    };
-    string InstanceParameters[] =
-    {
-        "UserData"
-    };
+	string reqVertexElement[] = 
+	{
+	 	"TUVAnimationPacked2D"
+	};
+	string InstanceParameters[] = 
+	{
+		"UserData"
+	};
 >;
 
 const dword _hasnormalmap_	: LITERAL
 <
-    string reqVertexElement[] =
-    {
-         "TangentSpacePacked8"
-    };
-    string TemplateParameters[] =
-    {
-        "NormalMap"
-    };
+	string reqVertexElement[] = 
+	{
+	 	"TangentSpacePacked8"
+	};
+	string TemplateParameters[] = 
+	{
+		"NormalMap"
+	};
 >;
 
 const dword _hasgimap_	: LITERAL
 <
-    string TemplateParameters[] =
-    {
-        "GIMap"
-    };
+	string TemplateParameters[] = 
+	{
+		"GIMap"
+	};
 >;
 
 const dword _hasenvmap_	: LITERAL
 <
-    string TemplateParameters[] =
-    {
-        "CubeMap",		//Funky name!!!
-    };
+	string TemplateParameters[] = 
+	{
+		"CubeMap",		//Funky name!!!
+	};
 >;
 
 const dword _hascockpit_	: LITERAL;
 
 const dword _hasshadow_	: LITERAL
 <
-    string GlobalParameters[] =
-    {
-        "ShadowMap"
-    };
-    string InstanceParameters[] =
-    {
-        "ShadowProjMat",
-        "ShadowTrapMat"
-    };
+	string GlobalParameters[] = 
+	{
+		"ShadowMap"
+	};
+	string InstanceParameters[] = 
+	{
+		"ShadowProjMat",
+		"ShadowTrapMat"
+	};
 >;
 
 const dword _hasshadowocclusion_	: LITERAL
 <
-    string GlobalParameters[] =
-    {
-        "ShadowOccluderMap"
-    };
-    string InstanceParameters[] =
-    {
-        "ShadowOccProjMat",
-        "ShadowTrapMat"
-    };
+	string GlobalParameters[] = 
+	{
+		"ShadowOccluderMap"
+	};
+	string InstanceParameters[] = 
+	{
+		"ShadowOccProjMat",
+		"ShadowTrapMat"
+	};
 >;
 
 const dword _hashemiocclusion_	: LITERAL;
@@ -153,40 +153,40 @@ const dword _hascolormapgloss_	: LITERAL;
 
 /*const dword _hasnormalmapgloss_	: LITERAL
 <
-    string TemplateParameters[] =
-    {
-        "NormalMap"
-    };
+	string TemplateParameters[] = 
+	{
+		"NormalMap"
+	};
 >;
 */
 
 
 const dword _hasstaticgloss_	: LITERAL
 <
-    string TemplateParameters[] =
-    {
-        "StaticGloss"
-    };
+	string TemplateParameters[] = 
+	{
+		"StaticGloss"
+	};
 >;
 
 const dword _hasdot3alphatest_	: LITERAL;
 
 const dword _usehemimap_	: LITERAL
 <
-    string GlobalParameters[] =
-    {
-        "HemiMap",
-        "HemiMapConstants",
-        "HemiMapSkyColor"
-    };
-    string TemplateParameters[] =
-    {
-        "InvHemiHeightScale"
-    };
-    string InstanceParameters[] =
-    {
-        "HeightOverTerrain"
-    };
+	string GlobalParameters[] = 
+	{
+		"HemiMap",
+		"HemiMapConstants",
+		"HemiMapSkyColor"
+	};
+	string TemplateParameters[] =
+	{ 
+		"InvHemiHeightScale"
+	};
+	string InstanceParameters[] =
+	{
+		"HeightOverTerrain"
+	};
 >;
 
 const dword _pointlight_	: LITERAL;
@@ -202,38 +202,38 @@ const dword _pointlight_	: LITERAL;
 //
 string GenerateShaderPermutations[] =
 {
-    "_nothing_",
-    "_hasnormalmap_",
-    "_hasgimap_",
-    "_hasenvmap_",
-    "_hasuvanimation_",
-    "_hasnormalmap_|_hasgimap_",
-    "_hasnormalmap_|_hasenvmap_",
-    "_hasgimap_|_hasenvmap_",
-    "_hasnormalmap_|_hasgimap_|_hasenvmap_",
-    "_hasuvanimation_|_hasnormalmap_",
-    "_hasuvanimation_|_hasgimap_",
-    "_hasuvanimation_|_hasenvmap_",
-    "_hasuvanimation_|_hasnormalmap_|_hasgimap_",
-    "_hasuvanimation_|_hasnormalmap_|_hasenvmap_",
-    "_hasuvanimation_|_hasgimap_|_hasenvmap_",
-    "_hasuvanimation_|_hasnormalmap_|_hasgimap_|_hasenvmap_",
-    "_usehemimap_",
-    "_hasnormalmap_|_usehemimap_",
-    "_hasgimap_|_usehemimap_",
-    "_hasenvmap_|_usehemimap_",
-    "_hasnormalmap_|_hasgimap_|_usehemimap_",
-    "_hasnormalmap_|_hasenvmap_|_usehemimap_",
-    "_hasgimap_|_hasenvmap_|_usehemimap_",
-    "_hasnormalmap_|_hasgimap_|_hasenvmap_|_usehemimap_",
-    "_hasuvanimation_|_usehemimap_",
-    "_hasuvanimation_|_hasnormalmap_|_usehemimap_",
-    "_hasuvanimation_|_hasgimap_|_usehemimap_",
-    "_hasuvanimation_|_hasenvmap_|_usehemimap_",
-    "_hasuvanimation_|_hasnormalmap_|_hasgimap_|_usehemimap_",
-    "_hasuvanimation_|_hasnormalmap_|_hasenvmap_|_usehemimap_",
-    "_hasuvanimation_|_hasgimap_|_hasenvmap_|_usehemimap_",
-    "_hasuvanimation_|_hasnormalmap_|_hasgimap_|_hasenvmap_|_usehemimap_",
+	"_nothing_",
+	"_hasnormalmap_",
+	"_hasgimap_",
+	"_hasenvmap_",
+	"_hasuvanimation_",
+	"_hasnormalmap_|_hasgimap_",
+	"_hasnormalmap_|_hasenvmap_",
+	"_hasgimap_|_hasenvmap_",
+	"_hasnormalmap_|_hasgimap_|_hasenvmap_",
+	"_hasuvanimation_|_hasnormalmap_",
+	"_hasuvanimation_|_hasgimap_",
+	"_hasuvanimation_|_hasenvmap_",
+	"_hasuvanimation_|_hasnormalmap_|_hasgimap_",
+	"_hasuvanimation_|_hasnormalmap_|_hasenvmap_",
+	"_hasuvanimation_|_hasgimap_|_hasenvmap_",
+	"_hasuvanimation_|_hasnormalmap_|_hasgimap_|_hasenvmap_",
+	"_usehemimap_",
+	"_hasnormalmap_|_usehemimap_",
+	"_hasgimap_|_usehemimap_",
+	"_hasenvmap_|_usehemimap_",
+	"_hasnormalmap_|_hasgimap_|_usehemimap_",
+	"_hasnormalmap_|_hasenvmap_|_usehemimap_",
+	"_hasgimap_|_hasenvmap_|_usehemimap_",
+	"_hasnormalmap_|_hasgimap_|_hasenvmap_|_usehemimap_",
+	"_hasuvanimation_|_usehemimap_",
+	"_hasuvanimation_|_hasnormalmap_|_usehemimap_",
+	"_hasuvanimation_|_hasgimap_|_usehemimap_",
+	"_hasuvanimation_|_hasenvmap_|_usehemimap_",
+	"_hasuvanimation_|_hasnormalmap_|_hasgimap_|_usehemimap_",
+	"_hasuvanimation_|_hasnormalmap_|_hasenvmap_|_usehemimap_",
+	"_hasuvanimation_|_hasgimap_|_hasenvmap_|_usehemimap_",
+	"_hasuvanimation_|_hasnormalmap_|_hasgimap_|_hasenvmap_|_usehemimap_",
 };
 
 //
@@ -241,52 +241,52 @@ string GenerateShaderPermutations[] =
 //
 string GenerateShaderModifiers[] =
 {
-    "_hasshadow_",
-    "_hascolormapgloss_",
-    "_hasstaticgloss_",
-    "_hasshadow_|_hascolormapgloss_",
-    "_hasshadow_|_hasstaticgloss_",
+	"_hasshadow_",
+	"_hascolormapgloss_",
+	"_hasstaticgloss_",
+	"_hasshadow_|_hascolormapgloss_",
+	"_hasshadow_|_hasstaticgloss_",
+	
+	"_hasshadow_|_hashemiocclusion_",
+	"_hasshadow_|_hasshadowocclusion_",
+	"_hasshadow_|_hascolormapgloss_|_hasshadowocclusion_",
+	"_hasshadow_|_hasstaticgloss_|_hasshadowocclusion_",
+	"_hasshadow_|_hascolormapgloss_|_hashemiocclusion_",
+	"_hasshadow_|_hasstaticgloss_|_hashemiocclusion_",
 
-    "_hasshadow_|_hashemiocclusion_",
-    "_hasshadow_|_hasshadowocclusion_",
-    "_hasshadow_|_hascolormapgloss_|_hasshadowocclusion_",
-    "_hasshadow_|_hasstaticgloss_|_hasshadowocclusion_",
-    "_hasshadow_|_hascolormapgloss_|_hashemiocclusion_",
-    "_hasshadow_|_hasstaticgloss_|_hashemiocclusion_",
+	"_hashemiocclusion_",
+	"_hascolormapgloss_|_hashemiocclusion_",
+	"_hasstaticgloss_|_hashemiocclusion_",
 
-    "_hashemiocclusion_",
-    "_hascolormapgloss_|_hashemiocclusion_",
-    "_hasstaticgloss_|_hashemiocclusion_",
+	"_hascolormapgloss_|_hasdot3alphatest_",
+	"_hasstaticgloss_|_hasdot3alphatest_",
+	"_hasshadow_|_hascolormapgloss_|_hasdot3alphatest_",
+	"_hasshadow_|_hascolormapgloss_|_hasdot3alphatest_|_hasshadowocclusion_",
+	"_hasshadow_|_hascolormapgloss_|_hasdot3alphatest_|_hashemiocclusion_",
+	"_hascolormapgloss_|_hasdot3alphatest_|_hashemiocclusion_",
 
-    "_hascolormapgloss_|_hasdot3alphatest_",
-    "_hasstaticgloss_|_hasdot3alphatest_",
-    "_hasshadow_|_hascolormapgloss_|_hasdot3alphatest_",
-    "_hasshadow_|_hascolormapgloss_|_hasdot3alphatest_|_hasshadowocclusion_",
-    "_hasshadow_|_hascolormapgloss_|_hasdot3alphatest_|_hashemiocclusion_",
-    "_hascolormapgloss_|_hasdot3alphatest_|_hashemiocclusion_",
+	"_hasshadow_|_hasstaticgloss_|_hasdot3alphatest_",
+	"_hasshadow_|_hasstaticgloss_|_hasdot3alphatest_|_hasshadowocclusion_",
+	"_hasshadow_|_hasstaticgloss_|_hasdot3alphatest_|_hashemiocclusion_",
 
-    "_hasshadow_|_hasstaticgloss_|_hasdot3alphatest_",
-    "_hasshadow_|_hasstaticgloss_|_hasdot3alphatest_|_hasshadowocclusion_",
-    "_hasshadow_|_hasstaticgloss_|_hasdot3alphatest_|_hashemiocclusion_",
+	"_hascockpit_",
+	"_hascolormapgloss_|_hascockpit_",
+	"_hasstaticgloss_|_hascockpit_",
+	"_hascolormapgloss_|_hasdot3alphatest_|_hascockpit_",
+	"_hasstaticgloss_|_hasdot3alphatest_|_hascockpit_",
 
-    "_hascockpit_",
-    "_hascolormapgloss_|_hascockpit_",
-    "_hasstaticgloss_|_hascockpit_",
-    "_hascolormapgloss_|_hasdot3alphatest_|_hascockpit_",
-    "_hasstaticgloss_|_hasdot3alphatest_|_hascockpit_",
-
-    // pointlight
-    "_pointlight_",
-    "_hascolormapgloss_|_pointlight_",
-    "_hasstaticgloss_|_pointlight_",
-    "_hascolormapgloss_|_hasdot3alphatest_|_pointlight_",
+	// pointlight
+	"_pointlight_",
+	"_hascolormapgloss_|_pointlight_",
+	"_hasstaticgloss_|_pointlight_",
+	"_hascolormapgloss_|_hasdot3alphatest_|_pointlight_",
 };
 
 string DeprecationList[] =
 {
-    {"hasnormalmap", ""},
-    {"usehemimap", "hasenvmap", ""},
-    {"hasshadow", "hasdot3alphatest", "hascolormapgloss", "hasshadowocclusion" , ""},
-    {"hasuvanimation", "hasgimap", ""},
+	{"hasnormalmap", ""},
+	{"usehemimap", "hasenvmap", ""},
+	{"hasshadow", "hasdot3alphatest", "hascolormapgloss", "hasshadowocclusion" , ""},
+	{"hasuvanimation", "hasgimap", ""},
 };
 

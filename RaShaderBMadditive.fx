@@ -10,7 +10,7 @@ string GenerateStructs[] =
 	"InstanceParameters"
 };
 
-string reqVertexElement[] =
+string reqVertexElement[] = 
 {
  	"PositionPacked",
  	"NormalPacked8",
@@ -21,7 +21,7 @@ string reqVertexElement[] =
 //
 // this is the common global parameters
 //
-string GlobalParameters[] =
+string GlobalParameters[] = 
 {
 	"ViewProjection",
 	"FogRange",
@@ -33,7 +33,7 @@ string GlobalParameters[] =
 //
 // this is the common template parameters
 //
-string TemplateParameters[] =
+string TemplateParameters[] = 
 {
 	"DiffuseMap",
 	"PosUnpack",
@@ -44,7 +44,7 @@ string TemplateParameters[] =
 //
 // this is the common instance parameters
 //
-string InstanceParameters[] =
+string InstanceParameters[] = 
 {
 	"GeomBones",
 	"Transparency",
@@ -58,7 +58,7 @@ struct VS_IN
 {
 	vec4 Pos			: POSITION;
 	vec3 Normal			: NORMAL;
-	vec4 BlendIndices	: BLENDINDICES;
+	vec4 BlendIndices	: BLENDINDICES;  
 	vec2 Tex			: TEXCOORD0;
 };
 
@@ -89,7 +89,7 @@ float getBinormalFlipping(VS_IN input)
 {
 	int4 IndexVector = D3DCOLORtoUBYTE4(input.BlendIndices);
 	int IndexArray[4] = (int[4])IndexVector;
-	return IndexArray[2] * -2.0f + 1.0f;
+	return 1.f + IndexArray[2] * -2.f;
 }
 
 vec4 getWorldPos(VS_IN input)
@@ -110,10 +110,13 @@ vec4 getWorldPos(VS_IN input)
 VS_OUT vs(VS_IN indata)
 {
 	VS_OUT Out = (VS_OUT)0;
+ 
+ 	 
 	vec4 worldPos = getWorldPos(indata);
 	Out.Pos = mul(worldPos, ViewProjection);
 	Out.Fog = calcFog(Out.Pos.w);
-	Out.Tex = indata.Tex * TexUnpack + frac(GlobalTime * simpleUVTranslation); // indata.Tex;
+	Out.Tex = indata.Tex * TexUnpack + frac(GlobalTime * simpleUVTranslation);//indata.Tex;
+
 	return Out;
 }
 
@@ -122,6 +125,7 @@ float4 ps(VS_OUT indata) : COLOR
 {
 	vec4 outCol = tex2D(DiffuseMapSampler, indata.Tex);
 	outCol.a *= Transparency.a;
+	
 	return outCol;
 }
 
@@ -130,15 +134,16 @@ technique defaultTechnique
 {
 	pass P0
 	{
-		vertexShader	= compile vs_2_0 vs();
-		pixelShader		= compile ps_2_0 ps();
+		vertexShader	= compile vs_1_1 vs();
+		pixelShader		= compile ps_1_3 ps();
 
 		ZEnable				= false;
-		AlphaBlendEnable	= true;
+		AlphaBlendEnable	= true;	
 		SrcBlend			= SRCALPHA;
 		DestBlend			= ONE;
 		ZWriteEnable		= false;
 		Fogenable			= false;
+
 	}
 }
 
@@ -146,15 +151,16 @@ technique depthAndFog
 {
 	pass P0
 	{
-		vertexShader	= compile vs_2_0 vs();
-		pixelShader		= compile ps_2_0 ps();
+		vertexShader	= compile vs_1_1 vs();
+		pixelShader		= compile ps_1_3 ps();
 
 		ZEnable				= true;
-		AlphaBlendEnable	= true;
+		AlphaBlendEnable	= true;	
 		SrcBlend			= SRCALPHA;
 		DestBlend			= ONE;
 		ZWriteEnable		= false;
 		Fogenable			= true;
+
 	}
 }
 
