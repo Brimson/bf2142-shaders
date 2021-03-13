@@ -80,7 +80,6 @@ OUT_vsDiffuseZ vsDiffuseZAnimatedUV(appdataDiffuseZAnimatedUV input,
     Out.HPos = mul(vec4(Pos.xyz, 1.0), ViewProj);
 
     // Pass-through texcoords
-    // Out.TexCoord = input.TexCoord;
 
     mat3x3 tmp = uvMatrix[IndexArray[3]];
     Out.TexCoord = mul(vec3(input.TexCoord1, 1.0), tmp).xy + input.TexCoord0;
@@ -137,18 +136,12 @@ OUT_vsFullMRTAnimatedUV vsFullMRTAnimatedUV(appdataAnimatedUV input,
     int IndexArray[4] = (int[4])IndexVector;
 
     // Transform texcoords
-    // Out.TexCoord = uvMatrix[IndexArray[3]].xy + input.TexCoord0;
     mat3x3 tmp = uvMatrix[IndexArray[3]];
     Out.TexCoord1 = mul(vec3(input.TexCoord1, 1.0), tmp).xy + input.TexCoord0;
-    // Out.TexCoord = input.TexCoord0;
-    // Out.TexCoord = vec2(0.0, 0.0);
-    // Out.TexCoord = tmp2;
 
     vec3 Pos = mul(input.Pos, mOneBoneSkinning[IndexArray[0]]);
     Out.HPos = mul(vec4(Pos.xyz, 1.0), ViewProj);
     Out.wPos = mul(vec4(Pos.xyz, 1.0), viewMatrix);
-
-    // Out.wPos = Out.HPos;
 
     // Hemi lookup values
     vec3 AlmostNormal = mul(input.Normal, mOneBoneSkinning[IndexArray[0]]);
@@ -219,12 +212,8 @@ PS2FB_fullMRT psFullMRT(OUT_vsFullMRT indata,
     vec4 groundcolor = tex2D(sampler1, indata.GroundUVAndLerp.xy);
     vec4 hemicolor = lerp(groundcolor, SkyColor, indata.GroundUVAndLerp.z);
 
-    // outdata.Col0 = groundcolor.a * groundcolor.a;
-    // outdata.Col0 += AmbientColor * hemicolor;
     outdata.Col0 = AmbientColor*hemicolor;
     outdata.Col1 = indata.wPos;
-    // outdata.Col3 = tex2D(sampler2Aniso, indata.TexCoord);
-
     return outdata;
 }
 
@@ -244,13 +233,8 @@ PS2FB_fullMRT psFullMRTAnimatedUV(OUT_vsFullMRTAnimatedUV indata,
     vec4 groundcolor = tex2D(sampler1, indata.GroundUVAndLerp.xy);
     vec4 hemicolor = lerp(groundcolor, SkyColor, indata.GroundUVAndLerp.z);
 
-    // outdata.Col0 = groundcolor.a * groundcolor.a;
-    // outdata.Col0 += AmbientColor * hemicolor;
     outdata.Col0 = AmbientColor * hemicolor;
     outdata.Col1 = indata.wPos;
-    // outdata.Col0 = float4(1.0, 0.0, 0.0, 1.0);
-    // outdata.Col3 = tex2D(sampler2Aniso, indata.TexCoord1);
-
     return outdata;
 }
 
@@ -270,13 +254,9 @@ PS2FB_fullMRT psFullMRTwGI(OUT_vsFullMRT indata,
     vec4 groundcolor = tex2D(sampler1, indata.GroundUVAndLerp.xy);
     vec4 hemicolor = lerp(groundcolor, SkyColor, indata.GroundUVAndLerp.z);
 
-    // outdata.Col0 = groundcolor.a * groundcolor.a;
-    // outdata.Col0 += AmbientColor * hemicolor;
     outdata.Col0 = AmbientColor * hemicolor;
     outdata.Col0 *= tex2D(sampler3, indata.TexCoord);
     outdata.Col1 = indata.wPos;
-    // outdata.Col3 = tex2D(sampler2Aniso, indata.TexCoord);
-
     return outdata;
 }
 
@@ -296,13 +276,9 @@ PS2FB_fullMRT psFullMRTwGIAnimatedUV(OUT_vsFullMRTAnimatedUV indata,
     vec4 groundcolor = tex2D(sampler1, indata.GroundUVAndLerp.xy);
     vec4 hemicolor = lerp(groundcolor, SkyColor, indata.GroundUVAndLerp.z);
 
-    // outdata.Col0 = groundcolor.a * groundcolor.a;
-    // outdata.Col0 += AmbientColor * hemicolor;
     outdata.Col0 = AmbientColor * hemicolor;
     outdata.Col0 *= tex2D(sampler3, indata.TexCoord2);
     outdata.Col1 = indata.wPos;
-    // outdata.Col3 = tex2D(sampler2Aniso, indata.TexCoord1);
-
     return outdata;
 }
 
@@ -325,8 +301,6 @@ PS2FB_fullMRT psFullMRTHemiShadows(OUT_vsFullMRT indata,
     outdata.Col0 = AmbientColor * hemicolor;
     outdata.Col0 *= groundcolor.a * groundcolor.a;
     outdata.Col1 = indata.wPos;
-    // outdata.Col3 = tex2D(sampler2, indata.TexCoord);
-
     return outdata;
 }
 
@@ -349,8 +323,6 @@ PS2FB_fullMRT psFullMRTHemiShadowsAnimatedUV(OUT_vsFullMRTAnimatedUV indata,
     outdata.Col0 = AmbientColor * hemicolor;
     outdata.Col0 *= groundcolor.a * groundcolor.a;
     outdata.Col1 = indata.wPos;
-    // outdata.Col3 = tex2D(sampler2, indata.TexCoord1);
-
     return outdata;
 }
 
@@ -374,8 +346,6 @@ PS2FB_fullMRT psFullMRTwGIHemiShadows(OUT_vsFullMRT indata,
     outdata.Col0 *= groundcolor.a * groundcolor.a;
     outdata.Col0 *= tex2D(sampler3, indata.TexCoord);
     outdata.Col1 = indata.wPos;
-    // outdata.Col3 = tex2D(sampler2, indata.TexCoord);
-
     return outdata;
 }
 
@@ -399,7 +369,6 @@ PS2FB_fullMRT psFullMRTwGIHemiShadowsAnimatedUV(OUT_vsFullMRTAnimatedUV indata,
     outdata.Col0 *= groundcolor.a * groundcolor.a;
     outdata.Col0 *= tex2D(sampler3, indata.TexCoord2);
     outdata.Col1 = indata.wPos;
-    //outdata.Col3 = tex2D(sampler2, indata.TexCoord1);
 
     return outdata;
 }
@@ -422,10 +391,7 @@ PS2FB_fullMRT psFullMRTAlphaBlend(OUT_vsFullMRT indata,
 
     outdata.Col0 = groundcolor.a * groundcolor.a;
     outdata.Col0 += AmbientColor * hemicolor;
-    // outdata.Col0 = AmbientColor*hemicolor;
     outdata.Col1 = indata.wPos;
-    // outdata.Col3 = tex2D(sampler2Aniso, indata.TexCoord);
-
     return outdata;
 }
 
@@ -458,7 +424,6 @@ vec4 psAlphaDX9DirectionalShadow(VS_OUTPUT_AlphaDX9 indata) : COLOR
     staticOccluderSamples.x = tex2D(sampler3, lightUV + vec2(-texel, -texel * 2.0)).b;
     staticOccluderSamples.y = tex2D(sampler3, lightUV + vec2( texel, -texel * 2.0)).b;
     staticOccluderSamples.z = tex2D(sampler3, lightUV + vec2(-texel,  texel * 2.0)).b;
-    // staticSamples.w = tex2D(sampler4bilin, lightUV + vec2( texel,  texel * 2.0)).b;
     staticOccluderSamples.x = dot(staticOccluderSamples.xyz, 0.33);
 
     const scalar epsilon = 0.05;

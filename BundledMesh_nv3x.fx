@@ -34,7 +34,6 @@ VO_HemiAndSunShadows BasicShader (appdataAnimatedUV input)
     Out.HPos = mul(vec4(Pos.xyz, 1.0f), viewProjMatrix);
 
     // Shadow
-    // Out.TexShadow =  mul(Pos, ViewPortMatrix);
     Out.TexShadow1 =  mul(vec4(Pos, 1.0), vpLightTrapezMat);
     vec2 TexShadow2 = mul(vec4(Pos, 1.0), vpLightMat).zw;
     TexShadow2.x -= 0.003;
