@@ -112,7 +112,7 @@ float4 Shared_PS_ZFillLightmap(Shared_VS2PS_ZFillLightmap input) : COLOR
     float4 lightmap = tex2D(sampler0Clamp, input.Tex0); // texld r1, t0
     float4 o; // r0.xyzw
     o.xyz = lightmap.zzz * vGIColor; // mul r0.xyz, r1.z, c0
-    o.w = saturate(lightmap.y) // +mov_sat r0.w, r1.y
+    o.w = saturate(lightmap.y); // +mov_sat r0.w, r1.y
     return o;
 }
 
@@ -350,13 +350,13 @@ Shared_VS2PS_DirectionalLightShadows Shared_VS_DirectionalLightShadows(Shared_AP
 
     vec4 wPos;
     wPos.xz = (indata.Pos0.xy * vScaleTransXZ.xy) + vScaleTransXZ.zw;
-    //tl: Trans is always 0, and MADs cost more than MULs in certain cards.
+    // tl: Trans is always 0, and MADs cost more than MULs in certain cards.
     wPos.yw = indata.Pos1.xw * vScaleTransY.xy;
 
     scalar yDelta, interpVal;
     geoMorphPosition(wPos, indata.MorphDelta, indata.Pos0.z, yDelta, interpVal);
 
-    //tl: output HPos as early as possible.
+    // tl: output HPos as early as possible.
     outdata.Pos = mul(wPos, mViewProj);
     outdata.ShadowTex = mul(wPos, mLightVP);
     scalar sZ = mul(wPos, mLightVPOrtho).z;
@@ -367,7 +367,7 @@ Shared_VS2PS_DirectionalLightShadows Shared_VS_DirectionalLightShadows(Shared_AP
         outdata.ShadowTex.z = sZ;
     #endif
 
-     outdata.Tex0 = (indata.Pos0.xy * ScaleBaseUV * vColorLightTex.x) + vColorLightTex.y;
+    outdata.Tex0 = (indata.Pos0.xy * ScaleBaseUV * vColorLightTex.x) + vColorLightTex.y;
 
     return outdata;
 }
@@ -504,7 +504,7 @@ vec4 Shared_PS_STNormal(Shared_VS2PS_STNormal indata) : COLOR
     vec4 zplaneLowDetailmap = tex2D(sampler4Wrap, indata.Tex3);
 
     vec4 lowDetailmap = lerp(0.5, yplaneLowDetailmap.z, lowComponent.x);
-    scalar mounten = dot(float3(xplaneLowDetailmap.y, yplaneLowDetailmap.x, zplaneLowDetailmap.y), BlendValue.xyz);
+    scalar mounten = dot(float3(xplaneLowDetailmap.y, yplaneLowDetailmap.x, zplaneLowDetailmap.y), indata.BlendValue.xyz);
     lowDetailmap *= lerp(0.5, mounten, lowComponent.z);
 
     vec4 outColor = lowDetailmap * colormap * 4;

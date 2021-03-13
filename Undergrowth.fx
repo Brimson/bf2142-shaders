@@ -275,7 +275,7 @@ VS2PS_ZOnly VShader_ZOnly_Simple(APP2VS_Simple indata)
     float viewDistance = fadeAndHeightScaleOffset.x;
     float fadeFactor = fadeAndHeightScaleOffset.y;
 
-    float heightScale = saturate(viewDistance - dist) * fadeFactor);
+    float heightScale = saturate((viewDistance - dist) * fadeFactor);
     pos.y = (indata.Pos.y / 32767 * posOffsetAndScale.w)*heightScale + posOffsetAndScale.y + (indata.Pos.w / 32767 * posOffsetAndScale.w);
 
     outdata.Pos = mul(pos, worldViewProj);

@@ -326,8 +326,9 @@ VS_OUT_BaseDetailLM vsBaseDetailLM(appdata_BaseDetailLM input)
 
         float3 Pos = mul(input.Pos, mOneBoneSkinning[IndexArray[0]]);
         Out.HPos = mul(float4(Pos.xyz, 1.0f), viewProjMatrix);
-        Out.HPos = mul(input.Pos, viewProjMatrix);
     */
+
+    Out.HPos = mul(input.Pos, viewProjMatrix);
 
     // Pass-through texcoords
     Out.Tex0Diff = input.TexCoordDiff;

@@ -92,7 +92,7 @@ vec4 Hi_PS_FullDetail(Hi_VS2PS_FullDetail indata) : COLOR
         #endif
 
         #if HIGHTERRAIN
-            scalar mounten = dot(float3(xplaneLowDetailmap.y, yplaneLowDetailmap.x, zplaneLowDetailmap.y), indata.BlendValueAndFade.xyz)
+            scalar mounten = dot(float3(xplaneLowDetailmap.y, yplaneLowDetailmap.x, zplaneLowDetailmap.y), indata.BlendValueAndFade.xyz);
             lowDetailmap *= (4.0 * lerp(0.5, mounten, lowComponent.z));
 
             vec3 bothDetailmap = detailmap * lowDetailmap;
@@ -241,7 +241,7 @@ vec4 Hi_PS_FullDetailMounten(Hi_VS2PS_FullDetailMounten indata) : COLOR
                              (zplaneDetailmap * indata.BlendValueAndFade.z);
 
             scalar lowDetailmap = lerp(0.5, yplaneLowDetailmap.z, lowComponent.x * indata.FogAndFade2.y);
-            scalar mounten = dot(float3(xplaneLowDetailmap.y, yplaneLowDetailmap.x, zplaneLowDetailmap.y), indata.BlendValueAndFade.xyz)
+            scalar mounten = dot(float3(xplaneLowDetailmap.y, yplaneLowDetailmap.x, zplaneLowDetailmap.y), indata.BlendValueAndFade.xyz);
             lowDetailmap *= (4.0 * lerp(0.5, mounten, lowComponent.z));
 
             vec3 bothDetailmap = detailmap * lowDetailmap;
@@ -397,7 +397,7 @@ vec4 Hi_PS_FullDetailWithEnvMap(Hi_VS2PS_FullDetailWithEnvMap indata) : COLOR
         #endif
 
         #if HIGHTERRAIN
-            scalar mounten = dot(float3(xplaneLowDetailmap.y, yplaneLowDetailmap.x, zplaneLowDetailmap.y), indata.BlendValueAndFade.xyz)
+            scalar mounten = dot(float3(xplaneLowDetailmap.y, yplaneLowDetailmap.x, zplaneLowDetailmap.y), indata.BlendValueAndFade.xyz);
             lowDetailmap *= (4 * lerp(0.5, mounten, lowComponent.z));
 
             vec3 bothDetailmap = detailmap * lowDetailmap;

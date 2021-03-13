@@ -597,7 +597,7 @@ vec4 psDx9_FSBMContrast(VS2PS_blit indata) : COLOR
 
     vec4 accum = mul(luminance2, src);
 
-    / /accum -= 1.7;
+    // accum -= 1.7;
     accum -= contrastAmount;
     return accum;
 
