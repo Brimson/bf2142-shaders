@@ -3,18 +3,16 @@
 
 struct VSTanOut
 {
-    float4 HPos	: POSITION;
-    float4 Diffuse 	: COLOR;
+    float4 HPos	   : POSITION;
+    float4 Diffuse : COLOR;
 };
 
 VSTanOut vsShowTanBasis(float4 Pos : POSITION, float4 Col : COLOR)
 {
     VSTanOut Out;
-
     float3 wPos = mul(Pos, mOneBoneSkinning[0]);
     Out.HPos = mul(float4(wPos.xyz, 1.0f), viewProjMatrix);
     Out.Diffuse = Col;
-
     return Out;
 }
 

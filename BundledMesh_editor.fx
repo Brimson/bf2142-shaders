@@ -1,10 +1,10 @@
 
 float4 diffusePixelShaderMarked(VS_OUTPUT2 input) : COLOR
 {
-    const float4 ambient = float2(0.0, 0.8).xxyx; // def c0,0,0,0.8,0 :: ambient
+    const float4 ambient = float4(0.0, 0.8, 0.0, 0.0).xxyx;    // def c0,0,0,0.8,0 :: ambient
     // Sampler[0] = <diffuseSampler>;
     float4 diffuseMap = tex2D(diffuseSampler, input.TexCoord); // tex t0
-    return saturate(diffuseMap * input.Diffuse + ambient); // mad_sat r0, t0, v0, c0
+    return saturate(diffuseMap * input.Diffuse + ambient);     // mad_sat r0, t0, v0, c0
 }
 
 technique marked
@@ -33,9 +33,9 @@ technique marked
 float4 diffusePixelShaderSubMarked(VS_OUTPUT2 input) : COLOR
 {
     // Sampler[0] = <diffuseSampler>;
-    float4 diffuseMap = tex2D(diffuseSampler, input.TexCoord); // tex t0
-    const float4 ambient = float2(0.0, 0.4).xxyx; // def c0,0,0,0.4,0 :: ambient
-    return saturate(diffuseMap * input.Diffuse + ambient); // mad_sat r0, t0, v0, c0
+    float4 diffuseMap = tex2D(diffuseSampler, input.TexCoord);  // tex t0
+    const float4 ambient = float4(0.0, 0.4, 0.0, 0.0);          // def c0,0,0,0.4,0 :: ambient
+    return saturate(diffuseMap * input.Diffuse + ambient);      // mad_sat r0, t0, v0, c0
 }
 
 technique submarked
