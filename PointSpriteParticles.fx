@@ -6,7 +6,7 @@ float4x4 wvpMat : WorldViewProj;
 // Particle Texture
 texture texture0: Texture0;
 
-//$TODO this is a temporary solution that is inefficient
+// $TODO this is a temporary solution that is inefficient
 // Groundhemi Texture
 uniform texture texture1: Texture1;
 
