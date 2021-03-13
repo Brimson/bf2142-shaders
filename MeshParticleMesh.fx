@@ -24,7 +24,7 @@ float4 m_transparencyGraph : TRANSPARENCYGRAPH;
 
 float4 ageAndAlphaArray[52] : AgeAndAlphaArray;
 float lightmapIntensityOffset : LightmapIntensityOffset;
-mat4x3 mOneBoneSkinning[52]: matONEBONESKINNING;/* : register(c50) < bool sparseArray = true; int arrayStart = 50; >;*/
+mat4x3 mOneBoneSkinning[52]: matONEBONESKINNING; /* : register(c50) < bool sparseArray = true; int arrayStart = 50; >;*/
 
 
 struct OUT_vsDiffuse

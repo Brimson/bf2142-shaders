@@ -114,7 +114,7 @@ vec4 basicPixelShader(VS_OUTPUT VsOut) : COLOR
     #endif
 
     // tl: use compressed color register to avoid this being compiled as a 2.0 shader.
-    vec4 outColor = vec4(vertexColor.rgb * diffuseMap * 4.0, VsOut.Color.a * 2);
+    vec4 outColor = vec4(vertexColor.rgb * diffuseMap * 4.0, VsOut.Color.a * 2.0);
 
     return outColor;
 };

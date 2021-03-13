@@ -1,9 +1,9 @@
 #line 2 "TreeMeshBillboardGenerator.fx"
 
-float4x4 mvpMatrix : WorldViewProjection;// : register(vs_3_0, c0);
-float4x4 worldIMatrix : WorldI;// : register(vs_3_0, c4);
-float4x4 viewInverseMatrix : ViewI; //: register(vs_3_0, c8);
-//float4x3 mOneBoneSkinning[52]: matONEBONESKINNING; //: register(vs_3_0, c15);
+float4x4 mvpMatrix : WorldViewProjection; // : register(vs_3_0, c0);
+float4x4 worldIMatrix : WorldI; // : register(vs_3_0, c4);
+float4x4 viewInverseMatrix : ViewI; // : register(vs_3_0, c8);
+//float4x3 mOneBoneSkinning[52]: matONEBONESKINNING; // : register(vs_3_0, c15);
 
 // Sprite parameters
 float4x4 worldViewMatrix : WorldView;

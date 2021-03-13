@@ -11,9 +11,9 @@
 #endif
 
 #ifdef DRAW_ONLY_SPEC
-    #define DEFAULT_DIFFUSE_MAP_COLOR vec4(0,0,0,1)
+    #define DEFAULT_DIFFUSE_MAP_COLOR vec4(0.0, 0.0, 0.0, 1.0)
 #else
-    #define DEFAULT_DIFFUSE_MAP_COLOR vec4(1,1,1,1)
+    #define DEFAULT_DIFFUSE_MAP_COLOR 0.0
 #endif
 
 // VARIABLES
