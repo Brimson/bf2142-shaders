@@ -67,8 +67,8 @@ OUT_vsDiffuse vsDiffuse
     // Pass-through texcoords
     Out.DiffuseMap.xy = input.TexCoord;
     // hemi lookup coords
-    Out.GroundUV.xy = ((Pos.xyz + (hemiMapInfo.z/2)).xz - hemiMapInfo.xy)/ hemiMapInfo.z;
-    Out.LerpAndLMapIntOffset = saturate(saturate((Pos.y - hemiShadowAltitude) / 10.0f) + lightmapIntensityOffset);
+    Out.GroundUV.xy = ((Pos.xyz + (hemiMapInfo.z * 0.5)).xz - hemiMapInfo.xy)/ hemiMapInfo.z;
+    Out.LerpAndLMapIntOffset = saturate(saturate((Pos.y - hemiShadowAltitude) * 0.1) + lightmapIntensityOffset);
 
     Out.Fog = calcFog(Out.HPos.w);
 
