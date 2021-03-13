@@ -1,7 +1,7 @@
 
 float4 alpha : BLENDALPHA;
-texture texture0: TEXLAYER0;
-sampler sampler0 : sampler_state
+texture texture0 : TEXLAYER0;
+sampler sampler0 = sampler_state
 {
     Texture = (texture0);
     AddressU = CLAMP;
@@ -53,6 +53,7 @@ float4 HPosPS(VS2PS input) : COLOR
     float4 output;
     output = dot(t0, float4(1.0, 1.0, 1.0, 0.0));
     output.rgb = t0 * input.Col;
+    return output;
 }
 
 technique Text <
