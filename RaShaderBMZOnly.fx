@@ -74,7 +74,7 @@ technique Variable
 {
     pass p0
     {
-        VertexShader	= compile vs_3_0 vs();
+        VertexShader	= compile vs_2_0 vs();
         PixelShader		= NULL;
 
         AlphaBlendEnable = FALSE;

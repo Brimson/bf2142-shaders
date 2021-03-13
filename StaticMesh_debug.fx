@@ -35,6 +35,6 @@ technique showTangentBasis
         ColorArg1[0] = DIFFUSE;
         AlphaOp[0] = SELECTARG1;
         AlphaArg1[0] = DIFFUSE;
-        VertexShader = compile vs_3_0 vsShowTanBasis();
+        VertexShader = compile vs_2_0 vsShowTanBasis();
     }
 }

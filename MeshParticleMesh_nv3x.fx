@@ -82,8 +82,8 @@ technique Diffuse
 		FogEnable = TRUE;
 
 
- 		VertexShader = compile vs_3_0 vsDiffuse(viewProjMatrix);
-		PixelShader = compile ps_3_0 psDiffuse();
+ 		VertexShader = compile vs_2_0 vsDiffuse(viewProjMatrix);
+		PixelShader = compile ps_2_0 psDiffuse();
 	}
 }
 
@@ -103,8 +103,8 @@ technique Additive
 		FogEnable = FALSE;
 
 
- 		VertexShader = compile vs_3_0 vsDiffuse(viewProjMatrix);
-		PixelShader = compile ps_3_0 psAdditive();
+ 		VertexShader = compile vs_2_0 vsDiffuse(viewProjMatrix);
+		PixelShader = compile ps_2_0 psAdditive();
 	}
 }
 
@@ -124,8 +124,8 @@ technique DiffuseWithZWrite
 		FogEnable = TRUE;
 
 
- 		VertexShader = compile vs_3_0 vsDiffuse(viewProjMatrix);
-		PixelShader = compile ps_3_0 psDiffuse();
+ 		VertexShader = compile vs_2_0 vsDiffuse(viewProjMatrix);
+		PixelShader = compile ps_2_0 psDiffuse();
 	}
 }
 */

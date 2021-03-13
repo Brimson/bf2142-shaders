@@ -130,8 +130,8 @@ technique defaultTechnique
 {
 	pass P0
 	{
-		vertexShader	= compile vs_3_0 vs();
-		pixelShader		= compile ps_3_0 ps();
+		vertexShader	= compile vs_2_0 vs();
+		pixelShader		= compile ps_2_0 ps();
 
 		ZEnable				= false;
 		AlphaBlendEnable	= true;
@@ -146,8 +146,8 @@ technique depthAndFog
 {
 	pass P0
 	{
-		vertexShader	= compile vs_3_0 vs();
-		pixelShader		= compile ps_3_0 ps();
+		vertexShader	= compile vs_2_0 vs();
+		pixelShader		= compile ps_2_0 ps();
 
 		ZEnable				= true;
 		AlphaBlendEnable	= true;

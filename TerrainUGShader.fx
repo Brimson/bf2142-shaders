@@ -77,8 +77,8 @@ technique Dx9Style_BM
         SrcBlend = DESTCOLOR;
         DestBlend = ZERO;
 
-        VertexShader = compile vs_3_0 vsDynamicShadowmap();
-        PixelShader = compile ps_3_0 psDynamicShadowmap();
+        VertexShader = compile vs_2_0 vsDynamicShadowmap();
+        PixelShader = compile ps_2_0 psDynamicShadowmap();
     }
 }
 

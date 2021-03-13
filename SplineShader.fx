@@ -53,8 +53,8 @@ technique spline
         SrcBlend = SRCALPHA;
         DestBlend = INVSRCALPHA;
 
-        VertexShader = compile vs_3_0 SplineVS();
-        PixelShader = compile ps_3_0 SplinePS();
+        VertexShader = compile vs_2_0 SplineVS();
+        PixelShader = compile ps_2_0 SplinePS();
     }
 }
 
@@ -76,8 +76,8 @@ technique controlpoint
         AlphaBlendEnable = FALSE;
         DepthBias = -0.0003;
 
-        VertexShader = compile vs_3_0 ControlPointVS();
-        PixelShader = compile ps_3_0 ControlPointPS();
+        VertexShader = compile vs_2_0 ControlPointVS();
+        PixelShader = compile ps_2_0 ControlPointPS();
     }
 }
 

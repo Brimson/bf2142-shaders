@@ -70,8 +70,8 @@ technique lightmapGenerationAlphaTest
         AlphaBlendEnable = false;
         CullMode = NONE;
 
-        VertexShader = compile vs_3_0 vsLightmapBase();
-        PixelShader = compile ps_3_0 psLightmapGen();
+        VertexShader = compile vs_2_0 vsLightmapBase();
+        PixelShader = compile ps_2_0 psLightmapGen();
     }
 
     pass p1
@@ -85,8 +85,8 @@ technique lightmapGenerationAlphaTest
         AlphaBlendEnable = false;
         CullMode = NONE;
 
-        VertexShader = compile vs_3_0 vsLightmapBase2();
-        PixelShader = compile ps_3_0 psLightmapGen();
+        VertexShader = compile vs_2_0 vsLightmapBase2();
+        PixelShader = compile ps_2_0 psLightmapGen();
     }
 }
 
@@ -108,7 +108,7 @@ technique lightmapGeneration
         AlphaFunc = GREATER;
         CullMode = NONE;
 
-        VertexShader = compile vs_3_0 vsLightmapBase();
-        PixelShader = compile ps_3_0 psLightmapBase();
+        VertexShader = compile vs_2_0 vsLightmapBase();
+        PixelShader = compile ps_2_0 psLightmapBase();
     }
 }

@@ -176,8 +176,8 @@ technique SkyDomeUnderWater
         ZWriteEnable = TRUE;
         ZFunc = LESSEQUAL;
 
-        VertexShader = compile vs_3_0 vsSkyDome();
-        PixelShader = compile ps_3_0 psSkyDomeUnderWater();
+        VertexShader = compile vs_2_0 vsSkyDome();
+        PixelShader = compile ps_2_0 psSkyDomeUnderWater();
     }
 }
 
@@ -189,8 +189,8 @@ technique SkyDomeNV3x
         ZWriteEnable = TRUE;
         ZFunc = LESSEQUAL;
 
-        VertexShader = compile vs_3_0 vsSkyDome();
-        PixelShader = compile ps_3_0 psSkyDome();
+        VertexShader = compile vs_2_0 vsSkyDome();
+        PixelShader = compile ps_2_0 psSkyDome();
     }
 }
 
@@ -202,8 +202,8 @@ technique SkyDomeNV3xNoClouds
         ZWriteEnable = TRUE;
         ZFunc = LESSEQUAL;
 
-        VertexShader = compile vs_3_0 vsSkyDomeNoClouds();
-        PixelShader = compile ps_3_0 psSkyDomeNoClouds();
+        VertexShader = compile vs_2_0 vsSkyDomeNoClouds();
+        PixelShader = compile ps_2_0 psSkyDomeNoClouds();
     }
 }
 
@@ -215,8 +215,8 @@ technique SkyDomeNV3xDualClouds
         ZWriteEnable = TRUE;
         ZFunc = LESSEQUAL;
 
-        VertexShader = compile vs_3_0 vsSkyDomeDualClouds();
-        PixelShader = compile ps_3_0 psSkyDomeDualClouds();
+        VertexShader = compile vs_2_0 vsSkyDomeDualClouds();
+        PixelShader = compile ps_2_0 psSkyDomeDualClouds();
     }
 }
 
@@ -233,8 +233,8 @@ technique SkyDomeSunFlare
         DestBlend = ONE;
         FogEnable = FALSE;
         // ColorWriteEnable = 0;
-        VertexShader = compile vs_3_0 vsSkyDomeSunFlare();
-        PixelShader = compile ps_3_0 psSkyDomeSunFlare();
+        VertexShader = compile vs_2_0 vsSkyDomeSunFlare();
+        PixelShader = compile ps_2_0 psSkyDomeSunFlare();
     }
 }
 
@@ -260,8 +260,8 @@ technique SkyDomeFlareOccludeCheck
 
         FogEnable = FALSE;
 
-        VertexShader = compile vs_3_0 vsSkyDomeSunFlare();
-        PixelShader = compile ps_3_0 psSkyDomeFlareOcclude();
+        VertexShader = compile vs_2_0 vsSkyDomeSunFlare();
+        PixelShader = compile ps_2_0 psSkyDomeFlareOcclude();
     }
 }
 
@@ -287,7 +287,7 @@ technique SkyDomeFlareOcclude
 
         FogEnable = FALSE;
 
-        VertexShader = compile vs_3_0 vsSkyDomeSunFlare();
-        PixelShader = compile ps_3_0 psSkyDomeFlareOcclude();
+        VertexShader = compile vs_2_0 vsSkyDomeSunFlare();
+        PixelShader = compile ps_2_0 psSkyDomeFlareOcclude();
     }
 }

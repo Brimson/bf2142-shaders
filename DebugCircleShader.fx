@@ -77,8 +77,8 @@ technique t0
         ShadeMode = FLAT;
         ZFunc = LESSEQUAL;
 
-        VertexShader = compile vs_3_0 VShader(mWorldViewProj);
-        PixelShader = compile ps_3_0 PShader();
+        VertexShader = compile vs_2_0 VShader(mWorldViewProj);
+        PixelShader = compile ps_2_0 PShader();
     }
 }
 
@@ -103,7 +103,7 @@ technique t0_usezbuffer
         ZWriteEnable = 1;
         ZEnable = TRUE;
 
-        VertexShader = compile vs_3_0 VShader(mWorldViewProj);
-        PixelShader = compile ps_3_0 PShader();
+        VertexShader = compile vs_2_0 VShader(mWorldViewProj);
+        PixelShader = compile ps_2_0 PShader();
     }
 }

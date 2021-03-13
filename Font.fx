@@ -78,8 +78,8 @@ technique Regular
 {
     pass P0
     {
-        VertexShader = compile vs_3_0 VSRegular();
-        PixelShader = compile ps_3_0 PSRegular();
+        VertexShader = compile vs_2_0 VSRegular();
+        PixelShader = compile ps_2_0 PSRegular();
         AlphaTestEnable		= false;
         AlphaBlendEnable = true;
         SrcBlend = SRCALPHA;
@@ -91,8 +91,8 @@ technique RegularScaled
 {
     pass P0
     {
-        VertexShader = compile vs_3_0 VSRegular();
-        PixelShader = compile ps_3_0 PSRegularScaled();
+        VertexShader = compile vs_2_0 VSRegular();
+        PixelShader = compile ps_2_0 PSRegularScaled();
         AlphaTestEnable		= false;
         AlphaBlendEnable = true;
         SrcBlend = SRCALPHA;
@@ -104,7 +104,7 @@ technique SelectionQuad
 {
     pass P0
     {
-        VertexShader = compile vs_3_0 VSSelectionQuad();
+        VertexShader = compile vs_2_0 VSSelectionQuad();
         PixelShader  = NULL;
         AlphaTestEnable		= false;
         AlphaBlendEnable = true;

@@ -1,7 +1,7 @@
 #line 2 "TerrainShader.fx"
 
 #define PSVERSION 30
-#define SHADOWPSMODEL ps_3_0
+#define SHADOWPSMODEL ps_2_0
 #define SHADOWVERSION 30
 
 #include "shaders/datatypes.fx"

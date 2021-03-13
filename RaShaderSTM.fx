@@ -1195,8 +1195,8 @@ technique defaultTechnique
 {
     pass P0
     {
-        vertexShader	= compile vs_3_0 vsStaticMesh();
-        pixelShader		= compile ps_3_0 psStaticMesh();
+        vertexShader	= compile vs_2_0 vsStaticMesh();
+        pixelShader		= compile ps_2_0 psStaticMesh();
 
         ZFunc = LESS;
 
@@ -1227,8 +1227,8 @@ technique Glowing
 {
     pass P0
     {
-        vertexShader	= compile vs_3_0 vsStaticMesh();
-        pixelShader		= compile ps_3_0 psGlow();
+        vertexShader	= compile vs_2_0 vsStaticMesh();
+        pixelShader		= compile ps_2_0 psGlow();
 
         ZEnable = true;
         // ZFunc = LessEqual;

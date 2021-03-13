@@ -42,8 +42,8 @@ technique showTangentBasis
         ZEnable = true;
         ZWriteEnable = false;
 
-        VertexShader = compile vs_3_0 vsShowTanBasis();
-        PixelShader = compile ps_3_0 psShowTanBasis();
+        VertexShader = compile vs_2_0 vsShowTanBasis();
+        PixelShader = compile ps_2_0 psShowTanBasis();
     }
 }
 
@@ -68,8 +68,8 @@ technique RPDirectX9DepthComplexity
         StencilZFail = (dwStencilZFail);
         StencilPass = (dwStencilPass);
 
-        VertexShader = compile vs_3_0 vsDx9_zFill();
-        PixelShader = compile ps_3_0 psDx9_zFill();
+        VertexShader = compile vs_2_0 vsDx9_zFill();
+        PixelShader = compile ps_2_0 psDx9_zFill();
     }
 
     pass detailDiffuse
@@ -90,8 +90,8 @@ technique RPDirectX9DepthComplexity
         SrcBlend = ONE;
         DestBlend = ONE;
 
-        VertexShader = compile vs_3_0 vsDx9_detailDiffuse();
-        PixelShader = compile ps_3_0 psDx9_detailDiffuse();
+        VertexShader = compile vs_2_0 vsDx9_detailDiffuse();
+        PixelShader = compile ps_2_0 psDx9_detailDiffuse();
     }
 
     pass detailLightmap
@@ -110,8 +110,8 @@ technique RPDirectX9DepthComplexity
 
         AlphaBlendEnable = FALSE;
 
-        VertexShader = compile vs_3_0 vsDx9_detailLightmap();
-        PixelShader = compile ps_3_0 psDx9_detailLightmap();
+        VertexShader = compile vs_2_0 vsDx9_detailLightmap();
+        PixelShader = compile ps_2_0 psDx9_detailLightmap();
     }
 
     pass fullMRT
@@ -130,7 +130,7 @@ technique RPDirectX9DepthComplexity
 
         AlphaBlendEnable = FALSE;
 
-        VertexShader = compile vs_3_0 vsDx9_fullMRT();
-        PixelShader = compile ps_3_0 psDx9_fullMRT();
+        VertexShader = compile vs_2_0 vsDx9_fullMRT();
+        PixelShader = compile ps_2_0 psDx9_fullMRT();
     }
 }

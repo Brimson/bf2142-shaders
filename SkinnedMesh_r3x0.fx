@@ -168,7 +168,7 @@ PS2FB_fullMRT psFullMRT(VS2PS_fullMRT indata)
 }
 
 // Max 2 bones skinning supported!
-VertexShader vsArrayFullMRT[2] = { compile vs_3_0 vsFullMRT(1), compile vs_3_0 vsFullMRT(2) };
+VertexShader vsArrayFullMRT[2] = { compile vs_2_0 vsFullMRT(1), compile vs_2_0 vsFullMRT(2) };
 
 technique fullMRT
 {
@@ -186,8 +186,8 @@ technique fullMRT
         StencilZFail = KEEP;
         StencilPass = REPLACE;
 
-        VertexShader = compile vs_3_0 vsZAndDiffuse(2);
-        PixelShader = compile ps_3_0 psZAndDiffuse();
+        VertexShader = compile vs_2_0 vsZAndDiffuse(2);
+        PixelShader = compile ps_2_0 psZAndDiffuse();
     }
 
     pass mrt
@@ -201,7 +201,7 @@ technique fullMRT
         StencilEnable = FALSE;
 
         VertexShader = (vsArrayFullMRT[1]);
-        PixelShader = compile ps_3_0 psFullMRT();
+        PixelShader = compile ps_2_0 psFullMRT();
     }
 }
 
@@ -289,7 +289,7 @@ VS2PS_fullMRT vsFullMRTtangent(APP2VS_fullMRTtangent indata, uniform int NumBone
 }
 
 // Max 2 bones skinning supported!
-VertexShader vsArrayFullMRTtangent[2] = { compile vs_3_0 vsFullMRTtangent(1), compile vs_3_0 vsFullMRTtangent(2) };
+VertexShader vsArrayFullMRTtangent[2] = { compile vs_2_0 vsFullMRTtangent(1), compile vs_2_0 vsFullMRTtangent(2) };
 
 technique fullMRTtangent
 {
@@ -307,8 +307,8 @@ technique fullMRTtangent
         StencilZFail = KEEP;
         StencilPass = REPLACE;
 
-        VertexShader = compile vs_3_0 vsZAndDiffuse(2);
-        PixelShader = compile ps_3_0 psZAndDiffuse();
+        VertexShader = compile vs_2_0 vsZAndDiffuse(2);
+        PixelShader = compile ps_2_0 psZAndDiffuse();
     }
 
     pass mrt
@@ -322,7 +322,7 @@ technique fullMRTtangent
         StencilEnable = FALSE;
 
         VertexShader = (vsArrayFullMRTtangent[1]);
-        PixelShader = compile ps_3_0 psFullMRT();
+        PixelShader = compile ps_2_0 psFullMRT();
     }
 }
 
@@ -647,8 +647,8 @@ technique fullMRThumanskinNV
 
         StencilEnable = FALSE;
 
-        VertexShader = compile vs_3_0 vsFullMRTskinpre(2);
-        PixelShader = compile ps_3_0 psFullMRTskinpre();
+        VertexShader = compile vs_2_0 vsFullMRTskinpre(2);
+        PixelShader = compile ps_2_0 psFullMRTskinpre();
     }
 
     pass preshadowed
@@ -661,8 +661,8 @@ technique fullMRThumanskinNV
 
         StencilEnable = FALSE;
 
-        VertexShader = compile vs_3_0 vsFullMRTskinpreshadowed(2);
-        PixelShader = compile ps_3_0 psFullMRTskinpreshadowedNV();
+        VertexShader = compile vs_2_0 vsFullMRTskinpreshadowed(2);
+        PixelShader = compile ps_2_0 psFullMRTskinpreshadowedNV();
     }
 
     pass apply
@@ -679,8 +679,8 @@ technique fullMRThumanskinNV
         StencilZFail = KEEP;
         StencilPass = REPLACE;
 
-        VertexShader = compile vs_3_0 vsFullMRTskinapply(2);
-        PixelShader = compile ps_3_0 psFullMRTskinapply();
+        VertexShader = compile vs_2_0 vsFullMRTskinapply(2);
+        PixelShader = compile ps_2_0 psFullMRTskinapply();
     }
 }
 
@@ -696,8 +696,8 @@ technique fullMRThumanskin
 
         StencilEnable = FALSE;
 
-        VertexShader = compile vs_3_0 vsFullMRTskinpre(2);
-        PixelShader = compile ps_3_0 psFullMRTskinpre();
+        VertexShader = compile vs_2_0 vsFullMRTskinpre(2);
+        PixelShader = compile ps_2_0 psFullMRTskinpre();
     }
 
     pass preshadowed
@@ -710,8 +710,8 @@ technique fullMRThumanskin
 
         StencilEnable = FALSE;
 
-        VertexShader = compile vs_3_0 vsFullMRTskinpreshadowed(2);
-        PixelShader = compile ps_3_0 psFullMRTskinpreshadowed();
+        VertexShader = compile vs_2_0 vsFullMRTskinpreshadowed(2);
+        PixelShader = compile ps_2_0 psFullMRTskinpreshadowed();
     }
 
     pass apply
@@ -728,8 +728,8 @@ technique fullMRThumanskin
         StencilZFail = KEEP;
         StencilPass = REPLACE;
 
-        VertexShader = compile vs_3_0 vsFullMRTskinapply(2);
-        PixelShader = compile ps_3_0 psFullMRTskinapply();
+        VertexShader = compile vs_2_0 vsFullMRTskinapply(2);
+        PixelShader = compile ps_2_0 psFullMRTskinapply();
     }
 }
 

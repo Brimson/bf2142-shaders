@@ -198,8 +198,8 @@ technique HemiAndSun
 
         fogenable = true;
 
-        VertexShader = compile vs_3_0 vs_HemiAndSunShadows();
-        PixelShader = compile ps_3_0 ps_HemiAndSunShadows();
+        VertexShader = compile vs_2_0 vs_HemiAndSunShadows();
+        PixelShader = compile ps_2_0 ps_HemiAndSunShadows();
     }
     pass P1
     {
@@ -208,8 +208,8 @@ technique HemiAndSun
 
         fogenable = true;
 
-        VertexShader = compile vs_3_0 vs_HemiAndSunShadowsAnimatedUV();
-        PixelShader = compile ps_3_0 ps_HemiAndSunShadows();
+        VertexShader = compile vs_2_0 vs_HemiAndSunShadowsAnimatedUV();
+        PixelShader = compile ps_2_0 ps_HemiAndSunShadows();
     }
 }
 
@@ -344,8 +344,8 @@ technique PointLight
 
         fogenable = false;
 
-        VertexShader = compile vs_3_0 vs_pointLight();
-        PixelShader = compile ps_3_0 ps_pointLight();
+        VertexShader = compile vs_2_0 vs_pointLight();
+        PixelShader = compile ps_2_0 ps_pointLight();
     }
 
     pass P1
@@ -356,7 +356,7 @@ technique PointLight
 
         fogenable = false;
 
-        VertexShader = compile vs_3_0 vs_pointLightAnimated();
-        PixelShader = compile ps_3_0 ps_pointLight();
+        VertexShader = compile vs_2_0 vs_pointLightAnimated();
+        PixelShader = compile ps_2_0 ps_pointLight();
     }
 }

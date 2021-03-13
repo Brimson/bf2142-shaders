@@ -33,7 +33,7 @@ technique Screen
 {
 	pass P0
 	{
-		VertexShader = compile vs_3_0 VSScreen();
+		VertexShader = compile vs_2_0 VSScreen();
 		PixelShader  = NULL;
 		ColorOp[0]   = Modulate;
 		ColorArg1[0] = Texture;

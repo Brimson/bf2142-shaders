@@ -211,8 +211,8 @@ technique Shape
 {
     pass P0
     {
-        VertexShader = compile vs_3_0 VSShape();
-        PixelShader  = compile ps_3_0 PSDiffuse();
+        VertexShader = compile vs_2_0 VSShape();
+        PixelShader  = compile ps_2_0 PSDiffuse();
         /*
             PixelShader = NULL;
             TexCoordIndex[0] = 0;
@@ -227,8 +227,8 @@ technique ShapeTextureWrap
 {
     pass P0
     {
-        VertexShader = compile vs_3_0 VSShapeTexture();
-        PixelShader  = compile ps_3_0 PSRegularWrap();
+        VertexShader = compile vs_2_0 VSShapeTexture();
+        PixelShader  = compile ps_2_0 PSRegularWrap();
         AlphaTestEnable		= false;
         /*
             AlphaRef = 128;
@@ -247,8 +247,8 @@ technique ShapeTextureClamp
 {
     pass P0
     {
-        VertexShader = compile vs_3_0 VSShapeTexture();
-        PixelShader  = compile ps_3_0 PSRegularClamp();
+        VertexShader = compile vs_2_0 VSShapeTexture();
+        PixelShader  = compile ps_2_0 PSRegularClamp();
         /*
             AlphaTestEnable = true;
             AlphaRef = 77;
@@ -267,7 +267,7 @@ technique Line
 {
     pass P0
     {
-        VertexShader = compile vs_3_0 VSLine();
+        VertexShader = compile vs_2_0 VSLine();
         PixelShader = NULL;
         AlphaTestEnable = false;
         TexCoordIndex[0] = 0;
@@ -280,8 +280,8 @@ technique TS0
 {
     pass P0
     {
-        VertexShader = compile vs_3_0 VSTS0_0();
-        PixelShader  = compile ps_3_0 PSTS0_0();
+        VertexShader = compile vs_2_0 VSTS0_0();
+        PixelShader  = compile ps_2_0 PSTS0_0();
         AlphaTestEnable		= false;
 
         /*
@@ -301,8 +301,8 @@ technique TS0
     }
     pass P1
     {
-        VertexShader = compile vs_3_0 VSTS0_1();
-        PixelShader  = compile ps_3_0 PSDiffuse();
+        VertexShader = compile vs_2_0 VSTS0_1();
+        PixelShader  = compile ps_2_0 PSDiffuse();
         AlphaTestEnable		= false;
         /*
             PixelShader  = NULL;
@@ -318,8 +318,8 @@ technique TS1
 {
     pass P0
     {
-        VertexShader = compile vs_3_0 VSTS1_0();
-        PixelShader  = compile ps_3_0 PSRegularTSX();
+        VertexShader = compile vs_2_0 VSTS1_0();
+        PixelShader  = compile ps_2_0 PSRegularTSX();
         AlphaTestEnable = false;
         /*
             PixelShader  = NULL;
@@ -342,8 +342,8 @@ technique TS2
 {
     pass P0
     {
-        VertexShader = compile vs_3_0 VSTS2_0();
-        PixelShader  = compile ps_3_0 PSRegularTSX();
+        VertexShader = compile vs_2_0 VSTS2_0();
+        PixelShader  = compile ps_2_0 PSRegularTSX();
         AlphaTestEnable		= false;
         /*
             PixelShader  = NULL;
@@ -366,8 +366,8 @@ technique TS3
 {
     pass P0
     {
-        VertexShader = compile vs_3_0 VSTS3_0();
-        PixelShader = compile ps_3_0 PSRegularTSX();
+        VertexShader = compile vs_2_0 VSTS3_0();
+        PixelShader = compile ps_2_0 PSRegularTSX();
         AlphaTestEnable = false;
         /*
             PixelShader = NULL;

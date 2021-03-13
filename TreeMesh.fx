@@ -2,10 +2,10 @@
 
 #include "shaders/datatypes.fx"
 
-float4x4 mvpMatrix : WorldViewProjection; // : register(vs_3_0, c0);
-float4x4 worldIMatrix : WorldI; // : register(vs_3_0, c4);
-float4x4 viewInverseMatrix : ViewI; //: register(vs_3_0, c8);
-// float4x3 mOneBoneSkinning[52]: matONEBONESKINNING; //: register(vs_3_0, c15);
+float4x4 mvpMatrix : WorldViewProjection; // : register(vs_2_0, c0);
+float4x4 worldIMatrix : WorldI; // : register(vs_2_0, c4);
+float4x4 viewInverseMatrix : ViewI; //: register(vs_2_0, c8);
+// float4x3 mOneBoneSkinning[52]: matONEBONESKINNING; //: register(vs_2_0, c15);
 
 // Sprite parameters
 float4x4 worldViewMatrix : WorldView;
@@ -356,13 +356,13 @@ technique HemiAndSun
         ZFunc = LESSEQUAL;
         ZWriteEnable = TRUE;
 
-         VertexShader = compile vs_3_0 vsBumpSpecularHemiAndSunPV(mvpMatrix,
+         VertexShader = compile vs_2_0 vsBumpSpecularHemiAndSunPV(mvpMatrix,
                                         viewInverseMatrix,
                                         lightDir,
                                         heightmapSize,
                                         normalOffsetScale);
 
-        PixelShader = compile ps_3_0 psBumpSpecularHemiAndSunPV(skyColor, ambientColor, sunColor);
+        PixelShader = compile ps_2_0 psBumpSpecularHemiAndSunPV(skyColor, ambientColor, sunColor);
 
     }
 }
@@ -473,12 +473,12 @@ technique PointLight
         MinFilter[0] = LINEAR;
         MagFilter[0] = LINEAR;
 
-        VertexShader = compile vs_3_0 vsBumpSpecularPointLight(
+        VertexShader = compile vs_2_0 vsBumpSpecularPointLight(
                                 mvpMatrix,
                                 viewInverseMatrix,
                                 lightPos );
 
-        PixelShader = compile ps_3_0 psBumpSpecularPointLight(attenuationSqrInv, lightColor);
+        PixelShader = compile ps_2_0 psBumpSpecularPointLight(attenuationSqrInv, lightColor);
     }
 }
 
@@ -599,8 +599,8 @@ technique SpotLight
         MinFilter[0] = LINEAR;
         MagFilter[0] = LINEAR;
 
-        VertexShader = compile vs_3_0 vsBumpSpecularSpotLight(mvpMatrix, viewInverseMatrix, lightPos, lightDir);
-        PixelShader = compile ps_3_0 psBumpSpecularSpotLight(attenuationSqrInv, lightColor, coneAngle);
+        VertexShader = compile vs_2_0 vsBumpSpecularSpotLight(mvpMatrix, viewInverseMatrix, lightPos, lightDir);
+        PixelShader = compile ps_2_0 psBumpSpecularSpotLight(attenuationSqrInv, lightColor, coneAngle);
     }
 }
 
@@ -650,8 +650,8 @@ technique MulDiffuse
         MinFilter[0] = LINEAR;
         MagFilter[0] = LINEAR;
 
-        VertexShader = compile vs_3_0 vsBumpSpecularMulDiffuse(mvpMatrix, viewInverseMatrix);
-        PixelShader = compile ps_3_0 psBumpSpecularMulDiffuse();
+        VertexShader = compile vs_2_0 vsBumpSpecularMulDiffuse(mvpMatrix, viewInverseMatrix);
+        PixelShader = compile ps_2_0 psBumpSpecularMulDiffuse();
     }
 }
 
@@ -669,12 +669,12 @@ technique trunk
         AlphaRef = 0;
         AlphaFunc = GREATER;
 
-        VertexShader = compile vs_3_0 bumpSpecularVertexShaderBlinn1( mvpMatrix,
+        VertexShader = compile vs_2_0 bumpSpecularVertexShaderBlinn1( mvpMatrix,
                                                                       worldIMatrix,
                                                                       viewInverseMatrix,
                                                                       lightPos,
                                                                       eyePos);
-        PixelShader = compile ps_3_0 bumpSpecularPixelShaderBlinn1();
+        PixelShader = compile ps_2_0 bumpSpecularPixelShaderBlinn1();
     }
 }
 
@@ -694,7 +694,7 @@ technique sprite
         AlphaRef = 0;
         AlphaFunc = GREATER;
 
-        VertexShader = compile vs_3_0 spriteVertexShader(worldViewMatrix,
+        VertexShader = compile vs_2_0 spriteVertexShader(worldViewMatrix,
                                                          projMatrix,
                                                          spriteScale,
                                                          shadowSpherePoint,
@@ -702,6 +702,6 @@ technique sprite
                                                          boundingboxScaledInvGradientMag,
                                                          shadowColor,
                                                          lightColor);
-        PixelShader = compile ps_3_0 spritePixelShader();
+        PixelShader = compile ps_2_0 spritePixelShader();
     }
 }

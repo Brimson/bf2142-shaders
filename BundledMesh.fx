@@ -3,8 +3,8 @@
 //#include "shaders/common.dfx"
 
 // UNIFORM INPUTS
-mat4x4 viewProjMatrix : WorldViewProjection;// : register(vs_3_0, c0);
-mat4x4 viewInverseMatrix : ViewI; // : register(vs_3_0, c8);
+mat4x4 viewProjMatrix : WorldViewProjection;// : register(vs_2_0, c0);
+mat4x4 viewInverseMatrix : ViewI; // : register(vs_2_0, c8);
 mat4x3 mOneBoneSkinning[52]: matONEBONESKINNING;// : register(c15) < bool sparseArray = true; int arrayStart = 15; >;
 mat4x4 viewMatrix : ViewMatrix;
 mat4x4 viewITMatrix : ViewITMatrix;
@@ -467,10 +467,10 @@ technique Full
 {
     pass p0
     {
-        VertexShader = compile vs_3_0 bumpSpecularVertexShaderBlinn1(viewProjMatrix,
+        VertexShader = compile vs_2_0 bumpSpecularVertexShaderBlinn1(viewProjMatrix,
                                                                      viewInverseMatrix,
                                                                      lightPos);
-        PixelShader = compile ps_3_0 bumpSpecularPixelShaderBlinn1();
+        PixelShader = compile ps_2_0 bumpSpecularPixelShaderBlinn1();
     }
 }
 
@@ -485,10 +485,10 @@ technique Full20
         AlphaRef = 0;
         AlphaFunc = GREATER;
 
-        VertexShader = compile vs_3_0 bumpSpecularVertexShaderBlinn20(viewProjMatrix,
+        VertexShader = compile vs_2_0 bumpSpecularVertexShaderBlinn20(viewProjMatrix,
                                                                       viewInverseMatrix,
                                                                       lightPos);
-        PixelShader = compile ps_3_0 PShade2();
+        PixelShader = compile ps_2_0 PShade2();
     }
 }
 
@@ -517,11 +517,11 @@ technique t1
         AlphaFunc = GREATER;
         // FillMode = WIREFRAME;
 
-        VertexShader = compile vs_3_0 diffuseVertexShader(viewProjMatrix,
+        VertexShader = compile vs_2_0 diffuseVertexShader(viewProjMatrix,
                                                           viewInverseMatrix,
                                                           lightPos,
                                                           eyePos);
-        PixelShader = compile ps_3_0 diffusePixelShader();
+        PixelShader = compile ps_2_0 diffusePixelShader();
     }
 }
 
@@ -668,8 +668,8 @@ technique alpha
         AlphaFunc = GREATER;
         // TextureTransformFlags[1] = PROJECTED; // This doesn't work very well....
 
-        VertexShader = compile vs_3_0 vsAlpha(viewProjMatrix);
-        PixelShader = compile ps_3_0 psAlpha();
+        VertexShader = compile vs_2_0 vsAlpha(viewProjMatrix);
+        PixelShader = compile ps_2_0 psAlpha();
     }
 
     pass p1EnvMap
@@ -685,8 +685,8 @@ technique alpha
         AlphaFunc = GREATER;
         // TextureTransformFlags[1] = PROJECTED; // This doesn't work very well....
 
-        VertexShader = compile vs_3_0 vsAlphaEnvMap(viewProjMatrix);
-        PixelShader = compile ps_3_0 psAlphaEnvMap();
+        VertexShader = compile vs_2_0 vsAlphaEnvMap(viewProjMatrix);
+        PixelShader = compile ps_2_0 psAlphaEnvMap();
     }
 }
 
@@ -753,8 +753,8 @@ technique alphascope
         AlphaRef = 0;
         AlphaFunc = GREATER;
 
-        VertexShader = compile vs_3_0 vsAlphaScope(viewProjMatrix);
-        PixelShader = compile ps_3_0 psAlphaScope();
+        VertexShader = compile vs_2_0 vsAlphaScope(viewProjMatrix);
+        PixelShader = compile ps_2_0 psAlphaScope();
     }
 }
 
@@ -922,8 +922,8 @@ technique DrawShadowMapNV
         ScissorTestEnable = TRUE;
         // CullMode = CW;
 
-        VertexShader = compile vs_3_0 vsShadowMap();
-        PixelShader = compile ps_3_0 psShadowMapNV();
+        VertexShader = compile vs_2_0 vsShadowMap();
+        PixelShader = compile ps_2_0 psShadowMapNV();
     }
 
     pass directionalspotalpha
@@ -936,8 +936,8 @@ technique DrawShadowMapNV
 
         ScissorTestEnable = TRUE;
 
-        VertexShader = compile vs_3_0 vsShadowMapAlpha();
-        PixelShader = compile ps_3_0 psShadowMapAlphaNV();
+        VertexShader = compile vs_2_0 vsShadowMapAlpha();
+        PixelShader = compile ps_2_0 psShadowMapAlphaNV();
     }
 
     pass point
@@ -950,8 +950,8 @@ technique DrawShadowMapNV
 
         ScissorTestEnable = TRUE;
 
-        VertexShader = compile vs_3_0 vsShadowMapPoint();
-        PixelShader = compile ps_3_0 psShadowMapNV();
+        VertexShader = compile vs_2_0 vsShadowMapPoint();
+        PixelShader = compile ps_2_0 psShadowMapNV();
     }
 
     pass pointalpha
@@ -964,8 +964,8 @@ technique DrawShadowMapNV
 
         ScissorTestEnable = TRUE;
 
-        VertexShader = compile vs_3_0 vsShadowMapPointAlpha();
-        PixelShader = compile ps_3_0 psShadowMapPointAlpha();
+        VertexShader = compile vs_2_0 vsShadowMapPointAlpha();
+        PixelShader = compile ps_2_0 psShadowMapPointAlpha();
     }
 }
 
@@ -981,8 +981,8 @@ technique DrawShadowMap
 
         ScissorTestEnable = TRUE;
 
-        VertexShader = compile vs_3_0 vsShadowMap();
-        PixelShader = compile ps_3_0 psShadowMap();
+        VertexShader = compile vs_2_0 vsShadowMap();
+        PixelShader = compile ps_2_0 psShadowMap();
     }
 
     pass directionalspotalpha
@@ -993,8 +993,8 @@ technique DrawShadowMap
 
         ScissorTestEnable = TRUE;
 
-        VertexShader = compile vs_3_0 vsShadowMapAlpha();
-        PixelShader = compile ps_3_0 psShadowMapAlpha();
+        VertexShader = compile vs_2_0 vsShadowMapAlpha();
+        PixelShader = compile ps_2_0 psShadowMapAlpha();
     }
 
     pass point
@@ -1005,8 +1005,8 @@ technique DrawShadowMap
 
         ScissorTestEnable = TRUE;
 
-        VertexShader = compile vs_3_0 vsShadowMapPoint();
-        PixelShader = compile ps_3_0 psShadowMapPoint();
+        VertexShader = compile vs_2_0 vsShadowMapPoint();
+        PixelShader = compile ps_2_0 psShadowMapPoint();
     }
 
     pass pointalpha
@@ -1017,8 +1017,8 @@ technique DrawShadowMap
 
         ScissorTestEnable = TRUE;
 
-        VertexShader = compile vs_3_0 vsShadowMapPointAlpha();
-        PixelShader = compile ps_3_0 psShadowMapPointAlpha();
+        VertexShader = compile vs_2_0 vsShadowMapPointAlpha();
+        PixelShader = compile ps_2_0 psShadowMapPointAlpha();
     }
 }
 

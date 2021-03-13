@@ -203,8 +203,8 @@ technique t0 <
         ZWriteEnable = TRUE;
         ZFunc = LESSEQUAL;
         FogEnable = FALSE;
-        VertexShader = compile vs_3_0 vs();
-        PixelShader = compile ps_3_0 PShader();
+        VertexShader = compile vs_2_0 vs();
+        PixelShader = compile ps_2_0 PShader();
     }
 
     pass p1 // LightOnly
@@ -216,8 +216,8 @@ technique t0 <
         ZWriteEnable = TRUE;
         FogEnable = FALSE;
 
-        VertexShader = compile vs_3_0 vs();
-        PixelShader = compile ps_3_0 PShaderLightOnly();
+        VertexShader = compile vs_2_0 vs();
+        PixelShader = compile ps_2_0 PShaderLightOnly();
     }
 
     pass p2 // ColorOnly
@@ -227,8 +227,8 @@ technique t0 <
         ZWriteEnable = TRUE;
         FogEnable = FALSE;
 
-        VertexShader = compile vs_3_0 vs();
-        PixelShader = compile ps_3_0 PShaderColorOnly();
+        VertexShader = compile vs_2_0 vs();
+        PixelShader = compile ps_2_0 PShaderColorOnly();
     }
     pass p3 // ColorOnly PointFiler
     {
@@ -237,8 +237,8 @@ technique t0 <
         ZWriteEnable = TRUE;
         FogEnable = FALSE;
 
-        VertexShader = compile vs_3_0 vs();
-        PixelShader = compile ps_3_0 PShaderColorOnlyPointFiler();
+        VertexShader = compile vs_2_0 vs();
+        PixelShader = compile ps_2_0 PShaderColorOnlyPointFiler();
     }
 
     pass p4 // Hemimap LightOnly
@@ -250,8 +250,8 @@ technique t0 <
         ZWriteEnable = TRUE;
         FogEnable = FALSE;
 
-        VertexShader = compile vs_3_0 vs();
-        PixelShader = compile ps_3_0 PShaderHemimapLightOnly();
+        VertexShader = compile vs_2_0 vs();
+        PixelShader = compile ps_2_0 PShaderHemimapLightOnly();
     }
 }
 
@@ -301,8 +301,8 @@ technique EditorGrid
         MaxAnisotropy[1] = 4;
         MipMapLodBias[1] = -1.5;
 
-        VertexShader = compile vs_3_0 vsEditorGrid();
-        PixelShader = compile ps_3_0 psEditorGrid();
+        VertexShader = compile vs_2_0 vsEditorGrid();
+        PixelShader = compile ps_2_0 psEditorGrid();
     }
 }
 
@@ -354,8 +354,8 @@ technique EditorTopoGrid
         MipMapLodBias[0] = -0.5;
         MaxAnisotropy[0] = 8;
 
-        VertexShader = compile vs_3_0 vsEditorTopoGrid();
-        PixelShader = compile ps_3_0 psEditorTopoGrid();
+        VertexShader = compile vs_2_0 vsEditorTopoGrid();
+        PixelShader = compile ps_2_0 psEditorTopoGrid();
     }
 }
 
@@ -898,8 +898,8 @@ technique EditorDetailTextured
         ColorWriteEnable = RED|BLUE|GREEN|ALPHA;
         FogEnable = FALSE;
 
-        VertexShader = compile vs_3_0 vsEditorDetailTextured();
-        PixelShader = compile ps_3_0 psEditorDetailTextured();
+        VertexShader = compile vs_2_0 vsEditorDetailTextured();
+        PixelShader = compile ps_2_0 psEditorDetailTextured();
     }
 
     pass planeMapping
@@ -914,8 +914,8 @@ technique EditorDetailTextured
         ColorWriteEnable = RED|BLUE|GREEN|ALPHA;
         FogEnable = FALSE;
 
-        VertexShader = compile vs_3_0 vsEditorDetailTexturedPlaneMapping();
-        PixelShader = compile ps_3_0 psEditorDetailTexturedPlaneMapping();
+        VertexShader = compile vs_2_0 vsEditorDetailTexturedPlaneMapping();
+        PixelShader = compile ps_2_0 psEditorDetailTexturedPlaneMapping();
     }
 
     pass topDownMappingWithEnvMap
@@ -930,8 +930,8 @@ technique EditorDetailTextured
         ColorWriteEnable = RED|BLUE|GREEN|ALPHA;
         FogEnable = FALSE;
 
-        VertexShader = compile vs_3_0 vsEditorDetailTexturedWithEnvMap();
-        PixelShader = compile ps_3_0 psEditorDetailTexturedWithEnvMap();
+        VertexShader = compile vs_2_0 vsEditorDetailTexturedWithEnvMap();
+        PixelShader = compile ps_2_0 psEditorDetailTexturedWithEnvMap();
     }
 
     pass topDownMappingColorOnly
@@ -946,8 +946,8 @@ technique EditorDetailTextured
         ColorWriteEnable = RED|BLUE|GREEN|ALPHA;
         FogEnable = FALSE;
 
-        VertexShader = compile vs_3_0 vsEditorDetailTextured();
-        PixelShader = compile ps_3_0 psEditorDetailTexturedColorOnly();
+        VertexShader = compile vs_2_0 vsEditorDetailTextured();
+        PixelShader = compile ps_2_0 psEditorDetailTexturedColorOnly();
     }
 
     pass planeMappingColorOnly
@@ -962,8 +962,8 @@ technique EditorDetailTextured
         ColorWriteEnable = RED|BLUE|GREEN|ALPHA;
         FogEnable = FALSE;
 
-        VertexShader = compile vs_3_0 vsEditorDetailTexturedPlaneMapping();
-        PixelShader = compile ps_3_0 psEditorDetailTexturedPlaneMappingColorOnly();
+        VertexShader = compile vs_2_0 vsEditorDetailTexturedPlaneMapping();
+        PixelShader = compile ps_2_0 psEditorDetailTexturedPlaneMappingColorOnly();
     }
 
     pass topDownMappingWithEnvMapColorOnly
@@ -978,8 +978,8 @@ technique EditorDetailTextured
         ColorWriteEnable = RED|BLUE|GREEN|ALPHA;
         FogEnable = FALSE;
 
-        VertexShader = compile vs_3_0 vsEditorDetailTexturedWithEnvMap();
-        PixelShader = compile ps_3_0 psEditorDetailTexturedWithEnvMapColorOnly();
+        VertexShader = compile vs_2_0 vsEditorDetailTexturedWithEnvMap();
+        PixelShader = compile ps_2_0 psEditorDetailTexturedWithEnvMapColorOnly();
     }
 
 }
@@ -1019,8 +1019,8 @@ technique EditorDetailBasePass
         ZWriteEnable = TRUE;
         ZFunc = LESSEQUAL;
 
-        VertexShader = compile vs_3_0 vsEditorZFill();
-        PixelShader = compile ps_3_0  psEditorZFill();
+        VertexShader = compile vs_2_0 vsEditorZFill();
+        PixelShader = compile ps_2_0  psEditorZFill();
     }
 }
 
@@ -1057,8 +1057,8 @@ technique EditorUndergrowth
         ColorWriteEnable = RED|BLUE|GREEN|ALPHA;
         FogEnable = FALSE;
 
-        VertexShader = compile vs_3_0 vsEditorUndergrowth();
-        PixelShader = compile ps_3_0 psEditorUndergrowth();
+        VertexShader = compile vs_2_0 vsEditorUndergrowth();
+        PixelShader = compile ps_2_0 psEditorUndergrowth();
     }
 }
 
@@ -1073,8 +1073,8 @@ technique EditorOvergrowth
         ColorWriteEnable = RED|BLUE|GREEN|ALPHA;
         FogEnable = FALSE;
 
-        VertexShader = compile vs_3_0 vsEditorUndergrowth();
-        PixelShader = compile ps_3_0 psEditorUndergrowth();
+        VertexShader = compile vs_2_0 vsEditorUndergrowth();
+        PixelShader = compile ps_2_0 psEditorUndergrowth();
     }
 }
 
@@ -1088,8 +1088,8 @@ technique EditorOvergrowthShadow
         ZFunc = LESSEQUAL;
         ColorWriteEnable = RED|BLUE|GREEN|ALPHA;
 
-        VertexShader = compile vs_3_0 vsEditorUndergrowth();
-        PixelShader = compile ps_3_0 psEditorUndergrowth();
+        VertexShader = compile vs_2_0 vsEditorUndergrowth();
+        PixelShader = compile ps_2_0 psEditorUndergrowth();
     }
 }
 
@@ -1103,8 +1103,8 @@ technique EditorMaterialmap
         ZFunc = LESSEQUAL;
         ColorWriteEnable = RED|BLUE|GREEN|ALPHA;
 
-        VertexShader = compile vs_3_0 vsEditorUndergrowth();
-        PixelShader = compile ps_3_0 psEditorUndergrowth();
+        VertexShader = compile vs_2_0 vsEditorUndergrowth();
+        PixelShader = compile ps_2_0 psEditorUndergrowth();
     }
 }
 
@@ -1142,8 +1142,8 @@ technique EditorHemimap
         ZFunc = LESSEQUAL;
         ColorWriteEnable = RED|BLUE|GREEN|ALPHA;
 
-        VertexShader = compile vs_3_0 vsEditorHemimap();
-        PixelShader = compile ps_3_0 psEditorHemimap();
+        VertexShader = compile vs_2_0 vsEditorHemimap();
+        PixelShader = compile ps_2_0 psEditorHemimap();
     }
 
     pass p1
@@ -1154,8 +1154,8 @@ technique EditorHemimap
         ZFunc = LESSEQUAL;
         ColorWriteEnable = RED|BLUE|GREEN|ALPHA;
 
-        VertexShader = compile vs_3_0 vsEditorHemimap();
-        PixelShader = compile ps_3_0 psEditorHemimapAlpha();
+        VertexShader = compile vs_2_0 vsEditorHemimap();
+        PixelShader = compile ps_2_0 psEditorHemimapAlpha();
     }
 
 }
@@ -1210,8 +1210,8 @@ technique lightmapGeneration <
         ZEnable = true;
         ZWriteEnable = true;
         FogEnable = FALSE;
-        VertexShader = compile vs_3_0 VShader_LightmapGeneration_QP();
-        PixelShader = compile ps_3_0 PShader_LightmapGeneration();
+        VertexShader = compile vs_2_0 VShader_LightmapGeneration_QP();
+        PixelShader = compile ps_2_0 PShader_LightmapGeneration();
     }
 
     pass p0 // SurroundingPatchs
@@ -1222,8 +1222,8 @@ technique lightmapGeneration <
         ZEnable = true;
         ZWriteEnable = true;
         FogEnable = FALSE;
-        VertexShader = compile vs_3_0 VShader_LightmapGeneration_SP();
-        PixelShader = compile ps_3_0 PShader_LightmapGeneration();
+        VertexShader = compile vs_2_0 VShader_LightmapGeneration_SP();
+        PixelShader = compile ps_2_0 PShader_LightmapGeneration();
     }
 }
 
@@ -1366,8 +1366,8 @@ technique SurroundingEditorTerrain <
         ZFunc = LESSEQUAL;
         AlphaBlendEnable = FALSE;
         FogEnable = TRUE;
-        VertexShader = compile vs_3_0 vsSET();
-        PixelShader = compile ps_3_0 psSETNormal();
+        VertexShader = compile vs_2_0 vsSET();
+        PixelShader = compile ps_2_0 psSETNormal();
     }
     pass p1 // ColorLighting Only
     {
@@ -1377,7 +1377,7 @@ technique SurroundingEditorTerrain <
         ZFunc = LESSEQUAL;
         AlphaBlendEnable = FALSE;
         FogEnable = TRUE;
-        VertexShader = compile vs_3_0 vsSET();
-        PixelShader = compile ps_3_0 psSETColorLightingOnly();
+        VertexShader = compile vs_2_0 vsSET();
+        PixelShader = compile ps_2_0 psSETColorLightingOnly();
     }
 }

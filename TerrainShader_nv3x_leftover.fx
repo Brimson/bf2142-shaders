@@ -130,15 +130,15 @@ technique Dx9Style_DT
         ZWriteEnable = FALSE;
         ZFunc = EQUAL;
 
-        VertexShader = compile vs_3_0 vsDx9_DT();
-        PixelShader = compile ps_3_0 psDx9_DT();
+        VertexShader = compile vs_2_0 vsDx9_DT();
+        PixelShader = compile ps_2_0 psDx9_DT();
     }
 
     pass p1basicpass
     {
         AlphaBlendEnable = FALSE;
-        VertexShader = compile vs_3_0 vsDx9_DT2();
-        PixelShader = compile ps_3_0 psDx9_DT2();
+        VertexShader = compile vs_2_0 vsDx9_DT2();
+        PixelShader = compile ps_2_0 psDx9_DT2();
     }
 
     pass p2basicpass2
@@ -146,8 +146,8 @@ technique Dx9Style_DT
         AlphaBlendEnable = TRUE;
         SrcBlend = DESTCOLOR;
         DestBlend = ZERO;
-        VertexShader = compile vs_3_0 vsDx9_DT2();
-        PixelShader = compile ps_3_0 psDx9_DT2();
+        VertexShader = compile vs_2_0 vsDx9_DT2();
+        PixelShader = compile ps_2_0 psDx9_DT2();
     }
 }
 

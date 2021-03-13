@@ -52,8 +52,8 @@ technique ZOnly
 
         // ColorWriteEnable = RED|BLUE|GREEN|ALPHA;
 
-        VertexShader = compile vs_3_0 vsZOnly();
-        PixelShader = compile ps_3_0 psZOnly();
+        VertexShader = compile vs_2_0 vsZOnly();
+        PixelShader = compile ps_2_0 psZOnly();
     }
 }
 
@@ -122,8 +122,8 @@ technique ZOnlyBaseAT
         AlphaRef = 50;
         AlphaFunc = GREATER;
 
-        VertexShader = compile vs_3_0 vsBase();
-        PixelShader = compile ps_3_0 psBaseAT();
+        VertexShader = compile vs_2_0 vsBase();
+        PixelShader = compile ps_2_0 psBaseAT();
      }
 }
 
@@ -143,8 +143,8 @@ technique OnePassbase
         // ColorWriteEnable = 0;
         // FillMode = WIREFRAME;
 
-        VertexShader = compile vs_3_0 vsBase();
-        PixelShader = compile ps_3_0 psBase();
+        VertexShader = compile vs_2_0 vsBase();
+        PixelShader = compile ps_2_0 psBase();
     }
 }
 
@@ -158,8 +158,8 @@ technique OnePassbasealpha
         SrcBlend = SRCALPHA;
         DestBlend = INVSRCALPHA;
 
-        VertexShader = compile vs_3_0 vsBase();
-        PixelShader = compile ps_3_0 psBase();
+        VertexShader = compile vs_2_0 vsBase();
+        PixelShader = compile ps_2_0 psBase();
     }
 }
 
@@ -224,8 +224,8 @@ technique OnePassbaseLM
         // AlphaTestRef = 0.f;
         ColorWriteEnable = RED|BLUE|GREEN|ALPHA;
 
-        VertexShader = compile vs_3_0 vsBaseLM();
-        PixelShader = compile ps_3_0 psBaseLM();
+        VertexShader = compile vs_2_0 vsBaseLM();
+        PixelShader = compile ps_2_0 psBaseLM();
     }
 }
 
@@ -291,8 +291,8 @@ technique OnePassbasedetail
 
         ColorWriteEnable = RED|BLUE|GREEN|ALPHA;
 
-        VertexShader = compile vs_3_0 vsBaseDetail();
-        PixelShader = compile ps_3_0 psBaseDetail();
+        VertexShader = compile vs_2_0 vsBaseDetail();
+        PixelShader = compile ps_2_0 psBaseDetail();
     }
 }
 
@@ -364,8 +364,8 @@ technique OnePassbasedetailLM
 
         ColorWriteEnable = RED|BLUE|GREEN|ALPHA;
 
-        VertexShader = compile vs_3_0 vsBaseDetailLM();
-        PixelShader = compile ps_3_0 psBaseDetailLM();
+        VertexShader = compile vs_2_0 vsBaseDetailLM();
+        PixelShader = compile ps_2_0 psBaseDetailLM();
     }
 }
 
@@ -433,8 +433,8 @@ technique OnePassbasedetaildirt
 
         ColorWriteEnable = RED|BLUE|GREEN|ALPHA;
 
-        VertexShader = compile vs_3_0 vsBaseDetailDirt();
-        PixelShader = compile ps_3_0 psBaseDetailDirt();
+        VertexShader = compile vs_2_0 vsBaseDetailDirt();
+        PixelShader = compile ps_2_0 psBaseDetailDirt();
     }
 }
 
@@ -505,8 +505,8 @@ technique OnePassbasedetaildirtLM
 
         ColorWriteEnable = RED|BLUE|GREEN|ALPHA;
 
-        VertexShader = compile vs_3_0 vsBaseDetailDirtLM();
-        PixelShader = compile ps_3_0 psBaseDetailDirtLM();
+        VertexShader = compile vs_2_0 vsBaseDetailDirtLM();
+        PixelShader = compile ps_2_0 psBaseDetailDirtLM();
     }
 }
 
@@ -578,8 +578,8 @@ technique OnePassbasedetailcrack
 
         ColorWriteEnable = RED|BLUE|GREEN|ALPHA;
 
-        VertexShader = compile vs_3_0 vsBaseDetailCrack();
-        PixelShader = compile ps_3_0 psBaseDetailCrack();
+        VertexShader = compile vs_2_0 vsBaseDetailCrack();
+        PixelShader = compile ps_2_0 psBaseDetailCrack();
     }
 }
 
@@ -652,8 +652,8 @@ technique OnePassbasedetailcrackLM
         AlphaFunc = GREATER;
         ColorWriteEnable = RED|BLUE|GREEN|ALPHA;
 
-        VertexShader = compile vs_3_0 vsBaseDetailCrackLM();
-        PixelShader = compile ps_3_0 psBaseDetailCrackLM();
+        VertexShader = compile vs_2_0 vsBaseDetailCrackLM();
+        PixelShader = compile ps_2_0 psBaseDetailCrackLM();
     }
 }
 
@@ -725,8 +725,8 @@ technique OnePassbasedetaildirtcrack
         AlphaFunc = GREATER;
         ColorWriteEnable = RED|BLUE|GREEN|ALPHA;
 
-        VertexShader = compile vs_3_0 vsBaseDetailDirtCrack();
-        PixelShader = compile ps_3_0 psBaseDetailDirtCrack();
+        VertexShader = compile vs_2_0 vsBaseDetailDirtCrack();
+        PixelShader = compile ps_2_0 psBaseDetailDirtCrack();
     }
 }
 
@@ -803,8 +803,8 @@ technique OnePassbasedetaildirtcrackLM
         AlphaFunc = GREATER;
         ColorWriteEnable = RED|BLUE|GREEN|ALPHA;
 
-        VertexShader = compile vs_3_0 vsBaseDetailDirtCrackLM();
-        PixelShader = compile ps_3_0 psBaseDetailDirtCrackLM();
+        VertexShader = compile vs_2_0 vsBaseDetailDirtCrackLM();
+        PixelShader = compile ps_2_0 psBaseDetailDirtCrackLM();
     }
 }
 
@@ -866,8 +866,8 @@ technique LightmapOnly
         ZFunc = LESSEQUAL;
         ColorWriteEnable = RED|BLUE|GREEN|ALPHA;
 
-        VertexShader = compile vs_3_0 vsLightmapOnly();
-        PixelShader = compile ps_3_0 psLightmapOnly();
+        VertexShader = compile vs_2_0 vsLightmapOnly();
+        PixelShader = compile ps_2_0 psLightmapOnly();
     }
 }
 
@@ -926,8 +926,8 @@ technique PointLight
         SrcBlend = ONE;
         DestBlend = ONE;
 
-        VertexShader = compile vs_3_0 vsPointLight();
-        PixelShader = compile ps_3_0 psPointLight();
+        VertexShader = compile vs_2_0 vsPointLight();
+        PixelShader = compile ps_2_0 psPointLight();
     }
 }
 
@@ -980,8 +980,8 @@ technique SpotLight
         SrcBlend = ONE;
         DestBlend = ONE;
 
-        VertexShader = compile vs_3_0 vsSpotLight();
-        PixelShader = compile ps_3_0 psSpotLight();
+        VertexShader = compile vs_2_0 vsSpotLight();
+        PixelShader = compile ps_2_0 psSpotLight();
     }
 }
 
@@ -997,8 +997,8 @@ technique base
         DestBlend = ZERO;
         ColorWriteEnable = RED|BLUE|GREEN|ALPHA;
 
-        VertexShader = compile vs_3_0 vsBase();
-        PixelShader = compile ps_3_0 psBase();
+        VertexShader = compile vs_2_0 vsBase();
+        PixelShader = compile ps_2_0 psBase();
     }
 }
 
@@ -1014,8 +1014,8 @@ technique basedetail
         DestBlend = ZERO;
         ColorWriteEnable = RED|BLUE|GREEN|ALPHA;
 
-        VertexShader = compile vs_3_0 vsBaseDetail();
-        PixelShader = compile ps_3_0 psBaseDetail();
+        VertexShader = compile vs_2_0 vsBaseDetail();
+        PixelShader = compile ps_2_0 psBaseDetail();
     }
 }
 
@@ -1032,8 +1032,8 @@ technique basedetaildirt
 
         ColorWriteEnable = RED|BLUE|GREEN|ALPHA;
 
-        VertexShader = compile vs_3_0 vsBaseDetailDirt();
-        PixelShader = compile ps_3_0 psBaseDetailDirt();
+        VertexShader = compile vs_2_0 vsBaseDetailDirt();
+        PixelShader = compile ps_2_0 psBaseDetailDirt();
     }
 }
 
@@ -1049,8 +1049,8 @@ technique basedetailcrack
         DestBlend = ZERO;
         ColorWriteEnable = RED|BLUE|GREEN|ALPHA;
 
-        VertexShader = compile vs_3_0 vsBaseDetailCrack();
-        PixelShader = compile ps_3_0 psBaseDetailCrack();
+        VertexShader = compile vs_2_0 vsBaseDetailCrack();
+        PixelShader = compile ps_2_0 psBaseDetailCrack();
     }
 }
 
@@ -1068,8 +1068,8 @@ technique basedetaildirtcrack
         // DestBlend = ONE;
         ColorWriteEnable = RED|BLUE|GREEN|ALPHA;
 
-        VertexShader = compile vs_3_0 vsBaseDetailDirtCrack();
-        PixelShader = compile ps_3_0 psBaseDetailDirtCrack();
+        VertexShader = compile vs_2_0 vsBaseDetailDirtCrack();
+        PixelShader = compile ps_2_0 psBaseDetailDirtCrack();
     }
 }
 

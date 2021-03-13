@@ -441,8 +441,8 @@ technique RPDirectX9
         // StencilWriteMask = 255;
 
 
-        VertexShader = compile vs_3_0 vsDx9_zFill();
-        PixelShader = compile ps_3_0 psDx9_zFill();
+        VertexShader = compile vs_2_0 vsDx9_zFill();
+        PixelShader = compile ps_2_0 psDx9_zFill();
     }
 
     pass detailDiffuse
@@ -460,8 +460,8 @@ technique RPDirectX9
         SrcBlend = ONE;
         DestBlend = ONE;
 
-        VertexShader = compile vs_3_0 vsDx9_detailDiffuse();
-        PixelShader = compile ps_3_0 psDx9_detailDiffuse();
+        VertexShader = compile vs_2_0 vsDx9_detailDiffuse();
+        PixelShader = compile ps_2_0 psDx9_detailDiffuse();
     }
 
     pass diffuseLOD1Plus
@@ -484,8 +484,8 @@ technique RPDirectX9
 
         AlphaBlendEnable = FALSE;
 
-        VertexShader = compile vs_3_0 vsDx9_diffuseLOD1Plus();
-        PixelShader = compile ps_3_0 psDx9_diffuseLOD1Plus();
+        VertexShader = compile vs_2_0 vsDx9_diffuseLOD1Plus();
+        PixelShader = compile ps_2_0 psDx9_diffuseLOD1Plus();
     }
 
     pass detailLightmap
@@ -501,8 +501,8 @@ technique RPDirectX9
 
         AlphaBlendEnable = FALSE;
 
-        VertexShader = compile vs_3_0 vsDx9_detailLightmap();
-        PixelShader = compile ps_3_0 psDx9_detailLightmap();
+        VertexShader = compile vs_2_0 vsDx9_detailLightmap();
+        PixelShader = compile ps_2_0 psDx9_detailLightmap();
     }
 
     pass fullMRT
@@ -518,8 +518,8 @@ technique RPDirectX9
 
         AlphaBlendEnable = FALSE;
 
-        VertexShader = compile vs_3_0 vsDx9_fullMRT();
-        PixelShader = compile ps_3_0 psDx9_fullMRT();
+        VertexShader = compile vs_2_0 vsDx9_fullMRT();
+        PixelShader = compile ps_2_0 psDx9_fullMRT();
     }
 
     pass detailDiffuseMounten
@@ -537,7 +537,7 @@ technique RPDirectX9
         SrcBlend = ONE;
         DestBlend = ONE;
 
-        VertexShader = compile vs_3_0 vsDx9_detailDiffuseMounten();
-        PixelShader = compile ps_3_0 psDx9_detailDiffuseMounten();
+        VertexShader = compile vs_2_0 vsDx9_detailDiffuseMounten();
+        PixelShader = compile ps_2_0 psDx9_detailDiffuseMounten();
     }
 }

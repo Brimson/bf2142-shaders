@@ -1,9 +1,9 @@
 #line 2 "TreeMeshBillboardGenerator.fx"
 
-float4x4 mvpMatrix : WorldViewProjection; // : register(vs_3_0, c0);
-float4x4 worldIMatrix : WorldI; // : register(vs_3_0, c4);
-float4x4 viewInverseMatrix : ViewI; // : register(vs_3_0, c8);
-//float4x3 mOneBoneSkinning[52]: matONEBONESKINNING; // : register(vs_3_0, c15);
+float4x4 mvpMatrix : WorldViewProjection; // : register(vs_2_0, c0);
+float4x4 worldIMatrix : WorldI; // : register(vs_2_0, c4);
+float4x4 viewInverseMatrix : ViewI; // : register(vs_2_0, c8);
+//float4x3 mOneBoneSkinning[52]: matONEBONESKINNING; // : register(vs_2_0, c15);
 
 // Sprite parameters
 float4x4 worldViewMatrix : WorldView;
@@ -236,12 +236,12 @@ technique trunk
         AlphaRef = 0;
         AlphaFunc = GREATER;
 
-        VertexShader = compile vs_3_0 bumpSpecularVertexShaderBlinn1(mvpMatrix,
+        VertexShader = compile vs_2_0 bumpSpecularVertexShaderBlinn1(mvpMatrix,
                                                                      worldIMatrix,
                                                                      viewInverseMatrix,
                                                                      lightPos,
                                                                      eyePos);
-        PixelShader = compile ps_3_0 bumpSpecularPixelShaderBlinn1();
+        PixelShader = compile ps_2_0 bumpSpecularPixelShaderBlinn1();
     }
 }
 
@@ -264,12 +264,12 @@ technique branch
         AlphaRef = 0;
         AlphaFunc = GREATER;
 
-        VertexShader = compile vs_3_0 bumpSpecularVertexShaderBlinn1(mvpMatrix,
+        VertexShader = compile vs_2_0 bumpSpecularVertexShaderBlinn1(mvpMatrix,
                                                                      worldIMatrix,
                                                                      viewInverseMatrix,
                                                                      lightPos,
                                                                      eyePos);
-        PixelShader = compile ps_3_0 bumpSpecularPixelShaderBlinn1();
+        PixelShader = compile ps_2_0 bumpSpecularPixelShaderBlinn1();
     }
 }
 
@@ -297,7 +297,7 @@ technique sprite
         AlphaRef = 0;
         AlphaFunc = GREATER;
 
-        VertexShader = compile vs_3_0 spriteVertexShader(worldViewMatrix,
+        VertexShader = compile vs_2_0 spriteVertexShader(worldViewMatrix,
                                                          projMatrix,
                                                          spriteScale,
                                                          shadowSpherePoint,
@@ -305,7 +305,7 @@ technique sprite
                                                          boundingboxScaledInvGradientMag,
                                                          shadowColor,
                                                          lightColor);
-        PixelShader = compile ps_3_0 spritePixelShader();
+        PixelShader = compile ps_2_0 spritePixelShader();
     }
 }
 
@@ -327,12 +327,12 @@ technique alpha
         DestBlend = D3DBLEND_ZERO;
         AlphaTestEnable = false;
 
-        VertexShader = compile vs_3_0 bumpSpecularVertexShaderBlinn1(mvpMatrix,
+        VertexShader = compile vs_2_0 bumpSpecularVertexShaderBlinn1(mvpMatrix,
                                                                      worldIMatrix,
                                                                      viewInverseMatrix,
                                                                      lightPos,
                                                                      eyePos);
-        PixelShader = compile ps_3_0 ps_alpha();
+        PixelShader = compile ps_2_0 ps_alpha();
     }
 }
 
@@ -354,7 +354,7 @@ technique alphaSprite
         DestBlend = D3DBLEND_ZERO;
         AlphaTestEnable = false;
 
-        VertexShader = compile vs_3_0 spriteVertexShader(worldViewMatrix,
+        VertexShader = compile vs_2_0 spriteVertexShader(worldViewMatrix,
                                                          projMatrix,
                                                          spriteScale,
                                                          shadowSpherePoint,
@@ -362,6 +362,6 @@ technique alphaSprite
                                                          boundingboxScaledInvGradientMag,
                                                          shadowColor,
                                                          lightColor);
-        PixelShader = compile ps_3_0 ps_alphaSprite();
+        PixelShader = compile ps_2_0 ps_alphaSprite();
     }
 }

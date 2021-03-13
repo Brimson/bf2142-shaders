@@ -202,14 +202,14 @@ technique defaultTechnique
 {
     pass P0
     {
-        vertexShader = compile vs_3_0 basicVertexShader();
+        vertexShader = compile vs_2_0 basicVertexShader();
         #if _HASSHADOW_
-            pixelShader = compile ps_3_0 basicPixelShader();
+            pixelShader = compile ps_2_0 basicPixelShader();
         #else
             #if 1 // HASALPHA2MASK
-                pixelShader	= compile ps_3_0 basicPixelShader();
+                pixelShader	= compile ps_2_0 basicPixelShader();
             #else
-                pixelShader = compile ps_3_0 basicPixelShaderNoMask();
+                pixelShader = compile ps_2_0 basicPixelShaderNoMask();
             #endif
         #endif
 

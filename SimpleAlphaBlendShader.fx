@@ -60,7 +60,7 @@ technique t0
 {
     pass p0
     {
-        VertexShader = compile vs_3_0 VShader(mWorldViewProj);
+        VertexShader = compile vs_2_0 VShader(mWorldViewProj);
 
         Sampler[0] = <diffuseSampler>;
 
@@ -84,8 +84,8 @@ technique t0
             AlphaBlendEnable = FALSE;
             Lighting = TRUE;
 
-            VertexShader = compile vs_3_0 VShader(mWorldViewProj,MaterialAmbient,MaterialDiffuse,LhtDir);
-            PixelShader = compile ps_3_0 PShaderMarked(samplebase);
+            VertexShader = compile vs_2_0 VShader(mWorldViewProj,MaterialAmbient,MaterialDiffuse,LhtDir);
+            PixelShader = compile ps_2_0 PShaderMarked(samplebase);
         }
     }
 */

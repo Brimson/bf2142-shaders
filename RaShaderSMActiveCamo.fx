@@ -205,8 +205,8 @@ technique Camouflage
 {
     pass
     {
-        VertexShader = compile vs_3_0 vs();
-        PixelShader = compile ps_3_0 ps_Camouflage();
+        VertexShader = compile vs_2_0 vs();
+        PixelShader = compile ps_2_0 ps_Camouflage();
         ColorWriteEnable = ALPHA;
     }
 }
@@ -215,7 +215,7 @@ technique BrokenCamouflage
 {
     pass
     {
-        VertexShader = compile vs_3_0 vs();
-        PixelShader = compile ps_3_0 ps_BrokenCamouflage();
+        VertexShader = compile vs_2_0 vs();
+        PixelShader = compile ps_2_0 ps_BrokenCamouflage();
     }
 }

@@ -256,8 +256,8 @@ technique Dx9Style_BM
     {
         AlphaBlendEnable = FALSE;
         // FillMode = WIREFRAME;
-        VertexShader = compile vs_3_0 vsDx9_BM_Base();
-        PixelShader = compile ps_3_0 psDx9_BM_Base();
+        VertexShader = compile vs_2_0 vsDx9_BM_Base();
+        PixelShader = compile ps_2_0 psDx9_BM_Base();
     }
 
     pass point
@@ -267,7 +267,7 @@ technique Dx9Style_BM
         SrcBlend = ONE;
         DestBlend = INVDESTCOLOR;
         FillMode = WIREFRAME;
-        VertexShader = compile vs_3_0 vsDx9_BM_Pt();
+        VertexShader = compile vs_2_0 vsDx9_BM_Pt();
         PixelShader = compile ps_1_4 psDx9_BM_Pt();
     }
 
@@ -277,8 +277,8 @@ technique Dx9Style_BM
         SrcBlend = ONE;
         DestBlend = ONE;
 
-        VertexShader = compile vs_3_0 vsDx9_BM_Sp();
-        PixelShader = compile ps_3_0 psDx9_BM_Sp();
+        VertexShader = compile vs_2_0 vsDx9_BM_Sp();
+        PixelShader = compile ps_2_0 psDx9_BM_Sp();
     }
 }
 
@@ -299,8 +299,8 @@ technique Dx8Style_BM
         MinFilter[0] = LINEAR;
         MagFilter[0] = LINEAR;
 
-        VertexShader = compile vs_3_0 vsDx8_BM();
-        PixelShader = compile ps_3_0 psDx8_BM();
+        VertexShader = compile vs_2_0 vsDx8_BM();
+        PixelShader = compile ps_2_0 psDx8_BM();
     }
 }
 
@@ -467,16 +467,16 @@ technique Dx9Style_DT
         ZWriteEnable = FALSE;
         ZFunc = EQUAL;
 
-        VertexShader = compile vs_3_0 vsDx9_DT();
-        PixelShader = compile ps_3_0 psDx9_DT();
+        VertexShader = compile vs_2_0 vsDx9_DT();
+        PixelShader = compile ps_2_0 psDx9_DT();
     }
 
     pass p1basicpass
     {
         AlphaBlendEnable = FALSE;
 
-        VertexShader = compile vs_3_0 vsDx9_DT2();
-        PixelShader = compile ps_3_0 psDx9_DT2();
+        VertexShader = compile vs_2_0 vsDx9_DT2();
+        PixelShader = compile ps_2_0 psDx9_DT2();
     }
 
     pass p2basicpass2
@@ -485,8 +485,8 @@ technique Dx9Style_DT
         SrcBlend = DESTCOLOR;
         DestBlend = ZERO;
 
-        VertexShader = compile vs_3_0 vsDx9_DT2();
-        PixelShader = compile ps_3_0 psDx9_DT2();
+        VertexShader = compile vs_2_0 vsDx9_DT2();
+        PixelShader = compile ps_2_0 psDx9_DT2();
     }
 }
 
@@ -529,7 +529,7 @@ technique showTangentBasis
         ZEnable = true;
         ZWriteEnable = false;
 
-        VertexShader = compile vs_3_0 vsShowTanBasis();
-        PixelShader = compile ps_3_0 psShowTanBasis();
+        VertexShader = compile vs_2_0 vsShowTanBasis();
+        PixelShader = compile ps_2_0 psShowTanBasis();
     }
 }

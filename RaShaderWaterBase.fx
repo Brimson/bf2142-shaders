@@ -324,8 +324,8 @@ technique defaultShader
 {
     pass P0
     {
-        vertexshader	= compile vs_3_0 waterVertexShader();
-        pixelshader		= compile ps_3_0 waterPixelShader();
+        vertexshader	= compile vs_2_0 waterVertexShader();
+        pixelshader		= compile ps_2_0 waterPixelShader();
         fogenable		= true;
         #ifdef ENABLE_WIREFRAME
             FillMode = WireFrame;

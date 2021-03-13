@@ -513,8 +513,8 @@ technique DiffuseZ
         StencilZFail = KEEP;
         StencilPass = REPLACE;
 
-        VertexShader = compile vs_3_0 vsDiffuseZ(viewProjMatrix);
-        PixelShader = compile ps_3_0 psDiffuseZ();
+        VertexShader = compile vs_2_0 vsDiffuseZ(viewProjMatrix);
+        PixelShader = compile ps_2_0 psDiffuseZ();
     }
 
     pass p1 // Animated UV
@@ -530,8 +530,8 @@ technique DiffuseZ
         StencilZFail = KEEP;
         StencilPass = REPLACE;
 
-        VertexShader = compile vs_3_0 vsDiffuseZAnimatedUV(viewProjMatrix);
-        PixelShader = compile ps_3_0 psDiffuseZ();
+        VertexShader = compile vs_2_0 vsDiffuseZAnimatedUV(viewProjMatrix);
+        PixelShader = compile ps_2_0 psDiffuseZ();
     }
 }
 
@@ -553,8 +553,8 @@ technique FullMRT
             StencilPass = REPLACE;
         */
 
-        VertexShader = compile vs_3_0 vsFullMRT(viewProjMatrix, viewInverseMatrix,  normalOffsetScale);
-        PixelShader = compile ps_3_0 psFullMRT(skyColor, ambientColor);
+        VertexShader = compile vs_2_0 vsFullMRT(viewProjMatrix, viewInverseMatrix,  normalOffsetScale);
+        PixelShader = compile ps_2_0 psFullMRT(skyColor, ambientColor);
     }
     pass p1wGI
     {
@@ -573,8 +573,8 @@ technique FullMRT
             StencilPass = REPLACE;
         */
 
-        VertexShader = compile vs_3_0 vsFullMRT(viewProjMatrix, viewInverseMatrix, normalOffsetScale);
-        PixelShader = compile ps_3_0 psFullMRTwGI(skyColor, ambientColor);
+        VertexShader = compile vs_2_0 vsFullMRT(viewProjMatrix, viewInverseMatrix, normalOffsetScale);
+        PixelShader = compile ps_2_0 psFullMRTwGI(skyColor, ambientColor);
     }
 }
 
@@ -596,8 +596,8 @@ technique FullMRTHemiShadows
             StencilPass = REPLACE;
         */
 
-        VertexShader = compile vs_3_0 vsFullMRT(viewProjMatrix, viewInverseMatrix, normalOffsetScale);
-        PixelShader = compile ps_3_0 psFullMRTHemiShadows(skyColor, ambientColor);
+        VertexShader = compile vs_2_0 vsFullMRT(viewProjMatrix, viewInverseMatrix, normalOffsetScale);
+        PixelShader = compile ps_2_0 psFullMRTHemiShadows(skyColor, ambientColor);
     }
 
     pass p1wGI
@@ -615,8 +615,8 @@ technique FullMRTHemiShadows
             StencilPass = REPLACE;
         */
 
-        VertexShader = compile vs_3_0 vsFullMRT(viewProjMatrix, viewInverseMatrix, normalOffsetScale);
-        PixelShader = compile ps_3_0 psFullMRTwGIHemiShadows(skyColor, ambientColor);
+        VertexShader = compile vs_2_0 vsFullMRT(viewProjMatrix, viewInverseMatrix, normalOffsetScale);
+        PixelShader = compile ps_2_0 psFullMRTwGIHemiShadows(skyColor, ambientColor);
     }
 }
 
@@ -639,8 +639,8 @@ technique FullMRTAnimatedUV
             StencilPass = REPLACE;
         */
 
-        VertexShader = compile vs_3_0 vsFullMRTAnimatedUV(viewProjMatrix, viewInverseMatrix, normalOffsetScale);
-        PixelShader = compile ps_3_0 psFullMRTAnimatedUV(skyColor, ambientColor);
+        VertexShader = compile vs_2_0 vsFullMRTAnimatedUV(viewProjMatrix, viewInverseMatrix, normalOffsetScale);
+        PixelShader = compile ps_2_0 psFullMRTAnimatedUV(skyColor, ambientColor);
     }
 
     pass p1wGI
@@ -659,8 +659,8 @@ technique FullMRTAnimatedUV
             StencilPass = REPLACE;
         */
 
-        VertexShader = compile vs_3_0 vsFullMRTAnimatedUV(viewProjMatrix, viewInverseMatrix, normalOffsetScale);
-        PixelShader = compile ps_3_0 psFullMRTwGIAnimatedUV(skyColor, ambientColor);
+        VertexShader = compile vs_2_0 vsFullMRTAnimatedUV(viewProjMatrix, viewInverseMatrix, normalOffsetScale);
+        PixelShader = compile ps_2_0 psFullMRTwGIAnimatedUV(skyColor, ambientColor);
     }
 }
 
@@ -682,8 +682,8 @@ technique FullMRTAnimatedUVHemiShadows
             StencilPass = REPLACE;
         */
 
-        VertexShader = compile vs_3_0 vsFullMRTAnimatedUV(viewProjMatrix, viewInverseMatrix, normalOffsetScale);
-        PixelShader = compile ps_3_0 psFullMRTHemiShadowsAnimatedUV(skyColor, ambientColor);
+        VertexShader = compile vs_2_0 vsFullMRTAnimatedUV(viewProjMatrix, viewInverseMatrix, normalOffsetScale);
+        PixelShader = compile ps_2_0 psFullMRTHemiShadowsAnimatedUV(skyColor, ambientColor);
     }
     pass p1wGI
     {
@@ -699,8 +699,8 @@ technique FullMRTAnimatedUVHemiShadows
         StencilZFail = KEEP;
         StencilPass = REPLACE;*/
 
-        VertexShader = compile vs_3_0 vsFullMRTAnimatedUV(viewProjMatrix, viewInverseMatrix, normalOffsetScale);
-        PixelShader = compile ps_3_0 psFullMRTwGIHemiShadowsAnimatedUV(skyColor, ambientColor);
+        VertexShader = compile vs_2_0 vsFullMRTAnimatedUV(viewProjMatrix, viewInverseMatrix, normalOffsetScale);
+        PixelShader = compile ps_2_0 psFullMRTwGIHemiShadowsAnimatedUV(skyColor, ambientColor);
     }
 }
 
@@ -725,8 +725,8 @@ technique FullMRTAlphaBlend
             StencilPass = REPLACE;
         */
 
-        VertexShader = compile vs_3_0 vsFullMRT(viewProjMatrix, viewInverseMatrix, normalOffsetScale);
-        PixelShader = compile ps_3_0 psFullMRTAlphaBlend(skyColor, ambientColor);
+        VertexShader = compile vs_2_0 vsFullMRT(viewProjMatrix, viewInverseMatrix, normalOffsetScale);
+        PixelShader = compile ps_2_0 psFullMRTAlphaBlend(skyColor, ambientColor);
     }
 }
 
@@ -745,8 +745,8 @@ technique alphaDX9
         AlphaRef = 0;
         AlphaFunc = GREATER;
 
-        VertexShader = compile vs_3_0 vsAlpha(viewProjMatrix);
-        PixelShader = compile ps_3_0 psAlphaDX9();
+        VertexShader = compile vs_2_0 vsAlpha(viewProjMatrix);
+        PixelShader = compile ps_2_0 psAlphaDX9();
     }
 }
 
@@ -764,8 +764,8 @@ technique alphaDX9DirectionalShadow
         AlphaRef = 0;
         AlphaFunc = GREATER;
 
-        VertexShader = compile vs_3_0 vsAlphaDX9DirectionalShadow(viewProjMatrix);
-        PixelShader = compile ps_3_0 psAlphaDX9DirectionalShadow();
+        VertexShader = compile vs_2_0 vsAlphaDX9DirectionalShadow(viewProjMatrix);
+        PixelShader = compile ps_2_0 psAlphaDX9DirectionalShadow();
     }
 }
 
@@ -783,7 +783,7 @@ technique alphaDX9DirectionalDecal
         AlphaRef = 0;
         AlphaFunc = GREATER;
 
-        VertexShader = compile vs_3_0 vsAlpha(viewProjMatrix);
-        PixelShader = compile ps_3_0 psAlphaDX9DirectionalDecal();
+        VertexShader = compile vs_2_0 vsAlpha(viewProjMatrix);
+        PixelShader = compile ps_2_0 psAlphaDX9DirectionalDecal();
     }
 }

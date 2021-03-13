@@ -106,8 +106,8 @@ technique Tinnitus
         AlphaBlendEnable = FALSE;
         StencilEnable = FALSE;
 
-        VertexShader = compile vs_3_0 vsDx9_Tinnitus();
-        PixelShader = compile ps_3_0 psDx9_Tinnitus();
+        VertexShader = compile vs_2_0 vsDx9_Tinnitus();
+        PixelShader = compile ps_2_0 psDx9_Tinnitus();
     }
 }
 
@@ -140,8 +140,8 @@ technique GlowMaterial
         StencilZFail = KEEP;
         StencilPass = KEEP;
 
-        VertexShader = compile vs_3_0 vsDx9_OneTexcoord();
-        PixelShader = compile ps_3_0 psDx9_GlowMaterial();
+        VertexShader = compile vs_2_0 vsDx9_OneTexcoord();
+        PixelShader = compile ps_2_0 psDx9_GlowMaterial();
     }
 }
 
@@ -157,8 +157,8 @@ technique Glow
         SrcBlend = SRCCOLOR;
         DestBlend = ONE;
 
-        VertexShader = compile vs_3_0 vsDx9_OneTexcoord();
-        PixelShader = compile ps_3_0 psDx9_Glow();
+        VertexShader = compile vs_2_0 vsDx9_OneTexcoord();
+        PixelShader = compile ps_2_0 psDx9_Glow();
     }
 }
 
@@ -192,7 +192,7 @@ technique Fog
         StencilZFail = KEEP;
         StencilPass = KEEP;
 
-        VertexShader = compile vs_3_0 vsDx9_OneTexcoord();
-        PixelShader = compile ps_3_0 psDx9_Fog();
+        VertexShader = compile vs_2_0 vsDx9_OneTexcoord();
+        PixelShader = compile ps_2_0 psDx9_Fog();
     }
 }

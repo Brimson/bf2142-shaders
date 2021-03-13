@@ -71,7 +71,7 @@ technique TexturedQuad
         MinFilter[0] = POINT;
         MagFilter[0] = POINT;
 
-        VertexShader = compile vs_3_0 vsFFP();
+        VertexShader = compile vs_2_0 vsFFP();
         PixelShader = NULL;
     }
 }

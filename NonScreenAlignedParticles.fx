@@ -211,8 +211,8 @@ technique NSAParticleShowFill
         DestBlend = ONE;
         FogEnable = TRUE;
 
-        VertexShader = compile vs_3_0 vsParticle(viewMat, projMat, tParameters);
-        PixelShader = compile ps_3_0 psParticleShowFill();
+        VertexShader = compile vs_2_0 vsParticle(viewMat, projMat, tParameters);
+        PixelShader = compile ps_2_0 psParticleShowFill();
     }
 }
 
@@ -236,8 +236,8 @@ technique NSAParticleLow
         DestBlend = INVSRCALPHA;
         FogEnable = TRUE;
 
-         VertexShader = compile vs_3_0 vsParticle(viewMat, projMat, tParameters);
-        PixelShader = compile ps_3_0 psParticleLow();
+         VertexShader = compile vs_2_0 vsParticle(viewMat, projMat, tParameters);
+        PixelShader = compile ps_2_0 psParticleLow();
     }
 }
 technique NSAParticleMedium
@@ -260,8 +260,8 @@ technique NSAParticleMedium
         DestBlend = INVSRCALPHA;
         FogEnable = TRUE;
 
-         VertexShader = compile vs_3_0 vsParticle(viewMat, projMat, tParameters);
-        PixelShader = compile ps_3_0 psParticleMedium();
+         VertexShader = compile vs_2_0 vsParticle(viewMat, projMat, tParameters);
+        PixelShader = compile ps_2_0 psParticleMedium();
     }
 }
 technique NSAParticleHigh
@@ -284,8 +284,8 @@ technique NSAParticleHigh
         DestBlend = INVSRCALPHA;
         FogEnable = TRUE;
 
-        VertexShader = compile vs_3_0 vsParticle(viewMat, projMat, tParameters);
-        PixelShader = compile ps_3_0 psParticleHigh();
+        VertexShader = compile vs_2_0 vsParticle(viewMat, projMat, tParameters);
+        PixelShader = compile ps_2_0 psParticleHigh();
     }
 }
 
@@ -437,7 +437,7 @@ technique ParticleHeatShimmer
         DestBlend = InvSrcAlpha;
         FogEnable = FALSE;
 
-        VertexShader = compile vs_3_0 vsParticleHeatShimmer(viewMat, projMat, tParameters);
-        PixelShader = compile ps_3_0 psParticleHeatShimmer();
+        VertexShader = compile vs_2_0 vsParticleHeatShimmer(viewMat, projMat, tParameters);
+        PixelShader = compile ps_2_0 psParticleHeatShimmer();
     }
 }

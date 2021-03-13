@@ -616,8 +616,8 @@ technique Blit
         AlphaBlendEnable = FALSE;
         StencilEnable = FALSE;
         AlphaTestEnable = FALSE;
-        VertexShader = compile vs_3_0 vsDx9_blit();
-        PixelShader = compile ps_3_0 psDx9_FSBMPassThrough();
+        VertexShader = compile vs_2_0 vsDx9_blit();
+        PixelShader = compile ps_2_0 psDx9_FSBMPassThrough();
     }
 
     pass FSBMBlend
@@ -629,120 +629,120 @@ technique Blit
         SrcBlend = SRCALPHA;
         DestBlend = INVSRCALPHA;
 
-        VertexShader = compile vs_3_0 vsDx9_blit();
-        PixelShader = compile ps_3_0 psDx9_FSBMPassThrough();
+        VertexShader = compile vs_2_0 vsDx9_blit();
+        PixelShader = compile ps_2_0 psDx9_FSBMPassThrough();
     }
 
     pass FSBMConvertPosTo8Bit
     {
         ZEnable = FALSE;
         AlphaBlendEnable = FALSE;
-        VertexShader = compile vs_3_0 vsDx9_blit();
-        PixelShader = compile ps_3_0 psDx9_FSBMConvertPosTo8Bit();
+        VertexShader = compile vs_2_0 vsDx9_blit();
+        PixelShader = compile ps_2_0 psDx9_FSBMConvertPosTo8Bit();
     }
 
     pass FSBMConvertNormalTo8Bit
     {
         ZEnable = FALSE;
         AlphaBlendEnable = FALSE;
-        VertexShader = compile vs_3_0 vsDx9_blit();
-        PixelShader = compile ps_3_0 psDx9_FSBMConvertNormalTo8Bit();
+        VertexShader = compile vs_2_0 vsDx9_blit();
+        PixelShader = compile ps_2_0 psDx9_FSBMConvertNormalTo8Bit();
     }
 
     pass FSBMConvertShadowMapFrontTo8Bit
     {
         ZEnable = FALSE;
         AlphaBlendEnable = FALSE;
-        VertexShader = compile vs_3_0 vsDx9_blit();
-        PixelShader = compile ps_3_0 psDx9_FSBMConvertShadowMapFrontTo8Bit();
+        VertexShader = compile vs_2_0 vsDx9_blit();
+        PixelShader = compile ps_2_0 psDx9_FSBMConvertShadowMapFrontTo8Bit();
     }
 
     pass FSBMConvertShadowMapBackTo8Bit
     {
         ZEnable = FALSE;
         AlphaBlendEnable = FALSE;
-        VertexShader = compile vs_3_0 vsDx9_blit();
-        PixelShader = compile ps_3_0 psDx9_FSBMConvertShadowMapBackTo8Bit();
+        VertexShader = compile vs_2_0 vsDx9_blit();
+        PixelShader = compile ps_2_0 psDx9_FSBMConvertShadowMapBackTo8Bit();
     }
 
     pass FSBMScaleUp4x4LinearFilter
     {
         ZEnable = FALSE;
         AlphaBlendEnable = FALSE;
-        VertexShader = compile vs_3_0 vsDx9_blit();
-        PixelShader = compile ps_3_0 psDx9_FSBMScaleUp4x4LinearFilter();
+        VertexShader = compile vs_2_0 vsDx9_blit();
+        PixelShader = compile ps_2_0 psDx9_FSBMScaleUp4x4LinearFilter();
     }
 
     pass FSBMScaleDown2x2Filter
     {
         ZEnable = FALSE;
         AlphaBlendEnable = FALSE;
-        VertexShader = compile vs_3_0 vsDx9_blit();
-        PixelShader = compile ps_3_0 psDx9_FSBMScaleDown2x2Filter();
+        VertexShader = compile vs_2_0 vsDx9_blit();
+        PixelShader = compile ps_2_0 psDx9_FSBMScaleDown2x2Filter();
     }
 
     pass FSBMScaleDown4x4Filter
     {
         ZEnable = FALSE;
         AlphaBlendEnable = FALSE;
-        VertexShader = compile vs_3_0 vsDx9_blit();
-        PixelShader = compile ps_3_0 psDx9_FSBMScaleDown4x4Filter();
+        VertexShader = compile vs_2_0 vsDx9_blit();
+        PixelShader = compile ps_2_0 psDx9_FSBMScaleDown4x4Filter();
     }
 
     pass FSBMScaleDown4x4LinearFilter
     {
         ZEnable = FALSE;
         AlphaBlendEnable = FALSE;
-        VertexShader = compile vs_3_0 vsDx9_blit();
-        PixelShader = compile ps_3_0 psDx9_FSBMScaleDown4x4LinearFilter();
+        VertexShader = compile vs_2_0 vsDx9_blit();
+        PixelShader = compile ps_2_0 psDx9_FSBMScaleDown4x4LinearFilter();
     }
 
     pass FSBMGaussianBlur5x5CheapFilter
     {
         ZEnable = FALSE;
         AlphaBlendEnable = FALSE;
-        VertexShader = compile vs_3_0 vsDx9_blit();
-        PixelShader = compile ps_3_0 psDx9_FSBMGaussianBlur5x5CheapFilter();
+        VertexShader = compile vs_2_0 vsDx9_blit();
+        PixelShader = compile ps_2_0 psDx9_FSBMGaussianBlur5x5CheapFilter();
     }
 
     pass FSBMGaussianBlur15x15HorizontalFilter
     {
         ZEnable = FALSE;
         AlphaBlendEnable = FALSE;
-        VertexShader = compile vs_3_0 vsDx9_blit();
-        PixelShader = compile ps_3_0 psDx9_FSBMGaussianBlur15x15HorizontalFilter();//psDx9_FSBMGaussianBlur15x15HorizontalFilter2();
+        VertexShader = compile vs_2_0 vsDx9_blit();
+        PixelShader = compile ps_2_0 psDx9_FSBMGaussianBlur15x15HorizontalFilter();//psDx9_FSBMGaussianBlur15x15HorizontalFilter2();
     }
 
     pass FSBMGaussianBlur15x15VerticalFilter
     {
         ZEnable = FALSE;
         AlphaBlendEnable = FALSE;
-        VertexShader = compile vs_3_0 vsDx9_blit();
-        PixelShader = compile ps_3_0 psDx9_FSBMGaussianBlur15x15VerticalFilter();//psDx9_FSBMGaussianBlur15x15VerticalFilter2();
+        VertexShader = compile vs_2_0 vsDx9_blit();
+        PixelShader = compile ps_2_0 psDx9_FSBMGaussianBlur15x15VerticalFilter();//psDx9_FSBMGaussianBlur15x15VerticalFilter2();
     }
 
     pass FSBMGrowablePoisson13Filter
     {
         ZEnable = FALSE;
         AlphaBlendEnable = FALSE;
-        VertexShader = compile vs_3_0 vsDx9_blit();
-        PixelShader = compile ps_3_0 psDx9_FSBMGrowablePoisson13Filter();
+        VertexShader = compile vs_2_0 vsDx9_blit();
+        PixelShader = compile ps_2_0 psDx9_FSBMGrowablePoisson13Filter();
     }
 
     pass FSBMGrowablePoisson13AndDilationFilter
     {
         ZEnable = FALSE;
         AlphaBlendEnable = FALSE;
-        VertexShader = compile vs_3_0 vsDx9_blit();
-        PixelShader = compile ps_3_0 psDx9_FSBMGrowablePoisson13AndDilationFilter();
+        VertexShader = compile vs_2_0 vsDx9_blit();
+        PixelShader = compile ps_2_0 psDx9_FSBMGrowablePoisson13AndDilationFilter();
     }
 
     pass FSBMScaleUpBloomFilter
     {
         ZEnable = FALSE;
         AlphaBlendEnable = FALSE;
-        VertexShader = compile vs_3_0 vsDx9_blit();
-        PixelShader = compile ps_3_0 psDx9_FSBMScaleUpBloomFilter();
+        VertexShader = compile vs_2_0 vsDx9_blit();
+        PixelShader = compile ps_2_0 psDx9_FSBMScaleUpBloomFilter();
     }
 
     pass FSBMPassThroughSaturateAlpha
@@ -751,8 +751,8 @@ technique Blit
         AlphaBlendEnable = FALSE;
         StencilEnable = FALSE;
         AlphaTestEnable = FALSE;
-        VertexShader = compile vs_3_0 vsDx9_blit();
-        PixelShader = compile ps_3_0 psDx9_FSBMPassThroughSaturateAlpha();
+        VertexShader = compile vs_2_0 vsDx9_blit();
+        PixelShader = compile ps_2_0 psDx9_FSBMPassThroughSaturateAlpha();
     }
 
     pass FSBMCopyOtherRGBToAlpha
@@ -763,8 +763,8 @@ technique Blit
         AlphaTestEnable = FALSE;
         ColorWriteEnable = ALPHA;
 
-        VertexShader = compile vs_3_0 vsDx9_blit();
-        PixelShader = compile ps_3_0 psDx9_FSBMCopyOtherRGBToAlpha();
+        VertexShader = compile vs_2_0 vsDx9_blit();
+        PixelShader = compile ps_2_0 psDx9_FSBMCopyOtherRGBToAlpha();
 
     }
 
@@ -775,8 +775,8 @@ technique Blit
         StencilEnable = FALSE;
         AlphaTestEnable = FALSE;
 
-        VertexShader = compile vs_3_0 vsDx9_blitMagnified();
-        PixelShader = compile ps_3_0 psDx9_FSBMClear();
+        VertexShader = compile vs_2_0 vsDx9_blitMagnified();
+        PixelShader = compile ps_2_0 psDx9_FSBMClear();
     }
 
     pass FSBMClearAlpha
@@ -787,8 +787,8 @@ technique Blit
         AlphaTestEnable = FALSE;
         ColorWriteEnable = ALPHA;
 
-        VertexShader = compile vs_3_0 vsDx9_blitMagnified();
-        PixelShader = compile ps_3_0 psDx9_FSBMClear();
+        VertexShader = compile vs_2_0 vsDx9_blitMagnified();
+        PixelShader = compile ps_2_0 psDx9_FSBMClear();
     }
 
     pass FSBMPassThroughBilinearAdditive
@@ -799,8 +799,8 @@ technique Blit
         DestBlend = ONE;
         StencilEnable = FALSE;
         AlphaTestEnable = FALSE;
-        VertexShader = compile vs_3_0 vsDx9_blit();
-        PixelShader = compile ps_3_0 psDx9_FSBMPassThroughBilinear();
+        VertexShader = compile vs_2_0 vsDx9_blit();
+        PixelShader = compile ps_2_0 psDx9_FSBMPassThroughBilinear();
     }
 
     pass FSBMExtractGlowFilter
@@ -808,8 +808,8 @@ technique Blit
         ZEnable = FALSE;
         AlphaBlendEnable = FALSE;
 
-        VertexShader = compile vs_3_0 vsDx9_blit();
-        PixelShader = compile ps_3_0 psDx9_FSBMExtractGlowFilter();
+        VertexShader = compile vs_2_0 vsDx9_blit();
+        PixelShader = compile ps_2_0 psDx9_FSBMExtractGlowFilter();
     }
 
     pass FSBMExtractCamouflage
@@ -817,24 +817,24 @@ technique Blit
         ZEnable = FALSE;
         AlphaBlendEnable = FALSE;
 
-        VertexShader = compile vs_3_0 vsDx9_blit();
-        PixelShader = compile ps_3_0 psDx9_FSBMExtractCamouflage();
+        VertexShader = compile vs_2_0 vsDx9_blit();
+        PixelShader = compile ps_2_0 psDx9_FSBMExtractCamouflage();
     }
 
     pass FSBMScaleDown4x4LinearFilterHorizontal
     {
         ZEnable = FALSE;
         AlphaBlendEnable = FALSE;
-        VertexShader = compile vs_3_0 vsDx9_4TapFilter(scaleDown4x4LinearSampleOffsets);
-        PixelShader = compile ps_3_0 psDx9_FSBMScaleDown4x4LinearFilter();
+        VertexShader = compile vs_2_0 vsDx9_4TapFilter(scaleDown4x4LinearSampleOffsets);
+        PixelShader = compile ps_2_0 psDx9_FSBMScaleDown4x4LinearFilter();
     }
 
     pass FSBMScaleDown4x4LinearFilterVertical
     {
         ZEnable = FALSE;
         AlphaBlendEnable = FALSE;
-        VertexShader = compile vs_3_0 vsDx9_4TapFilter(scaleDown4x4LinearSampleOffsets);
-        PixelShader = compile ps_3_0 psDx9_FSBMScaleDown4x4LinearFilter();
+        VertexShader = compile vs_2_0 vsDx9_4TapFilter(scaleDown4x4LinearSampleOffsets);
+        PixelShader = compile ps_2_0 psDx9_FSBMScaleDown4x4LinearFilter();
     }
 
     pass FSBMGlowHorizontalFilter
@@ -842,8 +842,8 @@ technique Blit
         ZEnable = FALSE;
         AlphaBlendEnable = FALSE;
 
-        VertexShader = compile vs_3_0 vsDx9_5SampleFilter(glowHorizOffsets, true);
-        PixelShader = compile ps_3_0 psDx9_FSBMGlowFilter(glowHorizWeights,true);
+        VertexShader = compile vs_2_0 vsDx9_5SampleFilter(glowHorizOffsets, true);
+        PixelShader = compile ps_2_0 psDx9_FSBMGlowFilter(glowHorizWeights,true);
     }
 
     pass FSBMGlowVerticalFilter
@@ -851,8 +851,8 @@ technique Blit
         ZEnable = FALSE;
         AlphaBlendEnable = FALSE;
 
-        VertexShader = compile vs_3_0 vsDx9_5SampleFilter(glowVertOffsets, false);
-        PixelShader = compile ps_3_0 psDx9_FSBMGlowFilter(glowVertWeights,false);
+        VertexShader = compile vs_2_0 vsDx9_5SampleFilter(glowVertOffsets, false);
+        PixelShader = compile ps_2_0 psDx9_FSBMGlowFilter(glowVertWeights,false);
     }
 
     pass FSBMCamouflageBlurPassThrough
@@ -861,8 +861,8 @@ technique Blit
         AlphaBlendEnable = TRUE;
         SrcBlend = SRCALPHA;
         DestBlend = INVSRCALPHA;//ONE;
-        VertexShader = compile vs_3_0 vsDx9_blit();
-        PixelShader = compile ps_3_0 psDx9_FSBMCamouflageBlur();
+        VertexShader = compile vs_2_0 vsDx9_blit();
+        PixelShader = compile ps_2_0 psDx9_FSBMCamouflageBlur();
     }
 
     pass FSBMContrastFilter
@@ -870,8 +870,8 @@ technique Blit
         ZEnable = FALSE;
         AlphaBlendEnable = FALSE;
 
-        VertexShader = compile vs_3_0 vsDx9_blit();
-        PixelShader = compile ps_3_0 psDx9_FSBMContrast();
+        VertexShader = compile vs_2_0 vsDx9_blit();
+        PixelShader = compile ps_2_0 psDx9_FSBMContrast();
     }
 
     pass FSBMGlowHorizontalFilter
@@ -879,8 +879,8 @@ technique Blit
         ZEnable = FALSE;
         AlphaBlendEnable = FALSE;
 
-        VertexShader = compile vs_3_0 vsDx9_12SampleFilter(true);
-        PixelShader = compile ps_3_0 psDx9_FSBMLargeBloomFilter(true);
+        VertexShader = compile vs_2_0 vsDx9_12SampleFilter(true);
+        PixelShader = compile ps_2_0 psDx9_FSBMLargeBloomFilter(true);
     }
 
     pass FSBMGlowVerticalFilter
@@ -888,8 +888,8 @@ technique Blit
         ZEnable = FALSE;
         AlphaBlendEnable = FALSE;
 
-        VertexShader = compile vs_3_0 vsDx9_12SampleFilter(false);
-        PixelShader = compile ps_3_0 psDx9_FSBMLargeBloomFilter(false);
+        VertexShader = compile vs_2_0 vsDx9_12SampleFilter(false);
+        PixelShader = compile ps_2_0 psDx9_FSBMLargeBloomFilter(false);
     }
 }
 
@@ -901,8 +901,8 @@ technique Blit_3_0
         AlphaBlendEnable = FALSE;
         StencilEnable = FALSE;
         AlphaTestEnable = FALSE;
-        VertexShader = compile vs_3_0 vsDx9_blit();
-        PixelShader = compile ps_3_0 psDx9_FSBMPassThrough();
+        VertexShader = compile vs_2_0 vsDx9_blit();
+        PixelShader = compile ps_2_0 psDx9_FSBMPassThrough();
     }
 
     pass FSBMBlend
@@ -914,16 +914,16 @@ technique Blit_3_0
         SrcBlend = SRCALPHA;
         DestBlend = INVSRCALPHA;
 
-        VertexShader = compile vs_3_0 vsDx9_blit();
-        PixelShader = compile ps_3_0 psDx9_FSBMPassThrough();
+        VertexShader = compile vs_2_0 vsDx9_blit();
+        PixelShader = compile ps_2_0 psDx9_FSBMPassThrough();
     }
 
     pass FSBMConvertPosTo8Bit
     {
         ZEnable = FALSE;
         AlphaBlendEnable = FALSE;
-        VertexShader = compile vs_3_0 vsDx9_blit();
-        PixelShader = compile ps_3_0 psDx9_FSBMConvertPosTo8Bit();
+        VertexShader = compile vs_2_0 vsDx9_blit();
+        PixelShader = compile ps_2_0 psDx9_FSBMConvertPosTo8Bit();
     }
 
     pass FSBMConvertNormalTo8Bit
@@ -931,8 +931,8 @@ technique Blit_3_0
         /*
             ZEnable = FALSE;
             AlphaBlendEnable = FALSE;
-            VertexShader = compile vs_3_0 vsDx9_blit();
-            PixelShader = compile ps_3_0 psDx9_FSBMConvertNormalTo8Bit();
+            VertexShader = compile vs_2_0 vsDx9_blit();
+            PixelShader = compile ps_2_0 psDx9_FSBMConvertNormalTo8Bit();
         */
     }
 
@@ -940,40 +940,40 @@ technique Blit_3_0
     {
         ZEnable = FALSE;
         AlphaBlendEnable = FALSE;
-        VertexShader = compile vs_3_0 vsDx9_blit();
-        PixelShader = compile ps_3_0 psDx9_FSBMConvertShadowMapFrontTo8Bit();
+        VertexShader = compile vs_2_0 vsDx9_blit();
+        PixelShader = compile ps_2_0 psDx9_FSBMConvertShadowMapFrontTo8Bit();
     }
 
     pass FSBMConvertShadowMapBackTo8Bit
     {
         ZEnable = FALSE;
         AlphaBlendEnable = FALSE;
-        VertexShader = compile vs_3_0 vsDx9_blit();
-        PixelShader = compile ps_3_0 psDx9_FSBMConvertShadowMapBackTo8Bit();
+        VertexShader = compile vs_2_0 vsDx9_blit();
+        PixelShader = compile ps_2_0 psDx9_FSBMConvertShadowMapBackTo8Bit();
     }
 
     pass FSBMScaleUp4x4LinearFilter
     {
         ZEnable = FALSE;
         AlphaBlendEnable = FALSE;
-        VertexShader = compile vs_3_0 vsDx9_blit();
-        PixelShader = compile ps_3_0 psDx9_FSBMScaleUp4x4LinearFilter();
+        VertexShader = compile vs_2_0 vsDx9_blit();
+        PixelShader = compile ps_2_0 psDx9_FSBMScaleUp4x4LinearFilter();
     }
 
     pass FSBMScaleDown2x2Filter
     {
         ZEnable = FALSE;
         AlphaBlendEnable = FALSE;
-        VertexShader = compile vs_3_0 vsDx9_blit();
-        PixelShader = compile ps_3_0 psDx9_FSBMScaleDown2x2Filter();
+        VertexShader = compile vs_2_0 vsDx9_blit();
+        PixelShader = compile ps_2_0 psDx9_FSBMScaleDown2x2Filter();
     }
 
     pass FSBMScaleDown4x4Filter
     {
         ZEnable = FALSE;
         AlphaBlendEnable = FALSE;
-        VertexShader = compile vs_3_0 vsDx9_Down4x4Filter14();
-        PixelShader = compile ps_3_0 psDx9_FSBMScaleDown4x4Filter14();
+        VertexShader = compile vs_2_0 vsDx9_Down4x4Filter14();
+        PixelShader = compile ps_2_0 psDx9_FSBMScaleDown4x4Filter14();
 
     }
 
@@ -981,8 +981,8 @@ technique Blit_3_0
     {
         ZEnable = FALSE;
         AlphaBlendEnable = FALSE;
-        VertexShader = compile vs_3_0 vsDx9_blit();
-        PixelShader = compile ps_3_0 psDx9_FSBMScaleDown4x4LinearFilter();
+        VertexShader = compile vs_2_0 vsDx9_blit();
+        PixelShader = compile ps_2_0 psDx9_FSBMScaleDown4x4LinearFilter();
     }
 
     pass FSBMGaussianBlur5x5CheapFilter
@@ -990,8 +990,8 @@ technique Blit_3_0
         /*
             ZEnable = FALSE;
             AlphaBlendEnable = FALSE;
-            VertexShader = compile vs_3_0 vsDx9_blit();
-            PixelShader = compile ps_3_0 psDx9_FSBMGaussianBlur5x5CheapFilter();
+            VertexShader = compile vs_2_0 vsDx9_blit();
+            PixelShader = compile ps_2_0 psDx9_FSBMGaussianBlur5x5CheapFilter();
         */
     }
 
@@ -1000,8 +1000,8 @@ technique Blit_3_0
         /*
             ZEnable = FALSE;
             AlphaBlendEnable = FALSE;
-            VertexShader = compile vs_3_0 vsDx9_blit();
-            PixelShader = compile ps_3_0 psDx9_FSBMGaussianBlur15x15HorizontalFilter();//psDx9_FSBMGaussianBlur15x15HorizontalFilter2();
+            VertexShader = compile vs_2_0 vsDx9_blit();
+            PixelShader = compile ps_2_0 psDx9_FSBMGaussianBlur15x15HorizontalFilter();//psDx9_FSBMGaussianBlur15x15HorizontalFilter2();
         */
     }
 
@@ -1010,8 +1010,8 @@ technique Blit_3_0
         /*
             ZEnable = FALSE;
             AlphaBlendEnable = FALSE;
-            VertexShader = compile vs_3_0 vsDx9_blit();
-            PixelShader = compile ps_3_0 psDx9_FSBMGaussianBlur15x15VerticalFilter();//psDx9_FSBMGaussianBlur15x15VerticalFilter2();
+            VertexShader = compile vs_2_0 vsDx9_blit();
+            PixelShader = compile ps_2_0 psDx9_FSBMGaussianBlur15x15VerticalFilter();//psDx9_FSBMGaussianBlur15x15VerticalFilter2();
         */
     }
 
@@ -1020,8 +1020,8 @@ technique Blit_3_0
         /*
             ZEnable = FALSE;
             AlphaBlendEnable = FALSE;
-            VertexShader = compile vs_3_0 vsDx9_blit();
-            PixelShader = compile ps_3_0 psDx9_FSBMGrowablePoisson13Filter();
+            VertexShader = compile vs_2_0 vsDx9_blit();
+            PixelShader = compile ps_2_0 psDx9_FSBMGrowablePoisson13Filter();
         */
     }
 
@@ -1030,8 +1030,8 @@ technique Blit_3_0
         /*
             ZEnable = FALSE;
             AlphaBlendEnable = FALSE;
-            VertexShader = compile vs_3_0 vsDx9_blit();
-            PixelShader = compile ps_3_0 psDx9_FSBMGrowablePoisson13AndDilationFilter();
+            VertexShader = compile vs_2_0 vsDx9_blit();
+            PixelShader = compile ps_2_0 psDx9_FSBMGrowablePoisson13AndDilationFilter();
         */
     }
 
@@ -1039,8 +1039,8 @@ technique Blit_3_0
     {
         ZEnable = FALSE;
         AlphaBlendEnable = FALSE;
-        VertexShader = compile vs_3_0 vsDx9_blit();
-        PixelShader = compile ps_3_0 psDx9_FSBMScaleUpBloomFilter();
+        VertexShader = compile vs_2_0 vsDx9_blit();
+        PixelShader = compile ps_2_0 psDx9_FSBMScaleUpBloomFilter();
     }
 
     pass FSBMPassThroughSaturateAlpha
@@ -1049,8 +1049,8 @@ technique Blit_3_0
         AlphaBlendEnable = FALSE;
         StencilEnable = FALSE;
         AlphaTestEnable = FALSE;
-        VertexShader = compile vs_3_0 vsDx9_blit();
-        PixelShader = compile ps_3_0 psDx9_FSBMPassThroughSaturateAlpha();
+        VertexShader = compile vs_2_0 vsDx9_blit();
+        PixelShader = compile ps_2_0 psDx9_FSBMPassThroughSaturateAlpha();
     }
 
     pass FSBMCopyOtherRGBToAlpha
@@ -1061,8 +1061,8 @@ technique Blit_3_0
         AlphaTestEnable = FALSE;
         ColorWriteEnable = ALPHA;
 
-        VertexShader = compile vs_3_0 vsDx9_blit();
-        PixelShader = compile ps_3_0 psDx9_FSBMCopyOtherRGBToAlpha();
+        VertexShader = compile vs_2_0 vsDx9_blit();
+        PixelShader = compile ps_2_0 psDx9_FSBMCopyOtherRGBToAlpha();
 
     }
 
@@ -1073,8 +1073,8 @@ technique Blit_3_0
         StencilEnable = FALSE;
         AlphaTestEnable = FALSE;
 
-        VertexShader = compile vs_3_0 vsDx9_blitMagnified();
-        PixelShader = compile ps_3_0 psDx9_FSBMClear();
+        VertexShader = compile vs_2_0 vsDx9_blitMagnified();
+        PixelShader = compile ps_2_0 psDx9_FSBMClear();
     }
 
     pass FSBMClearAlpha
@@ -1085,8 +1085,8 @@ technique Blit_3_0
         AlphaTestEnable = FALSE;
         ColorWriteEnable = ALPHA;
 
-        VertexShader = compile vs_3_0 vsDx9_blitMagnified();
-        PixelShader = compile ps_3_0 psDx9_FSBMClear();
+        VertexShader = compile vs_2_0 vsDx9_blitMagnified();
+        PixelShader = compile ps_2_0 psDx9_FSBMClear();
     }
 
     pass FSBMPassThroughBilinearAdditive
@@ -1097,8 +1097,8 @@ technique Blit_3_0
         DestBlend = ONE;
         StencilEnable = FALSE;
         AlphaTestEnable = FALSE;
-        VertexShader = compile vs_3_0 vsDx9_blit();
-        PixelShader = compile ps_3_0 psDx9_FSBMPassThroughBilinear();
+        VertexShader = compile vs_2_0 vsDx9_blit();
+        PixelShader = compile ps_2_0 psDx9_FSBMPassThroughBilinear();
     }
 
     pass FSBMExtractGlowFilter
@@ -1106,8 +1106,8 @@ technique Blit_3_0
         ZEnable = FALSE;
         AlphaBlendEnable = FALSE;
 
-        VertexShader = compile vs_3_0 vsDx9_blit();
-        PixelShader = compile ps_3_0 psDx9_FSBMExtractGlowFilter();
+        VertexShader = compile vs_2_0 vsDx9_blit();
+        PixelShader = compile ps_2_0 psDx9_FSBMExtractGlowFilter();
     }
 
     pass FSBMExtractCamouflage
@@ -1115,24 +1115,24 @@ technique Blit_3_0
         ZEnable = FALSE;
         AlphaBlendEnable = FALSE;
 
-        VertexShader = compile vs_3_0 vsDx9_blit();
-        PixelShader = compile ps_3_0 psDx9_FSBMExtractCamouflage();
+        VertexShader = compile vs_2_0 vsDx9_blit();
+        PixelShader = compile ps_2_0 psDx9_FSBMExtractCamouflage();
     }
 
     pass FSBMScaleDown4x4LinearFilterHorizontal
     {
         ZEnable = FALSE;
         AlphaBlendEnable = FALSE;
-        VertexShader = compile vs_3_0 vsDx9_4TapFilter(scaleDown4x4LinearSampleOffsets);
-        PixelShader = compile ps_3_0 psDx9_FSBMScaleDown4x4LinearFilter();
+        VertexShader = compile vs_2_0 vsDx9_4TapFilter(scaleDown4x4LinearSampleOffsets);
+        PixelShader = compile ps_2_0 psDx9_FSBMScaleDown4x4LinearFilter();
     }
 
     pass FSBMScaleDown4x4LinearFilterVertical
     {
         ZEnable = FALSE;
         AlphaBlendEnable = FALSE;
-        VertexShader = compile vs_3_0 vsDx9_4TapFilter(scaleDown4x4LinearSampleOffsets);
-        PixelShader = compile ps_3_0 psDx9_FSBMScaleDown4x4LinearFilter();
+        VertexShader = compile vs_2_0 vsDx9_4TapFilter(scaleDown4x4LinearSampleOffsets);
+        PixelShader = compile ps_2_0 psDx9_FSBMScaleDown4x4LinearFilter();
     }
 
     pass FSBMGlowHorizontalFilter
@@ -1140,8 +1140,8 @@ technique Blit_3_0
         ZEnable = FALSE;
         AlphaBlendEnable = FALSE;
 
-        VertexShader = compile vs_3_0 vsDx9_5SampleFilter14(glowHorizOffsets, true);
-        PixelShader = compile ps_3_0 psDx9_FSBMGlowFilter14(glowHorizWeights);
+        VertexShader = compile vs_2_0 vsDx9_5SampleFilter14(glowHorizOffsets, true);
+        PixelShader = compile ps_2_0 psDx9_FSBMGlowFilter14(glowHorizWeights);
     }
 
     pass FSBMGlowVerticalFilter
@@ -1149,8 +1149,8 @@ technique Blit_3_0
         ZEnable = FALSE;
         AlphaBlendEnable = FALSE;
 
-        VertexShader = compile vs_3_0 vsDx9_5SampleFilter14(glowVertOffsets, false);
-        PixelShader = compile ps_3_0 psDx9_FSBMGlowFilter14(glowVertWeights);
+        VertexShader = compile vs_2_0 vsDx9_5SampleFilter14(glowVertOffsets, false);
+        PixelShader = compile ps_2_0 psDx9_FSBMGlowFilter14(glowVertWeights);
     }
 
     pass FSBMCamouflageBlurPassThrough
@@ -1158,8 +1158,8 @@ technique Blit_3_0
         ZEnable = FALSE;
         AlphaBlendEnable = TRUE;
 
-        VertexShader = compile vs_3_0 vsDx9_blit();
-        PixelShader = compile ps_3_0 psDx9_FSBMCamouflageBlur();
+        VertexShader = compile vs_2_0 vsDx9_blit();
+        PixelShader = compile ps_2_0 psDx9_FSBMCamouflageBlur();
     }
 
     pass FSBMContrastFilter
@@ -1167,8 +1167,8 @@ technique Blit_3_0
         ZEnable = FALSE;
         AlphaBlendEnable = FALSE;
 
-        VertexShader = compile vs_3_0 vsDx9_blit();
-        PixelShader = compile ps_3_0 psDx9_FSBMContrast();
+        VertexShader = compile vs_2_0 vsDx9_blit();
+        PixelShader = compile ps_2_0 psDx9_FSBMContrast();
     }
 
     pass FSBMLargeBloomHorizontalFilter
@@ -1176,8 +1176,8 @@ technique Blit_3_0
         ZEnable = FALSE;
         AlphaBlendEnable = FALSE;
 
-        VertexShader = compile vs_3_0 vsDx9_5SampleFilter14(glowHorizOffsets, true);
-        PixelShader = compile ps_3_0 psDx9_FSBMGlowFilter14(glowHorizWeights);
+        VertexShader = compile vs_2_0 vsDx9_5SampleFilter14(glowHorizOffsets, true);
+        PixelShader = compile ps_2_0 psDx9_FSBMGlowFilter14(glowHorizWeights);
     }
 
     pass FSBMLargeBloomVerticalFilter
@@ -1185,8 +1185,8 @@ technique Blit_3_0
         ZEnable = FALSE;
         AlphaBlendEnable = FALSE;
 
-        VertexShader = compile vs_3_0 vsDx9_5SampleFilter14(glowVertOffsets, false);
-        PixelShader = compile ps_3_0 psDx9_FSBMGlowFilter14(glowVertWeights);
+        VertexShader = compile vs_2_0 vsDx9_5SampleFilter14(glowVertOffsets, false);
+        PixelShader = compile ps_2_0 psDx9_FSBMGlowFilter14(glowVertWeights);
     }
 }
 
@@ -1217,8 +1217,8 @@ technique StencilPasses
         StencilZFail = KEEP;
         StencilPass = KEEP;
 
-        VertexShader = compile vs_3_0 vsDx9_blit();
-        PixelShader = compile ps_3_0 psDx9_StencilGather();
+        VertexShader = compile vs_2_0 vsDx9_blit();
+        PixelShader = compile ps_2_0 psDx9_StencilGather();
     }
 
     pass StencilMap
@@ -1228,8 +1228,8 @@ technique StencilPasses
         AlphaTestEnable = FALSE;
         StencilEnable = FALSE;
 
-        VertexShader = compile vs_3_0 vsDx9_blit();
-        PixelShader = compile ps_3_0 psDx9_StencilMap();
+        VertexShader = compile vs_2_0 vsDx9_blit();
+        PixelShader = compile ps_2_0 psDx9_StencilMap();
     }
 }
 
@@ -1263,7 +1263,7 @@ technique ResetStencilCuller
         StencilPass = (dwStencilPass);
         TwoSidedStencilMode = FALSE;
 
-        VertexShader = compile vs_3_0 vsDx9_blit();
-        PixelShader = compile ps_3_0 psZero();
+        VertexShader = compile vs_2_0 vsDx9_blit();
+        PixelShader = compile ps_2_0 psZero();
     }
 }

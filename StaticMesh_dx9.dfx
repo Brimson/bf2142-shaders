@@ -379,8 +379,8 @@ technique _STATICMESH_VARIABLESHADER_
         CullMode = CCW;
         ColorWriteEnable = RED|BLUE|GREEN|ALPHA;
 
-        VertexShader = compile vs_3_0 vsStaticMesh();
-        PixelShader = compile ps_3_0 psStaticMesh();
+        VertexShader = compile vs_2_0 vsStaticMesh();
+        PixelShader = compile ps_2_0 psStaticMesh();
     }
 }
 
@@ -578,9 +578,9 @@ technique _STATICMESH_MULTIPASS_
         CullMode = CCW;
         ColorWriteEnable = RED|BLUE|GREEN|ALPHA;
 
-        VertexShader = compile vs_3_0 vsStaticMeshMultiPassLighting();
-        PixelShader = compile ps_3_0 psStaticMeshMultiPassLighting();
-        // PixelShader = compile ps_3_0 psStaticMeshMultiPassLighting();
+        VertexShader = compile vs_2_0 vsStaticMeshMultiPassLighting();
+        PixelShader = compile ps_2_0 psStaticMeshMultiPassLighting();
+        // PixelShader = compile ps_2_0 psStaticMeshMultiPassLighting();
     }
 
     pass color
@@ -599,8 +599,8 @@ technique _STATICMESH_MULTIPASS_
         CullMode = CCW;
         ColorWriteEnable = RED|BLUE|GREEN|ALPHA;
 
-        VertexShader = compile vs_3_0 vsStaticMeshMultiPassColor();
-        PixelShader = compile ps_3_0 psStaticMeshMultiPassColor();
+        VertexShader = compile vs_2_0 vsStaticMeshMultiPassColor();
+        PixelShader = compile ps_2_0 psStaticMeshMultiPassColor();
     }
 
 }
@@ -635,7 +635,7 @@ technique _STATICMESH_ZONLYSHADER_
         AlphaBlendEnable = FALSE;
         AlphaTestEnable = FALSE;
 
-        VertexShader = compile vs_3_0 vsZOnly();
-        PixelShader = compile ps_3_0 psZOnly();
+        VertexShader = compile vs_2_0 vsZOnly();
+        PixelShader = compile ps_2_0 psZOnly();
      }
 }

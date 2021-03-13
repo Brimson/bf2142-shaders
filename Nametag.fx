@@ -372,8 +372,8 @@ technique nametag
         ZEnable = FALSE;
         ZWriteEnable = FALSE;
 
-        VertexShader = compile vs_3_0 vsNametag();
-        PixelShader = compile ps_3_0 psNametag();
+        VertexShader = compile vs_2_0 vsNametag();
+        PixelShader = compile ps_2_0 psNametag();
     }
 }
 
@@ -400,8 +400,8 @@ technique nametag_arrow
         ZEnable = FALSE;
         ZWriteEnable = FALSE;
 
-        VertexShader = compile vs_3_0 vsNametag_arrow();
-        PixelShader = compile ps_3_0 psNametag_arrow();
+        VertexShader = compile vs_2_0 vsNametag_arrow();
+        PixelShader = compile ps_2_0 psNametag_arrow();
     }
 }
 
@@ -429,8 +429,8 @@ technique nametag_healthbar
         ZEnable = FALSE;
         ZWriteEnable = FALSE;
 
-        VertexShader = compile vs_3_0 vsNametag_healthbar();
-        PixelShader = compile ps_3_0 psNametag_healthbar();
+        VertexShader = compile vs_2_0 vsNametag_healthbar();
+        PixelShader = compile ps_2_0 psNametag_healthbar();
     }
 }
 
@@ -457,8 +457,8 @@ technique nametag_vehicleIcons
         ZEnable = FALSE;
         ZWriteEnable = FALSE;
 
-        VertexShader = compile vs_3_0 vsNametag_vehicleIcons();
-        PixelShader = compile ps_3_0 psNametag_icon();
+        VertexShader = compile vs_2_0 vsNametag_vehicleIcons();
+        PixelShader = compile ps_2_0 psNametag_icon();
     }
 }
 
@@ -485,8 +485,8 @@ technique nametag_barIcons
         ZEnable = FALSE;
         ZWriteEnable = FALSE;
 
-        VertexShader = compile vs_3_0 vsNametag_barIcons();
-        PixelShader = compile ps_3_0 psNametag_icon();
+        VertexShader = compile vs_2_0 vsNametag_barIcons();
+        PixelShader = compile ps_2_0 psNametag_icon();
     }
 }
 
@@ -513,7 +513,7 @@ technique nametag_selectableVehicleIcons
         ZEnable = FALSE;
         ZWriteEnable = FALSE;
 
-        VertexShader = compile vs_3_0 vsNametag_selectableVehicleIcons();
-        PixelShader = compile ps_3_0 psNametag_selectableIcon();
+        VertexShader = compile vs_2_0 vsNametag_selectableVehicleIcons();
+        PixelShader = compile ps_2_0 psNametag_selectableIcon();
     }
 }

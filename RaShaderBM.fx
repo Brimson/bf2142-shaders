@@ -482,8 +482,8 @@ technique defaultTechnique//Variable
 {
     pass p0
     {
-        VertexShader	= compile vs_3_0 vs();
-        PixelShader		= compile ps_3_0 ps();
+        VertexShader	= compile vs_2_0 vs();
+        PixelShader		= compile ps_2_0 ps();
 
         #ifdef ENABLE_WIREFRAME
             FillMode = WireFrame;

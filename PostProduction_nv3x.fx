@@ -119,8 +119,8 @@ technique Tinnitus
         AlphaBlendEnable = FALSE;
         StencilEnable = FALSE;
 
-        VertexShader = compile vs_3_0 vsDx9_Tinnitus();
-        PixelShader = compile ps_3_0 psDx9_Tinnitus();
+        VertexShader = compile vs_2_0 vsDx9_Tinnitus();
+        PixelShader = compile ps_2_0 psDx9_Tinnitus();
     }
 }
 
@@ -200,8 +200,8 @@ technique ColorTransform
         AlphaBlendEnable = FALSE;
         StencilEnable = FALSE;
 
-        VertexShader = compile vs_3_0 vsDx9_ColorTransform();
-        PixelShader = compile ps_3_0 psDx9_ColorTransform14();
+        VertexShader = compile vs_2_0 vsDx9_ColorTransform();
+        PixelShader = compile ps_2_0 psDx9_ColorTransform14();
 
     }
 }
@@ -243,8 +243,8 @@ technique CameraEffect
         AlphaBlendEnable = FALSE;
         StencilEnable = FALSE;
 
-        VertexShader = compile vs_3_0 vsDx9_ColorTransform();
-        PixelShader = compile ps_3_0 psDx9_CameraEffect();
+        VertexShader = compile vs_2_0 vsDx9_ColorTransform();
+        PixelShader = compile ps_2_0 psDx9_CameraEffect();
     }
 }
 
@@ -296,8 +296,8 @@ technique Soften
         StencilEnable = FALSE;
 
         // TODO: Shouldn't use the Tinnitus vs. Could use a much simpler vs
-        VertexShader = compile vs_3_0 vsDx9_Tinnitus();
-        PixelShader = compile ps_3_0 psDx9_Soften();
+        VertexShader = compile vs_2_0 vsDx9_Tinnitus();
+        PixelShader = compile ps_2_0 psDx9_Soften();
     }
 }
 
@@ -311,8 +311,8 @@ technique EMP
         StencilEnable = FALSE;
 
         // TODO: Shouldn't use the Tinnitus vs. Could use a much simpler vs
-        VertexShader = compile vs_3_0 vsDx9_Tinnitus();
-        PixelShader = compile ps_3_0 psDx9_EMP20();
+        VertexShader = compile vs_2_0 vsDx9_Tinnitus();
+        PixelShader = compile ps_2_0 psDx9_EMP20();
     }
 }
 
@@ -391,8 +391,8 @@ technique Contrast
         StencilEnable = FALSE;
 
         //TODO: Shouldn't use the Tinnitus vs. Could use a much simpler vs
-        VertexShader = compile vs_3_0 vsDx9_Tinnitus();
-        PixelShader = compile ps_3_0 psDx9_Contrast();
+        VertexShader = compile vs_2_0 vsDx9_Tinnitus();
+        PixelShader = compile ps_2_0 psDx9_Contrast();
     }
 }
 
@@ -407,8 +407,8 @@ technique ThermopticCamouflage
     {
         ZEnable = FALSE;
         AlphaBlendEnable = FALSE;
-        VertexShader = compile vs_3_0 vsDx9_OneTexcoord();
-        PixelShader = compile ps_3_0 psDx9_ThermopticCamouflage();
+        VertexShader = compile vs_2_0 vsDx9_OneTexcoord();
+        PixelShader = compile ps_2_0 psDx9_ThermopticCamouflage();
     }
 }
 
@@ -442,8 +442,8 @@ technique GlowMaterial
         StencilZFail = KEEP;
         StencilPass = KEEP;
 
-        VertexShader = compile vs_3_0 vsDx9_OneTexcoord();
-        PixelShader = compile ps_3_0 psDx9_GlowMaterial();
+        VertexShader = compile vs_2_0 vsDx9_OneTexcoord();
+        PixelShader = compile ps_2_0 psDx9_GlowMaterial();
     }
 }
 
@@ -459,8 +459,8 @@ technique Glow
         SrcBlend = SRCCOLOR;
         DestBlend = ONE;
 
-        VertexShader = compile vs_3_0 vsDx9_OneTexcoord();
-        PixelShader = compile ps_3_0 psDx9_Glow();
+        VertexShader = compile vs_2_0 vsDx9_OneTexcoord();
+        PixelShader = compile ps_2_0 psDx9_Glow();
     }
 }
 
@@ -494,8 +494,8 @@ technique Fog
         StencilZFail = KEEP;
         StencilPass = KEEP;
 
-        VertexShader = compile vs_3_0 vsDx9_OneTexcoord();
-        PixelShader = compile ps_3_0 psDx9_Fog();
+        VertexShader = compile vs_2_0 vsDx9_OneTexcoord();
+        PixelShader = compile ps_2_0 psDx9_Fog();
     }
 }
 
@@ -561,7 +561,7 @@ technique TVEffect
         AlphaBlendEnable = FALSE;
         StencilEnable = FALSE;
 
-        VertexShader = compile vs_3_0 vs_TVEffect();
-        PixelShader = compile ps_3_0 ps_TVEffect();
+        VertexShader = compile vs_2_0 vs_TVEffect();
+        PixelShader = compile ps_2_0 ps_TVEffect();
     }
 }

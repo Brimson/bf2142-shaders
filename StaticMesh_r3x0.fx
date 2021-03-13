@@ -375,8 +375,8 @@ technique DX9ZAndDiffusebase
         StencilZFail = KEEP;
         StencilPass = REPLACE;
 
-        VertexShader = compile vs_3_0 vsZAndDiffuseBase();
-        PixelShader = compile ps_3_0 psZAndDiffuseBase();
+        VertexShader = compile vs_2_0 vsZAndDiffuseBase();
+        PixelShader = compile ps_2_0 psZAndDiffuseBase();
     }
 }
 
@@ -394,8 +394,8 @@ technique DX9ZAndDiffusebasedetail
         StencilZFail = KEEP;
         StencilPass = REPLACE;
 
-        VertexShader = compile vs_3_0 vsZAndDiffuseBaseDetail();
-        PixelShader = compile ps_3_0 psZAndDiffuseBaseDetail();
+        VertexShader = compile vs_2_0 vsZAndDiffuseBaseDetail();
+        PixelShader = compile ps_2_0 psZAndDiffuseBaseDetail();
     }
 }
 
@@ -413,8 +413,8 @@ technique DX9ZAndDiffusebasedetailparallax
         StencilZFail = KEEP;
         StencilPass = REPLACE;
 
-        VertexShader = compile vs_3_0 vsZAndDiffuseBaseDetailParallax();
-        PixelShader = compile ps_3_0 psZAndDiffuseBaseDetailParallax();
+        VertexShader = compile vs_2_0 vsZAndDiffuseBaseDetailParallax();
+        PixelShader = compile ps_2_0 psZAndDiffuseBaseDetailParallax();
     }
 }
 
@@ -432,8 +432,8 @@ technique DX9ZAndDiffusebasedetaildirt
         StencilZFail = KEEP;
         StencilPass = REPLACE;
 
-        VertexShader = compile vs_3_0 vsZAndDiffuseBaseDetailDirt();
-        PixelShader = compile ps_3_0 psZAndDiffuseBaseDetailDirt();
+        VertexShader = compile vs_2_0 vsZAndDiffuseBaseDetailDirt();
+        PixelShader = compile ps_2_0 psZAndDiffuseBaseDetailDirt();
     }
 }
 
@@ -451,8 +451,8 @@ technique DX9ZAndDiffusebasedetaildirtparallax
         StencilZFail = KEEP;
         StencilPass = REPLACE;
 
-        VertexShader = compile vs_3_0 vsZAndDiffuseBaseDetailDirtParallax();
-        PixelShader = compile ps_3_0 psZAndDiffuseBaseDetailDirtParallax();
+        VertexShader = compile vs_2_0 vsZAndDiffuseBaseDetailDirtParallax();
+        PixelShader = compile ps_2_0 psZAndDiffuseBaseDetailDirtParallax();
     }
 }
 
@@ -470,8 +470,8 @@ technique DX9ZAndDiffusebasedetailcrack
         StencilZFail = KEEP;
         StencilPass = REPLACE;
 
-        VertexShader = compile vs_3_0 vsZAndDiffuseBaseDetailCrack();
-        PixelShader = compile ps_3_0 psZAndDiffuseBaseDetailCrack();
+        VertexShader = compile vs_2_0 vsZAndDiffuseBaseDetailCrack();
+        PixelShader = compile ps_2_0 psZAndDiffuseBaseDetailCrack();
     }
 }
 
@@ -489,8 +489,8 @@ technique DX9ZAndDiffusebasedetailcrackparallax
         StencilZFail = KEEP;
         StencilPass = REPLACE;
 
-        VertexShader = compile vs_3_0 vsZAndDiffuseBaseDetailCrackParallax();
-        PixelShader = compile ps_3_0 psZAndDiffuseBaseDetailCrackParallax();
+        VertexShader = compile vs_2_0 vsZAndDiffuseBaseDetailCrackParallax();
+        PixelShader = compile ps_2_0 psZAndDiffuseBaseDetailCrackParallax();
     }
 }
 
@@ -508,8 +508,8 @@ technique DX9ZAndDiffusebasedetaildirtcrack
         StencilZFail = KEEP;
         StencilPass = REPLACE;
 
-        VertexShader = compile vs_3_0 vsZAndDiffuseBaseDetailDirtCrack();
-        PixelShader = compile ps_3_0 psZAndDiffuseBaseDetailDirtCrack();
+        VertexShader = compile vs_2_0 vsZAndDiffuseBaseDetailDirtCrack();
+        PixelShader = compile ps_2_0 psZAndDiffuseBaseDetailDirtCrack();
     }
 }
 
@@ -527,8 +527,8 @@ technique DX9ZAndDiffusebasedetaildirtcrackparallax
         StencilZFail = KEEP;
         StencilPass = REPLACE;
 
-        VertexShader = compile vs_3_0 vsZAndDiffuseBaseDetailDirtCrackParallax();
-        PixelShader = compile ps_3_0 psZAndDiffuseBaseDetailDirtCrackParallax();
+        VertexShader = compile vs_2_0 vsZAndDiffuseBaseDetailDirtCrackParallax();
+        PixelShader = compile ps_2_0 psZAndDiffuseBaseDetailDirtCrackParallax();
     }
 }
 
@@ -1751,8 +1751,8 @@ technique DX9GBuffbase
 
         StencilEnable = FALSE;
 
-        VertexShader = compile vs_3_0 vsGBuffBase();
-        PixelShader = compile ps_3_0 psGBuffBase();
+        VertexShader = compile vs_2_0 vsGBuffBase();
+        PixelShader = compile ps_2_0 psGBuffBase();
     }
 }
 
@@ -1766,8 +1766,8 @@ technique DX9GBuffbaseLM
 
         StencilEnable = FALSE;
 
-        VertexShader = compile vs_3_0 vsGBuffBaseLM();
-        PixelShader = compile ps_3_0 psGBuffBaseLM();
+        VertexShader = compile vs_2_0 vsGBuffBaseLM();
+        PixelShader = compile ps_2_0 psGBuffBaseLM();
     }
 }
 
@@ -1792,8 +1792,8 @@ technique DX9GBuffbaseLMAT0
             StencilPass = REPLACE;
         */
 
-        VertexShader = compile vs_3_0 vsGBuffBaseLMAT();
-        PixelShader = compile ps_3_0 psGBuffBaseLMAT0();
+        VertexShader = compile vs_2_0 vsGBuffBaseLMAT();
+        PixelShader = compile ps_2_0 psGBuffBaseLMAT0();
     }
 }
 
@@ -1810,8 +1810,8 @@ technique DX9GBuffbaseLMAT1
         ColorWriteEnable = RED|BLUE|GREEN|ALPHA;
         StencilEnable = FALSE;
 
-        VertexShader = compile vs_3_0 vsGBuffBaseLMAT1();
-        PixelShader = compile ps_3_0 psGBuffBaseLMAT1_Diffuse();
+        VertexShader = compile vs_2_0 vsGBuffBaseLMAT1();
+        PixelShader = compile ps_2_0 psGBuffBaseLMAT1_Diffuse();
     }
 }
 
@@ -1828,8 +1828,8 @@ technique DX9GBuffbaseLMAT2
         ColorWriteEnable = RED|BLUE|GREEN|ALPHA;
         StencilEnable = FALSE;
 
-        VertexShader = compile vs_3_0 vsGBuffBaseLMAT1();
-        PixelShader = compile ps_3_0 psGBuffBaseLMAT1_MRT();
+        VertexShader = compile vs_2_0 vsGBuffBaseLMAT1();
+        PixelShader = compile ps_2_0 psGBuffBaseLMAT1_MRT();
     }
 }
 
@@ -1844,8 +1844,8 @@ technique DX9GBuffbasedetail
 
         StencilEnable = FALSE;
 
-        VertexShader = compile vs_3_0 vsGBuffBaseDetail();
-        PixelShader = compile ps_3_0 psGBuffBaseDetail();
+        VertexShader = compile vs_2_0 vsGBuffBaseDetail();
+        PixelShader = compile ps_2_0 psGBuffBaseDetail();
     }
 }
 
@@ -1859,8 +1859,8 @@ technique DX9GBuffbasedetailparallax
 
         StencilEnable = FALSE;
 
-        VertexShader = compile vs_3_0 vsGBuffBaseDetailParallax();
-        PixelShader = compile ps_3_0 psGBuffBaseDetailParallax();
+        VertexShader = compile vs_2_0 vsGBuffBaseDetailParallax();
+        PixelShader = compile ps_2_0 psGBuffBaseDetailParallax();
     }
 }
 
@@ -1874,8 +1874,8 @@ technique DX9GBuffbasedetailLM
 
         StencilEnable = FALSE;
 
-        VertexShader = compile vs_3_0 vsGBuffBaseDetailLM();
-        PixelShader = compile ps_3_0 psGBuffBaseDetailLM();
+        VertexShader = compile vs_2_0 vsGBuffBaseDetailLM();
+        PixelShader = compile ps_2_0 psGBuffBaseDetailLM();
     }
 }
 
@@ -1889,8 +1889,8 @@ technique DX9GBuffbasedetailLMparallax
 
         StencilEnable = FALSE;
 
-        VertexShader = compile vs_3_0 vsGBuffBaseDetailLMParallax();
-        PixelShader = compile ps_3_0 psGBuffBaseDetailLMParallax();
+        VertexShader = compile vs_2_0 vsGBuffBaseDetailLMParallax();
+        PixelShader = compile ps_2_0 psGBuffBaseDetailLMParallax();
     }
 }
 
@@ -1904,8 +1904,8 @@ technique DX9GBuffbasedetaildirt
 
         StencilEnable = FALSE;
 
-        VertexShader = compile vs_3_0 vsGBuffBaseDetailDirt();
-        PixelShader = compile ps_3_0 psGBuffBaseDetailDirt();
+        VertexShader = compile vs_2_0 vsGBuffBaseDetailDirt();
+        PixelShader = compile ps_2_0 psGBuffBaseDetailDirt();
     }
 }
 
@@ -1919,8 +1919,8 @@ technique DX9GBuffbasedetaildirtparallax
 
         StencilEnable = FALSE;
 
-        VertexShader = compile vs_3_0 vsGBuffBaseDetailDirtParallax();
-        PixelShader = compile ps_3_0 psGBuffBaseDetailDirtParallax();
+        VertexShader = compile vs_2_0 vsGBuffBaseDetailDirtParallax();
+        PixelShader = compile ps_2_0 psGBuffBaseDetailDirtParallax();
     }
 }
 
@@ -1934,8 +1934,8 @@ technique DX9GBuffbasedetaildirtLM
 
         StencilEnable = FALSE;
 
-        VertexShader = compile vs_3_0 vsGBuffBaseDetailDirtLM();
-        PixelShader = compile ps_3_0 psGBuffBaseDetailDirtLM();
+        VertexShader = compile vs_2_0 vsGBuffBaseDetailDirtLM();
+        PixelShader = compile ps_2_0 psGBuffBaseDetailDirtLM();
     }
 }
 
@@ -1949,8 +1949,8 @@ technique DX9GBuffbasedetaildirtLMparallax
 
         StencilEnable = FALSE;
 
-        VertexShader = compile vs_3_0 vsGBuffBaseDetailDirtLMParallax();
-        PixelShader = compile ps_3_0 psGBuffBaseDetailDirtLMParallax();
+        VertexShader = compile vs_2_0 vsGBuffBaseDetailDirtLMParallax();
+        PixelShader = compile ps_2_0 psGBuffBaseDetailDirtLMParallax();
     }
 }
 
@@ -1964,8 +1964,8 @@ technique DX9GBuffbasedetailcrack
 
         StencilEnable = FALSE;
 
-        VertexShader = compile vs_3_0 vsGBuffBaseDetailCrack();
-        PixelShader = compile ps_3_0 psGBuffBaseDetailCrack();
+        VertexShader = compile vs_2_0 vsGBuffBaseDetailCrack();
+        PixelShader = compile ps_2_0 psGBuffBaseDetailCrack();
     }
 }
 
@@ -1979,8 +1979,8 @@ technique DX9GBuffbasedetailcrackparallax
 
         StencilEnable = FALSE;
 
-        VertexShader = compile vs_3_0 vsGBuffBaseDetailCrackParallax();
-        PixelShader = compile ps_3_0 psGBuffBaseDetailCrackParallax();
+        VertexShader = compile vs_2_0 vsGBuffBaseDetailCrackParallax();
+        PixelShader = compile ps_2_0 psGBuffBaseDetailCrackParallax();
     }
 }
 
@@ -1994,8 +1994,8 @@ technique DX9GBuffbasedetailcrackLM
 
         StencilEnable = FALSE;
 
-        VertexShader = compile vs_3_0 vsGBuffBaseDetailCrackLM();
-        PixelShader = compile ps_3_0 psGBuffBaseDetailCrackLM();
+        VertexShader = compile vs_2_0 vsGBuffBaseDetailCrackLM();
+        PixelShader = compile ps_2_0 psGBuffBaseDetailCrackLM();
     }
 }
 
@@ -2009,8 +2009,8 @@ technique DX9GBuffbasedetailcrackLMparallax
 
         StencilEnable = FALSE;
 
-        VertexShader = compile vs_3_0 vsGBuffBaseDetailCrackLMParallax();
-        PixelShader = compile ps_3_0 psGBuffBaseDetailCrackLMParallax();
+        VertexShader = compile vs_2_0 vsGBuffBaseDetailCrackLMParallax();
+        PixelShader = compile ps_2_0 psGBuffBaseDetailCrackLMParallax();
     }
 }
 
@@ -2024,8 +2024,8 @@ technique DX9GBuffbasedetaildirtcrack
 
         StencilEnable = FALSE;
 
-        VertexShader = compile vs_3_0 vsGBuffBaseDetailDirtCrack();
-        PixelShader = compile ps_3_0 psGBuffBaseDetailDirtCrack();
+        VertexShader = compile vs_2_0 vsGBuffBaseDetailDirtCrack();
+        PixelShader = compile ps_2_0 psGBuffBaseDetailDirtCrack();
     }
 }
 
@@ -2039,8 +2039,8 @@ technique DX9GBuffbasedetaildirtcrackparallax
 
         StencilEnable = FALSE;
 
-        VertexShader = compile vs_3_0 vsGBuffBaseDetailDirtCrackParallax();
-        PixelShader = compile ps_3_0 psGBuffBaseDetailDirtCrackParallax();
+        VertexShader = compile vs_2_0 vsGBuffBaseDetailDirtCrackParallax();
+        PixelShader = compile ps_2_0 psGBuffBaseDetailDirtCrackParallax();
     }
 }
 
@@ -2054,8 +2054,8 @@ technique DX9GBuffbasedetaildirtcrackLM
 
         StencilEnable = FALSE;
 
-        VertexShader = compile vs_3_0 vsGBuffBaseDetailDirtCrackLM();
-        PixelShader = compile ps_3_0 psGBuffBaseDetailDirtCrackLM();
+        VertexShader = compile vs_2_0 vsGBuffBaseDetailDirtCrackLM();
+        PixelShader = compile ps_2_0 psGBuffBaseDetailDirtCrackLM();
     }
 }
 
@@ -2069,7 +2069,7 @@ technique DX9GBuffbasedetaildirtcrackLMparallax
 
         StencilEnable = FALSE;
 
-        VertexShader = compile vs_3_0 vsGBuffBaseDetailDirtCrackLMParallax();
-        PixelShader = compile ps_3_0 psGBuffBaseDetailDirtCrackLMParallax();
+        VertexShader = compile vs_2_0 vsGBuffBaseDetailDirtCrackLMParallax();
+        PixelShader = compile ps_2_0 psGBuffBaseDetailDirtCrackLMParallax();
     }
 }

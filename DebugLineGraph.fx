@@ -48,7 +48,7 @@ technique Graph <
 	{
 		ZEnable = FALSE;
 
-		VertexShader = compile vs_3_0 vs();
-		PixelShader = compile ps_3_0 ps();
+		VertexShader = compile vs_2_0 vs();
+		PixelShader = compile ps_2_0 ps();
 	}
 }

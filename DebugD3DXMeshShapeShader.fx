@@ -242,11 +242,11 @@ technique t0
         // ZWriteEnable = 0;
         // ZEnable = FALSE;
 
-        VertexShader = compile vs_3_0 VShader(mWorldViewProj,
+        VertexShader = compile vs_2_0 VShader(mWorldViewProj,
                                               MaterialAmbient,
                                               MaterialDiffuse,
                                               LhtDir);
-        PixelShader = compile ps_3_0 PShader();
+        PixelShader = compile ps_2_0 PShader();
     }
 }
 
@@ -272,8 +272,8 @@ technique occluder
         ZEnable = TRUE;
         ZFunc = LESSEQUAL;
 
-        VertexShader = compile vs_3_0 OccVShader(mWorldViewProj);
-        PixelShader = compile ps_3_0 OccPShader();
+        VertexShader = compile vs_2_0 OccVShader(mWorldViewProj);
+        PixelShader = compile ps_2_0 OccPShader();
     }
 }
 
@@ -298,11 +298,11 @@ technique EditorDebug
         ZFunc = LESSEQUAL;
 
 
-        VertexShader = compile vs_3_0 ED_VShader(mWorldViewProj,
+        VertexShader = compile vs_2_0 ED_VShader(mWorldViewProj,
                                                  MaterialAmbient,
                                                  MaterialDiffuse,
                                                  LhtDir);
-        PixelShader = compile ps_3_0 PShader();
+        PixelShader = compile ps_2_0 PShader();
     }
     pass p1
     {
@@ -318,11 +318,11 @@ technique EditorDebug
         ZEnable = TRUE;
         FillMode = WIREFRAME;
 
-        VertexShader = compile vs_3_0 ED_VShader(mWorldViewProj,
+        VertexShader = compile vs_2_0 ED_VShader(mWorldViewProj,
                                                  MaterialAmbient * 0.5,
                                                  MaterialDiffuse * 0.5,
                                                  LhtDir);
-        PixelShader = compile ps_3_0 PShader();
+        PixelShader = compile ps_2_0 PShader();
     }
     /*pass p2
     {
@@ -353,11 +353,11 @@ technique collisionMesh
         ZFunc = LESSEQUAL;
 
 
-        VertexShader = compile vs_3_0 CM_VShader(mWorldViewProj,
+        VertexShader = compile vs_2_0 CM_VShader(mWorldViewProj,
                                                  MaterialAmbient,
                                                  MaterialDiffuse,
                                                  LhtDir);
-        PixelShader = compile ps_3_0 PShader();
+        PixelShader = compile ps_2_0 PShader();
     }
     pass p1
     {
@@ -373,11 +373,11 @@ technique collisionMesh
         ZEnable = TRUE;
         FillMode = WIREFRAME;
 
-        VertexShader = compile vs_3_0 CM_VShader(mWorldViewProj,
+        VertexShader = compile vs_2_0 CM_VShader(mWorldViewProj,
                                                  MaterialAmbient * 0.5,
                                                  MaterialDiffuse * 0.5,
                                                  LhtDir);
-        PixelShader = compile ps_3_0 PShader();
+        PixelShader = compile ps_2_0 PShader();
     }
     pass p2
     {
@@ -404,11 +404,11 @@ technique marked
         SrcBlend = SRCALPHA;
         DestBlend = INVSRCALPHA;
 
-        VertexShader = compile vs_3_0 VShader(mWorldViewProj,
+        VertexShader = compile vs_2_0 VShader(mWorldViewProj,
                                               MaterialAmbient,
                                               MaterialDiffuse,
                                               LhtDir);
-        PixelShader = compile ps_3_0 PShaderMarked();
+        PixelShader = compile ps_2_0 PShaderMarked();
     }
 }
 
@@ -433,11 +433,11 @@ technique gamePlayObject
         //ZWriteEnable = TRUE;
         ZEnable = TRUE;
 
-        VertexShader = compile vs_3_0 VShader2(mWorldViewProj,
+        VertexShader = compile vs_2_0 VShader2(mWorldViewProj,
                                                MaterialAmbient,
                                                MaterialDiffuse,
                                                LhtDir);
-        PixelShader = compile ps_3_0 PShader();
+        PixelShader = compile ps_2_0 PShader();
     }
 }
 
@@ -465,11 +465,11 @@ technique bounding
         CullMode = NONE;
         FillMode = WIREFRAME;
 
-        VertexShader = compile vs_3_0 VShader2(mWorldViewProj,
+        VertexShader = compile vs_2_0 VShader2(mWorldViewProj,
                                                MaterialAmbient,
                                                MaterialDiffuse,
                                                LhtDir);
-        PixelShader = compile ps_3_0 PShaderMarked();
+        PixelShader = compile ps_2_0 PShaderMarked();
     }
 }
 
@@ -497,12 +497,12 @@ technique grid
         // ZWriteEnable = 0;
         // ZEnable = FALSE;
 
-        VertexShader = compile vs_3_0 VShader_Grid(mWorldViewProj,
+        VertexShader = compile vs_2_0 VShader_Grid(mWorldViewProj,
                                                    MaterialAmbient,
                                                    MaterialDiffuse,
                                                    LhtDir,
                                                    TextureScale);
-        PixelShader = compile ps_3_0 PShader_Grid();
+        PixelShader = compile ps_2_0 PShader_Grid();
     }
 }
 
@@ -582,8 +582,8 @@ technique spotlight
         ZFunc = LESSEQUAL;
         ZWriteEnable = TRUE;
 
-        VertexShader = compile vs_3_0 vsSpotLight();
-        PixelShader = compile ps_3_0 psSpotLight();
+        VertexShader = compile vs_2_0 vsSpotLight();
+        PixelShader = compile ps_2_0 psSpotLight();
     }
 
     pass p1
@@ -595,8 +595,8 @@ technique spotlight
         ZFunc = EQUAL;
         ZWriteEnable = FALSE;
 
-        VertexShader = compile vs_3_0 vsSpotLight();
-        PixelShader = compile ps_3_0 psSpotLight();
+        VertexShader = compile vs_2_0 vsSpotLight();
+        PixelShader = compile ps_2_0 psSpotLight();
     }
 }
 
@@ -619,8 +619,8 @@ technique pivotBox
         ZWriteEnable = 0;
         ZEnable = FALSE;
 
-        VertexShader = compile vs_3_0 vsPivotBox();
-        PixelShader = compile ps_3_0 psSpotLight();
+        VertexShader = compile vs_2_0 vsPivotBox();
+        PixelShader = compile ps_2_0 psSpotLight();
     }
 
     pass p1
@@ -632,8 +632,8 @@ technique pivotBox
         ZFunc = EQUAL;
         ZWriteEnable = FALSE;
 
-        VertexShader = compile vs_3_0 vsPivotBox();
-        PixelShader = compile ps_3_0 psSpotLight();
+        VertexShader = compile vs_2_0 vsPivotBox();
+        PixelShader = compile ps_2_0 psSpotLight();
     }
 }
 
@@ -656,8 +656,8 @@ technique pivot
         ZWriteEnable = 0;
         ZEnable = FALSE;
 
-        VertexShader = compile vs_3_0 vsPivot();
-        PixelShader = compile ps_3_0 psSpotLight();
+        VertexShader = compile vs_2_0 vsPivot();
+        PixelShader = compile ps_2_0 psSpotLight();
     }
 
     pass p1
@@ -669,8 +669,8 @@ technique pivot
         ZFunc = EQUAL;
         ZWriteEnable = FALSE;
 
-        VertexShader = compile vs_3_0 vsPivot();
-        PixelShader = compile ps_3_0 psSpotLight();
+        VertexShader = compile vs_2_0 vsPivot();
+        PixelShader = compile ps_2_0 psSpotLight();
     }
 }
 
@@ -715,8 +715,8 @@ technique wirefrustum
         FillMode = SOLID;
         // FillMode = WIREFRAME;
 
-        VertexShader = compile vs_3_0 vsFrustum();
-        PixelShader = compile ps_3_0 psFrustum(0.025);
+        VertexShader = compile vs_2_0 vsFrustum();
+        PixelShader = compile ps_2_0 psFrustum(0.025);
     }
 
     pass p1
@@ -729,8 +729,8 @@ technique wirefrustum
         FillMode = SOLID;
         // FillMode = WIREFRAME;
 
-        VertexShader = compile vs_3_0 vsFrustum();
-        PixelShader = compile ps_3_0 psFrustum(1);
+        VertexShader = compile vs_2_0 vsFrustum();
+        PixelShader = compile ps_2_0 psFrustum(1);
     }
 }
 
@@ -748,8 +748,8 @@ technique solidfrustum
         FillMode = SOLID;
         // FillMode = WIREFRAME;
 
-        VertexShader = compile vs_3_0 vsFrustum();
-        PixelShader = compile ps_3_0 psFrustum(0.25);
+        VertexShader = compile vs_2_0 vsFrustum();
+        PixelShader = compile ps_2_0 psFrustum(0.25);
     }
 
     pass p1
@@ -762,8 +762,8 @@ technique solidfrustum
         FillMode = SOLID;
         // FillMode = WIREFRAME;
 
-        VertexShader = compile vs_3_0 vsFrustum();
-        PixelShader = compile ps_3_0 psFrustum(1);
+        VertexShader = compile vs_2_0 vsFrustum();
+        PixelShader = compile ps_2_0 psFrustum(1);
     }
 }
 
@@ -782,7 +782,7 @@ technique projectorfrustum
         // CullMode = CW;
         // FillMode = WIREFRAME;
 
-        VertexShader = compile vs_3_0 vsFrustum();
-        PixelShader = compile ps_3_0 psFrustum(1);
+        VertexShader = compile vs_2_0 vsFrustum();
+        PixelShader = compile ps_2_0 psFrustum(1);
     }
 }

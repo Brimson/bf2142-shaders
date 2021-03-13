@@ -16,7 +16,7 @@ float1		lightingScale					: LightingScale;
 
 float4		Transparency_x8	: TRANSPARENCY_X8;
 
-#define ps_3_0 PS2_EXT
+#define ps_2_0 PS2_EXT
 #define SHADOWVERSION 30
 
 string Category = "Effects\\Lighting";
@@ -345,8 +345,8 @@ technique t0_l0
         FogEnable       = true;
         ZFunc           = Less;
 
-        VertexShader = compile vs_3_0 VShader(0, false);
-        PixelShader = compile ps_3_0 PShader(false, false, sampler0, sampler1, sampler2);
+        VertexShader = compile vs_2_0 VShader(0, false);
+        PixelShader = compile ps_2_0 PShader(false, false, sampler0, sampler1, sampler2);
     }
 }
 
@@ -371,8 +371,8 @@ technique t0_l1
         FogEnable       = true;
         ZFunc           = Less;
 
-        VertexShader = compile vs_3_0 VShader(1, false);
-        PixelShader = compile ps_3_0 PShader(true, false, sampler0, sampler1, sampler2);
+        VertexShader = compile vs_2_0 VShader(1, false);
+        PixelShader = compile ps_2_0 PShader(true, false, sampler0, sampler1, sampler2);
     }
 }
 
@@ -397,8 +397,8 @@ technique t0_l2
         FogEnable       = true;
         ZFunc           = Less;
 
-        VertexShader = compile vs_3_0 VShader(2, false);
-        PixelShader = compile ps_3_0 PShader(true, false, sampler0, sampler1, sampler2);
+        VertexShader = compile vs_2_0 VShader(2, false);
+        PixelShader = compile ps_2_0 PShader(true, false, sampler0, sampler1, sampler2);
     }
 }
 
@@ -423,8 +423,8 @@ technique t0_l3
         FogEnable       = true;
         ZFunc           = Less;
 
-        VertexShader = compile vs_3_0 VShader(3, false);
-        PixelShader = compile ps_3_0 PShader(true, false, sampler0, sampler1, sampler2);
+        VertexShader = compile vs_2_0 VShader(3, false);
+        PixelShader = compile ps_2_0 PShader(true, false, sampler0, sampler1, sampler2);
     }
 }
 
@@ -449,8 +449,8 @@ technique t0_l4
         FogEnable       = true;
         ZFunc           = Less;
 
-        VertexShader = compile vs_3_0 VShader(4, false);
-        PixelShader = compile ps_3_0 PShader(true, false, sampler0, sampler1, sampler2);
+        VertexShader = compile vs_2_0 VShader(4, false);
+        PixelShader = compile ps_2_0 PShader(true, false, sampler0, sampler1, sampler2);
     }
 }
 
@@ -475,8 +475,8 @@ technique t0_l0_ds
         FogEnable       = true;
         ZFunc           = Less;
 
-        VertexShader = compile vs_3_0 VShader(0, true);
-        PixelShader = compile ps_3_0 PShader(false, true, sampler0, sampler1, sampler2);
+        VertexShader = compile vs_2_0 VShader(0, true);
+        PixelShader = compile ps_2_0 PShader(false, true, sampler0, sampler1, sampler2);
     }
 }
 
@@ -501,8 +501,8 @@ technique t0_l1_ds
         FogEnable       = true;
         ZFunc           = Less;
 
-        VertexShader = compile vs_3_0 VShader(1, true);
-        PixelShader = compile ps_3_0 PShader(false, true, sampler0, sampler1, sampler2);
+        VertexShader = compile vs_2_0 VShader(1, true);
+        PixelShader = compile ps_2_0 PShader(false, true, sampler0, sampler1, sampler2);
     }
 }
 
@@ -527,8 +527,8 @@ technique t0_l2_ds
         FogEnable       = true;
         ZFunc           = Less;
 
-        VertexShader = compile vs_3_0 VShader(2, true);
-        PixelShader = compile ps_3_0 PShader(false, true, sampler0, sampler1, sampler2);
+        VertexShader = compile vs_2_0 VShader(2, true);
+        PixelShader = compile ps_2_0 PShader(false, true, sampler0, sampler1, sampler2);
     }
 }
 
@@ -553,8 +553,8 @@ technique t0_l3_ds
         FogEnable       = true;
         ZFunc           = Less;
 
-        VertexShader = compile vs_3_0 VShader(3, true);
-        PixelShader = compile ps_3_0 PShader(false, true, sampler0, sampler1, sampler2);
+        VertexShader = compile vs_2_0 VShader(3, true);
+        PixelShader = compile ps_2_0 PShader(false, true, sampler0, sampler1, sampler2);
     }
 }
 
@@ -579,8 +579,8 @@ technique t0_l4_ds
         FogEnable       = true;
         ZFunc           = Less;
 
-        VertexShader = compile vs_3_0 VShader(4, true);
-        PixelShader = compile ps_3_0 PShader(false, true, sampler0, sampler1, sampler2);
+        VertexShader = compile vs_2_0 VShader(4, true);
+        PixelShader = compile ps_2_0 PShader(false, true, sampler0, sampler1, sampler2);
     }
 }
 
@@ -607,8 +607,8 @@ technique t0_l0_simple
         FogEnable       = true;
         ZFunc           = Less;
 
-        VertexShader = compile vs_3_0 VShader_Simple(0, false);
-        PixelShader = compile ps_3_0 PShader_Simple(false, false, sampler0);
+        VertexShader = compile vs_2_0 VShader_Simple(0, false);
+        PixelShader = compile ps_2_0 PShader_Simple(false, false, sampler0);
     }
 }
 
@@ -635,8 +635,8 @@ technique t0_l1_simple
         FogEnable       = true;
         ZFunc           = Less;
 
-        VertexShader = compile vs_3_0 VShader_Simple(1, false);
-        PixelShader = compile ps_3_0 PShader_Simple(true, false, sampler0);
+        VertexShader = compile vs_2_0 VShader_Simple(1, false);
+        PixelShader = compile ps_2_0 PShader_Simple(true, false, sampler0);
     }
 }
 
@@ -663,8 +663,8 @@ technique t0_l2_simple
         FogEnable       = true;
         ZFunc           = Less;
 
-        VertexShader = compile vs_3_0 VShader_Simple(2, false);
-        PixelShader = compile ps_3_0 PShader_Simple(true, false, sampler0);
+        VertexShader = compile vs_2_0 VShader_Simple(2, false);
+        PixelShader = compile ps_2_0 PShader_Simple(true, false, sampler0);
     }
 }
 
@@ -691,8 +691,8 @@ technique t0_l3_simple
         FogEnable       = true;
         ZFunc           = Less;
 
-        VertexShader = compile vs_3_0 VShader_Simple(3, false);
-        PixelShader = compile ps_3_0 PShader_Simple(true, false, sampler0);
+        VertexShader = compile vs_2_0 VShader_Simple(3, false);
+        PixelShader = compile ps_2_0 PShader_Simple(true, false, sampler0);
     }
 }
 
@@ -719,8 +719,8 @@ technique t0_l4_simple
         FogEnable       = true;
         ZFunc           = Less;
 
-        VertexShader = compile vs_3_0 VShader_Simple(4, false);
-        PixelShader = compile ps_3_0 PShader_Simple(true, false, sampler0);
+        VertexShader = compile vs_2_0 VShader_Simple(4, false);
+        PixelShader = compile ps_2_0 PShader_Simple(true, false, sampler0);
     }
 }
 
@@ -747,8 +747,8 @@ technique t0_l0_ds_simple
         FogEnable       = true;
         ZFunc           = Less;
 
-        VertexShader = compile vs_3_0 VShader_Simple(0, true);
-        PixelShader = compile ps_3_0 PShader_Simple(false, true, sampler0);
+        VertexShader = compile vs_2_0 VShader_Simple(0, true);
+        PixelShader = compile ps_2_0 PShader_Simple(false, true, sampler0);
     }
 }
 
@@ -775,8 +775,8 @@ technique t0_l1_ds_simple
         FogEnable       = true;
         ZFunc           = Less;
 
-        VertexShader = compile vs_3_0 VShader_Simple(1, true);
-        PixelShader = compile ps_3_0 PShader_Simple(true, true, sampler0);
+        VertexShader = compile vs_2_0 VShader_Simple(1, true);
+        PixelShader = compile ps_2_0 PShader_Simple(true, true, sampler0);
     }
 }
 
@@ -803,8 +803,8 @@ technique t0_l2_ds_simple
         FogEnable       = true;
         ZFunc           = Less;
 
-        VertexShader = compile vs_3_0 VShader_Simple(2, true);
-        PixelShader = compile ps_3_0 PShader_Simple(true, true, sampler0);
+        VertexShader = compile vs_2_0 VShader_Simple(2, true);
+        PixelShader = compile ps_2_0 PShader_Simple(true, true, sampler0);
     }
 }
 
@@ -831,8 +831,8 @@ technique t0_l3_ds_simple
         FogEnable       = true;
         ZFunc           = Less;
 
-        VertexShader = compile vs_3_0 VShader_Simple(3, true);
-        PixelShader = compile ps_3_0 PShader_Simple(true, true, sampler0);
+        VertexShader = compile vs_2_0 VShader_Simple(3, true);
+        PixelShader = compile ps_2_0 PShader_Simple(true, true, sampler0);
     }
 }
 
@@ -859,8 +859,8 @@ technique t0_l4_ds_simple
         FogEnable           = true;
         ZFunc               = Less;
 
-        VertexShader = compile vs_3_0 VShader_Simple(4, true);
-        PixelShader = compile ps_3_0 PShader_Simple(true, true, sampler0);
+        VertexShader = compile vs_2_0 VShader_Simple(4, true);
+        PixelShader = compile ps_2_0 PShader_Simple(true, true, sampler0);
     }
 }
 
@@ -886,8 +886,8 @@ technique ZOnly
         ColorWriteEnable    = 0;
         ZFunc               = Less;
 
-        VertexShader = compile vs_3_0 VShader_ZOnly();
-        PixelShader = compile ps_3_0 PShader_ZOnly(sampler0);
+        VertexShader = compile vs_2_0 VShader_ZOnly();
+        PixelShader = compile ps_2_0 PShader_ZOnly(sampler0);
     }
 }
 
@@ -913,7 +913,7 @@ technique ZOnly_Simple
         ColorWriteEnable    = 0;
         ZFunc               = Less;
 
-        VertexShader = compile vs_3_0 VShader_ZOnly_Simple();
-        PixelShader = compile ps_3_0 PShader_ZOnly(sampler0);
+        VertexShader = compile vs_2_0 VShader_ZOnly_Simple();
+        PixelShader = compile ps_2_0 PShader_ZOnly(sampler0);
     }
 }

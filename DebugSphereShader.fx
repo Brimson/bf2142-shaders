@@ -126,8 +126,8 @@ technique t0
 {
     pass p0
     {
-        VertexShader = compile vs_3_0 VShader(mWorldViewProj,MaterialAmbient,MaterialDiffuse,LhtDir);
-        PixelShader = compile ps_3_0 PShader(samplebase);
+        VertexShader = compile vs_2_0 VShader(mWorldViewProj,MaterialAmbient,MaterialDiffuse,LhtDir);
+        PixelShader = compile ps_2_0 PShader(samplebase);
     }
 }
 
@@ -152,8 +152,8 @@ technique marked
         CullMode = NONE;
         AlphaBlendEnable = FALSE;
 
-        VertexShader = compile vs_3_0 VShader(mWorldViewProj,MaterialAmbient,MaterialDiffuse,LhtDir);
-        PixelShader = compile ps_3_0 PShaderMarked(samplebase);
+        VertexShader = compile vs_2_0 VShader(mWorldViewProj,MaterialAmbient,MaterialDiffuse,LhtDir);
+        PixelShader = compile ps_2_0 PShaderMarked(samplebase);
     }
 }
 
@@ -202,8 +202,8 @@ technique lightsource
         ZFunc = LESSEQUAL;
         ZWriteEnable = TRUE;
 
-        VertexShader = compile vs_3_0 vsLightSource(mWorldViewProj, MaterialDiffuse);
-        PixelShader = compile ps_3_0 psLightSource();
+        VertexShader = compile vs_2_0 vsLightSource(mWorldViewProj, MaterialDiffuse);
+        PixelShader = compile ps_2_0 psLightSource();
     }
     pass p1
     {
@@ -215,8 +215,8 @@ technique lightsource
         ZFunc = EQUAL;
         ZWriteEnable = FALSE;
 
-        VertexShader = compile vs_3_0 vsLightSource(mWorldViewProj, MaterialDiffuse);
-        PixelShader = compile ps_3_0 psLightSource();
+        VertexShader = compile vs_2_0 vsLightSource(mWorldViewProj, MaterialDiffuse);
+        PixelShader = compile ps_2_0 psLightSource();
     }
 }
 
@@ -240,8 +240,8 @@ technique editor
         ZFunc = LESSEQUAL;
         ZWriteEnable = TRUE;
 
-        VertexShader = compile vs_3_0 vsLightSource(mWorldViewProj, MaterialDiffuse);
-        PixelShader = compile ps_3_0 psLightSource();
+        VertexShader = compile vs_2_0 vsLightSource(mWorldViewProj, MaterialDiffuse);
+        PixelShader = compile ps_2_0 psLightSource();
     }
     pass p1
     {
@@ -253,8 +253,8 @@ technique editor
         ZFunc = EQUAL;
         ZWriteEnable = FALSE;
 
-        VertexShader = compile vs_3_0 vsLightSource(mWorldViewProj, MaterialDiffuse);
-        PixelShader = compile ps_3_0 psLightSource();
+        VertexShader = compile vs_2_0 vsLightSource(mWorldViewProj, MaterialDiffuse);
+        PixelShader = compile ps_2_0 psLightSource();
     }
 }
 
@@ -272,7 +272,7 @@ technique EditorDebug
         ZFunc = LESSEQUAL;
         FillMode = SOLID;
 
-        VertexShader = compile vs_3_0 vsLightSource(mWorldViewProj, MaterialDiffuse);
-        PixelShader = compile ps_3_0 psLightSource();
+        VertexShader = compile vs_2_0 vsLightSource(mWorldViewProj, MaterialDiffuse);
+        PixelShader = compile ps_2_0 psLightSource();
     }
 }

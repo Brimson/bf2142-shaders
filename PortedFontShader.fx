@@ -76,8 +76,8 @@ technique Text <
         MinFilter[0] = LINEAR;
         MagFilter[0] = LINEAR;
 
-        VertexShader = compile vs_3_0 HPosVS();
-        PixelShader = compile ps_3_0 HPosPS();
+        VertexShader = compile vs_2_0 HPosVS();
+        PixelShader = compile ps_2_0 HPosPS();
     }
 }
 
@@ -125,7 +125,7 @@ technique Overlay <
         ColorOp[1] = DISABLE;
         AlphaOp[1] = DISABLE;
 
-        VertexShader = compile vs_3_0 HPosVS();
+        VertexShader = compile vs_2_0 HPosVS();
         PixelShader = NULL;
     }
 }

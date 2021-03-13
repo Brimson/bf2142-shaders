@@ -602,8 +602,8 @@ technique Hi_Terrain
             StencilFail     = KEEP;
         #endif
 
-        VertexShader = compile vs_3_0 Shared_VS_ZFillLightmap();
-        PixelShader = compile ps_3_0 Shared_PS_ZFillLightmap();
+        VertexShader = compile vs_2_0 Shared_VS_ZFillLightmap();
+        PixelShader = compile ps_2_0 Shared_PS_ZFillLightmap();
     }
 
     pass pointlight		//p1
@@ -625,8 +625,8 @@ technique Hi_Terrain
             StencilFail     = KEEP;
         #endif
 
-        VertexShader = compile vs_3_0 Shared_VS_PointLight();
-        PixelShader = compile ps_3_0 Shared_PS_PointLight();
+        VertexShader = compile vs_2_0 Shared_VS_PointLight();
+        PixelShader = compile ps_2_0 Shared_PS_PointLight();
     }
 
     pass { } // spotlight (removed) p2
@@ -650,8 +650,8 @@ technique Hi_Terrain
             StencilFail     = KEEP;
         #endif
 
-        VertexShader = compile vs_3_0 Shared_VS_LowDetail();
-        PixelShader = compile ps_3_0 Shared_PS_LowDetail();
+        VertexShader = compile vs_2_0 Shared_VS_LowDetail();
+        PixelShader = compile ps_2_0 Shared_PS_LowDetail();
     }
 
     pass FullDetail	//p4
@@ -679,8 +679,8 @@ technique Hi_Terrain
             StencilFail     = KEEP;
         #endif
 
-        VertexShader = compile vs_3_0 Hi_VS_FullDetail();
-        PixelShader = compile ps_3_0 Hi_PS_FullDetail();
+        VertexShader = compile vs_2_0 Hi_VS_FullDetail();
+        PixelShader = compile ps_2_0 Hi_PS_FullDetail();
     }
     pass FullDetailMounten	// p5
     {
@@ -702,8 +702,8 @@ technique Hi_Terrain
             StencilFail     = KEEP;
         #endif
 
-        VertexShader = compile vs_3_0 Hi_VS_FullDetailMounten();
-        PixelShader = compile ps_3_0 Hi_PS_FullDetailMounten();
+        VertexShader = compile vs_2_0 Hi_VS_FullDetailMounten();
+        PixelShader = compile ps_2_0 Hi_PS_FullDetailMounten();
     }
     pass { } // p6 tunnels (removed)
 
@@ -725,7 +725,7 @@ technique Hi_Terrain
             StencilFail     = KEEP;
         #endif
 
-        VertexShader = compile vs_3_0 Shared_VS_DirectionalLightShadows();
+        VertexShader = compile vs_2_0 Shared_VS_DirectionalLightShadows();
         PixelShader = compile SHADOWPSMODEL Hi_PS_DirectionalLightShadows();
     }
 
@@ -763,8 +763,8 @@ technique Hi_Terrain
             StencilFail     = KEEP;
         #endif
 
-        VertexShader = compile vs_3_0 Hi_VS_FullDetailWithEnvMap();
-        PixelShader = compile ps_3_0 Hi_PS_FullDetailWithEnvMap();
+        VertexShader = compile vs_2_0 Hi_VS_FullDetailWithEnvMap();
+        PixelShader = compile ps_2_0 Hi_PS_FullDetailWithEnvMap();
     }
 
     pass { } // mulDiffuseFast (removed) p12
@@ -788,8 +788,8 @@ technique Hi_Terrain
             StencilFail     = KEEP;
         #endif
 
-        VertexShader = compile vs_3_0 Hi_VS_PerPixelPointLight();
-        PixelShader = compile ps_3_0 Hi_PS_PerPixelPointLight();
+        VertexShader = compile vs_2_0 Hi_VS_PerPixelPointLight();
+        PixelShader = compile ps_2_0 Hi_PS_PerPixelPointLight();
     }
 
     pass underWater // p14
@@ -815,8 +815,8 @@ technique Hi_Terrain
             StencilFail     = KEEP;
         #endif
 
-        VertexShader = compile vs_3_0 Shared_VS_UnderWater();
-        PixelShader = compile ps_3_0 Shared_PS_UnderWater();
+        VertexShader = compile vs_2_0 Shared_VS_UnderWater();
+        PixelShader = compile ps_2_0 Shared_PS_UnderWater();
     }
 
     pass ZFillLightmap2	// p15
@@ -828,8 +828,8 @@ technique Hi_Terrain
         ZFunc = LESS;
         AlphaBlendEnable = FALSE;
         FogEnable = false;
-        VertexShader = compile vs_3_0 Shared_VS_ZFillLightmap();
-        PixelShader = compile ps_3_0 Shared_PS_ZFillLightmap2();
+        VertexShader = compile vs_2_0 Shared_VS_ZFillLightmap();
+        PixelShader = compile ps_2_0 Shared_PS_ZFillLightmap2();
     }
 }
 

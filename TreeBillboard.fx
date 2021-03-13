@@ -101,7 +101,7 @@ technique QuadWithTexture
         // TextureFactor = (dwTexFactor);
         CullMode = NONE;
 
-        VertexShader = compile vs_3_0 vsFFP();
-        PixelShader = compile ps_3_0 psFFP();
+        VertexShader = compile vs_2_0 vsFFP();
+        PixelShader = compile ps_2_0 psFFP();
     }
 }

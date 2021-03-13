@@ -53,7 +53,7 @@ sampler trailDiffuseSampler2 = sampler_state
 };
 
 // constant array
-struct TemplateParameters 
+struct TemplateParameters
 {
     vec4 m_uvRangeLMapIntensiyAndParticleMaxSize;
     vec4 m_fadeInOutTileFactorAndUVOffsetVelocity;
@@ -276,8 +276,8 @@ technique TrailLow
         DestBlend = INVSRCALPHA;
         FogEnable = TRUE;
 
-        VertexShader = compile vs_3_0 vsTrail(viewMat, projMat);
-        PixelShader = compile ps_3_0 psTrailLow();
+        VertexShader = compile vs_2_0 vsTrail(viewMat, projMat);
+        PixelShader = compile ps_2_0 psTrailLow();
     }
 }
 technique TrailMedium
@@ -300,8 +300,8 @@ technique TrailMedium
         DestBlend = INVSRCALPHA;
         FogEnable = TRUE;
 
-        VertexShader = compile vs_3_0 vsTrail(viewMat, projMat);
-        PixelShader = compile ps_3_0 psTrailMedium();
+        VertexShader = compile vs_2_0 vsTrail(viewMat, projMat);
+        PixelShader = compile ps_2_0 psTrailMedium();
     }
 }
 technique TrailHigh
@@ -324,8 +324,8 @@ technique TrailHigh
         DestBlend = INVSRCALPHA;
         FogEnable = TRUE;
 
-        VertexShader = compile vs_3_0 vsTrail(viewMat, projMat);
-        PixelShader = compile ps_3_0 psTrailHigh();
+        VertexShader = compile vs_2_0 vsTrail(viewMat, projMat);
+        PixelShader = compile ps_2_0 psTrailHigh();
     }
 }
 technique TrailShowFill
@@ -348,8 +348,8 @@ technique TrailShowFill
         DestBlend = ONE;
         FogEnable = TRUE;
 
-        VertexShader = compile vs_3_0 vsTrail(viewMat, projMat);
-        PixelShader = compile ps_3_0 psTrailShowFill();
+        VertexShader = compile vs_2_0 vsTrail(viewMat, projMat);
+        PixelShader = compile ps_2_0 psTrailShowFill();
     }
 }
 
@@ -488,7 +488,7 @@ technique ParticleHeatShimmer
         DestBlend = InvSrcAlpha;
         FogEnable = FALSE;
 
-        VertexShader = compile vs_3_0 vsParticleHeatShimmer(viewMat, projMat); // tParameters);
-        PixelShader = compile ps_3_0 psParticleHeatShimmer();
+        VertexShader = compile vs_2_0 vsParticleHeatShimmer(viewMat, projMat); // tParameters);
+        PixelShader = compile ps_2_0 psParticleHeatShimmer();
     }
 }

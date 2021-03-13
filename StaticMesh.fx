@@ -353,7 +353,7 @@ sampler dummySampler = sampler_state
     AddressV = Clamp;
 };
 
-vec4 lightPos : LightPosition  : register(vs_3_0, c12)
+vec4 lightPos : LightPosition  : register(vs_2_0, c12)
 <
     string Object = "PointLight";
     string Space = "World";
@@ -445,8 +445,8 @@ technique alpha_one
         AlphaFunc = GREATER;
         // FillMode = WIREFRAME;
 
-        VertexShader = compile vs_3_0 VSimpleShader(viewProjMatrix);
-        PixelShader = compile ps_3_0 PSimpleShader();
+        VertexShader = compile vs_2_0 VSimpleShader(viewProjMatrix);
+        PixelShader = compile ps_2_0 PSimpleShader();
     }
 }
 
@@ -569,8 +569,8 @@ technique DrawShadowMap
 
         ScissorTestEnable = TRUE;
 
-        VertexShader = compile vs_3_0 vsShadowMap();
-        PixelShader = compile ps_3_0 psShadowMap();
+        VertexShader = compile vs_2_0 vsShadowMap();
+        PixelShader = compile ps_2_0 psShadowMap();
     }
 
     pass directionalspotalpha
@@ -583,8 +583,8 @@ technique DrawShadowMap
 
         ScissorTestEnable = TRUE;
 
-        VertexShader = compile vs_3_0 vsShadowMapAlpha();
-        PixelShader = compile ps_3_0 psShadowMapAlpha();
+        VertexShader = compile vs_2_0 vsShadowMapAlpha();
+        PixelShader = compile ps_2_0 psShadowMapAlpha();
     }
 
     pass point
@@ -596,8 +596,8 @@ technique DrawShadowMap
 
         ScissorTestEnable = TRUE;
 
-        VertexShader = compile vs_3_0 vsShadowMapPoint();
-        PixelShader = compile ps_3_0 psShadowMapPoint();
+        VertexShader = compile vs_2_0 vsShadowMapPoint();
+        PixelShader = compile ps_2_0 psShadowMapPoint();
     }
 }
 
@@ -618,8 +618,8 @@ technique DrawShadowMap
 
             ScissorTestEnable = TRUE;
 
-            VertexShader = compile vs_3_0 vsShadowMap();
-            PixelShader = compile ps_3_0 psShadowMap();
+            VertexShader = compile vs_2_0 vsShadowMap();
+            PixelShader = compile ps_2_0 psShadowMap();
         }
 
         pass directionalspotalpha
@@ -637,8 +637,8 @@ technique DrawShadowMap
 
             ScissorTestEnable = TRUE;
 
-            VertexShader = compile vs_3_0 vsShadowMapAlpha();
-            PixelShader = compile ps_3_0 psShadowMapAlpha();
+            VertexShader = compile vs_2_0 vsShadowMapAlpha();
+            PixelShader = compile ps_2_0 psShadowMapAlpha();
         }
     }
 #endif

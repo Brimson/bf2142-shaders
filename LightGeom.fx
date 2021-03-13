@@ -52,8 +52,8 @@ technique Pointlight
         StencilFunc = ALWAYS;
         StencilPass = ZERO;
 
-        VertexShader = compile vs_3_0 vsPointLight(wvpMat);
-        PixelShader = compile ps_3_0 psPointLight();
+        VertexShader = compile vs_2_0 vsPointLight(wvpMat);
+        PixelShader = compile ps_2_0 psPointLight();
     }
 }
 
@@ -109,8 +109,8 @@ technique Spotlight
         StencilFunc = ALWAYS;
         StencilPass = ZERO;
 
-        VertexShader = compile vs_3_0 vsSpotLight(wvpMat, wvMat, spotDir);
-        PixelShader = compile ps_3_0 psSpotLight(spotConeAngle, 1.0f - spotConeAngle);
+        VertexShader = compile vs_2_0 vsSpotLight(wvpMat, wvMat, spotDir);
+        PixelShader = compile ps_2_0 psSpotLight(spotConeAngle, 1.0f - spotConeAngle);
     }
 }
 

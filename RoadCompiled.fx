@@ -196,8 +196,8 @@ technique roadcompiledFull
         ZEnable = TRUE;
         ZWriteEnable = FALSE;
         FogEnable = true;
-        VertexShader = compile vs_3_0 RoadCompiledVS();
-        PixelShader = compile ps_3_0 RoadCompiledPS();
+        VertexShader = compile vs_2_0 RoadCompiledVS();
+        PixelShader = compile ps_2_0 RoadCompiledPS();
     }
 
     pass DirectX9
@@ -210,8 +210,8 @@ technique roadcompiledFull
         SlopeScaleDepthBias = -0.00001f;
         ZEnable = FALSE;
         // FillMode = WIREFRAME;
-        VertexShader = compile vs_3_0 RoadCompiledVSDx9();
-        PixelShader = compile ps_3_0 RoadCompiledPSDx9();
+        VertexShader = compile vs_2_0 RoadCompiledVSDx9();
+        PixelShader = compile ps_2_0 RoadCompiledPSDx9();
     }
 }
 
@@ -250,7 +250,7 @@ technique roadcompiledLightingOnly
         ZEnable = FALSE;
         // CullMode = NONE;
         // FillMode = WIREFRAME;
-        VertexShader = compile vs_3_0 RoadCompiledVS();
-        PixelShader = compile ps_3_0 RoadCompiledPS_LightingOnly();
+        VertexShader = compile vs_2_0 RoadCompiledVS();
+        PixelShader = compile ps_2_0 RoadCompiledPS_LightingOnly();
     }
 }

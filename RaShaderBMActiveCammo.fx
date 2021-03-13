@@ -87,8 +87,8 @@ technique defaultTechnique
 {
     pass P0
     {
-        vertexShader = compile vs_3_0 vs();
-        pixelShader = compile ps_3_0 ps();
+        vertexShader = compile vs_2_0 vs();
+        pixelShader = compile ps_2_0 ps();
 
         #ifdef ENABLE_WIREFRAME
             FillMode = WireFrame;
@@ -102,8 +102,8 @@ technique BrokenCamouflage
 {
     pass P0
     {
-        vertexShader = compile vs_3_0 vs();
-        pixelShader = compile ps_3_0 ps_brokenCamo();
+        vertexShader = compile vs_2_0 vs();
+        pixelShader = compile ps_2_0 ps_brokenCamo();
 
         #ifdef ENABLE_WIREFRAME
             FillMode = WireFrame;

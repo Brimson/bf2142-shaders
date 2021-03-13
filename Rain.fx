@@ -99,8 +99,8 @@ technique Point
         DestBlend = One;//InvSrcAlpha;
         CullMode = NONE;
 
-        VertexShader = compile vs_3_0 vsPoint();
-        PixelShader = compile ps_3_0 psPoint();
+        VertexShader = compile vs_2_0 vsPoint();
+        PixelShader = compile ps_2_0 psPoint();
     }
 }
 
@@ -153,8 +153,8 @@ technique Line
         DestBlend = One;//InvSrcAlpha;
         CullMode = NONE;
 
-        VertexShader = compile vs_3_0 vsLine();
-        PixelShader = compile ps_3_0 psLine();
+        VertexShader = compile vs_2_0 vsLine();
+        PixelShader = compile ps_2_0 psLine();
     }
 }
 
@@ -202,7 +202,7 @@ technique Cells
         DestBlend = One;//InvSrcAlpha;
         CullMode = NONE;
 
-        VertexShader = compile vs_3_0 vsCells();
-        PixelShader = compile ps_3_0 psCells();
+        VertexShader = compile vs_2_0 vsCells();
+        PixelShader = compile ps_2_0 psCells();
     }
 }

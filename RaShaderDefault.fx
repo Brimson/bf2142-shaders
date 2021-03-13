@@ -34,8 +34,8 @@ technique defaultShader
 {
     pass P0
     {
-        pixelshader = compile ps_3_0 shader();
-        vertexShader= compile vs_3_0 vertexShader();
+        pixelshader = compile ps_2_0 shader();
+        vertexShader= compile vs_2_0 vertexShader();
         #ifdef ENABLE_WIREFRAME
             FillMode = WireFrame;
         #endif

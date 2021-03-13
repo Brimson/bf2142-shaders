@@ -100,8 +100,8 @@ technique QuadWithTexture
         ZFunc = (dwZFunc);
         ZWriteEnable = (bZWriteEnable);
 
-        VertexShader = compile vs_3_0 vsFFP();
-        PixelShader = compile ps_3_0 psQuadWTexNoTex();
+        VertexShader = compile vs_2_0 vsFFP();
+        PixelShader = compile ps_2_0 psQuadWTexNoTex();
     }
 
     pass tex
@@ -117,8 +117,8 @@ technique QuadWithTexture
         ZFunc = (dwZFunc);
         ZWriteEnable = (bZWriteEnable);
 
-        VertexShader = compile vs_3_0 vsFFP();
-        PixelShader = compile ps_3_0 psQuadWTexOneTex();
+        VertexShader = compile vs_2_0 vsFFP();
+        PixelShader = compile ps_2_0 psQuadWTexOneTex();
     }
 
     pass masked
@@ -134,8 +134,8 @@ technique QuadWithTexture
         ZFunc = (dwZFunc);
         ZWriteEnable = (bZWriteEnable);
 
-        VertexShader = compile vs_3_0 vsFFP();
-        PixelShader = compile ps_3_0 psQuadWTexOneTexMasked();
+        VertexShader = compile vs_2_0 vsFFP();
+        PixelShader = compile ps_2_0 psQuadWTexOneTexMasked();
     }
 }
 
@@ -186,7 +186,7 @@ technique QuadCache
         MinFilter[0] = LINEAR;
         MagFilter[0] = LINEAR;
 
-        VertexShader = compile vs_3_0 vsFFP();
+        VertexShader = compile vs_2_0 vsFFP();
         PixelShader = NULL;
     }
 }

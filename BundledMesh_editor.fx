@@ -22,11 +22,11 @@ technique marked
         AlphaRef = 0;
         AlphaFunc = GREATER;
 
-        VertexShader = compile vs_3_0 diffuseVertexShader(viewProjMatrix,
+        VertexShader = compile vs_2_0 diffuseVertexShader(viewProjMatrix,
                                                           viewInverseMatrix,
                                                           lightPos,
                                                           eyePos);
-        PixelShader = compile ps_3_0 diffusePixelShaderMarked();
+        PixelShader = compile ps_2_0 diffusePixelShaderMarked();
     }
 }
 
@@ -53,11 +53,11 @@ technique submarked
         AlphaRef = 0;
         AlphaFunc = GREATER;
 
-        VertexShader = compile vs_3_0 diffuseVertexShader(viewProjMatrix,
+        VertexShader = compile vs_2_0 diffuseVertexShader(viewProjMatrix,
                                                           viewInverseMatrix,
                                                           lightPos,
                                                           eyePos);
-        PixelShader = compile ps_3_0 diffusePixelShaderSubMarked();
+        PixelShader = compile ps_2_0 diffusePixelShaderSubMarked();
     }
 }
 
@@ -95,7 +95,7 @@ technique subPartHighlight
         ZFunc = EQUAL;
         ZWriteEnable = FALSE;
 
-        VertexShader = compile vs_3_0 diffuseVertexShader(viewProjMatrix,viewInverseMatrix,lightPos,eyePos);
-        PixelShader = compile ps_3_0 diffusePixelShaderSubPartHighlight();
+        VertexShader = compile vs_2_0 diffuseVertexShader(viewProjMatrix,viewInverseMatrix,lightPos,eyePos);
+        PixelShader = compile ps_2_0 diffusePixelShaderSubPartHighlight();
     }
 }

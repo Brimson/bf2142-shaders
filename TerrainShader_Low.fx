@@ -28,8 +28,8 @@ technique Low_Terrain
         AlphaBlendEnable = FALSE;
         FogEnable = false;
 
-        VertexShader = compile vs_3_0 Shared_VS_ZFillLightmap();
-        PixelShader = compile ps_3_0 Shared_PS_ZFillLightmap();
+        VertexShader = compile vs_2_0 Shared_VS_ZFillLightmap();
+        PixelShader = compile ps_2_0 Shared_PS_ZFillLightmap();
 
     }
 
@@ -42,8 +42,8 @@ technique Low_Terrain
         AlphaBlendEnable = TRUE;
         SrcBlend = ONE;
         DestBlend = ONE;
-        VertexShader = compile vs_3_0 Shared_VS_PointLight();
-        PixelShader = compile ps_3_0 Shared_PS_PointLight();
+        VertexShader = compile vs_2_0 Shared_VS_PointLight();
+        PixelShader = compile ps_2_0 Shared_PS_PointLight();
     }
 
     pass { } // spotlight (removed)
@@ -55,8 +55,8 @@ technique Low_Terrain
         ZFunc = LESSEQUAL;
         FogEnable = true;
         AlphaBlendEnable = FALSE;
-        VertexShader = compile vs_3_0 Shared_VS_LowDetail();
-        PixelShader = compile ps_3_0 Shared_PS_LowDetail();
+        VertexShader = compile vs_2_0 Shared_VS_LowDetail();
+        PixelShader = compile ps_2_0 Shared_PS_LowDetail();
     }
 
     pass { } // FullDetail p4
@@ -69,8 +69,8 @@ technique Low_Terrain
         ZWriteEnable = FALSE;
         ZFunc = LESSEQUAL;
         AlphaBlendEnable = FALSE;
-        VertexShader = compile vs_3_0 Shared_VS_DirectionalLightShadows();
-        PixelShader = compile ps_3_0 Low_PS_DirectionalLightShadows();
+        VertexShader = compile vs_2_0 Shared_VS_DirectionalLightShadows();
+        PixelShader = compile ps_2_0 Low_PS_DirectionalLightShadows();
     }
     pass { } // DirectionalLightShadowsNV (removed) // p8
     pass DynamicShadowmap	//p9
@@ -82,8 +82,8 @@ technique Low_Terrain
         AlphaBlendEnable = TRUE;
         SrcBlend = DESTCOLOR;
         DestBlend = ZERO;
-        VertexShader = compile vs_3_0 Shared_VS_DynamicShadowmap();
-        PixelShader = compile ps_3_0 Shared_PS_DynamicShadowmap();
+        VertexShader = compile vs_2_0 Shared_VS_DynamicShadowmap();
+        PixelShader = compile ps_2_0 Shared_PS_DynamicShadowmap();
     }
 
     pass { } // p10
@@ -101,8 +101,8 @@ technique Low_Terrain
         SrcBlend = SRCALPHA;
         DestBlend = INVSRCALPHA;
         FogEnable = false;
-        VertexShader = compile vs_3_0 Shared_VS_UnderWater();
-        PixelShader = compile ps_3_0 Shared_PS_UnderWater();
+        VertexShader = compile vs_2_0 Shared_VS_UnderWater();
+        PixelShader = compile ps_2_0 Shared_PS_UnderWater();
     }
 }
 
@@ -117,8 +117,8 @@ technique Low_SurroundingTerrain
         ZFunc = LESSEQUAL;
         AlphaBlendEnable = FALSE;
         FogEnable = true;
-        VertexShader = compile vs_3_0 Shared_VS_STNormal();
-        PixelShader = compile ps_3_0 Shared_PS_STNormal();
+        VertexShader = compile vs_2_0 Shared_VS_STNormal();
+        PixelShader = compile ps_2_0 Shared_PS_STNormal();
     }
     /*
         pass p1 // Fast
@@ -129,8 +129,8 @@ technique Low_SurroundingTerrain
             ZFunc = LESSEQUAL;
             AlphaBlendEnable = FALSE;
             FogEnable = true;
-            VertexShader = compile vs_3_0 Shared_VS_STFast();
-            PixelShader = compile ps_3_0 Shared_PS_STFast();
+            VertexShader = compile vs_2_0 Shared_VS_STFast();
+            PixelShader = compile ps_2_0 Shared_PS_STFast();
         }
     */
 }

@@ -619,8 +619,8 @@ vec4 PShader_HemiAndSunAndShadowAndColorPP(VS2PS_PP_Shadow indata) : COLOR
 
 
 // Max 2 bones skinning supported!
-VertexShader vsArray_HemiAndSunPP[2] = { compile vs_3_0 VShader_HemiAndSunPP(1), compile vs_3_0 VShader_HemiAndSunPP(2) };
-VertexShader vsArray_HemiAndSunAndShadowPP[2] = { compile vs_3_0 VShader_HemiAndSunAndShadowPP(1), compile vs_3_0 VShader_HemiAndSunAndShadowPP(2) };
+VertexShader vsArray_HemiAndSunPP[2] = { compile vs_2_0 VShader_HemiAndSunPP(1), compile vs_2_0 VShader_HemiAndSunPP(2) };
+VertexShader vsArray_HemiAndSunAndShadowPP[2] = { compile vs_2_0 VShader_HemiAndSunAndShadowPP(1), compile vs_2_0 VShader_HemiAndSunAndShadowPP(2) };
 
 technique t0_HemiAndSunPP
 {
@@ -636,7 +636,7 @@ technique t0_HemiAndSunPP
         ZFunc = LESSEQUAL;
 
         VertexShader = (vsArray_HemiAndSunPP[1]);
-        PixelShader = compile ps_3_0 PShader_HemiAndSunPP();
+        PixelShader = compile ps_2_0 PShader_HemiAndSunPP();
     }
 
     pass p0
@@ -651,8 +651,8 @@ technique t0_HemiAndSunPP
         ZFunc = LESSEQUAL;
 
         VertexShader = (vsArray_HemiAndSunAndShadowPP[1]);
-        // PixelShader = compile ps_3_0 PShader_HemiAndSunPP();
-        PixelShader = compile ps_3_0 PShader_HemiAndSunAndShadowPP();
+        // PixelShader = compile ps_2_0 PShader_HemiAndSunPP();
+        PixelShader = compile ps_2_0 PShader_HemiAndSunAndShadowPP();
     }
 }
 
@@ -670,7 +670,7 @@ technique t0_HemiAndSunAndColorPP
         ZFunc = LESSEQUAL;
 
         VertexShader = (vsArray_HemiAndSunPP[1]);
-        PixelShader = compile ps_3_0 PShader_HemiAndSunAndColorPP();
+        PixelShader = compile ps_2_0 PShader_HemiAndSunAndColorPP();
     }
 
     pass p1
@@ -685,7 +685,7 @@ technique t0_HemiAndSunAndColorPP
         ZFunc = LESSEQUAL;
 
         VertexShader = (vsArray_HemiAndSunAndShadowPP[1]);
-        PixelShader = compile ps_3_0 PShader_HemiAndSunAndShadowAndColorPP();
+        PixelShader = compile ps_2_0 PShader_HemiAndSunAndShadowAndColorPP();
     }
 }
 
@@ -746,8 +746,8 @@ VS2PS_PP_Shadow VShader_HemiAndSunAndShadowPPtangent(APP2VStangent indata, unifo
     return outdata;
 }
 
-VertexShader vsArray_HemiAndSunPPtangent[2] = { compile vs_3_0 VShader_HemiAndSunPPtangent(1), compile vs_3_0 VShader_HemiAndSunPPtangent(2) };
-VertexShader vsArray_HemiAndSunAndShadowPPtangent[2] = { compile vs_3_0 VShader_HemiAndSunAndShadowPPtangent(1), compile vs_3_0 VShader_HemiAndSunAndShadowPPtangent(2) };
+VertexShader vsArray_HemiAndSunPPtangent[2] = { compile vs_2_0 VShader_HemiAndSunPPtangent(1), compile vs_2_0 VShader_HemiAndSunPPtangent(2) };
+VertexShader vsArray_HemiAndSunAndShadowPPtangent[2] = { compile vs_2_0 VShader_HemiAndSunAndShadowPPtangent(1), compile vs_2_0 VShader_HemiAndSunAndShadowPPtangent(2) };
 
 technique t0_HemiAndSunPPtangent
 {
@@ -761,8 +761,8 @@ technique t0_HemiAndSunPPtangent
         ZFunc = LESSEQUAL;
 
         VertexShader = (vsArray_HemiAndSunPPtangent[1]);
-        // PixelShader = compile ps_3_0 PShader_HemiAndSunPP();
-        PixelShader = compile ps_3_0 PShader_HemiAndSunPP();
+        // PixelShader = compile ps_2_0 PShader_HemiAndSunPP();
+        PixelShader = compile ps_2_0 PShader_HemiAndSunPP();
     }
 
     pass p1
@@ -775,8 +775,8 @@ technique t0_HemiAndSunPPtangent
         ZFunc = LESSEQUAL;
 
         VertexShader = (vsArray_HemiAndSunAndShadowPPtangent[1]);
-        // PixelShader = compile ps_3_0 PShader_HemiAndSunPP();
-        PixelShader = compile ps_3_0 PShader_HemiAndSunAndShadowPP();
+        // PixelShader = compile ps_2_0 PShader_HemiAndSunPP();
+        PixelShader = compile ps_2_0 PShader_HemiAndSunAndShadowPP();
     }
 }
 
@@ -792,8 +792,8 @@ technique t0_HemiAndSunAndColorPPtangent
         ZFunc = LESSEQUAL;
 
         VertexShader = (vsArray_HemiAndSunPPtangent[1]);
-        // PixelShader = compile ps_3_0 PShader_HemiAndSunPP();
-        PixelShader = compile ps_3_0 PShader_HemiAndSunAndColorPP();
+        // PixelShader = compile ps_2_0 PShader_HemiAndSunPP();
+        PixelShader = compile ps_2_0 PShader_HemiAndSunAndColorPP();
     }
 
     pass p1
@@ -806,8 +806,8 @@ technique t0_HemiAndSunAndColorPPtangent
         ZFunc = LESSEQUAL;
 
         VertexShader = (vsArray_HemiAndSunAndShadowPPtangent[1]);
-        // PixelShader = compile ps_3_0 PShader_HemiAndSunPP();
-        PixelShader = compile ps_3_0 PShader_HemiAndSunAndShadowAndColorPP();
+        // PixelShader = compile ps_2_0 PShader_HemiAndSunPP();
+        PixelShader = compile ps_2_0 PShader_HemiAndSunAndShadowAndColorPP();
     }
 }
 
@@ -857,7 +857,7 @@ vec4 PShader_HemiAndSunPV(VS2PS_PV indata) : COLOR
 }
 
 // Max 2 bones skinning supported!
-VertexShader vsArray_HemiAndSunPV[2] = { compile vs_3_0 VShader_HemiAndSunPV(1),  compile vs_3_0 VShader_HemiAndSunPV(2) };
+VertexShader vsArray_HemiAndSunPV[2] = { compile vs_2_0 VShader_HemiAndSunPV(1),  compile vs_2_0 VShader_HemiAndSunPV(2) };
 
 
 technique t0_HemiAndSunPV
@@ -870,8 +870,8 @@ technique t0_HemiAndSunPV
         ZFunc = LESSEQUAL;
 
         VertexShader = (vsArray_HemiAndSunPV[1]);
-        // PixelShader = compile ps_3_0 PShader_HemiAndSunPV();
-        PixelShader = compile ps_3_0 PShader_HemiAndSunPV();
+        // PixelShader = compile ps_2_0 PShader_HemiAndSunPV();
+        PixelShader = compile ps_2_0 PShader_HemiAndSunPV();
     }
 
     pass p1
@@ -885,8 +885,8 @@ technique t0_HemiAndSunPV
         ZFunc = LESSEQUAL;
 
         VertexShader = (vsArray_HemiAndSunPV[1]);
-        // PixelShader = compile ps_3_0 PShader_HemiAndSunPV();
-        PixelShader = compile ps_3_0 PShader_HemiAndSunPV();
+        // PixelShader = compile ps_2_0 PShader_HemiAndSunPV();
+        PixelShader = compile ps_2_0 PShader_HemiAndSunPV();
     }
 }
 
@@ -1030,8 +1030,8 @@ vec4 PShader_HemiAndSunAndShadowAndColorPV(VS2PS_PVCOLOR_SHADOW indata) : COLOR
 }
 
 // Max 2 bones skinning supported!
-VertexShader vsArray_HemiAndSunAndColorPV[2] = { compile vs_3_0 VShader_HemiAndSunAndColorPV(1),  compile vs_3_0 VShader_HemiAndSunAndColorPV(2) };
-VertexShader vsArray_HemiAndSunAndShadowAndColorPV[2] = { compile vs_3_0 VShader_HemiAndSunAndShadowAndColorPV(1),  compile vs_3_0 VShader_HemiAndSunAndShadowAndColorPV(2) };
+VertexShader vsArray_HemiAndSunAndColorPV[2] = { compile vs_2_0 VShader_HemiAndSunAndColorPV(1),  compile vs_2_0 VShader_HemiAndSunAndColorPV(2) };
+VertexShader vsArray_HemiAndSunAndShadowAndColorPV[2] = { compile vs_2_0 VShader_HemiAndSunAndShadowAndColorPV(1),  compile vs_2_0 VShader_HemiAndSunAndShadowAndColorPV(2) };
 
 technique t0_HemiAndSunAndColorPV
 {
@@ -1044,8 +1044,8 @@ technique t0_HemiAndSunAndColorPV
         ZFunc = LESSEQUAL;
 
         VertexShader = (vsArray_HemiAndSunAndColorPV[1]);
-        // PixelShader = compile ps_3_0 PShader_HemiAndSunPV();
-        PixelShader = compile ps_3_0 PShader_HemiAndSunAndColorPV();
+        // PixelShader = compile ps_2_0 PShader_HemiAndSunPV();
+        PixelShader = compile ps_2_0 PShader_HemiAndSunAndColorPV();
     }
     pass p1
     {
@@ -1055,8 +1055,8 @@ technique t0_HemiAndSunAndColorPV
         ZFunc = LESSEQUAL;
 
         VertexShader = (vsArray_HemiAndSunAndShadowAndColorPV[1]);
-        // PixelShader = compile ps_3_0 PShader_HemiAndSunPV();
-        PixelShader = compile ps_3_0 PShader_HemiAndSunAndShadowAndColorPV();
+        // PixelShader = compile ps_2_0 PShader_HemiAndSunPV();
+        PixelShader = compile ps_2_0 PShader_HemiAndSunAndShadowAndColorPV();
 
     }
 }
@@ -1102,7 +1102,7 @@ vec4 PShader_PointLightPV(VS2PS_PointLight_PV indata) : COLOR
 
 // Max 2 bones skinning supported!
 
-VertexShader vsArray_PointLightPV[2] = { compile vs_3_0 VShader_PointLightPV(1), compile vs_3_0 VShader_PointLightPV(2) };
+VertexShader vsArray_PointLightPV[2] = { compile vs_2_0 VShader_PointLightPV(1), compile vs_2_0 VShader_PointLightPV(2) };
 
 technique t0_PointLightPV
 {
@@ -1116,7 +1116,7 @@ technique t0_PointLightPV
         ZFunc = EQUAL;
 
         VertexShader = (vsArray_PointLightPV[1]);
-        PixelShader = compile ps_3_0 PShader_PointLightPV();
+        PixelShader = compile ps_2_0 PShader_PointLightPV();
     }
 }
 
@@ -1171,7 +1171,7 @@ vec4 PShader_PointLightPP(VS2PS_PointLight_PP indata) : COLOR
 
 // Max 2 bones skinning supported!
 
-VertexShader vsArray_PointLightPP[2] = { compile vs_3_0 VShader_PointLightPP(1), compile vs_3_0 VShader_PointLightPP(2) };
+VertexShader vsArray_PointLightPP[2] = { compile vs_2_0 VShader_PointLightPP(1), compile vs_2_0 VShader_PointLightPP(2) };
 
 technique t0_PointLightPP
 {
@@ -1185,7 +1185,7 @@ technique t0_PointLightPP
         ZFunc = EQUAL;
 
         VertexShader = (vsArray_PointLightPP[1]);
-        PixelShader = compile ps_3_0 PShader_PointLightPP();
+        PixelShader = compile ps_2_0 PShader_PointLightPP();
     }
 }
 
@@ -1214,7 +1214,7 @@ VS2PS_PointLight_PP VShader_PointLightPPtangent(APP2VStangent indata, uniform in
 }
 
 // Max 2 bones skinning supported!
-VertexShader vsArray_PointLightPPtangent[2] = { compile vs_3_0 VShader_PointLightPPtangent(1), compile vs_3_0 VShader_PointLightPPtangent(2) };
+VertexShader vsArray_PointLightPPtangent[2] = { compile vs_2_0 VShader_PointLightPPtangent(1), compile vs_2_0 VShader_PointLightPPtangent(2) };
 
 technique t0_PointLightPPtangent
 {
@@ -1228,7 +1228,7 @@ technique t0_PointLightPPtangent
         ZFunc = EQUAL;
 
         VertexShader = (vsArray_PointLightPPtangent[1]);
-        PixelShader = compile ps_3_0 PShader_PointLightPP();
+        PixelShader = compile ps_2_0 PShader_PointLightPP();
     }
 }
 
@@ -1272,7 +1272,7 @@ vec4 PShader_SpotLightPV(VS2PS_SpotLight_PV indata) : COLOR
 
 // Max 2 bones skinning supported!
 
-VertexShader vsArray_SpotLightPV[2] = { compile vs_3_0 VShader_SpotLightPV(1), compile vs_3_0 VShader_SpotLightPV(2) };
+VertexShader vsArray_SpotLightPV[2] = { compile vs_2_0 VShader_SpotLightPV(1), compile vs_2_0 VShader_SpotLightPV(2) };
 
 technique t0_SpotLightPV
 {
@@ -1286,7 +1286,7 @@ technique t0_SpotLightPV
         ZFunc = EQUAL;
 
         VertexShader = (vsArray_SpotLightPV[1]);
-        PixelShader = compile ps_3_0 PShader_SpotLightPV();
+        PixelShader = compile ps_2_0 PShader_SpotLightPV();
     }
 }
 
@@ -1345,7 +1345,7 @@ vec4 PShader_SpotLightPP(VS2PS_SpotLight_PP indata) : COLOR
 
 
 // Max 2 bones skinning supported!
-VertexShader vsArray_SpotLightPP[2] = { compile vs_3_0 VShader_SpotLightPP(1), compile vs_3_0 VShader_SpotLightPP(2) };
+VertexShader vsArray_SpotLightPP[2] = { compile vs_2_0 VShader_SpotLightPP(1), compile vs_2_0 VShader_SpotLightPP(2) };
 
 technique t0_SpotLightPP
 {
@@ -1359,7 +1359,7 @@ technique t0_SpotLightPP
         ZFunc = EQUAL;
 
         VertexShader = (vsArray_SpotLightPP[1]);
-        PixelShader = compile ps_3_0 PShader_SpotLightPP();
+        PixelShader = compile ps_2_0 PShader_SpotLightPP();
     }
 }
 
@@ -1395,7 +1395,7 @@ VS2PS_SpotLight_PP VShader_SpotLightPPtangent(APP2VStangent indata, uniform int 
 }
 
 // Max 2 bones skinning supported!
-VertexShader vsArray_SpotLightPPtangent[2] = { compile vs_3_0 VShader_SpotLightPPtangent(1), compile vs_3_0 VShader_SpotLightPPtangent(2) };
+VertexShader vsArray_SpotLightPPtangent[2] = { compile vs_2_0 VShader_SpotLightPPtangent(1), compile vs_2_0 VShader_SpotLightPPtangent(2) };
 
 technique t0_SpotLightPPtangent
 {
@@ -1409,7 +1409,7 @@ technique t0_SpotLightPPtangent
         ZFunc = EQUAL;
 
         VertexShader = (vsArray_SpotLightPPtangent[1]);
-        PixelShader = compile ps_3_0 PShader_SpotLightPP();
+        PixelShader = compile ps_2_0 PShader_SpotLightPP();
     }
 }
 
@@ -1440,7 +1440,7 @@ vec4 PShader_MulDiffuse(VS2PS_MulDiffuse indata) : COLOR
 }
 
 // Max 2 bones skinning supported!
-VertexShader vsArray_MulDiffuse[2] = { compile vs_3_0 VShader_MulDiffuse(1), compile vs_3_0 VShader_MulDiffuse(2) };
+VertexShader vsArray_MulDiffuse[2] = { compile vs_2_0 VShader_MulDiffuse(1), compile vs_2_0 VShader_MulDiffuse(2) };
 
 technique t0_MulDiffuse
 {
@@ -1455,7 +1455,7 @@ technique t0_MulDiffuse
         ZFunc = EQUAL;
 
         VertexShader = (vsArray_MulDiffuse[1]);
-        PixelShader = compile ps_3_0 PShader_MulDiffuse();
+        PixelShader = compile ps_2_0 PShader_MulDiffuse();
     }
 }
 
@@ -1671,8 +1671,8 @@ technique humanskinNV
 
         StencilEnable = FALSE;
 
-        VertexShader = compile vs_3_0 vsSkinpre(2);
-        PixelShader = compile ps_3_0 psSkinpre();
+        VertexShader = compile vs_2_0 vsSkinpre(2);
+        PixelShader = compile ps_2_0 psSkinpre();
     }
 
     pass preshadowed
@@ -1685,8 +1685,8 @@ technique humanskinNV
 
         StencilEnable = FALSE;
 
-        VertexShader = compile vs_3_0 vsSkinpreshadowed(2);
-        PixelShader = compile ps_3_0 psSkinpreshadowedNV();
+        VertexShader = compile vs_2_0 vsSkinpreshadowed(2);
+        PixelShader = compile ps_2_0 psSkinpreshadowedNV();
     }
 
     pass apply
@@ -1703,8 +1703,8 @@ technique humanskinNV
         StencilZFail = KEEP;
         StencilPass = REPLACE;
 
-        VertexShader = compile vs_3_0 vsSkinapply(2);
-        PixelShader = compile ps_3_0 psSkinapply();
+        VertexShader = compile vs_2_0 vsSkinapply(2);
+        PixelShader = compile ps_2_0 psSkinapply();
     }
 }
 
@@ -1720,8 +1720,8 @@ technique humanskin
 
         StencilEnable = FALSE;
 
-        VertexShader = compile vs_3_0 vsSkinpre(2);
-        PixelShader = compile ps_3_0 psSkinpre();
+        VertexShader = compile vs_2_0 vsSkinpre(2);
+        PixelShader = compile ps_2_0 psSkinpre();
     }
 
     pass preshadowed
@@ -1734,8 +1734,8 @@ technique humanskin
 
         StencilEnable = FALSE;
 
-        VertexShader = compile vs_3_0 vsSkinpreshadowed(2);
-        PixelShader = compile ps_3_0 psSkinpreshadowed();
+        VertexShader = compile vs_2_0 vsSkinpreshadowed(2);
+        PixelShader = compile ps_2_0 psSkinpreshadowed();
     }
 
     pass apply
@@ -1747,8 +1747,8 @@ technique humanskin
         ZFunc = LESSEQUAL;
         // FillMode = WIREFRAME;
 
-        VertexShader = compile vs_3_0 vsSkinapply(2);
-        PixelShader = compile ps_3_0 psSkinapply();
+        VertexShader = compile vs_2_0 vsSkinapply(2);
+        PixelShader = compile ps_2_0 psSkinapply();
     }
 }
 
@@ -1926,8 +1926,8 @@ technique DrawShadowMapNV
 
         ScissorTestEnable = TRUE;
 
-        VertexShader = compile vs_3_0 vsShadowMap();
-        PixelShader = compile ps_3_0 psShadowMapNV();
+        VertexShader = compile vs_2_0 vsShadowMap();
+        PixelShader = compile ps_2_0 psShadowMapNV();
     }
 
     pass directionalspotalpha
@@ -1944,8 +1944,8 @@ technique DrawShadowMapNV
 
         ScissorTestEnable = TRUE;
 
-        VertexShader = compile vs_3_0 vsShadowMapAlpha();
-        PixelShader = compile ps_3_0 psShadowMapAlphaNV();
+        VertexShader = compile vs_2_0 vsShadowMapAlpha();
+        PixelShader = compile ps_2_0 psShadowMapAlphaNV();
     }
 
     pass point
@@ -1959,8 +1959,8 @@ technique DrawShadowMapNV
 
         ScissorTestEnable = TRUE;
 
-        VertexShader = compile vs_3_0 vsShadowMapPointNV();
-        PixelShader = compile ps_3_0 psShadowMapPointNV();
+        VertexShader = compile vs_2_0 vsShadowMapPointNV();
+        PixelShader = compile ps_2_0 psShadowMapPointNV();
     }
 }
 
@@ -1976,8 +1976,8 @@ technique DrawShadowMap
 
         ScissorTestEnable = TRUE;
 
-        VertexShader = compile vs_3_0 vsShadowMap();
-        PixelShader = compile ps_3_0 psShadowMap();
+        VertexShader = compile vs_2_0 vsShadowMap();
+        PixelShader = compile ps_2_0 psShadowMap();
     }
 
     pass directionalspotalpha
@@ -1990,8 +1990,8 @@ technique DrawShadowMap
 
         ScissorTestEnable = TRUE;
 
-        VertexShader = compile vs_3_0 vsShadowMapAlpha();
-        PixelShader = compile ps_3_0 psShadowMapAlpha();
+        VertexShader = compile vs_2_0 vsShadowMapAlpha();
+        PixelShader = compile ps_2_0 psShadowMapAlpha();
     }
 
     pass point
@@ -2003,8 +2003,8 @@ technique DrawShadowMap
 
         ScissorTestEnable = TRUE;
 
-        VertexShader = compile vs_3_0 vsShadowMapPoint();
-        PixelShader = compile ps_3_0 psShadowMapPoint();
+        VertexShader = compile vs_2_0 vsShadowMapPoint();
+        PixelShader = compile ps_2_0 psShadowMapPoint();
     }
 }
 

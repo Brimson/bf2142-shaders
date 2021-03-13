@@ -15,9 +15,9 @@ technique lightmapGeneration
         AlphaRef = 0;
         AlphaFunc = GREATER;
 
-        VertexShader = compile vs_3_0 bumpSpecularVertexShaderBlinn1(viewProjMatrix,
+        VertexShader = compile vs_2_0 bumpSpecularVertexShaderBlinn1(viewProjMatrix,
                                                                      viewInverseMatrix,
                                                                      lightPos);
-        PixelShader = compile ps_3_0 blackColor();
+        PixelShader = compile ps_2_0 blackColor();
     }
 }

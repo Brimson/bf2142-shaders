@@ -157,9 +157,9 @@ technique defaultTechnique
 {
     pass P0
     {
-        vertexShader = compile vs_3_0 basicVertexShader();
+        vertexShader = compile vs_2_0 basicVertexShader();
         TextureTransFormFlags[2] = PROJECTED;
-        pixelShader = compile ps_3_0 basicPixelShader();
+        pixelShader = compile ps_2_0 basicPixelShader();
         #ifdef ENABLE_WIREFRAME
             FillMode = WireFrame;
         #endif

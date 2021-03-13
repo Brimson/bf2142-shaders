@@ -318,8 +318,8 @@ technique Decal
         DestBlend = INVSRCALPHA;
         FogEnable = TRUE;
 
-        VertexShader = compile vs_3_0 vsDecal();
-        PixelShader = compile ps_3_0 psDecal();
+        VertexShader = compile vs_2_0 vsDecal();
+        PixelShader = compile ps_2_0 psDecal();
     }
 
 
@@ -338,8 +338,8 @@ technique Decal
         DestBlend = INVSRCALPHA;
         FogEnable = TRUE;
 
-        VertexShader = compile vs_3_0 vsDecalShadowed();
-        PixelShader = compile ps_3_0 psDecalShadowed();
+        VertexShader = compile vs_2_0 vsDecalShadowed();
+        PixelShader = compile ps_2_0 psDecalShadowed();
     }
 
     pass p2
@@ -356,8 +356,8 @@ technique Decal
         DestBlend = INVSRCALPHA;
         FogEnable = TRUE;
 
-        VertexShader = compile vs_3_0 vsDecalNormalMapped();
-        PixelShader  = compile ps_3_0 psDecalNormalMapped();
+        VertexShader = compile vs_2_0 vsDecalNormalMapped();
+        PixelShader  = compile ps_2_0 psDecalNormalMapped();
     }
 }
 

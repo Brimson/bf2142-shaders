@@ -140,8 +140,8 @@ technique roadeditable
         ZWriteEnable = FALSE;
         FogEnable = true;
 
-        VertexShader = compile vs_3_0 RoadEditableVS();
-        PixelShader = compile ps_3_0 RoadEditablePS();
+        VertexShader = compile vs_2_0 RoadEditableVS();
+        PixelShader = compile ps_2_0 RoadEditablePS();
     }
 
     pass p1 // draw material
@@ -159,8 +159,8 @@ technique roadeditable
         ZEnable = TRUE;
         ZWriteEnable = FALSE;
 
-        VertexShader = compile vs_3_0 RoadEditableVS_dm();
-        PixelShader = compile ps_3_0 RoadEditablePS_dm();
+        VertexShader = compile vs_2_0 RoadEditableVS_dm();
+        PixelShader = compile ps_2_0 RoadEditablePS_dm();
     }
 }
 

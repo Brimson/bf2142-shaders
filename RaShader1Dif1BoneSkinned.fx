@@ -79,8 +79,8 @@ technique defaultTechnique
 {
     pass P0
     {
-        vertexShader = compile vs_3_0 basicVertexShader();
-        pixelShader = compile ps_3_0 PixelShader();
+        vertexShader = compile vs_2_0 basicVertexShader();
+        pixelShader = compile ps_2_0 PixelShader();
 
         #ifdef ENABLE_WIREFRAME
             FillMode = WireFrame;

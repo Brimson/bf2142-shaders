@@ -684,8 +684,8 @@ technique Dx9Style_BM
         ZFunc = LESSEQUAL;
         AlphaBlendEnable = FALSE;
         FogEnable = false;
-        VertexShader = compile vs_3_0 vsDx9_BM_Base();
-        PixelShader = compile ps_3_0 psDx9_BM_Base();
+        VertexShader = compile vs_2_0 vsDx9_BM_Base();
+        PixelShader = compile ps_2_0 psDx9_BM_Base();
     }
 
     pass pointlight // p1
@@ -697,8 +697,8 @@ technique Dx9Style_BM
         AlphaBlendEnable = TRUE;
         SrcBlend = ONE;
         DestBlend = ONE;
-        VertexShader = compile vs_3_0 vsDx9_BM_Pt();
-        PixelShader = compile ps_3_0 psDx9_BM_Pt();
+        VertexShader = compile vs_2_0 vsDx9_BM_Pt();
+        PixelShader = compile ps_2_0 psDx9_BM_Pt();
     }
 
     pass spotlight // p2
@@ -711,8 +711,8 @@ technique Dx9Style_BM
         SrcBlend = ONE;
         DestBlend = ONE;
 
-        VertexShader = compile vs_3_0 vsDx9_BM_Sp();
-        PixelShader = compile ps_3_0 psDx9_BM_Sp();
+        VertexShader = compile vs_2_0 vsDx9_BM_Sp();
+        PixelShader = compile ps_2_0 psDx9_BM_Sp();
     }
 
     pass mulDiffuse // p3
@@ -725,9 +725,9 @@ technique Dx9Style_BM
         FogEnable = true;
         SrcBlend = ONE;
         DestBlend = ONE;
-        VertexShader = compile vs_3_0 vsDx9_BM_MulD();
-        PixelShader = compile ps_3_0 psDx9_BM_MulD();
-        // PixelShader = compile ps_3_0 psDx9_BM_MulD();
+        VertexShader = compile vs_2_0 vsDx9_BM_MulD();
+        PixelShader = compile ps_2_0 psDx9_BM_MulD();
+        // PixelShader = compile ps_2_0 psDx9_BM_MulD();
     }
 
     pass mulDiffuseDetail //p4
@@ -741,8 +741,8 @@ technique Dx9Style_BM
         DestBlend = ONE;
         // ColorWriteEnable = RED|BLUE|GREEN|ALPHA;
         FogEnable = false;
-        VertexShader = compile vs_3_0 vsDx9_BM_MulDDetail();
-        PixelShader = compile ps_3_0 psDx9_BM_MulDDetail();
+        VertexShader = compile vs_2_0 vsDx9_BM_MulDDetail();
+        PixelShader = compile ps_2_0 psDx9_BM_MulDDetail();
     }
 
     pass mulDiffuseDetailMounten // p5
@@ -756,8 +756,8 @@ technique Dx9Style_BM
         DestBlend = ONE;
         FogEnable = false;
         // ColorWriteEnable = RED|BLUE|GREEN|ALPHA;
-        VertexShader = compile vs_3_0 vsDx9_BM_MulDDetailMounten();
-        PixelShader = compile ps_3_0 psDx9_BM_MulDDetailMounten();
+        VertexShader = compile vs_2_0 vsDx9_BM_MulDDetailMounten();
+        PixelShader = compile ps_2_0 psDx9_BM_MulDDetailMounten();
     }
 
     pass { } // p6 tunnels (removed)
@@ -771,8 +771,8 @@ technique Dx9Style_BM
         AlphaBlendEnable = FALSE;
         SrcBlend = DESTCOLOR;
         DestBlend = ZERO;
-        VertexShader = compile vs_3_0 vsDirectionalLightShadows();
-        PixelShader = compile ps_3_0 psDirectionalLightShadows();
+        VertexShader = compile vs_2_0 vsDirectionalLightShadows();
+        PixelShader = compile ps_2_0 psDirectionalLightShadows();
     }
 
     pass DirectionalLightShadowsNV	//p8
@@ -785,8 +785,8 @@ technique Dx9Style_BM
         AlphaBlendEnable = TRUE;
         SrcBlend = DESTCOLOR;
         DestBlend = ZERO;
-        VertexShader = compile vs_3_0 vsDirectionalLightShadows();
-        PixelShader = compile ps_3_0 psDirectionalLightShadowsNV();
+        VertexShader = compile vs_2_0 vsDirectionalLightShadows();
+        PixelShader = compile ps_2_0 psDirectionalLightShadowsNV();
     }
 
     pass DynamicShadowmap	//p9
@@ -799,8 +799,8 @@ technique Dx9Style_BM
         AlphaBlendEnable = TRUE;
         SrcBlend = DESTCOLOR;
         DestBlend = ZERO;
-        VertexShader = compile vs_3_0 vsDynamicShadowmap();
-        PixelShader = compile ps_3_0 psDynamicShadowmap();
+        VertexShader = compile vs_2_0 vsDynamicShadowmap();
+        PixelShader = compile ps_2_0 psDynamicShadowmap();
     }
 
     pass  {} // p10
@@ -816,8 +816,8 @@ technique Dx9Style_BM
         DestBlend = ONE;
         // ColsorWriteEnable = RED|BLUE|GREEN|ALPHA;
         FogEnable = false;
-        VertexShader = compile vs_3_0 vsDx9_BM_MulDDetailWithEnvMap();
-        PixelShader = compile ps_3_0 psDx9_BM_MulDDetailWithEnvMap();
+        VertexShader = compile vs_2_0 vsDx9_BM_MulDDetailWithEnvMap();
+        PixelShader = compile ps_2_0 psDx9_BM_MulDDetailWithEnvMap();
     }
 
     pass mulDiffuseFast		//p12
@@ -828,8 +828,8 @@ technique Dx9Style_BM
         ZFunc = LESSEQUAL;
         // FogEnable = false;
         FogEnable = true;
-        VertexShader = compile vs_3_0 vsDx9_BM_MulDFast();
-        PixelShader = compile ps_3_0 psDx9_BM_MulDFast();
+        VertexShader = compile vs_2_0 vsDx9_BM_MulDFast();
+        PixelShader = compile ps_2_0 psDx9_BM_MulDFast();
     }
 
     pass PPPointlight		//p13
@@ -841,8 +841,8 @@ technique Dx9Style_BM
         AlphaBlendEnable = TRUE;
         SrcBlend = ONE;
         DestBlend = ONE;
-        VertexShader = compile vs_3_0 vsDx9_BM_PPPt();
-        PixelShader = compile ps_3_0 psDx9_BM_PPPt();
+        VertexShader = compile vs_2_0 vsDx9_BM_PPPt();
+        PixelShader = compile ps_2_0 psDx9_BM_PPPt();
     }
 }
 
@@ -981,8 +981,8 @@ technique Dx9Style_SurroundingTerrain
         ZFunc = LESSEQUAL;
         AlphaBlendEnable = FALSE;
         FogEnable = true;
-        VertexShader = compile vs_3_0 vsSTNormal();
-        PixelShader = compile ps_3_0 psSTNormal();
+        VertexShader = compile vs_2_0 vsSTNormal();
+        PixelShader = compile ps_2_0 psSTNormal();
     }
 
     pass p1 // Fast
@@ -993,7 +993,7 @@ technique Dx9Style_SurroundingTerrain
         ZFunc = LESSEQUAL;
         AlphaBlendEnable = FALSE;
         FogEnable = true;
-        VertexShader = compile vs_3_0 vsSTFast();
-        PixelShader = compile ps_3_0 psSTFast();
+        VertexShader = compile vs_2_0 vsSTFast();
+        PixelShader = compile ps_2_0 psSTFast();
     }
 }
