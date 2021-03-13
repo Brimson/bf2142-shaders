@@ -100,7 +100,7 @@ VS_PARTICLE_OUTPUT vsParticle(appdata input, uniform mat4x4 myWV, uniform mat4x4
     // compute texcoords
     // Rotate and scale to correct u,v space and zoom in.
     vec2 texCoords = input.texCoords.xy * OneOverShort;
-    vec2 rotatedTexCoords = float2(texCoords.x * rotation.y - texCoords.y * rotation.x, dot(texCoords.xy * rotation.xy));
+    vec2 rotatedTexCoords = float2(texCoords.x * rotation.y - texCoords.y * rotation.x, dot(texCoords.xy, rotation.xy));
     rotatedTexCoords *= templ[input.ageFactorAndGraphIndex.y].m_uvRangeLMapIntensiyAndParticleMaxSize.xy * uvScale;
 
     // Bias texcoords.
@@ -209,7 +209,7 @@ float4 psParticleAdditiveHigh(VS_PARTICLE_OUTPUT input) : COLOR
 
     vec4 color = lerp(tDiffuse, tDiffuse2, input.animBFactorAndLMapIntOffset.a);
     color.rgb *= 2.0 * input.color.rgb;
- 
+
     // mask with alpha since were doing an add
     color.rgb *= color.a * input.lightFactorAndAlphaBlend.b;
     return color;

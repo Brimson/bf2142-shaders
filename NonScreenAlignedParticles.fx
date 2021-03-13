@@ -304,7 +304,7 @@ VS_HEAT_SHIMMER_OUTPUT vsParticleHeatShimmer(appdata input, uniform float4x4 myW
 
     // compute texcoords
     // Rotate and scale to correct u,v space and zoom in.
-    vec2 rotatedTexCoords = float2(texCoords.x * rotation.y - texCoords.y * rotation.x, dot(texCoords.xy * rotation.xy));
+    vec2 rotatedTexCoords = float2(texCoords.x * rotation.y - texCoords.y * rotation.x, dot(texCoords.xy, rotation.xy));
     rotatedTexCoords *= templ[input.ageFactorAndGraphIndex.y].m_uvRangeLMapIntensiyAndParticleMaxSize.xy * uvScale;
 
     // Bias texcoords.
@@ -347,7 +347,7 @@ VS_HEAT_SHIMMER_OUTPUT vsParticleHeatShimmer1(appdata input, uniform mat4x4 myWV
     // compute texcoords
     // Rotate and scale to correct u,v space and zoom in.
     vec2 texCoords = input.texCoords.xy * OneOverShort;
-    vec2 rotatedTexCoords = float2(texCoords.x * rotation.y - texCoords.y * rotation.x, dot(texCoords.xy * rotation.xy));
+    vec2 rotatedTexCoords = float2(texCoords.x * rotation.y - texCoords.y * rotation.x, dot(texCoords.xy, rotation.xy));
     rotatedTexCoords *= templ[input.ageFactorAndGraphIndex.y].m_uvRangeLMapIntensiyAndParticleMaxSize.xy * uvScale;
 
     // Bias texcoords.
@@ -376,7 +376,7 @@ float4 psParticleHeatShimmer(VS_HEAT_SHIMMER_OUTPUT input) : COLOR
     vec2 backbufferCoords = input.texCoords1AndAlphaBlend.xy
                             + float2(cos((input.texCoords1AndAlphaBlend.y) * coordsToAngle + angle) * texelSize.x * shimmerIntensity,
                                      sin((input.texCoords1AndAlphaBlend.x) * coordsToAngle + angle) * texelSize.y * shimmerIntensity);
-    
+
     vec4 tBackBuffer = tex2D(backbufferSampler, backbufferCoords);
     vec4 tDiffuse = tex2D(diffuseSampler, input.texCoords0.xy);
     return vec4(tBackBuffer.rgb, tDiffuse.a * input.texCoords1AndAlphaBlend.z);
