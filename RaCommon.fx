@@ -57,8 +57,6 @@ scalar calcFog(scalar w)
     return close-far;
 }
 
-#define CEXP(constant) constant
-
 #define NO_VAL vec3(1.0, 1.0, 0.0)
 
 vec4 showChannel
