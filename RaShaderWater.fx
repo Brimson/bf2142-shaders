@@ -3,6 +3,6 @@
 #define USE_SHADOWS
 #define PIXEL_CAMSPACE
 #define USE_3DTEXTURE
-#define PS_30
+#define PS_20
 
 #include "shaders/RaShaderWaterBase.fx"

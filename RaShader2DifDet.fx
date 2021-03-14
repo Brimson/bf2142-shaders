@@ -15,11 +15,11 @@ vector textureFactor = float4(1.0f, 1.0f, 1.0f, 1.0f);
 
 struct VS_OUTPUT
 {
-    float4 Pos : POSITION0;
-    float2 Tex0 : TEXCOORD0;
-    float2 Tex1 : TEXCOORD1;
+    float4 Pos   : POSITION0;
+    float2 Tex0  : TEXCOORD0;
+    float2 Tex1  : TEXCOORD1;
     float4 Color : COLOR;
-    float Fog : FOG;
+    float  Fog   : FOG;
 };
 
 texture	DetailMap;
@@ -56,13 +56,13 @@ float2 tex1	: TEXCOORD1
 {
     VS_OUTPUT Out = (VS_OUTPUT)0;
 
-    Out.Pos = mul(float4(inPos, 1), mul(World, ViewProjection));
+    Out.Pos = mul(float4(inPos, 1.0), mul(World, ViewProjection));
     Out.Fog = calcFog(FogRange, Out.Pos.w);
     Out.Tex0 = tex0;
     Out.Tex1 = tex1;
 
     float3 normal = mul(inNormal, World);
-    Out.Color.rgb = (saturate( dot(normal, -Lights[0].dir) * Lights[0].color) + LIGHT_ADD);
+    Out.Color.rgb = saturate(dot(normal, -Lights[0].dir) * Lights[0].color) + LIGHT_ADD;
     Out.Color.a = 1.0;
 
     return Out;

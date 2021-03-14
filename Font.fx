@@ -28,22 +28,21 @@ sampler TexMapSamplerClampLinear = sampler_state
 
 struct appData
 {
-    vec4	Position	: POSITION;
-       vec4	Color		: COLOR;
-       vec2	TexCoord	: TEXCOORD0;
+    vec4 Position : POSITION;
+    vec4 Color    : COLOR;
+    vec2 TexCoord : TEXCOORD0;
 };
 
 struct VS_REGULAR
 {
     vec4 Position : POSITION;
-    vec4 Diffuse : COLOR0;
+    vec4 Diffuse  : COLOR0;
     vec2 TexCoord : TEXCOORD0;
 };
 
 VS_REGULAR VSRegular(appData input)
 {
     VS_REGULAR Out = (VS_REGULAR)0;
-    // Out.Position = mul( float4(Position.xy, 0.5f, 1.f), WorldView);
     Out.Position = vec4(input.Position.xy, 0.5f, 1.0f);
     Out.Diffuse = input.Color;
     Out.TexCoord = input.TexCoord;
@@ -52,24 +51,24 @@ VS_REGULAR VSRegular(appData input)
 
 vec4 PSRegular(VS_REGULAR input) : COLOR
 {
-    return tex2D( TexMapSamplerClamp, input.TexCoord ) * input.Diffuse;
+    return tex2D(TexMapSamplerClamp, input.TexCoord) * input.Diffuse;
 }
 
 vec4 PSRegularScaled(VS_REGULAR input) : COLOR
 {
-    return tex2D( TexMapSamplerClampLinear, input.TexCoord ) * input.Diffuse;
+    return tex2D(TexMapSamplerClampLinear, input.TexCoord) * input.Diffuse;
 }
 
 struct VS_SELECTIONQUAD
 {
     vec4 Position : POSITION;
-    vec4 Diffuse : COLOR0;
+    vec4 Diffuse  : COLOR0;
 };
 
 VS_SELECTIONQUAD VSSelectionQuad(float3 Position : POSITION)
 {
     VS_SELECTIONQUAD Out = (VS_SELECTIONQUAD)0;
-    Out.Position = mul(vec4(Position.xy, 0.0f, 1.0), WorldView);
+    Out.Position = mul( vec4(Position.xy, 0.0f, 1.0), WorldView);
     Out.Diffuse = DiffuseColor;
     return Out;
 }
@@ -80,7 +79,7 @@ technique Regular
     {
         VertexShader = compile vs_2_0 VSRegular();
         PixelShader = compile ps_2_0 PSRegular();
-        AlphaTestEnable		= false;
+        AlphaTestEnable = false;
         AlphaBlendEnable = true;
         SrcBlend = SRCALPHA;
         DestBlend = INVSRCALPHA;
@@ -93,7 +92,7 @@ technique RegularScaled
     {
         VertexShader = compile vs_2_0 VSRegular();
         PixelShader = compile ps_2_0 PSRegularScaled();
-        AlphaTestEnable		= false;
+        AlphaTestEnable = false;
         AlphaBlendEnable = true;
         SrcBlend = SRCALPHA;
         DestBlend = INVSRCALPHA;
@@ -106,7 +105,7 @@ technique SelectionQuad
     {
         VertexShader = compile vs_2_0 VSSelectionQuad();
         PixelShader  = NULL;
-        AlphaTestEnable		= false;
+        AlphaTestEnable = false;
         AlphaBlendEnable = true;
         SrcBlend = SRCALPHA;
         DestBlend = INVSRCALPHA;

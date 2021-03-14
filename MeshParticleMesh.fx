@@ -9,7 +9,7 @@ struct appdata
 {
     float4 Pos          : POSITION;
     float3 Normal       : NORMAL;
-    float4 BlendIndices	: BLENDINDICES;
+    float4 BlendIndices : BLENDINDICES;
     float2 TexCoord     : TEXCOORD0;
     float3 Tan          : TANGENT;
     float3 Binorm       : BINORMAL;
@@ -24,8 +24,7 @@ float4 m_transparencyGraph : TRANSPARENCYGRAPH;
 
 float4 ageAndAlphaArray[52] : AgeAndAlphaArray;
 float lightmapIntensityOffset : LightmapIntensityOffset;
-mat4x3 mOneBoneSkinning[52]: matONEBONESKINNING; /* : register(c50) < bool sparseArray = true; int arrayStart = 50; >;*/
-
+mat4x3 mOneBoneSkinning[52]: matONEBONESKINNING; /* : register(c50) < bool sparseArray = true; int arrayStart = 50; >; */
 
 struct OUT_vsDiffuse
 {
@@ -55,21 +54,21 @@ OUT_vsDiffuse vsDiffuse
 
     // Compute Cubic polynomial factors.
     float age = ageAndAlphaArray[IndexArray[0]][0];
-    float4 pc = {age * age * age, age * age, age, 1.0f};
+    float4 pc = { age * age * age, age * age, age, 1.9f};
 
-    float colorBlendFactor = min(dot(m_colorBlendGraph, pc), 1);
+    float colorBlendFactor = min(dot(m_colorBlendGraph, pc), 1.0);
     float3 color = colorBlendFactor * m_color2.rgb;
-    color += (1 - colorBlendFactor) * m_color1AndLightFactor.rgb;
+    color += (1.0 - colorBlendFactor) * m_color1AndLightFactor.rgb;
 
     Out.lightFactor = m_color1AndLightFactor.a;
-     Out.color.rgb = color;
-     Out.color.a = ageAndAlphaArray[IndexArray[0]][1];
+    Out.color.rgb = color;
+    Out.color.a = ageAndAlphaArray[IndexArray[0]][1];
 
     // Pass-through texcoords
     Out.DiffuseMap.xy = input.TexCoord;
     // hemi lookup coords
     Out.GroundUV.xy = ((Pos.xyz + (hemiMapInfo.z * 0.5)).xz - hemiMapInfo.xy)/ hemiMapInfo.z;
-    Out.LerpAndLMapIntOffset = saturate(saturate((Pos.y - hemiShadowAltitude) / 10.0f) + lightmapIntensityOffset);
+    Out.LerpAndLMapIntOffset = saturate(saturate((Pos.y - hemiShadowAltitude) * 0.1) + lightmapIntensityOffset);
 
     Out.Fog = calcFog(Out.HPos.w);
 
@@ -89,13 +88,10 @@ float4 psDiffuse(OUT_vsDiffuse indata) : COLOR
 float4 psAdditive(OUT_vsDiffuse indata) : COLOR
 {
     vec4 outColor = tex2D(diffuseSampler, indata.DiffuseMap.xy) * indata.color;
-
     // mask with alpha since were doing an add
     outColor.rgb *= outColor.a;
-
     return outColor;
 }
-
 
 technique Diffuse
 {
@@ -111,7 +107,6 @@ technique Diffuse
         SrcBlend = SRCALPHA;
         DestBlend = INVSRCALPHA;
         FogEnable = TRUE;
-
 
         VertexShader = compile vs_2_0 vsDiffuse(viewProjMatrix);
         PixelShader = compile ps_2_0 psDiffuse();
@@ -133,7 +128,6 @@ technique Additive
         DestBlend = ONE;
         FogEnable = FALSE;
 
-
         VertexShader = compile vs_2_0 vsDiffuse(viewProjMatrix);
         PixelShader = compile ps_2_0 psAdditive();
     }
@@ -154,10 +148,7 @@ technique DiffuseWithZWrite
         DestBlend = INVSRCALPHA;
         FogEnable = TRUE;
 
-
         VertexShader = compile vs_2_0 vsDiffuse(viewProjMatrix);
         PixelShader = compile ps_2_0 psDiffuse();
     }
 }
-
-

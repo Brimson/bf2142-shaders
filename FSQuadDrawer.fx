@@ -2,15 +2,33 @@
 
 texture texture0 : TEXLAYER0;
 texture texture1 : TEXLAYER1;
-// texture texture2 : TEXLAYER2;
-// texture texture3 : TEXLAYER3;
 
-sampler sampler0point = sampler_state { Texture = (texture0); AddressU = CLAMP; AddressV = CLAMP; MinFilter = POINT; MagFilter = POINT; };
-sampler sampler1point = sampler_state { Texture = (texture1); AddressU = CLAMP; AddressV = CLAMP; MinFilter = POINT; MagFilter = POINT; };
-// sampler sampler2 = sampler_state { Texture = (texture2); AddressU = CLAMP; AddressV = CLAMP; MinFilter = POINT; MagFilter = POINT; };
-// sampler sampler3 = sampler_state { Texture = (texture3); AddressU = CLAMP; AddressV = CLAMP; MinFilter = POINT; MagFilter = POINT; };
-sampler sampler0bilin = sampler_state { Texture = (texture0); AddressU = CLAMP; AddressV = CLAMP; MinFilter = LINEAR; MagFilter = LINEAR; };
-// sampler sampler0aniso = sampler_state { Texture = (texture0); AddressU = CLAMP; AddressV = CLAMP; MinFilter = ANISOTROPIC; MagFilter = ANISOTROPIC; MaxAnisotropy = 8; };
+sampler sampler0point = sampler_state
+{
+    Texture = (texture0);
+    AddressU = CLAMP; 
+    AddressV = CLAMP;
+    MinFilter = POINT;
+    MagFilter = POINT;
+};
+
+sampler sampler1point = sampler_state
+{
+    Texture = (texture1);
+    AddressU = CLAMP;
+    AddressV = CLAMP;
+    MinFilter = POINT;
+    MagFilter = POINT;
+};
+
+sampler sampler0bilin = sampler_state
+{
+    Texture = (texture0);
+    AddressU = CLAMP;
+    AddressV = CLAMP;
+    MinFilter = LINEAR;
+    MagFilter = LINEAR;
+};
 
 dword dwStencilRef : STENCILREF = 0;
 dword dwStencilPass : STENCILPASS = 1; // KEEP
@@ -43,19 +61,19 @@ vec2 texelSize : TEXELSIZE;
 
 struct APP2VS_blit
 {
-    vec2 Pos : POSITION0;
+    vec2 Pos       : POSITION0;
     vec2 TexCoord0 : TEXCOORD0;
 };
 
 struct VS2PS_blit
 {
-    vec4 Pos : POSITION;
+    vec4 Pos       : POSITION;
     vec2 TexCoord0 : TEXCOORD0;
 };
 
 struct VS2PS_4TapFilter
 {
-    vec4 Pos : POSITION;
+    vec4 Pos             : POSITION;
     vec2 FilterCoords[4] : TEXCOORD0;
 };
 
@@ -67,37 +85,39 @@ VS2PS_blit vsDx9_blit(APP2VS_blit indata)
     return outdata;
 }
 
+float4 psDx9_blit() : COLOR
+{
+    return 0.0;
+}
+
 struct VS2PS_Down4x4Filter14
 {
-    vec4 Pos : POSITION;
+    vec4 Pos       : POSITION;
     vec2 TexCoord0 : TEXCOORD0;
     vec2 TexCoord1 : TEXCOORD1;
     vec2 TexCoord2 : TEXCOORD2;
     vec2 TexCoord3 : TEXCOORD3;
 };
 
-
 struct VS2PS_5SampleFilter
 {
-    vec4 Pos : POSITION;
-    vec2 TexCoord0 : TEXCOORD0;
+    vec4 Pos             : POSITION;
+    vec2 TexCoord0       : TEXCOORD0;
     vec4 FilterCoords[2] : TEXCOORD1;
 };
 
 struct VS2PS_5SampleFilter14
 {
-    vec4 Pos : POSITION;
+    vec4 Pos             : POSITION;
     vec2 FilterCoords[5] : TEXCOORD0;
 };
 
 struct VS2PS_12SampleFilter
 {
-    vec4 Pos : POSITION;
-    vec2 TexCoord0 : TEXCOORD0;
+    vec4 Pos             : POSITION;
+    vec2 TexCoord0       : TEXCOORD0;
     vec4 FilterCoords[6] : TEXCOORD1;
 };
-
-
 
 VS2PS_Down4x4Filter14 vsDx9_Down4x4Filter14(APP2VS_blit indata)
 {
@@ -121,7 +141,7 @@ VS2PS_blit vsDx9_blitMagnified(APP2VS_blit indata)
 VS2PS_4TapFilter vsDx9_4TapFilter(APP2VS_blit indata, uniform vec4 offsets[4])
 {
     VS2PS_4TapFilter outdata;
-    outdata.Pos = vec4(indata.Pos.x, indata.Pos.y, 0, 1);
+    outdata.Pos = vec4(indata.Pos.x, indata.Pos.y, 0.0, 1.0);
 
     for (int i = 0; i < 4; ++i)
     {
@@ -137,8 +157,7 @@ VS2PS_5SampleFilter vsDx9_5SampleFilter(APP2VS_blit indata, uniform scalar offse
 {
     VS2PS_5SampleFilter outdata;
 
-    outdata.Pos = vec4(indata.Pos.x, indata.Pos.y, 0, 1);
-
+    outdata.Pos = vec4(indata.Pos.x, indata.Pos.y, 0.0, 1.0);
 
     if(horizontal)
     {
@@ -169,41 +188,38 @@ VS2PS_5SampleFilter vsDx9_5SampleFilter(APP2VS_blit indata, uniform scalar offse
 
 VS2PS_12SampleFilter vsDx9_12SampleFilter(APP2VS_blit indata, uniform bool horizontal)
 {
-
-
     VS2PS_12SampleFilter outdata;
-    outdata.Pos = vec4(indata.Pos.x, indata.Pos.y, 0, 1);
+    outdata.Pos = vec4(indata.Pos.x, indata.Pos.y, 0.0, 1.0);
     float scale = bloomSize;
     outdata.TexCoord0 = indata.TexCoord0;
 
-    for(int i=0; i<3; ++i)
+    for(int i = 0; i < 3; ++i)
     {
         if(horizontal)
         {
-            outdata.FilterCoords[i].xy = indata.TexCoord0.xy + float2(0.01 * scale * (i+1),0);
-            outdata.FilterCoords[i].zw = indata.TexCoord0.xy + float2(0.015 * scale * (i+1),0);
+            outdata.FilterCoords[i].xy = indata.TexCoord0.xy + float2(0.010 * scale * (i + 1.0), 0.0);
+            outdata.FilterCoords[i].zw = indata.TexCoord0.xy + float2(0.015 * scale * (i + 1.0), 0.0);
         }
         else
         {
-            outdata.FilterCoords[i].xy = indata.TexCoord0.xy + float2(0,0.01 * scale * (i+1));
-            outdata.FilterCoords[i].zw = indata.TexCoord0.xy + float2(0,0.015 * scale * (i+1));
+            outdata.FilterCoords[i].xy = indata.TexCoord0.xy + float2(0,0.010 * scale * (i + 1.0));
+            outdata.FilterCoords[i].zw = indata.TexCoord0.xy + float2(0,0.015 * scale * (i + 1.0));
         }
     }
 
-    for(int j=3; j<6; ++j)
+    for(int j = 3; j < 6; ++j)
     {
         if(horizontal)
         {
-            outdata.FilterCoords[j].xy = indata.TexCoord0.xy + float2(-0.01 * scale * (6 - j),0);
-            outdata.FilterCoords[j].zw = indata.TexCoord0.xy + float2(-0.015 * scale * (6 - j),0);
+            outdata.FilterCoords[j].xy = indata.TexCoord0.xy + float2(-0.010 * scale * (6.0 - j), 0.0);
+            outdata.FilterCoords[j].zw = indata.TexCoord0.xy + float2(-0.015 * scale * (6.0 - j), 0.0);
         }
         else
         {
-            outdata.FilterCoords[j].xy = indata.TexCoord0.xy + float2(0,-0.01 * scale * (6 - j));
-            outdata.FilterCoords[j].zw = indata.TexCoord0.xy + float2(0,-0.015 * scale * (6 - j));
+            outdata.FilterCoords[j].xy = indata.TexCoord0.xy + float2(0.0,-0.010 * scale * (6.0 - j));
+            outdata.FilterCoords[j].zw = indata.TexCoord0.xy + float2(0.0,-0.015 * scale * (6.0 - j));
         }
     }
-
 
     return outdata;
 }
@@ -212,17 +228,17 @@ VS2PS_12SampleFilter vsDx9_12SampleFilter(APP2VS_blit indata, uniform bool horiz
 VS2PS_5SampleFilter14 vsDx9_5SampleFilter14(APP2VS_blit indata, uniform scalar offsets[5], uniform bool horizontal)
 {
     VS2PS_5SampleFilter14 outdata;
-     outdata.Pos = vec4(indata.Pos.x, indata.Pos.y, 0, 1);
+    outdata.Pos = vec4(indata.Pos.x, indata.Pos.y, 0.0, 1.0);
 
-    for(int i=0; i<5; ++i)
+    for(int i = 0; i < 5; ++i)
     {
         if(horizontal)
         {
-            outdata.FilterCoords[i] = indata.TexCoord0 + float2(offsets[i],0);
+            outdata.FilterCoords[i] = indata.TexCoord0 + float2(offsets[i], 0.0);
         }
         else
         {
-            outdata.FilterCoords[i] = indata.TexCoord0 + float2(0,offsets[i]);
+            outdata.FilterCoords[i] = indata.TexCoord0 + float2(0.0, offsets[i]);
         }
     }
 
@@ -245,7 +261,7 @@ vec4 psDx9_FSBMPassThroughBilinear(VS2PS_blit indata) : COLOR
 vec4 psDx9_FSBMPassThroughSaturateAlpha(VS2PS_blit indata) : COLOR
 {
     vec4 color =  tex2D(sampler0point, indata.TexCoord0);
-    color.a = 1.f;
+    color.a = 1.0f;
     return color;
 }
 
@@ -253,19 +269,14 @@ vec4 psDx9_FSBMPassThroughSaturateAlpha(VS2PS_blit indata) : COLOR
 vec4 psDx9_FSBMCopyOtherRGBToAlpha(VS2PS_blit indata) : COLOR
 {
     vec4 color = tex2D(sampler0point, indata.TexCoord0);
-
-    vec3 avg = 1.0/3;
-
-    color.a = dot(avg, color);
-
+    color.a = dot(1.0 / 3.0, color);
     return color;
 }
-
 
 vec4 psDx9_FSBMConvertPosTo8Bit(VS2PS_blit indata) : COLOR
 {
     vec4 viewPos = tex2D(sampler0point, indata.TexCoord0);
-    viewPos /= 50;
+    viewPos /= 50.0;
     viewPos = viewPos * 0.5 + 0.5;
     return viewPos;
 }
@@ -273,7 +284,6 @@ vec4 psDx9_FSBMConvertPosTo8Bit(VS2PS_blit indata) : COLOR
 vec4 psDx9_FSBMConvertNormalTo8Bit(VS2PS_blit indata) : COLOR
 {
     return normalize(tex2D(sampler0point, indata.TexCoord0)) * 0.5 + 0.5;
-    // return tex2D(sampler0point, indata.TexCoord0).a;
 }
 
 vec4 psDx9_FSBMConvertShadowMapFrontTo8Bit(VS2PS_blit indata) : COLOR
@@ -295,11 +305,11 @@ vec4 psDx9_FSBMScaleUp4x4LinearFilter(VS2PS_blit indata) : COLOR
 vec4 psDx9_FSBMScaleDown2x2Filter(VS2PS_blit indata) : COLOR
 {
     vec4 accum;
-    accum  = tex2D(sampler0point, indata.TexCoord0 + scaleDown2x2SampleOffsets[0]) * 0.25;
-    accum += tex2D(sampler0point, indata.TexCoord0 + scaleDown2x2SampleOffsets[1]) * 0.25;
-    accum += tex2D(sampler0point, indata.TexCoord0 + scaleDown2x2SampleOffsets[2]) * 0.25;
-    accum += tex2D(sampler0point, indata.TexCoord0 + scaleDown2x2SampleOffsets[3]) * 0.25;
-    return accum;
+    accum = tex2D(sampler0point, indata.TexCoord0 + scaleDown2x2SampleOffsets[0]);
+    accum += tex2D(sampler0point, indata.TexCoord0 + scaleDown2x2SampleOffsets[1]);
+    accum += tex2D(sampler0point, indata.TexCoord0 + scaleDown2x2SampleOffsets[2]);
+    accum += tex2D(sampler0point, indata.TexCoord0 + scaleDown2x2SampleOffsets[3]);
+    return accum * 0.25; // div 4
 }
 
 vec4 psDx9_FSBMScaleDown4x4Filter(VS2PS_blit indata) : COLOR
@@ -315,21 +325,21 @@ vec4 psDx9_FSBMScaleDown4x4Filter(VS2PS_blit indata) : COLOR
 vec4 psDx9_FSBMScaleDown4x4Filter14(VS2PS_Down4x4Filter14 indata) : COLOR
 {
     vec4 accum;
-    accum  = tex2D(sampler0bilin, indata.TexCoord0) * 0.25;
-    accum += tex2D(sampler0bilin, indata.TexCoord1) * 0.25;
-    accum += tex2D(sampler0bilin, indata.TexCoord2) * 0.25;
-    accum += tex2D(sampler0bilin, indata.TexCoord3) * 0.25;
-    return accum;
+    accum = tex2D(sampler0bilin, indata.TexCoord0);
+    accum += tex2D(sampler0bilin, indata.TexCoord1);
+    accum += tex2D(sampler0bilin, indata.TexCoord2);
+    accum += tex2D(sampler0bilin, indata.TexCoord3);
+    return accum * 0.25; // div 4
 }
 
 vec4 psDx9_FSBMScaleDown4x4LinearFilter(VS2PS_blit indata) : COLOR
 {
     vec4 accum;
-    accum  = tex2D(sampler0bilin, indata.TexCoord0 + scaleDown4x4LinearSampleOffsets[0]) * 0.25;
-    accum += tex2D(sampler0bilin, indata.TexCoord0 + scaleDown4x4LinearSampleOffsets[1]) * 0.25;
-    accum += tex2D(sampler0bilin, indata.TexCoord0 + scaleDown4x4LinearSampleOffsets[2]) * 0.25;
-    accum += tex2D(sampler0bilin, indata.TexCoord0 + scaleDown4x4LinearSampleOffsets[3]) * 0.25;
-    return accum;
+    accum = tex2D(sampler0bilin, indata.TexCoord0 + scaleDown4x4LinearSampleOffsets[0]);
+    accum += tex2D(sampler0bilin, indata.TexCoord0 + scaleDown4x4LinearSampleOffsets[1]);
+    accum += tex2D(sampler0bilin, indata.TexCoord0 + scaleDown4x4LinearSampleOffsets[2]);
+    accum += tex2D(sampler0bilin, indata.TexCoord0 + scaleDown4x4LinearSampleOffsets[3]);
+    return accum * 0.25; // div 4
 }
 
 vec4 psDx9_FSBMGaussianBlur5x5CheapFilter(VS2PS_blit indata) : COLOR
@@ -390,7 +400,6 @@ vec4 psDx9_FSBMGrowablePoisson13Filter(VS2PS_blit indata) : COLOR
     accum = tex2D(sampler0point, indata.TexCoord0);
     for(int tap = 0; tap < 11; ++tap)
     {
-//		vec4 v = tex2D(sampler0point, indata.TexCoord0 + growablePoisson13SampleOffsets[tap]*1);
         vec4 v = tex2D(sampler0point, indata.TexCoord0 + growablePoisson13SampleOffsets[tap] * 0.1 * accum.a);
         if(v.a > 0)
         {
@@ -399,7 +408,6 @@ vec4 psDx9_FSBMGrowablePoisson13Filter(VS2PS_blit indata) : COLOR
         }
     }
 
-//return tex2D(sampler0point, indata.TexCoord0);
     return accum / samples;
 }
 
@@ -407,8 +415,8 @@ vec4 psDx9_FSBMGrowablePoisson13AndDilationFilter(VS2PS_blit indata) : COLOR
 {
     vec4 center = tex2D(sampler0point, indata.TexCoord0);
 
-    vec4 accum = 0;
-    if(center.a > 0)
+    vec4 accum = 0.0;
+    if(center.a > 0.0)
     {
         accum.rgb = center;
         accum.a = 1.0;
@@ -420,50 +428,19 @@ vec4 psDx9_FSBMGrowablePoisson13AndDilationFilter(VS2PS_blit indata) : COLOR
         if(scale == 0)
             scale = 1.5;
         vec4 v = tex2D(sampler0point, indata.TexCoord0 + growablePoisson13SampleOffsets[tap]*scale);
-        if(v.a > 0)
+        if(v.a > 0.0)
         {
             accum.rgb += v;
-            accum.a += 1.0;
+            accum.a += 1;
         }
     }
 
-//	if(center.a == 0)
-//	{
-//		accum.gb = center.gb;
-//		accum.r / accum.a;
-//		return accum;
-//	}
-//	else
-        return accum / accum.a;
+    return accum / accum.a;
 }
 
 vec4 psDx9_FSBMScaleUpBloomFilter(VS2PS_blit indata) : COLOR
 {
-    scalar offSet = 0.01;
-
-    vec4 close = tex2D(sampler0point, indata.TexCoord0);
-    /*
-        close += tex2D(sampler0bilin, vec2((indata.TexCoord0.x - offSet*4.5), indata.TexCoord0.y));
-        close += tex2D(sampler0bilin, vec2((indata.TexCoord0.x - offSet*3.5), indata.TexCoord0.y));
-        close += tex2D(sampler0bilin, vec2((indata.TexCoord0.x - offSet*2.5), indata.TexCoord0.y));
-        close += tex2D(sampler0bilin, vec2((indata.TexCoord0.x - offSet*1.5), indata.TexCoord0.y));
-        close += tex2D(sampler0bilin, vec2((indata.TexCoord0.x + offSet*1.5), indata.TexCoord0.y));
-        close += tex2D(sampler0bilin, vec2((indata.TexCoord0.x + offSet*2.5), indata.TexCoord0.y));
-        close += tex2D(sampler0bilin, vec2((indata.TexCoord0.x + offSet*3.5), indata.TexCoord0.y));
-        close += tex2D(sampler0bilin, vec2((indata.TexCoord0.x + offSet*4.5), indata.TexCoord0.y));
-
-        close += tex2D(sampler0bilin, vec2(indata.TexCoord0.x, indata.TexCoord0.y - offSet*4.5));
-        close += tex2D(sampler0bilin, vec2(indata.TexCoord0.x, indata.TexCoord0.y - offSet*3.5));
-        close += tex2D(sampler0bilin, vec2(indata.TexCoord0.x, indata.TexCoord0.y - offSet*2.5));
-        close += tex2D(sampler0bilin, vec2(indata.TexCoord0.x, indata.TexCoord0.y - offSet*1.5));
-        close += tex2D(sampler0bilin, vec2(indata.TexCoord0.x, indata.TexCoord0.y + offSet*1.5));
-        close += tex2D(sampler0bilin, vec2(indata.TexCoord0.x, indata.TexCoord0.y + offSet*2.5));
-        close += tex2D(sampler0bilin, vec2(indata.TexCoord0.x, indata.TexCoord0.y + offSet*3.5));
-        //close += tex2D(sampler0bilin, vec2(indata.TexCoord0.x, indata.TexCoord0.y + offSet*4.5));
-
-        return close / 16;
-    */
-    return close;
+    return tex2D(sampler0point, indata.TexCoord0);
 }
 
 
@@ -476,46 +453,37 @@ vec4 psDx9_FSBMExtractGlowFilter(VS2PS_blit indata) : COLOR
 {
     vec4 color = tex2D(sampler0point, indata.TexCoord0);
     float glowStrength = abs(color.a - 1.0) * color.a;
-    // float glowStrength = saturate((color.a - 0.9)*10.0);
-    color.rgb *= glowStrength * 2.0;;
-    // color.a = 1;
-
+    color.rgb *= glowStrength * 2.0;
     return color;
 }
-
 
 vec4 psDx9_FSBMExtractCamouflage(VS2PS_blit indata) : COLOR
 {
     vec4 color = tex2D(sampler0bilin, indata.TexCoord0);
-    float temp = max(0.4, color.a) - 0.5; // saturate(color.a - 0.9); // *4.0; // 1.0 * color.a; / /clamp((color.a - 0.1)*20.0, 0.0, 1.0);
-    color.a = temp * 2.0; // + temp * 2.0; // + 2.0 * temp;
-    // color.rgb *= color.a;//glowStrength;
-    // color.a = 1.0;
-
+    float temp = max(0.4, color.a) - 0.5;
+    color.a = temp * 2.0;
     return color;
 }
-
-
 
 vec4 psDx9_FSBMLargeBloomFilter(VS2PS_12SampleFilter indata, uniform bool horizontal) : COLOR
 {
     float scale = bloomWeightScale;
-    vec4 color = 1.0 * scale *tex2D(sampler0bilin, indata.TexCoord0);
+    vec4 color = 1.0 * scale * tex2D(sampler0bilin, indata.TexCoord0);
     color += 0.45 * scale * tex2D(sampler0bilin, indata.FilterCoords[0].xy);
-    color += 0.35 * scale *tex2D(sampler0bilin, indata.FilterCoords[0].zw);
-    color += 0.30 * scale *tex2D(sampler0bilin, indata.FilterCoords[1].xy);
-    color += 0.25 * scale *tex2D(sampler0bilin, indata.FilterCoords[1].zw);
-    color += 0.20 * scale *tex2D(sampler0bilin, indata.FilterCoords[2].xy);
-    color += 0.15 * scale *tex2D(sampler0bilin, indata.FilterCoords[2].zw);
+    color += 0.35 * scale * tex2D(sampler0bilin, indata.FilterCoords[0].zw);
+    color += 0.30 * scale * tex2D(sampler0bilin, indata.FilterCoords[1].xy);
+    color += 0.25 * scale * tex2D(sampler0bilin, indata.FilterCoords[1].zw);
+    color += 0.20 * scale * tex2D(sampler0bilin, indata.FilterCoords[2].xy);
+    color += 0.15 * scale * tex2D(sampler0bilin, indata.FilterCoords[2].zw);
 
-    color += 0.15 * scale *tex2D(sampler0bilin, indata.FilterCoords[3].xy);
-    color += 0.20 * scale *tex2D(sampler0bilin, indata.FilterCoords[3].zw);
-    color += 0.25 * scale *tex2D(sampler0bilin, indata.FilterCoords[4].xy);
-    color += 0.30 * scale *tex2D(sampler0bilin, indata.FilterCoords[4].zw);
-    color += 0.35 * scale *tex2D(sampler0bilin, indata.FilterCoords[5].xy);
-    color += 0.45 * scale *tex2D(sampler0bilin, indata.FilterCoords[5].zw);
+    color += 0.15 * scale * tex2D(sampler0bilin, indata.FilterCoords[3].xy);
+    color += 0.20 * scale * tex2D(sampler0bilin, indata.FilterCoords[3].zw);
+    color += 0.25 * scale * tex2D(sampler0bilin, indata.FilterCoords[4].xy);
+    color += 0.30 * scale * tex2D(sampler0bilin, indata.FilterCoords[4].zw);
+    color += 0.35 * scale * tex2D(sampler0bilin, indata.FilterCoords[5].xy);
+    color += 0.45 * scale * tex2D(sampler0bilin, indata.FilterCoords[5].zw);
 
-    return color *0.9;
+    return color * 0.9;
 }
 
 
@@ -526,13 +494,7 @@ vec4 psDx9_FSBMGlowFilter(VS2PS_5SampleFilter indata, uniform scalar weights[5],
     color += weights[2] * tex2D(sampler0bilin, indata.FilterCoords[1].xy);
     color += weights[3] * 0.5 * tex2D(sampler0bilin, indata.FilterCoords[1].zw);
     color += weights[4] * 0.5 * tex2D(sampler0bilin, indata.TexCoord0);
-
-    // color += 0.125 * tex2D(sampler0bilin, indata.FilterCoords[0].zw + vec2(0.03, 0.0));
-    // color += 0.125 * tex2D(sampler0bilin, indata.FilterCoords[0].zw + vec2(0.0,0.03));
-    // color += 0.125 * tex2D(sampler0bilin, indata.FilterCoords[0].zw + vec2(0.05, 0.0));
-    // color += 0.125 * tex2D(sampler0bilin, indata.FilterCoords[0].zw + vec2(0.0,0.05));
-
-    return color; // * vec4(1.0,0.7,0.7,1.0);
+    return color;
 }
 
 vec4 psDx9_FSBMGlowFilter14(VS2PS_5SampleFilter14 indata, uniform scalar weights[5]) : COLOR
@@ -542,7 +504,6 @@ vec4 psDx9_FSBMGlowFilter14(VS2PS_5SampleFilter14 indata, uniform scalar weights
     color += weights[2] * tex2D(sampler0bilin, indata.FilterCoords[2].xy);
     color += weights[3] * tex2D(sampler0bilin, indata.FilterCoords[3].xy);
     color += weights[4] * tex2D(sampler0bilin, indata.FilterCoords[4].xy);
-
     return color;
 }
 
@@ -551,34 +512,28 @@ vec4 psDx9_FSBMCamouflageBlur(VS2PS_blit indata) : COLOR
     vec4 src = tex2D(sampler0bilin, indata.TexCoord0);
     vec2 img = indata.TexCoord0;
     img += camouflageOffset;
-    // img.x +=0.02;
-    // img.y += 0.02;
+
     vec4 src1 = tex2D(sampler0bilin, img);
 
 
     float sat = 0.0;
     vec3 lumVec = vec3(0.3086, 0.6094, 0.0820);
-    float4x4 color =	{1.0,0.0,0.0,0.0,
-                         0.0,1.0,0.0,0.0,
-                         0.0,0.0,1.0,0.0,
-                         0.0,0.0,0.0,1.0};
+    float4x4 color ={ 1.0,0.0,0.0,0.0,
+                      0.0,1.0,0.0,0.0,
+                      0.0,0.0,1.0,0.0,
+                      0.0,0.0,0.0,1.0 };
 
     float invSat = 1.0 - sat;
 
-
-    float4x4 luminance2 =	{invSat*lumVec.r + sat, invSat*lumVec.g, invSat*lumVec.b, 0.0,
-                             invSat*lumVec.r, invSat*lumVec.g + sat, invSat*lumVec.b, 0.0,
-                             invSat*lumVec.r, invSat*lumVec.g, invSat*lumVec.b + sat, 0.0,
-                             0.0,		 	  0.0,				0.0,				  1.0};
-
+    float4x4 luminance2 =	{invSat * lumVec.r + sat, invSat * lumVec.g, invSat * lumVec.b, 0.0,
+                             invSat * lumVec.r, invSat * lumVec.g + sat, invSat * lumVec.b, 0.0,
+                             invSat * lumVec.r, invSat * lumVec.g, invSat * lumVec.b + sat, 0.0,
+                             0.0,          0.0,               0.0,                     1.0};
 
     vec4 accum = mul(luminance2, src1);
     accum -= 0.5;
     accum = src1 + accum * 0.1;
-
     return vec4(accum.rgb, src.a);
-
-    return src;
 }
 
 vec4 psDx9_FSBMContrast(VS2PS_blit indata) : COLOR
@@ -589,22 +544,14 @@ vec4 psDx9_FSBMContrast(VS2PS_blit indata) : COLOR
     vec3 lumVec = vec3(0.3086, 0.6094, 0.0820);
     float invSat = 1.0 - sat;
 
-    float4x4 luminance2 =	{invSat*lumVec.r + sat, invSat*lumVec.g, invSat*lumVec.b, 0.0,
-                             invSat*lumVec.r, invSat*lumVec.g + sat, invSat*lumVec.b, 0.0,
-                             invSat*lumVec.r, invSat*lumVec.g, invSat*lumVec.b + sat, 0.0,
-                             0.0,		 	  0.0,				0.0,				  1.0};
-
+    float4x4 luminance2 =	{ invSat * lumVec.r + sat, invSat * lumVec.g, invSat * lumVec.b, 0.0,
+                              invSat * lumVec.r, invSat * lumVec.g + sat, invSat * lumVec.b, 0.0,
+                              invSat * lumVec.r, invSat * lumVec.g, invSat * lumVec.b + sat, 0.0,
+                              0.0,          0.0,               0.0,                     1.0};
 
     vec4 accum = mul(luminance2, src);
-
-    // accum -= 1.7;
     accum -= contrastAmount;
     return accum;
-
-    // accum  = src +accum * contrastAmount;
-    // return accum;
-    // accum.rgb = accum.r;
-    // return accum;
 }
 
 
@@ -860,7 +807,7 @@ technique Blit
         ZEnable = FALSE;
         AlphaBlendEnable = TRUE;
         SrcBlend = SRCALPHA;
-        DestBlend = INVSRCALPHA;//ONE;
+        DestBlend = INVSRCALPHA; // ONE;
         VertexShader = compile vs_2_0 vsDx9_blit();
         PixelShader = compile ps_2_0 psDx9_FSBMCamouflageBlur();
     }
@@ -893,7 +840,7 @@ technique Blit
     }
 }
 
-technique Blit_3_0
+technique Blit_1_4
 {
     pass FSBMPassThrough
     {
@@ -1001,7 +948,8 @@ technique Blit_3_0
             ZEnable = FALSE;
             AlphaBlendEnable = FALSE;
             VertexShader = compile vs_2_0 vsDx9_blit();
-            PixelShader = compile ps_2_0 psDx9_FSBMGaussianBlur15x15HorizontalFilter();//psDx9_FSBMGaussianBlur15x15HorizontalFilter2();
+            PixelShader = compile ps_2_0 psDx9_FSBMGaussianBlur15x15HorizontalFilter();
+            // psDx9_FSBMGaussianBlur15x15HorizontalFilter2();
         */
     }
 
@@ -1011,7 +959,8 @@ technique Blit_3_0
             ZEnable = FALSE;
             AlphaBlendEnable = FALSE;
             VertexShader = compile vs_2_0 vsDx9_blit();
-            PixelShader = compile ps_2_0 psDx9_FSBMGaussianBlur15x15VerticalFilter();//psDx9_FSBMGaussianBlur15x15VerticalFilter2();
+            PixelShader = compile ps_2_0 psDx9_FSBMGaussianBlur15x15VerticalFilter();
+            // psDx9_FSBMGaussianBlur15x15VerticalFilter2();
         */
     }
 
@@ -1218,7 +1167,7 @@ technique StencilPasses
         StencilPass = KEEP;
 
         VertexShader = compile vs_2_0 vsDx9_blit();
-        PixelShader = compile ps_2_0 psDx9_StencilGather();
+        PixelShader = compile ps_2_a psDx9_StencilGather();
     }
 
     pass StencilMap
@@ -1229,13 +1178,8 @@ technique StencilPasses
         StencilEnable = FALSE;
 
         VertexShader = compile vs_2_0 vsDx9_blit();
-        PixelShader = compile ps_2_0 psDx9_StencilMap();
+        PixelShader = compile ps_2_a psDx9_StencilMap();
     }
-}
-
-float4 psZero() : COLOR
-{
-    return 0;
 }
 
 technique ResetStencilCuller
@@ -1264,6 +1208,6 @@ technique ResetStencilCuller
         TwoSidedStencilMode = FALSE;
 
         VertexShader = compile vs_2_0 vsDx9_blit();
-        PixelShader = compile ps_2_0 psZero();
+        PixelShader = compile ps_2_0 psDx9_blit();
     }
 }

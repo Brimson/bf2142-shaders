@@ -1,35 +1,31 @@
 float4x4 mWorldViewProj : WorldViewProjection;
 bool zbuffer : ZBUFFER;
 
-//string Category = "Effects\\Lighting";
+// string Category = "Effects\\Lighting";
 
 struct APP2VS
 {
-    float4	Pos : POSITION;
-    float4  Diffuse : COLOR;
+    float4 Pos     : POSITION;
+    float4 Diffuse : COLOR;
 };
 
 struct VS2PS
 {
-    float4	Pos : POSITION;
-    float4  Diffuse : COLOR;
+    float4 Pos     : POSITION;
+    float4 Diffuse : COLOR;
 };
 
 struct PS2FB
 {
-    float4	Col : COLOR;
+    float4 Col : COLOR;
 };
 
-
-VS2PS VShader(APP2VS indata,
-    uniform float4x4 wvp)
+VS2PS VShader(APP2VS indata, uniform float4x4 wvp)
 {
     VS2PS outdata;
-
     outdata.Pos = mul(float4(indata.Pos.xyz, 1.0f), wvp);
     outdata.Diffuse.xyz = indata.Diffuse.xyz;
-    outdata.Diffuse.w = 0.8f;//indata.Diffuse.w;
-
+    outdata.Diffuse.w = 0.8f; // indata.Diffuse.w;
     return outdata;
 }
 
@@ -55,25 +51,13 @@ technique t0
 {
     pass p0
     {
-        /*
-            CullMode = NONE;
-            AlphaBlendEnable = TRUE;
-            // FillMode = WIREFRAME;
-            // ColorWriteEnable = 0;
-            ZWriteEnable = 0;
-            ZEnable = TRUE;
-        */
-
         CullMode = NONE;
         AlphaBlendEnable = TRUE;
         SrcBlend = SRCALPHA;
         DestBlend = INVSRCALPHA;
-        // FillMode = WIREFRAME;
-        // ColorWriteEnable = 0;
         DepthBias=-0.00001;
         ZWriteEnable = 1;
-        // float zbuffe = TRUE;
-        ZEnable = FALSE;//TRUE;
+        ZEnable = FALSE;
         ShadeMode = FLAT;
         ZFunc = LESSEQUAL;
 
@@ -85,7 +69,7 @@ technique t0
 //$ TODO: Temporary fix for enabling z-buffer writing for collision meshes.
 technique t0_usezbuffer
 <
-    int DetailLevel = DLHigh + DLNormal + DLLow + DLAbysmal;
+    int DetailLevel = DLHigh + DLNormal + DLLow+DLAbysmal;
     int Compatibility = CMPR300 + CMPNV2X;
     int Declaration[] =
     {

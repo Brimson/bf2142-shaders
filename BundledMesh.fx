@@ -1,11 +1,11 @@
 #line 2 "BundledMesh.fx"
 #include "shaders/datatypes.fx"
-//#include "shaders/common.dfx"
+// #include "shaders/common.dfx"
 
 // UNIFORM INPUTS
-mat4x4 viewProjMatrix : WorldViewProjection;// : register(vs_2_0, c0);
-mat4x4 viewInverseMatrix : ViewI; // : register(vs_2_0, c8);
-mat4x3 mOneBoneSkinning[52]: matONEBONESKINNING;// : register(c15) < bool sparseArray = true; int arrayStart = 15; >;
+mat4x4 viewProjMatrix : WorldViewProjection;     // : register(vs_2_0, c0);
+mat4x4 viewInverseMatrix : ViewI;                // : register(vs_2_0, c8);
+mat4x3 mOneBoneSkinning[52]: matONEBONESKINNING; // : register(c15) < bool sparseArray = true; int arrayStart = 15; >;
 mat4x4 viewMatrix : ViewMatrix;
 mat4x4 viewITMatrix : ViewITMatrix;
 
@@ -18,7 +18,6 @@ mat4x4 vpLightTrapezMat : vpLightTrapezMat;
 vec4 PosUnpack : POSUNPACK;
 
 vec2 vTexProjOffset : TEXPROJOFFSET;
-
 vec2 zLimitsInv : ZLIMITSINV;
 
 scalar shadowAlphaThreshold : SHADOWALPHATHRESHOLD;
@@ -35,33 +34,8 @@ texture texture2: TEXLAYER2;
 texture texture3: TEXLAYER3;
 texture texture4: TEXLAYER4;
 
-// SHADOW BUFFER DATA
-/*
-    texture ShadowMap: ShadowMapTex;
-    sampler ShadowMapSampler = sampler_state
-    {
-        Texture = (ShadowMap);
-        AddressU = CLAMP;
-        AddressV = CLAMP;
-        MinFilter = POINT;
-        MagFilter = POINT;
-        MipFilter = NONE;
-    };
-
-    texture ShadowMapOccluder: ShadowMapOccluderTex;
-    sampler ShadowMapOccluderSampler = sampler_state
-    {
-        Texture = (ShadowMapOccluder);
-        AddressU = CLAMP;
-        AddressV = CLAMP;
-        MinFilter = POINT;
-        MagFilter = POINT;
-        MipFilter = NONE;
-    };
-*/
-
-mat4x4	ViewPortMatrix:	ViewPortMatrix;
-vec4	ViewportMap:	ViewportMap;
+mat4x4 ViewPortMatrix : ViewPortMatrix;
+vec4 ViewportMap : ViewportMap;
 
 bool alphaBlendEnable:	AlphaBlendEnable;
 
@@ -69,7 +43,6 @@ sampler sampler0 = sampler_state { Texture = (texture0); AddressU = CLAMP; Addre
 sampler sampler1 = sampler_state { Texture = (texture1); AddressU = CLAMP; AddressV = CLAMP; MinFilter = LINEAR; MagFilter = LINEAR; MipFilter = LINEAR; };
 sampler sampler2 = sampler_state { Texture = (texture2); AddressU = CLAMP; AddressV = CLAMP; MinFilter = LINEAR; MagFilter = LINEAR; MipFilter = LINEAR; };
 sampler sampler3 = sampler_state { Texture = (texture3); AddressU = CLAMP; AddressV = CLAMP; MinFilter = LINEAR; MagFilter = LINEAR; MipFilter = LINEAR; };
-// sampler sampler3 = sampler_state { Texture = (texture3); };
 sampler sampler1point = sampler_state { Texture = (texture1); AddressU = CLAMP; AddressV = CLAMP; MinFilter = POINT; MagFilter = POINT; };
 sampler sampler2point = sampler_state { Texture = (texture2); AddressU = CLAMP; AddressV = CLAMP; MinFilter = POINT; MagFilter = POINT; };
 
@@ -91,15 +64,10 @@ sampler sampler2Aniso = sampler_state
 
 vec4 lightPos : LightPosition;
 
-// vec4 eyePos;
-
 vec4 lightDir : LightDirection;
 
-// offset x/y heightmapsize z / hemilerpbias w
 vec4 hemiMapInfo : HemiMapInfo;
 
-// scalar heightmapSize : HeightmapSize;
-// scalar hemiLerpBias : HemiLerpBias;
 scalar normalOffsetScale : NormalOffsetScale;
 
 vec4 skyColor : SkyColor;
@@ -121,7 +89,6 @@ sampler diffuseSampler = sampler_state
     MinFilter = Linear;
     MagFilter = Linear;
     MipFilter = Linear;
-    // MipMapLodBias = 0;
     AddressU = Wrap;
     AddressV = Wrap;
 };
@@ -132,7 +99,6 @@ sampler normalSampler = sampler_state
     MinFilter = Linear;
     MagFilter = Linear;
     MipFilter = Linear;
-    // MipMapLodBias = 0;
     AddressU = Wrap;
     AddressV = Wrap;
 };
@@ -209,7 +175,6 @@ struct VS_OUTPUT20
     float Fog     : FOG;
 };
 
-
 struct VS_OUTPUTSS
 {
     vec4 HPos      : POSITION;
@@ -230,13 +195,11 @@ struct VS_OUTPUT2
     float Fog     : FOG;
 };
 
-VS_OUTPUT bumpSpecularVertexShaderBlinn1
-(
-    appdata input,
-    uniform mat4x4 ViewProj,
-    uniform mat4x4 ViewInv,
-    uniform vec4 LightPos
-)
+
+VS_OUTPUT bumpSpecularVertexShaderBlinn1(appdata input,
+                                        uniform mat4x4 ViewProj,
+                                        uniform mat4x4 ViewInv,
+                                        uniform vec4 LightPos)
 {
     VS_OUTPUT Out = (VS_OUTPUT)0;
 
@@ -263,8 +226,6 @@ VS_OUTPUT bumpSpecularVertexShaderBlinn1
     Out.DiffMap = input.TexCoord;
 
     // Transform Light pos to Object space
-    // vec4 matsLightDir = vec4(0.2, 0.8, -0.2, 1.);
-    // vec3 matsLightDir = vec3(0.0, 1.0, 0.0);
     vec3 matsLightDir = vec3(0.5, 0.5, 0.0);
     vec3 normalizedTanLightVec = normalize(mul(matsLightDir, worldI));
 
@@ -275,18 +236,14 @@ VS_OUTPUT bumpSpecularVertexShaderBlinn1
     vec3 tanEyeVec = mul(worldEyeVec, worldI);
 
     Out.HalfVec = normalize(normalizedTanLightVec + normalize(tanEyeVec));
-    Out.Fog = 0; // calcFog(Out.HPos.w);
-
+    Out.Fog = 0.0;
     return Out;
 }
 
-VS_OUTPUT20 bumpSpecularVertexShaderBlinn20
-(
-    appdata input,
-    uniform mat4x4 ViewProj,
-    uniform mat4x4 ViewInv,
-    uniform vec4 LightPos
-)
+VS_OUTPUT20 bumpSpecularVertexShaderBlinn20(appdata input,
+                                            uniform mat4x4 ViewProj,
+                                            uniform mat4x4 ViewInv,
+                                            uniform vec4 LightPos)
 {
     VS_OUTPUT20 Out = (VS_OUTPUT20)0;
 
@@ -312,8 +269,6 @@ VS_OUTPUT20 bumpSpecularVertexShaderBlinn20
     Out.Tex0 = input.TexCoord;
 
     // Transform Light pos to Object space
-    // vec4 matsLightDir = vec4(0.2, 0.8, -0.2, 1.0);
-    // vec3 matsLightDir = vec3(0.0, 1.0, 0.0);
     vec3 matsLightDir = vec3(0.5, 0.5, 0.0);
     vec3 normalizedTanLightVec = normalize(mul(matsLightDir, worldI));
 
@@ -324,7 +279,7 @@ VS_OUTPUT20 bumpSpecularVertexShaderBlinn20
     vec3 tanEyeVec = mul(worldEyeVec, worldI);
 
     Out.HalfVec = normalize(normalizedTanLightVec + normalize(tanEyeVec));
-    Out.Fog = 0; // calcFog(Out.HPos.w);
+    Out.Fog = 0.0;
 
     return Out;
 }
@@ -337,42 +292,34 @@ vec4 PShade2(VS_OUTPUT20 i) : COLOR
     // Sample diffuse texture and Normal map
     tDiffuse = tex2D( diffuseSampler, i.Tex0 );
 
-    // sample tLight (_bx2 = 2 * source � 1)
+    // sample tLight
     tNormal = tex2D(normalSampler, i.Tex0) * 2.0 - 1.0;
     tLight = i.LightVec * 2.0 - 1.0;
 
-    // return vec4(tLight.xyz, 1.0f);
+    // return vec4(tLight.xyz,1.f);
 
     // DP Lighting in tangent space (where normal map is based)
     // Modulate with Diffuse texture
-    col = dot( tNormal.xyz, tLight ) * tDiffuse;
+    col = dot(tNormal.xyz, tLight ) * tDiffuse;
 
     // N.H for specular term
-    cosang = dot( tNormal.xyz,i.HalfVec );
+    cosang = dot( tNormal.xyz, i.HalfVec);
     // Raise to a power for falloff
     cosang = pow(cosang, 32.0) * tNormal.w; // try changing the power to 255!
 
-    // return vec4(tNormal.www,1.0);
-    // return vec4(cosang.xyz,1.0);
-    // return vec4(col.xyz,1.0);
     // Sample shadow texture
     tShadow = tex2D( sampler3, i.Tex0 );
 
-    // return vec4(tShadow.xyz,1.0);
     // Add to diffuse lit texture value
     vec4 res = (col + cosang) * tShadow;
-    // vec4 res = col*tShadow;
     return vec4(res.xyz, tDiffuse.w);
 }
 
-VS_OUTPUT2 diffuseVertexShader
-(
-    appdata input,
-    uniform mat4x4 ViewProj,
-    uniform mat4x4 ViewInv,
-    uniform vec4 LightPos,
-    uniform vec4 EyePos
-)
+VS_OUTPUT2 diffuseVertexShader(appdata input,
+                               uniform mat4x4 ViewProj,
+                               uniform mat4x4 ViewInv,
+                               uniform vec4 LightPos,
+                               uniform vec4 EyePos)
 {
     VS_OUTPUT2 Out = (VS_OUTPUT2)0;
 
@@ -383,10 +330,8 @@ VS_OUTPUT2 diffuseVertexShader
     // vec3 Pos = input.Pos;
     vec3 Pos = mul(input.Pos, mOneBoneSkinning[IndexArray[0]]);
     Out.HPos = mul(vec4(Pos.xyz, 1.0), ViewProj);
-    // Out.HPos = mul(input.Pos, WorldViewProj);
 
     vec3 Normal = input.Normal;
-    //vec3 Normal = mul(input.Normal, mOneBoneSkinning[IndexArray[0]]);
     Normal = normalize(Normal);
 
     // Pass-through texcoords
@@ -414,14 +359,46 @@ VS_OUTPUT2 diffuseVertexShader
     vec3 normalizedLightVec = normalize(lightDirObjSpace);
 
     scalar color = 0.8 + max(0.0, dot(Normal, normalizedLightVec));
-    Out.Diffuse = vec2(color, 1.0).xxxy;
-    Out.Fog = 0; // calcFog(Out.HPos.w);
+    Out.Diffuse = vec4(color, color, color, 1.0);
+    Out.Fog = 0.0;
 
     return Out;
 }
 
+float4 bumpSpecularPixelShaderBlinn1(VS_OUTPUT input) : COLOR
+{
+    /*
+        Few things to consider:
+        - texm3x2pad and texm3x2tex depend on eachother
+        - Do (x * 2.0 - 1.0) because that's translated from HLSL's _bx2 registry modifier:
+          https://docs.microsoft.com/en-us/windows/win32/direct3dhlsl/dx9-graphics-reference-asm-ps-registers-modifiers-signed-scale
+    */
 
-technique Full_States <bool Restore = true;>
+    const float ambient = float4(0.4, 0.4, 0.4, 1.0);
+    const float diffuse = 1.0;
+    const float specular = 1.0;
+
+    float4 NormalMap = tex2D(normalSampler, input.NormalMap);
+    float u = dot(input.NormalMap * 2.0 - 1.0, input.LightVec);
+    float v = dot(input.NormalMap * 2.0 - 1.0, input.HalfVec);
+    float4 gloss = tex2D(diffuseSampler, float2(u, v));
+    float4 DiffuseMap = tex2D(diffuseSampler, input.DiffMap);
+
+    float4 output;
+    output = saturate(gloss * diffuse + ambient);
+    output *= DiffuseMap;
+
+    float spec = NormalMap.a * gloss.a;
+    return saturate(spec * specular + output);
+}
+
+float4 diffusePixelShader(VS_OUTPUT2 input) : COLOR
+{
+    float4 diffuse = tex2D(diffuseSampler, input.TexCoord);
+    return diffuse * input.Diffuse;
+}
+
+technique Full_States < bool Restore = true; >
 {
     pass BeginStates
     {
@@ -434,33 +411,6 @@ technique Full_States <bool Restore = true;>
     }
 
     pass EndStates { }
-}
-
-float4 bumpSpecularPixelShaderBlinn1(VS_OUTPUT input) : COLOR
-{
-    const float2 ambient = float2(0.4, 1.0); // def c0,0.4,0.4,0.4,1 :: ambient
-    const float diffuse = 1.0;               // def c1,1,1,1,1 :: diffuse
-    const float specular = 1.0;              // def c2,1,1,1,1 :: specular
-
-    // Sampler[0] = <normalSampler>;
-    float4 NormalMap = tex2D(normalSampler, input.NormalMap);       // tex t0 :: NormalMap
-    /*
-        Few things to consider:
-        - texm3x2pad and texm3x2tex depend on eachother
-        - Do (x * 2.0 - 1.0) because that's translated from HLSL's _bx2 registry modifier:
-          https://docs.microsoft.com/en-us/windows/win32/direct3dhlsl/dx9-graphics-reference-asm-ps-registers-modifiers-signed-scale
-    */
-    float u = dot(input.LightVec, input.NormalMap * 2.0 - 1.0);     // texm3x2pad t1, t0_bx2 :: u = L'.N'
-    float v = dot(input.HalfVec,  input.NormalMap * 2.0 - 1.0);     // texm3x2tex t2, t0_bx2 :: v = H'.N'
-    float4 gloss = tex2D(diffuseSampler, float2(u, v));             // sample(u,v)
-    // Sampler[3] = <diffuseSampler>;
-    float4 DiffuseMap = tex2D(diffuseSampler, input.DiffMap);       // tex t3 :: DiffuseMap
-
-    float4 output = saturate(gloss * diffuse.rrrr + ambient.xxxy);  // mad_sat r0, t2, c1, c0 :: diff.I * diff.C + amb
-    output *= DiffuseMap;                                           // mul r0, t3, r0 :: diff.Tex * diff&amb
-
-    float spec = NormalMap.a * DiffuseMap.a;                        // mul r1, t0.a, t2.a :: loss * spec.I
-    return saturate(spec * specular + output);                      // mad_sat r0, r1, c2, r0 :: spec.I&gloss * spec.C + diff&ambTex
 }
 
 technique Full
@@ -492,30 +442,16 @@ technique Full20
     }
 }
 
-float4 diffusePixelShader(VS_OUTPUT2 input) : COLOR
-{
-    const float2 ambient = float2(0.0, 1.0); // def c0,0,0,0,1 :: ambient
-    const float diffuse = 1.0;               // def c1,1,1,1,1 :: diffuse
-    const float specular = 1.0;              // def c2,1,1,1,1 :: specular
-
-    // Sampler[0] = <diffuseSampler>;
-    float4 diffuseMap = tex2D(diffuseSampler, input.TexCoord); // tex t0
-    return diffuseMap * input.Diffuse;                         // mul r0, t0, v0
-}
-
 technique t1
 {
     pass p0
     {
-
         ZEnable = true;
         ZWriteEnable = true;
-        // CullMode = NONE;
         AlphaBlendEnable = false;
         AlphaTestEnable = true;
         AlphaRef = 0;
         AlphaFunc = GREATER;
-        // FillMode = WIREFRAME;
 
         VertexShader = compile vs_2_0 diffuseVertexShader(viewProjMatrix,
                                                           viewInverseMatrix,
@@ -565,11 +501,9 @@ VS_OUTPUT_Alpha vsAlpha(appdata input, uniform mat4x4 ViewProj)
     Out.Tex1.xy = Out.Tex1.xy * 0.5 + 0.5;
     Out.Tex1.y = 1.0 - Out.Tex1.y;
     Out.Tex1.xy += vTexProjOffset;
-    // Out.Tex1.x += 0.000625;
-    // Out.Tex1.y += 0.000833;
     Out.Tex1.xy = Out.Tex1.xy * Out.HPos.w;
     Out.Tex1.zw = Out.HPos.zw;
-    Out.Fog = 0; // calcFog(Out.HPos.w);
+    Out.Fog = 0.0;
 
     return Out;
 }
@@ -600,8 +534,6 @@ VS_OUTPUT_AlphaEnvMap vsAlphaEnvMap(appdata input, uniform mat4x4 ViewProj)
     Out.TexPos.xy = Out.TexPos.xy * 0.5 + 0.5;
     Out.TexPos.y = 1.0 - Out.TexPos.y;
     Out.TexPos.xy += vTexProjOffset;
-    // Out.Tex1.x += 0.000625;
-    // Out.Tex1.y += 0.000833;
     Out.TexPos.xy = Out.TexPos.xy * Out.HPos.w;
     Out.TexPos.zw = Out.HPos.zw;
 
@@ -613,9 +545,9 @@ VS_OUTPUT_AlphaEnvMap vsAlphaEnvMap(appdata input, uniform mat4x4 ViewProj)
 
     // Need to calculate the TanToCubeState based on each matBone skinning world matrix
     mat3x3 TanToObjectBasis;
-    TanToObjectBasis[0] = vec3( input.Tan.x, binormal.x, input.Normal.x);
-    TanToObjectBasis[1] = vec3( input.Tan.y, binormal.y, input.Normal.y);
-    TanToObjectBasis[2] = vec3( input.Tan.z, binormal.z, input.Normal.z);
+    TanToObjectBasis[0] = vec3(input.Tan.x, binormal.x, input.Normal.x);
+    TanToObjectBasis[1] = vec3(input.Tan.y, binormal.y, input.Normal.y);
+    TanToObjectBasis[2] = vec3(input.Tan.z, binormal.z, input.Normal.z);
     Out.TanToCubeSpace1.x = dot(mOneBoneSkinning[IndexArray[0]][0].xyz,TanToObjectBasis[0]);
     Out.TanToCubeSpace1.y = dot(mOneBoneSkinning[IndexArray[0]][1].xyz,TanToObjectBasis[0]);
     Out.TanToCubeSpace1.z = dot(mOneBoneSkinning[IndexArray[0]][2].xyz,TanToObjectBasis[0]);
@@ -628,7 +560,7 @@ VS_OUTPUT_AlphaEnvMap vsAlphaEnvMap(appdata input, uniform mat4x4 ViewProj)
     // Transform eye pos to tangent space
     Out.EyeVecAndReflection.xyz = Pos - eyePos.xyz;
     Out.EyeVecAndReflection.w = eyePos.w;
-    Out.Fog = 0.0; // calcFog(Out.HPos.w);
+    Out.Fog = 0;
     return Out;
 }
 
@@ -644,12 +576,9 @@ vec4 psAlphaEnvMap(VS_OUTPUT_AlphaEnvMap indata) : COLOR
     worldNormal.x = dot(indata.TanToCubeSpace1.xyz,expandedNormal);
     worldNormal.y = dot(indata.TanToCubeSpace2.xyz,expandedNormal);
     worldNormal.z = dot(indata.TanToCubeSpace3.xyz,expandedNormal);
-    vec3 lookup = reflect(normalize(indata.EyeVecAndReflection.xyz),normalize(worldNormal));
-    // return vec4(lookup.rgb, 1.0);
-    vec3 envmapColor = texCUBE(samplerCube3, lookup) * normalmap.a * indata.EyeVecAndReflection.w;
-
+    vec3 lookup = reflect(normalize(indata.EyeVecAndReflection.xyz), normalize(worldNormal));
+    vec3 envmapColor = texCUBE(samplerCube3,lookup) * normalmap.a * indata.EyeVecAndReflection.w;
     outCol.rgb += accumLight.a + envmapColor;
-
     return outCol;
 }
 
@@ -666,7 +595,6 @@ technique alpha
         AlphaTestEnable = TRUE;
         AlphaRef = 0;
         AlphaFunc = GREATER;
-        // TextureTransformFlags[1] = PROJECTED; // This doesn't work very well....
 
         VertexShader = compile vs_2_0 vsAlpha(viewProjMatrix);
         PixelShader = compile ps_2_0 psAlpha();
@@ -683,7 +611,6 @@ technique alpha
         AlphaTestEnable = TRUE;
         AlphaRef = 0;
         AlphaFunc = GREATER;
-        // TextureTransformFlags[1] = PROJECTED; // This doesn't work very well....
 
         VertexShader = compile vs_2_0 vsAlphaEnvMap(viewProjMatrix);
         PixelShader = compile ps_2_0 psAlphaEnvMap();
@@ -713,29 +640,26 @@ VS_OUTPUT_AlphaScope vsAlphaScope(appdata input, uniform mat4x4 ViewProj)
     vec3 worldEyeVec = normalize(viewInverseMatrix[3].xyz - Pos);
 
     scalar f = dot(wNormal, worldEyeVec);
-    // f = step(0.99, f) * f;
     f = smoothstep(0.965, 1.0, f);
-
     Out.Tex0AndTrans.z = f;
+
     Out.Tex0AndTrans.xy = input.TexCoord;
 
-    Out.Tex1.xy = Out.HPos.xy/Out.HPos.w;
+    Out.Tex1.xy = Out.HPos.xy / Out.HPos.w;
     Out.Tex1.xy = Out.Tex1.xy * 0.5 + 0.5;
     Out.Tex1.y = 1.0 - Out.Tex1.y;
-    Out.Fog = 0; // calcFog(Out.HPos.w);
+    Out.Fog = 0.0;
 
     return Out;
 }
 
 float4 psAlphaScope(VS_OUTPUT_AlphaScope input) : COLOR
 {
-    // Sampler[0] = <sampler0>;
-    float3 coords = input.Tex0AndTrans;         // texcrd r2.rgb, t0 :: Get coords
-    // Sampler[1] = <sampler1>;
-    float4 accum = tex2D(sampler1, input.Tex1); // texld r1, t1 :: Sample Accum light
-    float4 diff = tex2D(sampler0, coords.xy);   // texld r0, t0	:: Sample diff
-    diff.rgb = diff * accum;                    // mul r0.rgb, r0, r1
-    diff.a *= (1.0 - coords.b);                 // mul r0.a, 1-r2.b, r0.a
+    float3 coords = input.Tex0AndTrans;
+    float4 accum = tex2D(sampler1, input.Tex1);
+    float4 diff = tex2D(sampler0, coords.xy);
+    diff.rgb = diff * accum;
+    diff.a = (1.0 - coords.b) * diff.a;
     return diff;
 }
 
@@ -762,7 +686,7 @@ vec4 calcShadowProjCoords(vec4 Pos, mat4x4 matTrap, mat4x4 matLight)
 {
     vec4 shadowcoords = mul(Pos, matTrap);
     vec2 lightZW = mul(Pos, matLight).zw;
-    shadowcoords.z = (lightZW.x * shadowcoords.w) / lightZW.y; // (zL*wT)/wL == zL/wL post homo
+    shadowcoords.z = (lightZW.x * shadowcoords.w) / lightZW.y; // (zL * wT) / wL == zL / wL post homo
     return shadowcoords;
 }
 
@@ -815,7 +739,6 @@ VS2PS_ShadowMapAlpha vsShadowMapAlpha(appdata input)
     Out.HPos = calcShadowProjCoords(vec4(Pos.xyz, 1.0), vpLightTrapezMat, vpLightMat);
     Out.Tex0PosZW.xy = input.TexCoord;
     Out.Tex0PosZW.zw = Out.HPos.zw;
-
     return Out;
 }
 
@@ -842,8 +765,6 @@ VS2PS_ShadowMap vsShadowMapPoint(appdata input)
     vec3 hPos = wPos.xyz - lightPos;
     hPos.z *= paraboloidValues.x;
 
-    // Out.PosZ = hPos.z / paraboloidValues.z + 0.5;
-
     scalar d = length(hPos.xyz);
     hPos.xyz /= d;
     hPos.z += 1.0;
@@ -859,7 +780,6 @@ VS2PS_ShadowMap vsShadowMapPoint(appdata input)
 
 vec4 psShadowMapPoint(VS2PS_ShadowMap indata) : COLOR
 {
-    // return 0.5;
     clip(indata.PosZW.x);
     return indata.PosZW.x;
 }
@@ -876,11 +796,10 @@ VS2PS_ShadowMapAlpha vsShadowMapPointAlpha(appdata input)
     vec3 hPos = wPos.xyz - lightPos;
     hPos.z *= paraboloidValues.x;
 
-    // Out.PosZ = hPos.z / paraboloidValues.z + 0.5;
-
     scalar d = length(hPos.xyz);
     hPos.xyz /= d;
     hPos.z += 1.0;
+
     Out.HPos.x = hPos.x / hPos.z;
     Out.HPos.y = hPos.y / hPos.z;
     Out.HPos.z = d * paraboloidZValues.x + paraboloidZValues.y;
@@ -901,8 +820,6 @@ vec4 psShadowMapPointAlpha(VS2PS_ShadowMapAlpha indata) : COLOR
 
 vec4 psShadowMapNV(VS2PS_ShadowMap indata) : COLOR
 {
-    // return indata.PosZW.x / indata.PosZW.y;
-    // return vec4(1, 0, 0, 1);
     return 0.0;
 }
 
@@ -910,7 +827,6 @@ technique DrawShadowMapNV
 {
     pass directionalspot
     {
-        // ColorWriteEnable = 0; // for Fast-Z
         ColorWriteEnable = 0x0000000F;
 
         ZEnable = TRUE;
@@ -920,7 +836,6 @@ technique DrawShadowMapNV
         AlphaBlendEnable = FALSE;
 
         ScissorTestEnable = TRUE;
-        // CullMode = CW;
 
         VertexShader = compile vs_2_0 vsShadowMap();
         PixelShader = compile ps_2_0 psShadowMapNV();
@@ -977,8 +892,6 @@ technique DrawShadowMap
         ZFunc = LESSEQUAL;
         ZWriteEnable = TRUE;
 
-        // CullMode = NONE;
-
         ScissorTestEnable = TRUE;
 
         VertexShader = compile vs_2_0 vsShadowMap();
@@ -994,7 +907,7 @@ technique DrawShadowMap
         ScissorTestEnable = TRUE;
 
         VertexShader = compile vs_2_0 vsShadowMapAlpha();
-        PixelShader = compile ps_2_0 psShadowMapAlpha();
+        PixelShader = compile ps_2_0  psShadowMapAlpha();
     }
 
     pass point
@@ -1018,13 +931,8 @@ technique DrawShadowMap
         ScissorTestEnable = TRUE;
 
         VertexShader = compile vs_2_0 vsShadowMapPointAlpha();
-        PixelShader = compile ps_2_0 psShadowMapPointAlpha();
+        PixelShader = compile ps_2_0  psShadowMapPointAlpha();
     }
 }
 
-// #include "Shaders/BundledMesh_nv3x.fx"
-// #include "Shaders/BundledMesh_r3x0.fx"
 #include "Shaders/BundledMesh_lightmapgen.fx"
-// #include "Shaders/BundledMesh_editor.fx"
-// #include "Shaders/BundledMesh_debug.fx"
-// #include "Shaders/BundledMesh_leftover.fx"

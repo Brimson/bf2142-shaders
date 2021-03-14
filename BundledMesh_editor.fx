@@ -1,21 +1,17 @@
 
 float4 diffusePixelShaderMarked(VS_OUTPUT2 input) : COLOR
 {
-    const float4 ambient = float4(0.0, 0.8, 0.0, 0.0).xxyx;    // def c0,0,0,0.8,0 :: ambient
-    // Sampler[0] = <diffuseSampler>;
-    float4 diffuseMap = tex2D(diffuseSampler, input.TexCoord); // tex t0
-    return saturate(diffuseMap * input.Diffuse + ambient);     // mad_sat r0, t0, v0, c0
+    const float4 ambient = float4(0.0, 0.0, 0.8, 0.0);
+    const float4 diffuse = tex2D(diffuseSampler, input.TexCoord);
+    return saturate(diffuse * input.Diffuse + ambient);
 }
 
 technique marked
 {
     pass p0
     {
-
         ZEnable = true;
         ZWriteEnable = true;
-        // ZWriteEnable = false;
-        // FillMode = WIREFRAME;
         CullMode = NONE;
         AlphaBlendEnable = true;
         AlphaTestEnable = true;
@@ -30,23 +26,19 @@ technique marked
     }
 }
 
-float4 diffusePixelShaderSubMarked(VS_OUTPUT2 input) : COLOR
+float4 diffusePixelShaderSubmarked(VS_OUTPUT2 input) : COLOR
 {
-    // Sampler[0] = <diffuseSampler>;
-    float4 diffuseMap = tex2D(diffuseSampler, input.TexCoord);  // tex t0
-    const float4 ambient = float4(0.0, 0.4, 0.0, 0.0);          // def c0,0,0,0.4,0 :: ambient
-    return saturate(diffuseMap * input.Diffuse + ambient);      // mad_sat r0, t0, v0, c0
+    const float4 ambient = float4(0.0, 0.0, 0.4, 0.0);
+    const float4 diffuse = tex2D(diffuseSampler, input.TexCoord);
+    return saturate(diffuse * input.Diffuse + ambient);
 }
 
 technique submarked
 {
     pass p0
     {
-
         ZEnable = true;
         ZWriteEnable = true;
-        // ZWriteEnable = false;
-        // FillMode = WIREFRAME;
         CullMode = NONE;
         AlphaBlendEnable = false;
         AlphaTestEnable = true;
@@ -57,19 +49,11 @@ technique submarked
                                                           viewInverseMatrix,
                                                           lightPos,
                                                           eyePos);
-        PixelShader = compile ps_2_0 diffusePixelShaderSubMarked();
-    }
+        PixelShader = compile ps_2_0 diffusePixelShaderSubmarked();
 }
 
 float4 diffusePixelShaderSubPartHighlight() : COLOR
 {
-    /*
-        Previous asm, don't know what the t0 was used for.
-        ps.1.1
-        def c0,0.2f,0.5f,0.5f,0.45f // ambient
-        tex t0
-        mov r0, c0
-    */
     return float4(0.2f, 0.5f, 0.5f, 0.45f);
 }
 
@@ -81,16 +65,10 @@ technique subPartHighlight
 {
     pass p0
     {
-        // CullMode = NONE;
         AlphaBlendEnable = TRUE;
         SrcBlend = SRCALPHA;
         DestBlend = INVSRCALPHA;
         FillMode = SOLID;
-        // DepthBias=-0.001;
-        // ZEnable = TRUE;
-        // ShadeMode = FLAT;
-        // ZFunc = EQUAL;
-        // FillMode = WIREFRAME;
         ZEnable = TRUE;
         ZFunc = EQUAL;
         ZWriteEnable = FALSE;

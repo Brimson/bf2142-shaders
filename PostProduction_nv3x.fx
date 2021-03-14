@@ -14,7 +14,6 @@ vec2 fogStartAndEnd : FOGSTARTANDEND;
 vec3 fogColor : FOGCOLOR;
 float glowStrength : GLOWSTRENGTH;
 vec3 contrastPolynom : CONTRASTPOLYNOM;
-// float brighten : BRIGHTEN;
 
 vec4 colorTransformMat[3] : COLORTRANSFORMMATRIX;
 
@@ -42,28 +41,28 @@ sampler sampler3bilinwrap = sampler_state { Texture = (texture3); AddressU = WRA
 sampler sampler4bilinwrap = sampler_state { Texture = (texture4); AddressU = WRAP; AddressV = WRAP; AddressW = WRAP; MinFilter = LINEAR; MagFilter = LINEAR; };
 sampler sampler5bilinwrap = sampler_state { Texture = (texture5); AddressU = WRAP; AddressV = WRAP; AddressW = WRAP; MinFilter = LINEAR; MagFilter = LINEAR; };
 
-scalar NPixels : NPIXLES = 1.5;
-vec2 ScreenSize : VIEWPORTSIZE = {1920,1080};
-scalar Glowness : GLOWNESS = 8.0;
-scalar Cutoff : cutoff = 0.95;
+scalar NPixels : NPIXLES = 1.0;
+vec2 ScreenSize : VIEWPORTSIZE = { 800, 600 };
+scalar Glowness : GLOWNESS = 3.0;
+scalar Cutoff : cutoff = 0.8;
 
 struct APP2VS_Quad
 {
-    vec2 Pos : POSITION0;
+    vec2 Pos       : POSITION0;
     vec2 TexCoord0 : TEXCOORD0;
 };
 
 struct VS2PS_Quad
 {
-    vec4 Pos : POSITION;
+    vec4 Pos       : POSITION;
     vec2 TexCoord0 : TEXCOORD0;
 };
 
 struct VS2PS_Quad2
 {
-    vec4 Pos : POSITION;
-    vec2 TexCoord0	: TEXCOORD0;
-    vec2 TexCoord1	: TEXCOORD1;
+    vec4 Pos       : POSITION;
+    vec2 TexCoord0 : TEXCOORD0;
+    vec2 TexCoord1 : TEXCOORD1;
 };
 
 struct PS2FB_Combine
@@ -102,12 +101,9 @@ PS2FB_Combine psDx9_Tinnitus(VS2PS_Quad2 indata)
     accum += sample1 * 0.25;
     accum += sample2 * 0.125;
     accum += sample3 * 0.0675;
-
-    accum = lerp(accum,backbuffer,backbufferLerpbias);
-    // accum.r += (0.45*(1-backbufferLerpbias));
+    accum = lerp(accum,backbuffer, backbufferLerpbias);
 
     outdata.Col0 = accum;
-
     return outdata;
 }
 
@@ -117,6 +113,7 @@ technique Tinnitus
     {
         ZEnable = FALSE;
         AlphaBlendEnable = FALSE;
+
         StencilEnable = FALSE;
 
         VertexShader = compile vs_2_0 vsDx9_Tinnitus();
@@ -130,55 +127,31 @@ vec4 psDx9_Soften(VS2PS_Quad2 indata):COLOR
 {
 
     vec4 sample0 = tex2D(sampler0bilin, indata.TexCoord0);
-    // vec4 sample1 = tex2D(sampler1bilin, indata.TexCoord0);
-    // vec4 sample2 = tex2D(sampler2bilin, indata.TexCoord0);
-    // vec4 sample3 = tex2D(sampler3bilin, indata.TexCoord0);
     vec4 backbuffer = tex2D(sampler4, indata.TexCoord0);
 
-    //vec4 accum = sample0;*0.25;// + sample1*0.3;
-    //return sample0;
-
-
-
-    vec4 accum;// = lerp(sample3, sample2, 0.5);
-    //accum = lerp(accum, sample1, 0.5);
-    //accum = lerp(accum, sample0, 0.5);
-
-
-    //accum = accum + sample1*0.25;
-    //accum = accum + sample2*0.25;
-    //accum = accum + sample3*0.25;
-    //accum = accum + (accum - sample1)*0.5;
-    //accum = accum + (accum - sample2)*0.2;
-    //accum = accum + (accum - sample3)*0.1;
-    //accum = lerp(accum,backbuffer,0.7);
-    //return accum *0.7;
+    vec4 accum;
     accum = saturate(backbuffer + sample0 * glowStrength);
-    //accum = lerp(backbuffer, sample0, 0.1);
-
-    //return sample0;
-    //return backbuffer;
-    return accum; // outdata;
+    return accum;;
 }
 
 struct VS2PS_ColorTransform
 {
-    vec4 Pos : POSITION;
-    vec2 TexCoord0 : TEXCOORD0;
+    vec4 Pos                : POSITION;
+    vec2 TexCoord0          : TEXCOORD0;
     vec3 ColorTransformRow0 : TEXCOORD1;
     vec3 ColorTransformRow1 : TEXCOORD2;
     vec3 ColorTransformRow2 : TEXCOORD3;
-    vec3 ContrastPolynom : TEXCOORD4;
+    vec3 ContrastPolynom    : TEXCOORD4;
 };
 
 VS2PS_ColorTransform vsDx9_ColorTransform(VS2PS_ColorTransform indata)
 {
     VS2PS_ColorTransform outdata;
-     outdata.Pos = vec4(indata.Pos.x, indata.Pos.y, 0, 1);
-     outdata.TexCoord0 = indata.TexCoord0;
-     outdata.ColorTransformRow0 = colorTransformMat[0];
-     outdata.ColorTransformRow1 = colorTransformMat[1];
-     outdata.ColorTransformRow2 = colorTransformMat[2];
+    outdata.Pos = vec4(indata.Pos.x, indata.Pos.y, 0.0, 1.0);
+    outdata.TexCoord0 = indata.TexCoord0;
+    outdata.ColorTransformRow0 = colorTransformMat[0];
+    outdata.ColorTransformRow1 = colorTransformMat[1];
+    outdata.ColorTransformRow2 = colorTransformMat[2];
     outdata.ContrastPolynom = contrastPolynom;
     return outdata;
 }
@@ -198,26 +171,22 @@ technique ColorTransform
     {
         ZEnable = FALSE;
         AlphaBlendEnable = FALSE;
+
         StencilEnable = FALSE;
 
         VertexShader = compile vs_2_0 vsDx9_ColorTransform();
         PixelShader = compile ps_2_0 psDx9_ColorTransform14();
-
     }
 }
-
 
 scalar time_0_X : FRACTIME;
 scalar time_0_X_256 : FRACTIME256;
 float sin_time_0_X : FRACSINE;
 
-float interference : INTERFERENCE; // = 0.050000;
-float distortionRoll : DISTORTIONROLL; // = 0.100000;
-float distortionScale : DISTORTIONSCALE; // = 0.500000;
-float distortionFreq : DISTORTIONFREQ; //= 0.500000;
-
-
-
+float interference : INTERFERENCE;
+float distortionRoll : DISTORTIONROLL;
+float distortionScale : DISTORTIONSCALE;
+float distortionFreq : DISTORTIONFREQ;
 
 vec4 psDx9_CameraEffect(VS2PS_ColorTransform indata):COLOR
 {
@@ -227,20 +196,20 @@ vec4 psDx9_CameraEffect(VS2PS_ColorTransform indata):COLOR
     float4 scanline = tex2D(sampler2wrap,vec2(indata.TexCoord0.x,(indata.TexCoord0.y-time_0_X)));
 
     float4 backbuffer1 = tex2D(sampler0bilinwrap, vec2(indata.TexCoord0.x + scanline.r * 0.03, indata.TexCoord0.y));
-    float4 backbuffer = tex2D(sampler0bilinwrap,vec2(fisheyeTexCoord.x + scanline.r * 0.03, fisheyeTexCoord.y));
+    float4 backbuffer = tex2D(sampler0bilinwrap, vec2(fisheyeTexCoord.x + scanline.r * 0.03, fisheyeTexCoord.y));
 
     vec3 accum = indata.ColorTransformRow0.xyz * backbuffer.r + indata.ColorTransformRow1.xyz * backbuffer.g + indata.ColorTransformRow2.xyz * backbuffer.b;
     vec3 accum2 = accum * accum;
     accum = indata.ContrastPolynom.r * accum + indata.ContrastPolynom.g * accum2 + indata.ContrastPolynom.b;
     return float4(accum, backbuffer.a);
 }
-
 technique CameraEffect
 {
     pass p0
     {
         ZEnable = FALSE;
         AlphaBlendEnable = FALSE;
+
         StencilEnable = FALSE;
 
         VertexShader = compile vs_2_0 vsDx9_ColorTransform();
@@ -250,41 +219,20 @@ technique CameraEffect
 
 vec4 psDx9_EMP20(VS2PS_Quad2 indata):COLOR
 {
-
-    //float4 text = tex2D(sampler1bilin, indata.TexCoord0)
     float2 img = indata.TexCoord0;
-    float4 offset = tex2D(sampler1, vec2(0.0,frac(indata.TexCoord0.y*interference))) -0.5;//*time_0_X_256;
-    //img.y += time_0_X * interference;//frac(img.y + time_0_X);
+    float4 offset = tex2D(sampler1, vec2(0.0,frac(indata.TexCoord0.y*interference))) -0.5;
+    img.x = frac(img.x + offset.r*distortionRoll);
 
-    //img.x +=  sin((1-img.y)*distortionFreq) * time_0_X * distortionScale;//
-    //img.x +=  sin((img.y));// * (-img.y);
-    //img.y = frac(img.y + distortionRoll * time_0_X);
-    img.x = frac(img.x + offset.r * distortionRoll);
-    //img.y = frac(img.y + offset.b);
-
-    float4 noise1 = tex2D(sampler1, frac(indata.TexCoord0*distortionScale* time_0_X_256));// + time);
-
+    float4 noise1 = tex2D(sampler1, frac(indata.TexCoord0*distortionScale* time_0_X_256));
     float4 backbuffer = tex2D(sampler4bilinwrap, img);
 
     vec3 accum = colorTransformMat[0].xyz * backbuffer.r + colorTransformMat[1].xyz * backbuffer.g + colorTransformMat[2].xyz * backbuffer.b;
-    //accum = max(accum, vec4(0.5,0.5,0.5,0.0));
-
-    //accum = saturate(accum*1.2);
     noise1 -= 0.5;
     noise1 = max(0.0, noise1.r *2.0);
     accum -= noise1;
-    accum.r += noise1*0.3;
-    //accum -= 0.5;
-    //accum = max(accum, 0.0);
-    //accum = abs(accum) *2.0;
-    //noise1 = max(0.5, noise1.r);
-    //accum.g *= noise1;
-    //accum = lerp(accum, noise1, (1-noise1) * static_interference);
-
-    accum = contrastPolynom.r * accum + contrastPolynom.g * pow(accum, 2.0) + contrastPolynom.b; // * pow(accum, 3) + brighten;
-
+    accum.r += noise1 * 0.3;
+    accum = contrastPolynom.r * accum + contrastPolynom.g * pow(accum, 2.0) + contrastPolynom.b;
     return float4(accum, backbuffer.a);
-
 }
 
 technique Soften
@@ -293,7 +241,9 @@ technique Soften
     {
         ZEnable = FALSE;
         AlphaBlendEnable = FALSE;
+
         StencilEnable = FALSE;
+
 
         // TODO: Shouldn't use the Tinnitus vs. Could use a much simpler vs
         VertexShader = compile vs_2_0 vsDx9_Tinnitus();
@@ -301,13 +251,13 @@ technique Soften
     }
 }
 
-
 technique EMP
 {
     pass p0
     {
         ZEnable = FALSE;
         AlphaBlendEnable = FALSE;
+
         StencilEnable = FALSE;
 
         // TODO: Shouldn't use the Tinnitus vs. Could use a much simpler vs
@@ -316,69 +266,30 @@ technique EMP
     }
 }
 
-
-
 vec4 psDx9_Contrast(VS2PS_Quad2 indata):COLOR
 {
-
-    //vec4 sample0 = tex2D(sampler0bilin, indata.TexCoord0);
     float4 backbuffer = tex2D(sampler4, indata.TexCoord0);
 
-
-
-    //vec4 accum = sample0;
-
-    //accum = lerp(accum,backbuffer,0.7);
-
     float sat = 0.0;
-    vec3 lumVec = vec3(0.8086, 0.9094, 0.0350);
+    vec3 lumVec = vec3(0.3086, 0.6094, 0.0820);
     float4x4 color =	{1.0,0.0,0.0,0.0,
                          0.0,1.0,0.0,0.0,
                          0.0,0.0,1.0,0.0,
                          0.0,0.0,0.0,1.0};
 
-    /*float4x4 luminance =	{0.8086,0.8086,0.8086,0.0,
-                             0.9094,0.9094,0.9094,0.0,
-                             0.0350,0.0350,0.0350,0.0,
-                             0.0,	0.0,   0.0,   1.0};
-    */
     float invSat = 1.0 - sat;
-    /*float4x4 luminance =	{invSat*lumVec.r + sat, invSat*lumVec.r, invSat*lumVec.r, 0.0,
-                             invSat*lumVec.g, invSat*lumVec.g + sat, invSat*lumVec.g, 0.0,
-                             invSat*lumVec.b + sat, invSat*lumVec.b, invSat*lumVec.b + sat, 0.0,
-                             0.0,	0.0,   0.0,   1.0};
-    */
 
     float4x4 luminance2 =	{invSat*lumVec.r + sat, invSat*lumVec.g, invSat*lumVec.b, 0.0,
                              invSat*lumVec.r, invSat*lumVec.g + sat, invSat*lumVec.b, 0.0,
                              invSat*lumVec.r, invSat*lumVec.g, invSat*lumVec.b + sat, 0.0,
                              0.0,		 	  0.0,				0.0,				  1.0};
 
-    //color = mul(luminance2, color);
-    /*
-    float roffset = 0.2;
-    float goffset = 0.2;
-    float boffset = 0.1;
-
-    float4x4 offset =	{1.0,0.0,0.0,roffset,
-                         0.0,1.0,0.0,goffset,
-                         0.0,0.0,1.0,boffset,
-                         0.0,0.0,0.0,1.0};
-    */
-    //vec4 accum = mul(colorTransformMat,backbuffer);
-    //backbuffer.a = 1.0;
-    //accum = mul(offset, backbuffer);
     vec4 accum = mul(luminance2, backbuffer);
     accum -= 0.5;
     accum = backbuffer + accum;
     accum.r += 0.05;
     accum = saturate(accum);
-    //vec4 accum = mul(offset, backbuffer);
-
-    //return vec4(0.0,0.0,0.0,1.0);
-    //return backbuffer;
-
-    return accum;//outdata;
+    return accum;
 }
 
 
@@ -388,6 +299,7 @@ technique Contrast
     {
         ZEnable = FALSE;
         AlphaBlendEnable = FALSE;
+
         StencilEnable = FALSE;
 
         //TODO: Shouldn't use the Tinnitus vs. Could use a much simpler vs
@@ -398,7 +310,7 @@ technique Contrast
 
 vec4 psDx9_ThermopticCamouflage() :COLOR
 {
-    return vec4(0.0,0.0,0.0,0.0);
+    return 0.0;
 }
 
 technique ThermopticCamouflage
@@ -420,9 +332,7 @@ vec4 psDx9_Glow(VS2PS_Quad indata) : COLOR
 vec4 psDx9_GlowMaterial(VS2PS_Quad indata) : COLOR
 {
     vec4 diffuse =  tex2D(sampler0bilin, indata.TexCoord0);
-    // return (1-diffuse.a);
-    // temporary test, should be removed
-    return glowStrength * /*diffuse + */vec4(diffuse.rgb* (1.0 - diffuse.a),1);
+    return glowStrength * vec4(diffuse.rgb * (1.0 - diffuse.a), 1.0);
 }
 
 technique GlowMaterial
@@ -447,9 +357,6 @@ technique GlowMaterial
     }
 }
 
-
-
-
 technique Glow
 {
     pass p0
@@ -467,12 +374,10 @@ technique Glow
 vec4 psDx9_Fog(VS2PS_Quad indata) : COLOR
 {
     vec3 wPos = tex2D(sampler0, indata.TexCoord0);
-    scalar uvCoord = saturate((wPos.zzzz-fogStartAndEnd.r)/fogStartAndEnd.g); // fogColorAndViewDistance.a);
+    scalar uvCoord =  saturate((wPos.zzzz-fogStartAndEnd.r)/fogStartAndEnd.g);//fogColorAndViewDistance.a);
     return saturate(vec4(fogColor.rgb,uvCoord));
-    //vec2 fogcoords = vec2(uvCoord, 0.0);
     return tex2D(sampler1, vec2(uvCoord, 0.0))*fogColor.rgbb;
 }
-
 
 technique Fog
 {
@@ -480,11 +385,8 @@ technique Fog
     {
         ZEnable = FALSE;
         AlphaBlendEnable = TRUE;
-        // SrcBlend = SRCCOLOR;
-        // DestBlend = ZERO;
         SrcBlend = SRCALPHA;
         DestBlend = INVSRCALPHA;
-        // StencilEnable = FALSE;
 
         StencilEnable = TRUE;
         StencilFunc = NOTEQUAL;
@@ -501,15 +403,6 @@ technique Fog
 
 // TVEffect specific...
 
-/*scalar time_0_X : FRACTIME;
-scalar time_0_X_256 : FRACTIME256;
-float sin_time_0_X : FRACSINE;
-
-float interference : INTERFERENCE; // = 0.050000;
-float distortionRoll : DISTORTIONROLL; // = 0.100000;
-float distortionScale : DISTORTIONSCALE; // = 0.500000;
-float distortionFreq : DISTORTIONFREQ; //= 0.500000;
-*/
 VS2PS_Quad2 vs_TVEffect( APP2VS_Quad indata )
 {
    VS2PS_Quad2 output;
@@ -517,15 +410,15 @@ VS2PS_Quad2 vs_TVEffect( APP2VS_Quad indata )
    // RenderMonkeyHACK Clean up inaccuracies
    indata.Pos.xy = sign(indata.Pos.xy);
 
-   output.Pos = float4(indata.Pos.xy, 0.0, 1.0);
+   output.Pos = float4(indata.Pos.xy, 0, 1);
    output.TexCoord0 = indata.Pos.xy;
    output.TexCoord1 = indata.TexCoord0;
 
    return output;
 }
 
-PS2FB_Combine ps_TVEffect(VS2PS_Quad2 indata) {
-
+PS2FB_Combine ps_TVEffect20(VS2PS_Quad2 indata)
+{
    PS2FB_Combine outdata;
 
    float2 pos = indata.TexCoord0;
@@ -541,11 +434,11 @@ PS2FB_Combine ps_TVEffect(VS2PS_Quad2 indata) {
    float dst = frac(pos.y * distortionFreq + distortionRoll * sin_time_0_X);
    dst *= (1.0 - dst);
    // Make sure distortion is highest in the center of the image
-   dst /= 1.0 + distortionScale * abs(pos.y);
+   dst /= 1 + distortionScale * abs(pos.y);
 
    // ... and finally distort
    img.x += distortionScale * noisy * dst;
-   float4 image = /*float4(0.9, 1.1, 1.1, 0) * */dot(float3(0.3,0.59,0.11), tex2D(sampler0bilin, img));
+   float4 image = dot(float3(0.3, 0.59, 0.11), tex2D(sampler0bilin, img));
 
    // Combine frame, distorted image and interference
    outdata.Col0 = interference * rand + image * 0.75 + 0.25;
@@ -559,9 +452,10 @@ technique TVEffect
     {
         ZEnable = FALSE;
         AlphaBlendEnable = FALSE;
+
         StencilEnable = FALSE;
 
         VertexShader = compile vs_2_0 vs_TVEffect();
-        PixelShader = compile ps_2_0 ps_TVEffect();
+        PixelShader = compile ps_2_0 ps_TVEffect20();
     }
 }

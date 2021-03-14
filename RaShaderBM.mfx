@@ -1,13 +1,12 @@
-//
-/// BundledMesh MetaFx
-//
+/*
+    BundledMesh MetaFx
 
-//
-// This array specifies what the shaderPermutator should build
-// in the case below it will first look for reqVertexElement + "Base"
-// and get the common members of that array. And will then complement
-// that array for each permutation based on the requirements of each individual LITERAL
-//
+    This array specifies what the shaderPermutator should build
+    in the case below it will first look for reqVertexElement + "Base"
+    and get the common members of that array. And will then complement
+    that array for each permutation based on the requirements of each individual LITERAL
+*/
+
 string GenerateStructs[] =
 {
     "reqVertexElement",
@@ -16,21 +15,16 @@ string GenerateStructs[] =
     "InstanceParameters"
 };
 
-
-//
 // this is the common vertexElement members
-//
 string reqVertexElementBase[] =
 {
-     "PositionPacked",
-     "NormalPacked8",
+    "PositionPacked",
+    "NormalPacked8",
     "Bone4Idcs",
     "TBasePacked2D",
 };
 
-//
 // this is the common global parameters
-//
 string GlobalParametersBase[] =
 {
     "ViewProjection",
@@ -43,9 +37,7 @@ string GlobalParametersBase[] =
     "GlobalTime"
 };
 
-//
 // this is the common template parameters
-//
 string TemplateParametersBase[] =
 {
     "DiffuseMap",
@@ -54,9 +46,7 @@ string TemplateParametersBase[] =
     "NormalUnpack"
 };
 
-//
 // this is the common instance parameters
-//
 string InstanceParametersBase[] =
 {
     "AlphaBlendEnable",
@@ -72,18 +62,13 @@ string InstanceParametersBase[] =
     "HemiMapConstantColor",
 };
 
-
-//
 // Literals, and their requirements
-//
-
 const dword _nothing_	: LITERAL;
-
 const dword _hasuvanimation_	: LITERAL
 <
     string reqVertexElement[] =
     {
-         "TUVAnimationPacked2D"
+        "TUVAnimationPacked2D"
     };
     string InstanceParameters[] =
     {
@@ -95,7 +80,7 @@ const dword _hasnormalmap_	: LITERAL
 <
     string reqVertexElement[] =
     {
-         "TangentSpacePacked8"
+        "TangentSpacePacked8"
     };
     string TemplateParameters[] =
     {
@@ -115,7 +100,7 @@ const dword _hasenvmap_	: LITERAL
 <
     string TemplateParameters[] =
     {
-        "CubeMap",		//Funky name!!!
+        "CubeMap",
     };
 >;
 
@@ -148,19 +133,7 @@ const dword _hasshadowocclusion_	: LITERAL
 >;
 
 const dword _hashemiocclusion_	: LITERAL;
-
 const dword _hascolormapgloss_	: LITERAL;
-
-/*const dword _hasnormalmapgloss_	: LITERAL
-<
-    string TemplateParameters[] =
-    {
-        "NormalMap"
-    };
->;
-*/
-
-
 const dword _hasstaticgloss_	: LITERAL
 <
     string TemplateParameters[] =
@@ -170,7 +143,6 @@ const dword _hasstaticgloss_	: LITERAL
 >;
 
 const dword _hasdot3alphatest_	: LITERAL;
-
 const dword _usehemimap_	: LITERAL
 <
     string GlobalParameters[] =
@@ -191,15 +163,12 @@ const dword _usehemimap_	: LITERAL
 
 const dword _pointlight_	: LITERAL;
 
-//const dword _useperpixelnormalize_	: LITERAL;
-//const dword _userenormalizedtextures_	: LITERAL;
+/*
+    This is the array of the shader permutations to generate.
+    the resulting shadername is the name of this file + the permutationname - "_"
+    ie. RaShaderSTMBaseDetail etc
+*/
 
-
-//
-// This is the array of the shader permutations to generate.
-// the resulting shadername is the name of this file + the permutationname - "_"
-// ie. RaShaderSTMBaseDetail etc
-//
 string GenerateShaderPermutations[] =
 {
     "_nothing_",
@@ -236,9 +205,9 @@ string GenerateShaderPermutations[] =
     "_hasuvanimation_|_hasnormalmap_|_hasgimap_|_hasenvmap_|_usehemimap_",
 };
 
-//
+
 // for each shader in the permutation array, the following variants will be generated
-//
+
 string GenerateShaderModifiers[] =
 {
     "_hasshadow_",
@@ -289,4 +258,3 @@ string DeprecationList[] =
     {"hasshadow", "hasdot3alphatest", "hascolormapgloss", "hasshadowocclusion" , ""},
     {"hasuvanimation", "hasgimap", ""},
 };
-

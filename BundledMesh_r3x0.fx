@@ -50,11 +50,8 @@ struct VS_OUTPUT_AlphaDX9
 };
 
 // [mharris]
-OUT_vsDiffuseZ vsDiffuseZ
-(
-    appdataDiffuseZ input,
-    uniform mat4x4 ViewProj
-)
+OUT_vsDiffuseZ vsDiffuseZ(appdataDiffuseZ input,
+                          uniform mat4x4 ViewProj)
 {
     OUT_vsDiffuseZ Out;
 
@@ -70,11 +67,8 @@ OUT_vsDiffuseZ vsDiffuseZ
 }
 
 // [mharris]
-OUT_vsDiffuseZ vsDiffuseZAnimatedUV
-(
-    appdataDiffuseZAnimatedUV input,
-    uniform mat4x4 ViewProj
-)
+OUT_vsDiffuseZ vsDiffuseZAnimatedUV(appdataDiffuseZAnimatedUV input,
+                                    uniform mat4x4 ViewProj)
 {
     OUT_vsDiffuseZ Out;
 
@@ -86,20 +80,16 @@ OUT_vsDiffuseZ vsDiffuseZAnimatedUV
     Out.HPos = mul(vec4(Pos.xyz, 1.0), ViewProj);
 
     // Pass-through texcoords
-    // Out.TexCoord = input.TexCoord;
 
     mat3x3 tmp = uvMatrix[IndexArray[3]];
     Out.TexCoord = mul(vec3(input.TexCoord1, 1.0), tmp).xy + input.TexCoord0;
     return Out;
 }
 
-OUT_vsFullMRT vsFullMRT
-(
-    appdata input,
-    uniform mat4x4 ViewProj,
-    uniform mat4x4 ViewInv,
-    uniform scalar NormalOffsetScale
-)
+OUT_vsFullMRT vsFullMRT(appdata input,
+                        uniform mat4x4 ViewProj,
+                        uniform mat4x4 ViewInv,
+                        uniform scalar NormalOffsetScale)
 {
     OUT_vsFullMRT Out = (OUT_vsFullMRT)0;
 
@@ -134,13 +124,10 @@ OUT_vsFullMRT vsFullMRT
     return Out;
 }
 
-OUT_vsFullMRTAnimatedUV vsFullMRTAnimatedUV
-(
-    appdataAnimatedUV input,
-    uniform mat4x4 ViewProj,
-    uniform mat4x4 ViewInv,
-    uniform scalar NormalOffsetScale
-)
+OUT_vsFullMRTAnimatedUV vsFullMRTAnimatedUV(appdataAnimatedUV input,
+                                            uniform mat4x4 ViewProj,
+                                            uniform mat4x4 ViewInv,
+                                            uniform scalar NormalOffsetScale)
 {
     OUT_vsFullMRTAnimatedUV Out = (OUT_vsFullMRTAnimatedUV)0;
 
@@ -149,18 +136,12 @@ OUT_vsFullMRTAnimatedUV vsFullMRTAnimatedUV
     int IndexArray[4] = (int[4])IndexVector;
 
     // Transform texcoords
-    // Out.TexCoord = uvMatrix[IndexArray[3]].xy + input.TexCoord0;
     mat3x3 tmp = uvMatrix[IndexArray[3]];
     Out.TexCoord1 = mul(vec3(input.TexCoord1, 1.0), tmp).xy + input.TexCoord0;
-    // Out.TexCoord = input.TexCoord0;
-    // Out.TexCoord = vec2(0.0, 0.0);
-    // Out.TexCoord = tmp2;
 
     vec3 Pos = mul(input.Pos, mOneBoneSkinning[IndexArray[0]]);
     Out.HPos = mul(vec4(Pos.xyz, 1.0), ViewProj);
     Out.wPos = mul(vec4(Pos.xyz, 1.0), viewMatrix);
-
-    //Out.wPos = Out.HPos;
 
     // Hemi lookup values
     vec3 AlmostNormal = mul(input.Normal, mOneBoneSkinning[IndexArray[0]]);
@@ -197,12 +178,7 @@ VS_OUTPUT_AlphaDX9 vsAlphaDX9DirectionalShadow(appdata input, uniform mat4x4 Vie
     Out.wPos = mul(vec4(Pos.xyz, 1.0), viewMatrix);
     Out.Tex0 = vec4(input.TexCoord.xy, 1.0, 1.0);
 
-    /*
-        Out.Tex1.xy = Out.HPos.xy/Out.HPos.w;
-        Out.Tex1.xy = (Out.Tex1.xy + 1) / 2;
-        Out.Tex1.y = 1-Out.Tex1.y;
-    */
-    // Hacked to only support 1280/720
+    // Hacked to only support 800/600
     Out.Tex1.xy = Out.HPos.xy / Out.HPos.w;
     Out.Tex1.xy = Out.Tex1.xy * 0.5 + 0.5;
     Out.Tex1.y = 1.0 - Out.Tex1.y;
@@ -235,12 +211,9 @@ PS2FB_fullMRT psFullMRT(OUT_vsFullMRT indata,
 
     vec4 groundcolor = tex2D(sampler1, indata.GroundUVAndLerp.xy);
     vec4 hemicolor = lerp(groundcolor, SkyColor, indata.GroundUVAndLerp.z);
-    // outdata.Col0 = groundcolor.a * groundcolor.a;
-    // outdata.Col0 += AmbientColor * hemicolor;
-    outdata.Col0 = AmbientColor * hemicolor;
-    outdata.Col1 = indata.wPos;
 
-    // outdata.Col3 = tex2D(sampler2Aniso, indata.TexCoord);
+    outdata.Col0 = AmbientColor*hemicolor;
+    outdata.Col1 = indata.wPos;
     return outdata;
 }
 
@@ -259,13 +232,9 @@ PS2FB_fullMRT psFullMRTAnimatedUV(OUT_vsFullMRTAnimatedUV indata,
 
     vec4 groundcolor = tex2D(sampler1, indata.GroundUVAndLerp.xy);
     vec4 hemicolor = lerp(groundcolor, SkyColor, indata.GroundUVAndLerp.z);
-    // outdata.Col0 = groundcolor.a * groundcolor.a;
-    // outdata.Col0 += AmbientColor * hemicolor;
+
     outdata.Col0 = AmbientColor * hemicolor;
     outdata.Col1 = indata.wPos;
-
-    // outdata.Col0 = float4(1.0, 0.0, 0.0, 1.0);
-    // outdata.Col3 = tex2D(sampler2Aniso, indata.TexCoord1);
     return outdata;
 }
 
@@ -284,13 +253,10 @@ PS2FB_fullMRT psFullMRTwGI(OUT_vsFullMRT indata,
 
     vec4 groundcolor = tex2D(sampler1, indata.GroundUVAndLerp.xy);
     vec4 hemicolor = lerp(groundcolor, SkyColor, indata.GroundUVAndLerp.z);
-    // outdata.Col0 = groundcolor.a * groundcolor.a;
-    // outdata.Col0 += AmbientColor * hemicolor;
+
     outdata.Col0 = AmbientColor * hemicolor;
     outdata.Col0 *= tex2D(sampler3, indata.TexCoord);
     outdata.Col1 = indata.wPos;
-
-    // outdata.Col3 = tex2D(sampler2Aniso, indata.TexCoord);
     return outdata;
 }
 
@@ -309,13 +275,10 @@ PS2FB_fullMRT psFullMRTwGIAnimatedUV(OUT_vsFullMRTAnimatedUV indata,
 
     vec4 groundcolor = tex2D(sampler1, indata.GroundUVAndLerp.xy);
     vec4 hemicolor = lerp(groundcolor, SkyColor, indata.GroundUVAndLerp.z);
-    // outdata.Col0 = groundcolor.a * groundcolor.a;
-    // outdata.Col0 += AmbientColor * hemicolor;
+
     outdata.Col0 = AmbientColor * hemicolor;
     outdata.Col0 *= tex2D(sampler3, indata.TexCoord2);
     outdata.Col1 = indata.wPos;
-
-    // outdata.Col3 = tex2D(sampler2Aniso, indata.TexCoord1);
     return outdata;
 }
 
@@ -334,12 +297,10 @@ PS2FB_fullMRT psFullMRTHemiShadows(OUT_vsFullMRT indata,
 
     vec4 groundcolor = tex2D(sampler1, indata.GroundUVAndLerp.xy);
     vec4 hemicolor = lerp(groundcolor, SkyColor, indata.GroundUVAndLerp.z);
+
     outdata.Col0 = AmbientColor * hemicolor;
     outdata.Col0 *= groundcolor.a * groundcolor.a;
-
     outdata.Col1 = indata.wPos;
-
-    // outdata.Col3 = tex2D(sampler2, indata.TexCoord);
     return outdata;
 }
 
@@ -358,12 +319,10 @@ PS2FB_fullMRT psFullMRTHemiShadowsAnimatedUV(OUT_vsFullMRTAnimatedUV indata,
 
     vec4 groundcolor = tex2D(sampler1, indata.GroundUVAndLerp.xy);
     vec4 hemicolor = lerp(groundcolor, SkyColor, indata.GroundUVAndLerp.z);
-    outdata.Col0 = AmbientColor*hemicolor;
-    outdata.Col0 *= groundcolor.a*groundcolor.a;
 
+    outdata.Col0 = AmbientColor * hemicolor;
+    outdata.Col0 *= groundcolor.a * groundcolor.a;
     outdata.Col1 = indata.wPos;
-
-    // outdata.Col3 = tex2D(sampler2, indata.TexCoord1);
     return outdata;
 }
 
@@ -382,14 +341,11 @@ PS2FB_fullMRT psFullMRTwGIHemiShadows(OUT_vsFullMRT indata,
 
     vec4 groundcolor = tex2D(sampler1, indata.GroundUVAndLerp.xy);
     vec4 hemicolor = lerp(groundcolor, SkyColor, indata.GroundUVAndLerp.z);
-    outdata.Col0 = AmbientColor*hemicolor;
-    outdata.Col0 *= groundcolor.a*groundcolor.a;
+
+    outdata.Col0 = AmbientColor * hemicolor;
+    outdata.Col0 *= groundcolor.a * groundcolor.a;
     outdata.Col0 *= tex2D(sampler3, indata.TexCoord);
-
-
     outdata.Col1 = indata.wPos;
-
-    //outdata.Col3 = tex2D(sampler2, indata.TexCoord);
     return outdata;
 }
 
@@ -408,13 +364,12 @@ PS2FB_fullMRT psFullMRTwGIHemiShadowsAnimatedUV(OUT_vsFullMRTAnimatedUV indata,
 
     vec4 groundcolor = tex2D(sampler1, indata.GroundUVAndLerp.xy);
     vec4 hemicolor = lerp(groundcolor, SkyColor, indata.GroundUVAndLerp.z);
-    outdata.Col0 = AmbientColor*hemicolor;
-    outdata.Col0 *= groundcolor.a*groundcolor.a;
-    outdata.Col0 *= tex2D(sampler3, indata.TexCoord2);
 
+    outdata.Col0 = AmbientColor * hemicolor;
+    outdata.Col0 *= groundcolor.a * groundcolor.a;
+    outdata.Col0 *= tex2D(sampler3, indata.TexCoord2);
     outdata.Col1 = indata.wPos;
 
-    //outdata.Col3 = tex2D(sampler2, indata.TexCoord1);
     return outdata;
 }
 
@@ -433,13 +388,10 @@ PS2FB_fullMRT psFullMRTAlphaBlend(OUT_vsFullMRT indata,
 
     vec4 groundcolor = tex2D(sampler1, indata.GroundUVAndLerp.xy);
     vec4 hemicolor = lerp(groundcolor, SkyColor, indata.GroundUVAndLerp.z);
+
     outdata.Col0 = groundcolor.a * groundcolor.a;
     outdata.Col0 += AmbientColor * hemicolor;
-    // outdata.Col0 = AmbientColor * hemicolor;
-
     outdata.Col1 = indata.wPos;
-
-    // outdata.Col3 = tex2D(sampler2Aniso, indata.TexCoord);
     return outdata;
 }
 
@@ -461,18 +413,17 @@ vec4 psAlphaDX9DirectionalShadow(VS_OUTPUT_AlphaDX9 indata) : COLOR
     vec4 lightUV = mul(indata.wPos, mLightVP);
     lightUV.xy = clamp(lightUV.xy, vViewportMap.xy, vViewportMap.zw);
 
-    scalar texel = 1.0 / 2048.0; // Fixme when shadowMap size isn't constant any more...
+    scalar texel = 1.0 / 1024.0; // Fixme when shadowMap size isn't constant any more...
     vec4 samplesShadowMap;
     samplesShadowMap.x = tex2D(sampler2point, lightUV);
     samplesShadowMap.y = tex2D(sampler2point, lightUV + vec2(texel, 0.0));
-    samplesShadowMap.z = tex2D(sampler2point, lightUV + vec2(  0.0, texel));
+    samplesShadowMap.z = tex2D(sampler2point, lightUV + vec2(0.0, texel));
     samplesShadowMap.w = tex2D(sampler2point, lightUV + vec2(texel, texel));
 
     vec4 staticOccluderSamples;
     staticOccluderSamples.x = tex2D(sampler3, lightUV + vec2(-texel, -texel * 2.0)).b;
     staticOccluderSamples.y = tex2D(sampler3, lightUV + vec2( texel, -texel * 2.0)).b;
     staticOccluderSamples.z = tex2D(sampler3, lightUV + vec2(-texel,  texel * 2.0)).b;
-    // staticSamples.w = tex2D(sampler4bilin, lightUV + vec2( texel*1,  texel*2)).b;
     staticOccluderSamples.x = dot(staticOccluderSamples.xyz, 0.33);
 
     const scalar epsilon = 0.05;
@@ -494,7 +445,6 @@ vec4 psAlphaDX9DirectionalDecal(VS_OUTPUT_Alpha indata) : COLOR
     vec4 Output = (diffuse * ((projlight + lightMapAmbient) * (diffuseLight + lightMapAmbient))) + projlight.a;
     Output.a = diffuse.a;
     return Output;
-
 }
 
 // [mharris]
@@ -545,6 +495,7 @@ technique FullMRT
         ZWriteEnable = FALSE;
 
         StencilEnable = FALSE;
+
         /*
             StencilEnable = TRUE;
             StencilRef = (dwStencilRef);
@@ -556,6 +507,7 @@ technique FullMRT
         VertexShader = compile vs_2_0 vsFullMRT(viewProjMatrix, viewInverseMatrix,  normalOffsetScale);
         PixelShader = compile ps_2_0 psFullMRT(skyColor, ambientColor);
     }
+
     pass p1wGI
     {
         AlphaBlendEnable = FALSE;
@@ -563,8 +515,8 @@ technique FullMRT
         ZFunc = EQUAL;
         ZWriteEnable = FALSE;
 
-
         StencilEnable = FALSE;
+
         /*
             StencilEnable = TRUE;
             StencilRef = (dwStencilRef);
@@ -588,6 +540,7 @@ technique FullMRTHemiShadows
         ZWriteEnable = FALSE;
 
         StencilEnable = FALSE;
+
         /*
             StencilEnable = TRUE;
             StencilRef = (dwStencilRef);
@@ -629,8 +582,8 @@ technique FullMRTAnimatedUV
         ZFunc = EQUAL;
         ZWriteEnable = FALSE;
 
-
         StencilEnable = FALSE;
+
         /*
             StencilEnable = TRUE;
             StencilRef = (dwStencilRef);
@@ -651,6 +604,7 @@ technique FullMRTAnimatedUV
         ZWriteEnable = FALSE;
 
         StencilEnable = FALSE;
+
         /*
             StencilEnable = TRUE;
             StencilRef = (dwStencilRef);
@@ -674,6 +628,7 @@ technique FullMRTAnimatedUVHemiShadows
         ZWriteEnable = FALSE;
 
         StencilEnable = FALSE;
+
         /*
             StencilEnable = TRUE;
             StencilRef = (dwStencilRef);
@@ -685,6 +640,7 @@ technique FullMRTAnimatedUVHemiShadows
         VertexShader = compile vs_2_0 vsFullMRTAnimatedUV(viewProjMatrix, viewInverseMatrix, normalOffsetScale);
         PixelShader = compile ps_2_0 psFullMRTHemiShadowsAnimatedUV(skyColor, ambientColor);
     }
+
     pass p1wGI
     {
         AlphaBlendEnable = FALSE;
@@ -693,11 +649,14 @@ technique FullMRTAnimatedUVHemiShadows
         ZWriteEnable = FALSE;
 
         StencilEnable = FALSE;
-        /*StencilEnable = TRUE;
-        StencilRef = (dwStencilRef);
-        StencilFunc = ALWAYS;
-        StencilZFail = KEEP;
-        StencilPass = REPLACE;*/
+
+        /*
+            StencilEnable = TRUE;
+            StencilRef = (dwStencilRef);
+            StencilFunc = ALWAYS;
+            StencilZFail = KEEP;
+            StencilPass = REPLACE;
+        */
 
         VertexShader = compile vs_2_0 vsFullMRTAnimatedUV(viewProjMatrix, viewInverseMatrix, normalOffsetScale);
         PixelShader = compile ps_2_0 psFullMRTwGIHemiShadowsAnimatedUV(skyColor, ambientColor);
@@ -729,7 +688,6 @@ technique FullMRTAlphaBlend
         PixelShader = compile ps_2_0 psFullMRTAlphaBlend(skyColor, ambientColor);
     }
 }
-
 
 technique alphaDX9
 {

@@ -1,10 +1,10 @@
 
-//$ TL -- dbg
+//$ TL dbg
 
 struct VSTanOut
 {
-    float4 HPos	   : POSITION;
-    float4 Diffuse : COLOR;
+    float4 HPos     : POSITION;
+    float4 Diffuse  : COLOR;
 };
 
 VSTanOut vsShowTanBasis(float4 Pos : POSITION, float4 Col : COLOR)
@@ -29,7 +29,6 @@ technique showTangentBasis
 {
     pass p0
     {
-
         ZEnable = true;
         ZWriteEnable = false;
         AlphaBlendEnable = false;

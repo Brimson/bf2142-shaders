@@ -19,23 +19,49 @@ bool bZWriteEnable : ZWRITEENABLE = true;
 texture texture0: TEXLAYER0;
 texture texture1: TEXLAYER1;
 
-sampler sampler0Clamp = sampler_state { Texture = (texture0); AddressU = CLAMP; AddressV = CLAMP; MinFilter = LINEAR; MagFilter = LINEAR; MipFilter = LINEAR; };
-sampler sampler1Clamp = sampler_state { Texture = (texture1); AddressU = CLAMP; AddressV = CLAMP; MinFilter = LINEAR; MagFilter = LINEAR; MipFilter = LINEAR; };
-sampler sampler1Wrap = sampler_state { Texture = (texture1); AddressU = WRAP; AddressV = WRAP; MinFilter = LINEAR; MagFilter = LINEAR; MipFilter = LINEAR; };
+sampler sampler0Clamp = sampler_state
+{
+    Texture = (texture0);
+    AddressU = CLAMP;
+    AddressV = CLAMP;
+    MinFilter = LINEAR;
+    MagFilter = LINEAR;
+    MipFilter = LINEAR;
+};
+
+sampler sampler1Clamp = sampler_state
+{
+    Texture = (texture1);
+    AddressU = CLAMP;
+    AddressV = CLAMP;
+    MinFilter = LINEAR;
+    MagFilter = LINEAR;
+    MipFilter = LINEAR;
+};
+
+sampler sampler1Wrap = sampler_state
+{
+    Texture = (texture1);
+    AddressU = WRAP;
+    AddressV = WRAP;
+    MinFilter = LINEAR;
+    MagFilter = LINEAR;
+    MipFilter = LINEAR;
+};
 
 struct APP2VS
 {
-    float4 Pos : POSITION;
-    float4 Col : COLOR;
-    float2 Tex : TEXCOORD0;
+    float4 Pos  : POSITION;
+    float4 Col  : COLOR;
+    float2 Tex  : TEXCOORD0;
     float2 Tex2 : TEXCOORD1;
 };
 
 struct VS2PS
 {
-    float4 Pos : POSITION;
-    float4 Col : COLOR;
-    float2 Tex : TEXCOORD0;
+    float4 Pos  : POSITION;
+    float4 Col  : COLOR;
+    float2 Tex  : TEXCOORD0;
     float2 Tex2 : TEXCOORD1;
 };
 
@@ -63,13 +89,13 @@ float4 psQuadWTexOneTex(VS2PS indata) : COLOR
 float4 psQuadWTexOneTexMasked(VS2PS indata) : COLOR
 {
     float4 outcol = indata.Col * tex2D(sampler0Clamp, indata.Tex);
-    // outcol *= tex2D(sampler1Clamp, indata.Tex2);
     outcol.a *= tex2D(sampler1Clamp, indata.Tex2).a;
     return outcol;
 }
 
 technique Menu{ pass{ } }
-technique Menu_States <bool Restore = true;> {
+technique Menu_States <bool Restore = true;>
+{
     pass BeginStates { }
     pass EndStates { }
 }

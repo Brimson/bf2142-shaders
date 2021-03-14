@@ -32,10 +32,11 @@ sampler sampler0 = sampler_state
 
 struct VSINPUT
 {
-    vec3 Pos: POSITION;
-    vec4 Data : COLOR0;
-    vec2 TexCoord: TEXCOORD0;
+    vec3 Pos      : POSITION;
+    vec4 Data     : COLOR0;
+    vec2 TexCoord : TEXCOORD0;
 };
+
 
 // Point Technique
 
@@ -58,23 +59,23 @@ POINT_VSOUT vsPoint(VSINPUT input)
     vec3 particlePos = input.Pos + cellPos + deviation;
 
     // calculate the alpha blending based on system position
-    vec3 sysDelta = abs(systemPos.xyz-particlePos);
+    vec3 sysDelta = abs(systemPos.xyz - particlePos);
 
     sysDelta -= fadeOutRange;
     sysDelta /= fadeOutDelta;
     scalar alpha = 1.0f - length(saturate(sysDelta));
 
     float visibility = cellVisibility[input.Data.x];
-    output.Color = vec4(particleColor.rgb, particleColor.a * alpha * visibility);
+    output.Color = vec4(particleColor.rgb,particleColor.a*alpha*visibility);
 
     // calculate the point size using the camera position
-    vec3 camDelta = abs(cameraPos.xyz-particlePos);
+    vec3 camDelta = abs(cameraPos.xyz - particlePos);
     scalar camDist = length(camDelta);
 
     output.pointSize = min(particleSize * rsqrt(pointScale[0] + pointScale[1] * camDist), maxParticleSize);
 
     // output the final texture coordinates and projected position
-    output.Pos = mul(vec4(particlePos, 1.0), wvp);
+    output.Pos = mul(vec4(particlePos,1), wvp);
     output.TexCoord = input.TexCoord;
 
     return output;
@@ -104,7 +105,6 @@ technique Point
     }
 }
 
-
 // Line Technique
 
 struct LINE_VSOUT
@@ -127,7 +127,7 @@ LINE_VSOUT vsLine(VSINPUT input)
     scalar alpha = 1.0f - length(saturate(camDelta));
 
     float visibility = cellVisibility[input.Data.x];
-    output.Color = vec4(particleColor.rgb, particleColor.a * alpha * visibility);
+    output.Color = vec4(particleColor.rgb,particleColor.a*alpha*visibility);
 
     output.Pos = mul(vec4(particlePos, 1.0), wvp);
     output.TexCoord = input.TexCoord;
@@ -147,10 +147,10 @@ technique Line
         FogEnable = FALSE;
         ZEnable = TRUE;
         ZFunc = LESSEQUAL;
-        ZWriteEnable = false;//TRUE;
+        ZWriteEnable = false;
         AlphaBlendEnable = TRUE;
         SrcBlend = SrcAlpha;
-        DestBlend = One;//InvSrcAlpha;
+        DestBlend = One;
         CullMode = NONE;
 
         VertexShader = compile vs_2_0 vsLine();
@@ -175,12 +175,9 @@ CELL_VSOUT vsCells(VSINPUT input)
     vec3 particlePos = input.Pos + cellPos;
     float visibility = cellVisibility[input.Data.x];
 
-    output.Color = vec3(visibility, 1.0 - visibility, 1.0).xyyz; // particleColor;
-    //output.Color.gb = output.Color.gb * visibility;
-
-    output.Pos = mul(vec4(particlePos, 1.0), wvp);
+    output.Color = vec4(visibility, 1.0 - visibility,1.0 - visibility, 1.0);
+    output.Pos = mul(vec4(particlePos,1), wvp);
     output.TexCoord = input.TexCoord;
-
     return output;
 }
 
@@ -196,10 +193,10 @@ technique Cells
         FogEnable = FALSE;
         ZEnable = TRUE;
         ZFunc = LESSEQUAL;
-        ZWriteEnable = false;//TRUE;
+        ZWriteEnable = false;
         AlphaBlendEnable = TRUE;
         SrcBlend = SrcAlpha;
-        DestBlend = One;//InvSrcAlpha;
+        DestBlend = One;
         CullMode = NONE;
 
         VertexShader = compile vs_2_0 vsCells();

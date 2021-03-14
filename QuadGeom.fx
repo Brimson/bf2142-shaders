@@ -16,17 +16,14 @@ struct VS2PS
 VS2PS vsFFP(APP2VS indata)
 {
     VS2PS outdata;
-
     outdata.Pos.x = indata.Pos.x;
     outdata.Pos.y = indata.Pos.y;
-    outdata.Pos.z = 0.0f;
+    outdata.Pos.z = 0.f;
     outdata.Pos.w = 1.0f;
-    outdata.Tex.x = indata.Pos.x * 0.5 + 0.5;
-    outdata.Tex.y = 1.0f - (indata.Pos.y * 0.5 + 0.5);
-
+    outdata.Tex.x = 0.5f * (indata.Pos.x + 1.0f);
+    outdata.Tex.y = 1.0f - (0.5f * (indata.Pos.y + 1.0f));
     return outdata;
 }
-
 
 technique TexturedQuad
 <
@@ -34,7 +31,7 @@ technique TexturedQuad
     {
         // StreamNo, DataType, Usage, UsageIdx
         0, D3DDECLTYPE_FLOAT2, D3DDECLUSAGE_POSITION, 0,
-        DECLARATION_END // End macro
+        DECLARATION_END	// End macro
     };
 >
 {
@@ -51,11 +48,6 @@ technique TexturedQuad
         StencilFunc = EQUAL;
         StencilPass = ZERO;
         StencilRef = 0;
-
-        // StencilEnable = FALSE;
-        // StencilFunc = ALWAYS;
-        // StencilPass = ZERO;
-        // StencilRef = 0;
 
         // App pixel settings
         ColorOp[0] = SELECTARG2;
@@ -75,4 +67,3 @@ technique TexturedQuad
         PixelShader = NULL;
     }
 }
-

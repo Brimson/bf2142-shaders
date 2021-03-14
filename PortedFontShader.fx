@@ -1,27 +1,27 @@
 
 float4 alpha : BLENDALPHA;
-texture texture0: TEXLAYER0;
+texture texture0 : TEXLAYER0;
 sampler sampler0 = sampler_state
 {
     Texture = (texture0);
     AddressU = CLAMP;
     AddressV = CLAMP;
+    MipFilter = LINEAR;
     MinFilter = LINEAR;
     MagFilter = LINEAR;
-    MipFilter = LINEAR;
 };
 
 struct APP2VS
 {
-    float4 HPos : POSITION;
-    float3 Col : COLOR;
+    float4 HPos      : POSITION;
+    float3 Col       : COLOR;
     float2 TexCoord0 : TEXCOORD0;
 };
 
 struct VS2PS
 {
     float4 HPos : POSITION;
-    float3 Col : COLOR;
+    float3 Col  : COLOR;
     float2 Tex0 : TEXCOORD0;
 };
 
@@ -34,12 +34,12 @@ VS2PS HPosVS(APP2VS indata)
     return outdata;
 }
 
-technique Text_States <bool Restore = true;> {
-    pass BeginStates {
+technique Text_States < bool Restore = true; >
+{
+    pass BeginStates
+    {
         ZEnable = FALSE;
         AlphaBlendEnable = TRUE;
-        // SrcBlend = INVSRCCOLOR;
-        // DestBlend = SRCCOLOR;
         SrcBlend = SRCALPHA;
         DestBlend = INVSRCALPHA;
     }
@@ -49,11 +49,11 @@ technique Text_States <bool Restore = true;> {
 
 float4 HPosPS(VS2PS input) : COLOR
 {
-    const float4 rgb = float2(1.0, 0.0).xxxy; // def c0, 1, 1, 1, 0
-    float4 o = tex2D(sampler0, input.Tex0); // tex t0
-    o = dot(o, rgb); // dp3 r0, t0, c0
-    o.rgb *= input.Col; // mul r0.rgb, t0, v0
-    return o;
+    float4 t0 = tex2D(sampler0, input.Tex0);
+    float4 output;
+    output = dot(t0, float4(1.0, 1.0, 1.0, 0.0));
+    output.rgb = t0 * input.Col;
+    return output;
 }
 
 technique Text <
@@ -69,20 +69,14 @@ technique Text <
 {
     pass p0
     {
-        Texture[0] = (texture0);
-        AddressU[0] = CLAMP;
-        AddressV[0] = CLAMP;
-        MipFilter[0] = LINEAR;
-        MinFilter[0] = LINEAR;
-        MagFilter[0] = LINEAR;
-
         VertexShader = compile vs_2_0 HPosVS();
         PixelShader = compile ps_2_0 HPosPS();
     }
 }
 
 technique Overlay_States <bool Restore = true;> {
-    pass BeginStates {
+    pass BeginStates
+    {
         CullMode = NONE;
         ZEnable = FALSE;
 
@@ -91,8 +85,7 @@ technique Overlay_States <bool Restore = true;> {
         DestBlend = INVSRCALPHA;
     }
 
-    pass EndStates {
-    }
+    pass EndStates { }
 }
 
 technique Overlay <

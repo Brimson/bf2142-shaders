@@ -1,18 +1,20 @@
 // ZOnlyShader
 
-string reqVertexElement[] = {
+string reqVertexElement[] =
+{
     "PositionPacked",
     "NormalPacked8",
     "Bone4Idcs",
     "TBasePacked2D"
 };
 
-string GlobalParameters[] = {
+string GlobalParameters[] =
+{
     "ViewProjection",
 };
 
-
-string InstanceParameters[] = {
+string InstanceParameters[] =
+{
     "World",
     "AlphaBlendEnable",
     "DepthWrite",
@@ -35,17 +37,17 @@ string InstanceParameters[] = {
 
 struct BMVariableVSInput
 {
-    vec4	Pos				: POSITION;
-    vec3	Normal			: NORMAL;
-    vec4  	BlendIndices	: BLENDINDICES;
-    vec2	TexDiffuse		: TEXCOORD0;
-    vec2	TexUVRotCenter	: TEXCOORD1;
-    vec3 	Tan				: TANGENT;
+    vec4 Pos            : POSITION;
+    vec3 Normal         : NORMAL;
+    vec4 BlendIndices   : BLENDINDICES;
+    vec2 TexDiffuse     : TEXCOORD0;
+    vec2 TexUVRotCenter : TEXCOORD1;
+    vec3 Tan            : TANGENT;
 };
 
 struct BMVariableVSOutput
 {
-    vec4	HPos						: POSITION;
+    vec4 HPos : POSITION;
 };
 
 mat4x3 getSkinnedWorldMatrix(BMVariableVSInput input)
@@ -64,9 +66,7 @@ vec4 getWorldPos(BMVariableVSInput input)
 BMVariableVSOutput vs(BMVariableVSInput input)
 {
     BMVariableVSOutput Out = (BMVariableVSOutput)0;
-
     Out.HPos = mul(getWorldPos(input), ViewProjection);	// output HPOS
-
     return Out;
 }
 
@@ -74,14 +74,14 @@ technique Variable
 {
     pass p0
     {
-        VertexShader	= compile vs_2_0 vs();
-        PixelShader		= NULL;
+        VertexShader = compile VSMODEL vs();
+        PixelShader = NULL;
 
         AlphaBlendEnable = FALSE;
         AlphaTestEnable = FALSE;
         ZWriteEnable = TRUE;
         ZFunc = LESSEQUAL;
         ColorWriteEnable = 0;
-        CullMode		= CCW;
+        CullMode = CCW;
     }
 }

@@ -3,10 +3,10 @@ float4x4 world : World;
 
 string Category = "Effects\\Lighting";
 
-float4 LhtDir = {1.0f, 0.0f, 0.0f, 1.0f};    //light Direction
-float4 lightDiffuse = {1.0f, 1.0f, 1.0f, 1.0f}; // Light Diffuse
-float4 MaterialAmbient : MATERIALAMBIENT = {0.5f, 0.5f, 0.5f, 1.0f};
-float4 MaterialDiffuse : MATERIALDIFFUSE = {1.0f, 1.0f, 1.0f, 1.0f};
+float4 LhtDir = { 1.0f, 0.0f, 0.0f, 1.0f };    //light Direction
+float4 lightDiffuse = { 1.0f, 1.0f, 1.0f, 1.0f }; // Light Diffuse
+float4 MaterialAmbient : MATERIALAMBIENT = { 0.5f, 0.5f, 0.5f, 1.0f };
+float4 MaterialDiffuse : MATERIALDIFFUSE = { 1.0f, 1.0f, 1.0f, 1.0f };
 
 texture basetex: TEXLAYER0
 <
@@ -22,19 +22,18 @@ sampler2D samplebase = sampler_state
     MagFilter = LINEAR;
 };
 
-
 struct APP2VS
 {
-    float4 Pos : POSITION;
-    float3 Normal : NORMAL;
+    float4 Pos       : POSITION;
+    float3 Normal    : NORMAL;
     float2 TexCoord0 : TEXCOORD0;
 };
 
 struct VS2PS
 {
-    float4 Pos : POSITION;
+    float4 Pos     : POSITION;
     float4 Diffuse : COLOR;
-    float2 Tex0 : TEXCOORD0;
+    float2 Tex0    : TEXCOORD0;
 };
 
 struct PS2FB
@@ -61,9 +60,6 @@ VS2PS VShader(APP2VS indata,
 {
     VS2PS outdata;
 
-    // float4 Po = float4(indata.Pos.x,indata.Pos.y,indata.Pos.z,1.0);
-    // outdata.Pos = mul(wvp, Po);
-    // outdata.Pos = mul(float4(indata.Pos.xyz, 1.0f), wvp);
     float3 Pos;
     Pos = mul(indata.Pos, world);
     outdata.Pos = mul(float4(Pos.xyz, 1.0f), wvp);
@@ -77,30 +73,27 @@ VS2PS VShader(APP2VS indata,
     return outdata;
 }
 
-PS2FB PShader(VS2PS indata,
-    uniform sampler2D colorMap)
+PS2FB PShader(VS2PS indata, uniform sampler2D colorMap)
 {
     PS2FB outdata;
-
     float4 base = tex2D(colorMap, indata.Tex0);
     outdata.Col = indata.Diffuse * base;
-
     return outdata;
 }
 
-PS2FB PShaderMarked(VS2PS indata,
-    uniform sampler2D colorMap)
+PS2FB PShaderMarked(VS2PS indata, uniform sampler2D colorMap)
 {
     PS2FB outdata;
 
     float4 base = tex2D(colorMap, indata.Tex0);
-    outdata.Col = indata.Diffuse * base + float2(1.0f, 0.0f).xxxy;
+    outdata.Col = (indata.Diffuse * base)+float4(1.f,0.f,0.f,0.f);
 
     return outdata;
 }
 
 
-technique t0_States <bool Restore = false;> {
+technique t0_States < bool Restore = false; >
+{
     pass BeginStates
     {
         CullMode = NONE;
@@ -130,8 +123,6 @@ technique t0
         PixelShader = compile ps_2_0 PShader(samplebase);
     }
 }
-
-
 
 technique marked
 <
@@ -165,7 +156,7 @@ VS2PS vsLightSource(APP2VS indata,
 
     float4 Pos;
     Pos.xyz = mul(indata.Pos, world);
-    Pos.w = 1.0;
+    Pos.w = 1;
     outdata.Pos = mul(Pos, wvp);
 
     // Lighting. Shade (Ambient + etc.)
@@ -205,6 +196,7 @@ technique lightsource
         VertexShader = compile vs_2_0 vsLightSource(mWorldViewProj, MaterialDiffuse);
         PixelShader = compile ps_2_0 psLightSource();
     }
+
     pass p1
     {
         ColorWriteEnable = Red|Blue|Green|Alpha;
@@ -243,6 +235,7 @@ technique editor
         VertexShader = compile vs_2_0 vsLightSource(mWorldViewProj, MaterialDiffuse);
         PixelShader = compile ps_2_0 psLightSource();
     }
+
     pass p1
     {
         ColorWriteEnable = Red|Blue|Green|Alpha;

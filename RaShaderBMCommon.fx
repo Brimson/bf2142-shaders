@@ -39,15 +39,15 @@ sampler CubeMapSampler = sampler_state
 texture	DiffuseMap;
 sampler DiffuseMapSampler = sampler_state
 {
-    Texture 		= (DiffuseMap);
-    MipFilter 		= LINEAR;
-    MinFilter 		= FILTER_BM_DIFF_MIN;
-    MagFilter 		= FILTER_BM_DIFF_MAG;
+    Texture = (DiffuseMap);
+    MipFilter = LINEAR;
+    MinFilter = FILTER_BM_DIFF_MIN;
+    MagFilter = FILTER_BM_DIFF_MAG;
     #ifdef FILTER_BM_DIFF_MAX_ANISOTROPY
         MaxAnisotropy = FILTER_BM_DIFF_MAX_ANISOTROPY;
     #endif
-    AddressU  		= WRAP;
-    AddressV  		= WRAP;
+    AddressU = WRAP;
+    AddressV = WRAP;
 };
 
 texture	NormalMap;
@@ -61,41 +61,43 @@ sampler NormalMapSampler = sampler_state
     AddressV  = CLAMP;
 };
 
-vec4	ObjectSpaceCamPos;
-vec4	WorldSpaceCamPos;
+vec4 ObjectSpaceCamPos;
+vec4 WorldSpaceCamPos;
 
-bool	AlphaBlendEnable 	= false;
-int		AlphaTestRef		= 0;
-bool	DepthWrite			= 1;
-bool	DoubleSided			= 2;
+bool AlphaBlendEnable = false;
+int  AlphaTestRef = 0;
+bool DepthWrite   = 1;
+bool DoubleSided  = 2;
 
-int		SrcBlend			= 5;
-int		DestBlend			= 6;
+int SrcBlend  = 5;
+int DestBlend = 6;
 
-vec2	simpleUVTranslation;
+vec2 simpleUVTranslation;
 
-vec4 	DiffuseColor;
-vec4 	DiffuseColorAndAmbient;
-vec4 	SpecularColor;
-scalar 	SpecularPower;
-vec4	StaticGloss;
-vec4 	Ambient;
+vec4 DiffuseColor;
+vec4 DiffuseColorAndAmbient;
+vec4 SpecularColor;
+scalar SpecularPower;
+vec4 StaticGloss;
+vec4 Ambient;
 
-vec4	HemiMapConstantColor;
+vec4 HemiMapConstantColor;
 
-vec4	HemiMapSkyColor;
-float	InvHemiHeightScale	= 100;
-float	HeightOverTerrain = 0;
+vec4 HemiMapSkyColor;
+float InvHemiHeightScale = 100.0;
+float HeightOverTerrain = 0.0;
 
-float	Reflectivity;
+float Reflectivity;
 
 mat4x3 GeomBones[52];
 struct
 {
     mat4x4 uvMatrix[7]	: UVMatrix;
-} UserData;
+}
+
+UserData;
 
 Light Lights[1];
-vec4	PosUnpack;
-scalar	TexUnpack;
-vec2	NormalUnpack;
+vec4   PosUnpack;
+scalar TexUnpack;
+vec2   NormalUnpack;

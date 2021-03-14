@@ -1,19 +1,19 @@
-//#include "shaders/RaCommon.fx"
-//#include "shaders/RaShaderBMCommon.fx"
 
-string reqVertexElement[] = {
+string reqVertexElement[] =
+{
     "PositionPacked",
     "NormalPacked8",
     "Bone4Idcs",
     "TBasePacked2D"
 };
 
-string GlobalParameters[] = {
+string GlobalParameters[] =
+{
     "ViewProjection",
 };
 
-
-string InstanceParameters[] = {
+string InstanceParameters[] =
+{
     "World",
     "AlphaBlendEnable",
     "DepthWrite",
@@ -36,12 +36,12 @@ string InstanceParameters[] = {
 
 struct BMVariableVSInput
 {
-    vec4	Pos				: POSITION;
-    vec3	Normal			: NORMAL;
-    vec4  	BlendIndices	: BLENDINDICES;
-    vec2	TexDiffuse		: TEXCOORD0;
-    vec2	TexUVRotCenter	: TEXCOORD1;
-    vec3 	Tan				: TANGENT;
+    vec4 Pos            : POSITION;
+    vec3 Normal         : NORMAL;
+    vec4 BlendIndices   : BLENDINDICES;
+    vec2 TexDiffuse     : TEXCOORD0;
+    vec2 TexUVRotCenter : TEXCOORD1;
+    vec3 Tan            : TANGENT;
 };
 
 struct BMVariableVSOutput
@@ -60,7 +60,7 @@ mat4x3 getSkinnedWorldMatrix(BMVariableVSInput input)
 vec4 getWorldPos(BMVariableVSInput input)
 {
     vec4 unpackedPos = input.Pos * PosUnpack;
-    return vec4(mul(unpackedPos, getSkinnedWorldMatrix(input)), 1.0);
+    return vec4(mul(unpackedPos, getSkinnedWorldMatrix(input)), 1);
 }
 
 BMVariableVSOutput vs(BMVariableVSInput input)
@@ -72,10 +72,9 @@ BMVariableVSOutput vs(BMVariableVSInput input)
     return Out;
 }
 
-
 float4 ps(BMVariableVSOutput indata) : COLOR
 {
-    return vec2(0.0, 1.0).xxxy;
+    return vec4(0.0, 0.0, 0.0, 1.0);
 }
 
 float4 ps_brokenCamo(BMVariableVSOutput indata) : COLOR
@@ -93,8 +92,8 @@ technique defaultTechnique
         #ifdef ENABLE_WIREFRAME
             FillMode = WireFrame;
         #endif
-        ColorWriteEnable = ALPHA;
 
+        ColorWriteEnable = ALPHA;
     }
 }
 

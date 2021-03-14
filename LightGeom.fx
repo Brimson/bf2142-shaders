@@ -8,14 +8,13 @@ float4 lightColor : LightColor;
 float3 spotDir : SpotDir;
 float spotConeAngle : ConeAngle;
 
-//float3 spotPosition : SpotPosition;
-
 struct appdata
 {
     float4 Pos : POSITION;
 };
 
-struct VS_OUTPUT {
+struct VS_OUTPUT
+{
     float4 HPos : POSITION;
 };
 
@@ -29,7 +28,6 @@ VS_OUTPUT vsPointLight(appdata input, uniform float4x4 myWVP)
 float4 psPointLight() : COLOR
 {
     return lightColor;
-    // return float4(1,0,0,1);
 }
 
 technique Pointlight
@@ -58,9 +56,10 @@ technique Pointlight
 }
 
 
+
 struct VS_SPOT_OUTPUT
 {
-    float4 HPos : POSITION;
+    float4 HPos     : POSITION;
     float3 lightDir : TEXCOORD0;
     float3 lightVec : TEXCOORD1;
 };
@@ -68,7 +67,7 @@ struct VS_SPOT_OUTPUT
 VS_SPOT_OUTPUT vsSpotLight(appdata input, uniform float4x4 myWVP, uniform float4x4 myWV, uniform float3 lightDir)
 {
     VS_SPOT_OUTPUT Out;
-     Out.HPos = mul(float4(input.Pos.xyz, 1.0f), myWVP);
+    Out.HPos = mul(float4(input.Pos.xyz, 1.0f), myWVP);
 
     // transform vertex
     float3 vertPos = mul(float4(input.Pos.xyz, 1.0f), myWV);
@@ -84,7 +83,7 @@ float4 psSpotLight(VS_SPOT_OUTPUT input, uniform float coneAngle, uniform float 
 {
     float3 lvec = normalize(input.lightVec);
     float3 ldir = normalize(input.lightDir);
-    float conicalAtt = saturate(pow(saturate(dot(lvec, ldir)), 2.0) - oneMinusConeAngle); // coneAngle;
+    float conicalAtt = saturate(pow(saturate(dot(lvec, ldir)), 2.0) - oneMinusConeAngle);
 
     return lightColor * conicalAtt;
 }
@@ -113,4 +112,3 @@ technique Spotlight
         PixelShader = compile ps_2_0 psSpotLight(spotConeAngle, 1.0f - spotConeAngle);
     }
 }
-
