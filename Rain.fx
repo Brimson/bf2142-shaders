@@ -175,7 +175,7 @@ CELL_VSOUT vsCells(VSINPUT input)
     vec3 particlePos = input.Pos + cellPos;
     float visibility = cellVisibility[input.Data.x];
 
-    output.Color = vec4(visibility, 1.0 - visibility,1.0 - visibility, 1.0);
+    output.Color = vec4(visibility, 1.0 - visibility, 1.0 - visibility, 1.0);
     output.Pos = mul(vec4(particlePos,1), wvp);
     output.TexCoord = input.TexCoord;
     return output;
