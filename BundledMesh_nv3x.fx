@@ -43,7 +43,7 @@ VO_HemiAndSunShadows BasicShader (appdataAnimatedUV input)
     vec3 AlmostNormal = mul(input.Normal, mOneBoneSkinning[IndexArray[0]]);
     Out.GroundUVAndLerp.xy = ((Pos + (hemiMapInfo.z * 0.5) + AlmostNormal * 1.0).xz - hemiMapInfo.xy) / hemiMapInfo.z;
     Out.GroundUVAndLerp.y  = 1.0 - Out.GroundUVAndLerp.y;
-    Out.GroundUVAndLerp.z  = AlmostNormal.y * 0.5 + 0.5;
+    Out.GroundUVAndLerp.z  = (AlmostNormal.y * 0.5) + 0.5;
     Out.GroundUVAndLerp.z -= hemiMapInfo.w;
 
     // Cross product * flip to create BiNormal
@@ -113,7 +113,7 @@ vec4 ps_HemiAndSunShadows(VO_HemiAndSunShadows indata) : COLOR
     vec4 outColor = (vec4)1;
 
     vec4 TN = tex2D(sampler0, indata.TexCoord0);
-    TN.rgb = normalize(TN.rgb * 2.0 - 1.0);
+    TN.rgb = normalize((TN.rgb * 2.0) - 1.0);
 
     vec4 dot3Light = saturate(dot(normalize(indata.LightVec), TN));
 

@@ -293,10 +293,8 @@ vec4 PShade2(VS_OUTPUT20 i) : COLOR
     tDiffuse = tex2D( diffuseSampler, i.Tex0 );
 
     // sample tLight
-    tNormal = tex2D(normalSampler, i.Tex0) * 2.0 - 1.0;
-    tLight = i.LightVec * 2.0 - 1.0;
-
-    // return vec4(tLight.xyz,1.f);
+    tNormal = 2.0 * tex2D(normalSampler, i.Tex0)- 1.0;
+    tLight = 2.0 * i.LightVec - 1.0;
 
     // DP Lighting in tangent space (where normal map is based)
     // Modulate with Diffuse texture
@@ -308,7 +306,7 @@ vec4 PShade2(VS_OUTPUT20 i) : COLOR
     cosang = pow(cosang, 32.0) * tNormal.w; // try changing the power to 255!
 
     // Sample shadow texture
-    tShadow = tex2D( sampler3, i.Tex0 );
+    tShadow = tex2D(sampler3, i.Tex0);
 
     // Add to diffuse lit texture value
     vec4 res = (col + cosang) * tShadow;
@@ -498,7 +496,7 @@ VS_OUTPUT_Alpha vsAlpha(appdata input, uniform mat4x4 ViewProj)
 
     // Hacked to only support 800/600
     Out.Tex1.xy = Out.HPos.xy / Out.HPos.w;
-    Out.Tex1.xy = Out.Tex1.xy * 0.5 + 0.5;
+    Out.Tex1.xy = (Out.Tex1.xy * 0.5) + 0.5;
     Out.Tex1.y = 1.0 - Out.Tex1.y;
     Out.Tex1.xy += vTexProjOffset;
     Out.Tex1.xy = Out.Tex1.xy * Out.HPos.w;
@@ -531,7 +529,7 @@ VS_OUTPUT_AlphaEnvMap vsAlphaEnvMap(appdata input, uniform mat4x4 ViewProj)
 
     // Hacked to only support 800/600
     Out.TexPos.xy = Out.HPos.xy/Out.HPos.w;
-    Out.TexPos.xy = Out.TexPos.xy * 0.5 + 0.5;
+    Out.TexPos.xy = (Out.TexPos.xy * 0.5) + 0.5;
     Out.TexPos.y = 1.0 - Out.TexPos.y;
     Out.TexPos.xy += vTexProjOffset;
     Out.TexPos.xy = Out.TexPos.xy * Out.HPos.w;
@@ -646,7 +644,7 @@ VS_OUTPUT_AlphaScope vsAlphaScope(appdata input, uniform mat4x4 ViewProj)
     Out.Tex0AndTrans.xy = input.TexCoord;
 
     Out.Tex1.xy = Out.HPos.xy / Out.HPos.w;
-    Out.Tex1.xy = Out.Tex1.xy * 0.5 + 0.5;
+    Out.Tex1.xy = (Out.Tex1.xy * 0.5) + 0.5;
     Out.Tex1.y = 1.0 - Out.Tex1.y;
     Out.Fog = 0.0;
 
@@ -659,7 +657,7 @@ float4 psAlphaScope(VS_OUTPUT_AlphaScope input) : COLOR
     float4 accum = tex2D(sampler1, input.Tex1);
     float4 diff = tex2D(sampler0, coords.xy);
     diff.rgb = diff * accum;
-    diff.a = (1.0 - coords.b) * diff.a;
+    diff.a *= (1.0 - coords.b);
     return diff;
 }
 
@@ -770,7 +768,7 @@ VS2PS_ShadowMap vsShadowMapPoint(appdata input)
     hPos.z += 1.0;
     Out.HPos.x = hPos.x / hPos.z;
     Out.HPos.y = hPos.y / hPos.z;
-    Out.HPos.z = d * paraboloidZValues.x + paraboloidZValues.y;
+    Out.HPos.z = (d * paraboloidZValues.x) + paraboloidZValues.y;
     Out.HPos.w = 1.0;
 
     Out.PosZW = Out.HPos.zw;
@@ -802,7 +800,7 @@ VS2PS_ShadowMapAlpha vsShadowMapPointAlpha(appdata input)
 
     Out.HPos.x = hPos.x / hPos.z;
     Out.HPos.y = hPos.y / hPos.z;
-    Out.HPos.z = d * paraboloidZValues.x + paraboloidZValues.y;
+    Out.HPos.z = (d * paraboloidZValues.x) + paraboloidZValues.y;
     Out.HPos.w = 1.0;
 
     Out.Tex0PosZW.xy = input.TexCoord;

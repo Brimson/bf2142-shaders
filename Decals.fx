@@ -175,10 +175,11 @@ OUT_vsDecalNormalMapped vsDecalNormalMapped(appdata input)
 
 vec4 psDecalShadowed(	OUT_vsDecalShadowed indata) : COLOR
 {
+    scalar dirShadow = 1.0;
     vec4 outColor = tex2D(sampler0, indata.Texture0);
     outColor.rgb *=  indata.Color;
     outColor.a *= indata.Alpha;
-    vec3 lighting = ambientColor.rgb + indata.Diffuse;
+    vec3 lighting = ambientColor.rgb + indata.Diffuse * dirShadow;
     outColor.rgb *= lighting;
     return outColor;
 }
@@ -187,7 +188,7 @@ vec4 psDecalNormalMapped(	OUT_vsDecalNormalMapped indata) : COLOR
 {
     vec2 newTexCoord = indata.Texture0;
     vec4 norm = tex2D(sampler2, vec2(newTexCoord.x, newTexCoord.y));
-    norm.rgb = normalize(norm.rgb * 2.0 - 1.0);
+    norm.rgb = normalize((norm.rgb * 2.0) - 1.0);
     vec3 sun = normalize(vec3(indata.TanSunDir.x, -indata.TanSunDir.y, indata.TanSunDir.z));
     float light = saturate(dot(norm.rgb, sun));
     float spec = saturate(dot(norm.rgb, normalize(vec3(indata.TanHalfVec.x, -indata.TanHalfVec.y, indata.TanHalfVec.z))));
