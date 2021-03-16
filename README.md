@@ -1,5 +1,7 @@
 # bf2142-shaders
 
+## About
+
 Shader Model 2.0 update for Battlefield 2142
 
 Remember to clear the shader cache at `...\Documents\Battlefield 2142\mods\bf2142`
@@ -17,7 +19,7 @@ Sources used for this project:
 - https://docs.microsoft.com/en-us/windows/win32/direct3dhlsl/dx9-graphics-reference-asm
 - http://developer.download.nvidia.com/assets/gamedev/docs/GDC2K1_DX8_Pixel_Shaders.pdf
 
-# Shader Status
+## Shader Status
 
 BundleMesh                 | Status | Note
 -------------------------- | ------ | ----
