@@ -143,7 +143,7 @@ technique PointSprite
         PointSpriteEnable = TRUE;
         PointScaleEnable = TRUE;
 
-        VertexShader = compile vs_2_0 vsPointSprite(wvpMat, tParameters, baseSize, heightmapSize);
-        PixelShader = compile ps_2_0 psPointSprite();
+        VertexShader = compile vs_2_a vsPointSprite(wvpMat, tParameters, baseSize, heightmapSize);
+        PixelShader = compile ps_2_a psPointSprite();
     }
 }

@@ -35,15 +35,15 @@ technique defaultShader
 {
     pass P0
     {
-        vertexShader= compile vs_2_0 vertexShader();
-        pixelshader = compile ps_2_0 shader();
+        vertexShader = compile vs_2_0 vertexShader();
+        pixelshader  = compile ps_2_0 shader();
         #ifdef ENABLE_WIREFRAME
             FillMode = WireFrame;
         #endif
-        SrcBlend        = srcalpha;
-        DestBlend       = invsrcalpha;
-        fogenable       = false;
-        CullMode        = NONE;
+        SrcBlend  = srcalpha;
+        DestBlend = invsrcalpha;
+        fogenable = false;
+        CullMode  = NONE;
         AlphaBlendEnable= <alphaBlendEnable>;
         AlphaTestEnable = false;
     }

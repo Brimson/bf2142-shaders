@@ -235,8 +235,8 @@ technique ParticleLow
         AlphaRef = <alphaPixelTestRef>;
         AlphaBlendEnable = TRUE;
 
-        VertexShader = compile vs_2_0 vsParticle(viewMat, projMat, tParameters);
-        PixelShader = compile ps_2_0 psParticleLow();
+        VertexShader = compile vs_2_a vsParticle(viewMat, projMat, tParameters);
+        PixelShader = compile ps_2_a psParticleLow();
     }
 }
 
@@ -257,8 +257,8 @@ technique ParticleMedium
         AlphaRef = <alphaPixelTestRef>;
         AlphaBlendEnable = TRUE;
 
-        VertexShader = compile vs_2_0 vsParticle(viewMat, projMat, tParameters);
-        PixelShader = compile ps_2_0 psParticleMedium();
+        VertexShader = compile vs_2_a vsParticle(viewMat, projMat, tParameters);
+        PixelShader = compile ps_2_a psParticleMedium();
     }
 }
 
@@ -279,8 +279,8 @@ technique ParticleHigh
         AlphaRef = <alphaPixelTestRef>;
         AlphaBlendEnable = TRUE;
 
-        VertexShader = compile vs_2_0 vsParticle(viewMat, projMat, tParameters);
-        PixelShader = compile ps_2_0 psParticleHigh();
+        VertexShader = compile vs_2_a vsParticle(viewMat, projMat, tParameters);
+        PixelShader = compile ps_2_a psParticleHigh();
     }
 }
 
@@ -303,8 +303,8 @@ technique ParticleShowFill
         SrcBlend = ONE;
         DestBlend = ONE;
 
-        VertexShader = compile vs_2_0 vsParticle(viewMat, projMat, tParameters);
-        PixelShader = compile ps_2_0 psParticleShowFill();
+        VertexShader = compile vs_2_a vsParticle(viewMat, projMat, tParameters);
+        PixelShader = compile ps_2_a psParticleShowFill();
     }
 }
 
@@ -332,8 +332,8 @@ technique AdditiveLow
         DestBlend = ONE;
         FogEnable = FALSE;
 
-        VertexShader = compile vs_2_0 vsParticle(viewMat, projMat, tParameters);
-        PixelShader = compile ps_2_0 psParticleAdditiveLow();
+        VertexShader = compile vs_2_a vsParticle(viewMat, projMat, tParameters);
+        PixelShader = compile ps_2_a psParticleAdditiveLow();
     }
 }
 technique AdditiveHigh
@@ -356,8 +356,8 @@ technique AdditiveHigh
         DestBlend = ONE;
         FogEnable = FALSE;
 
-        VertexShader = compile vs_2_0 vsParticle(viewMat, projMat, tParameters);
-        PixelShader = compile ps_2_0 psParticleAdditiveHigh();
+        VertexShader = compile vs_2_a vsParticle(viewMat, projMat, tParameters);
+        PixelShader = compile ps_2_a psParticleAdditiveHigh();
     }
 }
 
@@ -398,7 +398,7 @@ VS_HEAT_SHIMMER_OUTPUT vsParticleHeatShimmer(appdata input, uniform mat4x4 myWV,
     // compute texcoords
     // Rotate and scale to correct u,v space and zoom in.
     vec2 texCoords = input.texCoords.xy * OneOverShort;
-    vec2 rotatedTexCoords = float2(texCoords.x * rotation.y - texCoords.y * rotation.x, dot(texCoords.xy, rotation.y));
+    vec2 rotatedTexCoords = float2(texCoords.x * rotation.y - texCoords.y * rotation.x, dot(texCoords.xy, rotation.xy));
     rotatedTexCoords *= templ[input.ageFactorAndGraphIndex.y].m_uvRangeLMapIntensiyAndParticleMaxSize.xy * uvScale;
 
     // Bias texcoords.
@@ -453,7 +453,7 @@ technique ParticleHeatShimmer
         DestBlend = InvSrcAlpha;
         FogEnable = FALSE;
 
-        VertexShader = compile vs_2_0 vsParticleHeatShimmer(viewMat, projMat, tParameters);
-        PixelShader = compile ps_2_0 psParticleHeatShimmer();
+        VertexShader = compile vs_2_a vsParticleHeatShimmer(viewMat, projMat, tParameters);
+        PixelShader = compile ps_2_a psParticleHeatShimmer();
     }
 }

@@ -108,8 +108,8 @@ technique Diffuse
         DestBlend = INVSRCALPHA;
         FogEnable = TRUE;
 
-        VertexShader = compile vs_2_0 vsDiffuse(viewProjMatrix);
-        PixelShader = compile ps_2_0 psDiffuse();
+        VertexShader = compile vs_2_a vsDiffuse(viewProjMatrix);
+        PixelShader = compile ps_2_a psDiffuse();
     }
 }
 
@@ -128,8 +128,8 @@ technique Additive
         DestBlend = ONE;
         FogEnable = FALSE;
 
-        VertexShader = compile vs_2_0 vsDiffuse(viewProjMatrix);
-        PixelShader = compile ps_2_0 psAdditive();
+        VertexShader = compile vs_2_a vsDiffuse(viewProjMatrix);
+        PixelShader = compile ps_2_a psAdditive();
     }
 }
 
@@ -148,7 +148,7 @@ technique DiffuseWithZWrite
         DestBlend = INVSRCALPHA;
         FogEnable = TRUE;
 
-        VertexShader = compile vs_2_0 vsDiffuse(viewProjMatrix);
-        PixelShader = compile ps_2_0 psDiffuse();
+        VertexShader = compile vs_2_a vsDiffuse(viewProjMatrix);
+        PixelShader = compile ps_2_a psDiffuse();
     }
 }

@@ -1209,8 +1209,8 @@ technique SunLight
         StencilZFail = KEEP;
         StencilPass = (dwStencilPass);
 
-        VertexShader = compile vs_2_0 vsDx9_SunLightDynamicObjects();
-        PixelShader = compile ps_2_0 psDx9_SunLightDynamicObjects();
+        VertexShader = compile vs_2_a vsDx9_SunLightDynamicObjects();
+        PixelShader = compile ps_2_a psDx9_SunLightDynamicObjects();
     }
 
     pass opaqueDynamicSkinObjects
@@ -1226,8 +1226,8 @@ technique SunLight
         StencilZFail = KEEP;
         StencilPass = (dwStencilPass);
 
-        VertexShader = compile vs_2_0 vsDx9_SunLightDynamicObjects();
-        PixelShader = compile ps_2_0 psDx9_SunLightDynamicSkinObjects();
+        VertexShader = compile vs_2_a vsDx9_SunLightDynamicObjects();
+        PixelShader = compile ps_2_a psDx9_SunLightDynamicSkinObjects();
     }
 
     pass opaqueStaticObjects
@@ -1243,8 +1243,8 @@ technique SunLight
         StencilZFail = KEEP;
         StencilPass = KEEP;
 
-        VertexShader = compile vs_2_0 vsDx9_SunLightStaticObjects();
-        PixelShader = compile ps_2_0 psDx9_SunLightStaticObjects();
+        VertexShader = compile vs_2_a vsDx9_SunLightStaticObjects();
+        PixelShader = compile ps_2_a psDx9_SunLightStaticObjects();
     }
 
     pass transparent
@@ -1258,8 +1258,8 @@ technique SunLight
         StencilZFail = KEEP;
         StencilPass = KEEP;
 
-        VertexShader = compile vs_2_0 vsDx9_SunLightDynamicObjects();
-        PixelShader = compile ps_2_0 psDx9_SunLightTransparent();
+        VertexShader = compile vs_2_a vsDx9_SunLightDynamicObjects();
+        PixelShader = compile ps_2_a psDx9_SunLightTransparent();
     }
 }
 technique SunLightShadowNV <
@@ -1288,8 +1288,8 @@ technique SunLightShadowNV <
         StencilZFail = KEEP;
         StencilPass = INCR;
 
-        VertexShader = compile vs_2_0 vsDx9_SunLightShadowDynamicObjects();
-        PixelShader = compile ps_2_0 psDx9_SunLightShadowDynamicObjectsNV();
+        VertexShader = compile vs_2_a vsDx9_SunLightShadowDynamicObjects();
+        PixelShader = compile ps_2_a psDx9_SunLightShadowDynamicObjectsNV();
     }
 
     pass opaqueDynamic1pObjects
@@ -1309,8 +1309,8 @@ technique SunLightShadowNV <
         StencilZFail = KEEP;
         StencilPass = DECR;
 
-        VertexShader = compile vs_2_0 vsDx9_SunLightShadowDynamicObjects();
-        PixelShader = compile ps_2_0 psDx9_SunLightShadowDynamic1pObjectsNV();
+        VertexShader = compile vs_2_a vsDx9_SunLightShadowDynamicObjects();
+        PixelShader = compile ps_2_a psDx9_SunLightShadowDynamic1pObjectsNV();
     }
 
     pass opaqueStaticObjects
@@ -1333,8 +1333,8 @@ technique SunLightShadowNV <
         DepthBias = 0.0;
         SlopeScaleDepthBias = 2;
 
-        VertexShader = compile vs_2_0 vsDx9_SunLightShadowStaticObjects();
-        PixelShader = compile ps_2_0 psDx9_SunLightShadowStaticObjectsNV();
+        VertexShader = compile vs_2_a vsDx9_SunLightShadowStaticObjects();
+        PixelShader = compile ps_2_a psDx9_SunLightShadowStaticObjectsNV();
     }
 
     pass foobar
@@ -1353,8 +1353,8 @@ technique SunLightShadowNV <
         StencilZFail = KEEP;
         StencilPass = KEEP;
 
-        VertexShader = compile vs_2_0 vsDx9_SunLightShadowStaticObjects();
-        PixelShader = compile ps_2_0 psDx9_SunLightShadowStaticObjectsNV();
+        VertexShader = compile vs_2_a vsDx9_SunLightShadowStaticObjects();
+        PixelShader = compile ps_2_a psDx9_SunLightShadowStaticObjectsNV();
     }
 }
 
@@ -1384,8 +1384,8 @@ technique SunLightShadow <
         StencilZFail = KEEP;
         StencilPass = INCR;
 
-        VertexShader = compile vs_2_0 vsDx9_SunLightShadowDynamicObjects();
-        PixelShader = compile ps_2_0 psDx9_SunLightShadowDynamicObjects();
+        VertexShader = compile vs_2_a vsDx9_SunLightShadowDynamicObjects();
+        PixelShader = compile ps_2_a psDx9_SunLightShadowDynamicObjects();
     }
 
     pass opaqueDynamic1pObjects
@@ -1405,8 +1405,8 @@ technique SunLightShadow <
         StencilZFail = KEEP;
         StencilPass = DECR;
 
-        VertexShader = compile vs_2_0 vsDx9_SunLightShadowDynamicObjects();
-        PixelShader = compile ps_2_0 psDx9_SunLightShadowDynamic1pObjects();
+        VertexShader = compile vs_2_a vsDx9_SunLightShadowDynamicObjects();
+        PixelShader = compile ps_2_a psDx9_SunLightShadowDynamic1pObjects();
     }
 
     pass opaqueStaticObjects
@@ -1426,8 +1426,8 @@ technique SunLightShadow <
         StencilZFail = KEEP;
         StencilPass = INCR;
 
-        VertexShader = compile vs_2_0 vsDx9_SunLightShadowStaticObjects();
-        PixelShader = compile ps_2_0 psDx9_SunLightShadowStaticObjects();
+        VertexShader = compile vs_2_a vsDx9_SunLightShadowStaticObjects();
+        PixelShader = compile ps_2_a psDx9_SunLightShadowStaticObjects();
     }
 
     pass foobar
@@ -1446,8 +1446,8 @@ technique SunLightShadow <
         StencilZFail = KEEP;
         StencilPass = KEEP;
 
-        VertexShader = compile vs_2_0 vsDx9_SunLightShadowStaticObjects();
-        PixelShader = compile ps_2_0 psDx9_SunLightShadowStaticObjects();
+        VertexShader = compile vs_2_a vsDx9_SunLightShadowStaticObjects();
+        PixelShader = compile ps_2_a psDx9_SunLightShadowStaticObjects();
     }
 }
 
@@ -1476,8 +1476,8 @@ technique PointLight <
         StencilZFail = KEEP;
         StencilPass = KEEP;
 
-        VertexShader = compile vs_2_0 vsDx9_PointLight();
-        PixelShader = compile ps_2_0 psDx9_PointLight();
+        VertexShader = compile vs_2_a vsDx9_PointLight();
+        PixelShader = compile ps_2_a psDx9_PointLight();
     }
 
     pass p1
@@ -1491,8 +1491,8 @@ technique PointLight <
 
         StencilFunc = (dwStencilFunc);//EQUAL;
 
-        VertexShader = compile vs_2_0 vsDx9_PointLight();
-        PixelShader = compile ps_2_0 psDx9_PointLight2();
+        VertexShader = compile vs_2_a vsDx9_PointLight();
+        PixelShader = compile ps_2_a psDx9_PointLight2();
     }
 }
 
@@ -1529,8 +1529,8 @@ technique PointLightNV40 <
         StencilZFail = KEEP;
         StencilPass = KEEP;
 
-        VertexShader = compile vs_2_0 vsDx9_PointLight();
-        PixelShader = compile ps_2_0 psDx9_PointLightNV40();
+        VertexShader = compile vs_2_a vsDx9_PointLight();
+        PixelShader = compile ps_2_a psDx9_PointLightNV40();
     }
 
     pass ReplaceStencil
@@ -1555,8 +1555,8 @@ technique PointLightNV40 <
         StencilZFail = REPLACE;
         StencilPass = KEEP;
 
-        VertexShader = compile vs_2_0 vsDx9_PointLight();
-        PixelShader = compile ps_2_0 psZero();
+        VertexShader = compile vs_2_a vsDx9_PointLight();
+        PixelShader = compile ps_2_a psZero();
     }
 }
 
@@ -1585,8 +1585,8 @@ technique PointLightShadowNV <
         StencilZFail = KEEP;
         StencilPass = KEEP;
 
-        VertexShader = compile vs_2_0 vsDx9_PointLight();
-        PixelShader = compile ps_2_0 psDx9_PointLightShadowNV();
+        VertexShader = compile vs_2_a vsDx9_PointLight();
+        PixelShader = compile ps_2_a psDx9_PointLightShadowNV();
     }
 }
 
@@ -1615,8 +1615,8 @@ technique PointLightShadow <
         StencilZFail = KEEP;
         StencilPass = KEEP;
 
-        VertexShader = compile vs_2_0 vsDx9_PointLight();
-        PixelShader = compile ps_2_0 psDx9_PointLightShadow();
+        VertexShader = compile vs_2_a vsDx9_PointLight();
+        PixelShader = compile ps_2_a psDx9_PointLightShadow();
     }
 }
 
@@ -1653,8 +1653,8 @@ technique PointLightShadowNV40 <
         StencilZFail = KEEP;
         StencilPass = KEEP;
 
-        VertexShader = compile vs_2_0 vsDx9_PointLight();
-        PixelShader = compile ps_2_0 psDx9_PointLightShadowNV40();
+        VertexShader = compile vs_2_a vsDx9_PointLight();
+        PixelShader = compile ps_2_a psDx9_PointLightShadowNV40();
     }
 
     pass ReplaceStencil
@@ -1679,8 +1679,8 @@ technique PointLightShadowNV40 <
         StencilZFail = REPLACE;
         StencilPass = KEEP;
 
-        VertexShader = compile vs_2_0 vsDx9_PointLight();
-        PixelShader = compile ps_2_0 psZero();
+        VertexShader = compile vs_2_a vsDx9_PointLight();
+        PixelShader = compile ps_2_a psZero();
     }
 }
 
@@ -1706,8 +1706,8 @@ technique PointLightGlow <
 
         StencilEnable = FALSE;
 
-        VertexShader = compile vs_2_0 vsDx9_PointLightGlow();
-        PixelShader = compile ps_2_0 psDx9_PointLightGlow();
+        VertexShader = compile vs_2_a vsDx9_PointLightGlow();
+        PixelShader = compile ps_2_a psDx9_PointLightGlow();
     }
 }
 
@@ -1730,8 +1730,8 @@ technique SpotLight <
         AlphaBlendEnable = FALSE;
         StencilEnable = FALSE;
 
-        VertexShader = compile vs_2_0 vsDx9_SpotLight();
-        PixelShader = compile ps_2_0 psDx9_SpotLight();
+        VertexShader = compile vs_2_a vsDx9_SpotLight();
+        PixelShader = compile ps_2_a psDx9_SpotLight();
     }
 }
 
@@ -1758,8 +1758,8 @@ technique SpotLightNV40 <
 
         StencilEnable = FALSE;
 
-        VertexShader = compile vs_2_0 vsDx9_SpotLight();
-        PixelShader = compile ps_2_0 psDx9_SpotLightNV40();
+        VertexShader = compile vs_2_a vsDx9_SpotLight();
+        PixelShader = compile ps_2_a psDx9_SpotLightNV40();
     }
 }
 
@@ -1789,8 +1789,8 @@ technique SpotLightShadow <
         StencilZFail = KEEP;
         StencilPass = KEEP;
 
-        VertexShader = compile vs_2_0 vsDx9_SpotLight();
-        PixelShader = compile ps_2_0 psDx9_SpotLightShadow();
+        VertexShader = compile vs_2_a vsDx9_SpotLight();
+        PixelShader = compile ps_2_a psDx9_SpotLightShadow();
     }
 }
 
@@ -1819,8 +1819,8 @@ technique SpotLightShadowNV40 <
         StencilZFail = KEEP;
         StencilPass = KEEP;
 
-        VertexShader = compile vs_2_0 vsDx9_SpotLight();
-        PixelShader = compile ps_2_0 psDx9_SpotLightShadowNV40();
+        VertexShader = compile vs_2_a vsDx9_SpotLight();
+        PixelShader = compile ps_2_a psDx9_SpotLightShadowNV40();
     }
 }
 
@@ -1848,8 +1848,8 @@ technique SpotProjector <
         StencilZFail = KEEP;
         StencilPass = KEEP;
 
-        VertexShader = compile vs_2_0 vsDx9_SpotProjector();
-        PixelShader = compile ps_2_0 psDx9_SpotProjector();
+        VertexShader = compile vs_2_a vsDx9_SpotProjector();
+        PixelShader = compile ps_2_a psDx9_SpotProjector();
     }
 }
 
@@ -1880,8 +1880,8 @@ technique SpotProjectorNV40 <
         StencilZFail = KEEP;
         StencilPass = KEEP;
 
-        VertexShader = compile vs_2_0 vsDx9_SpotProjector();
-        PixelShader = compile ps_2_0 psDx9_SpotProjectorNV40();
+        VertexShader = compile vs_2_a vsDx9_SpotProjector();
+        PixelShader = compile ps_2_a psDx9_SpotProjectorNV40();
     }
 }
 
@@ -1910,8 +1910,8 @@ technique SpotProjectorShadowNV <
         StencilZFail = KEEP;
         StencilPass = KEEP;
 
-        VertexShader = compile vs_2_0 vsDx9_SpotProjector();
-        PixelShader = compile ps_2_0 psDx9_SpotProjectorShadowNV();
+        VertexShader = compile vs_2_a vsDx9_SpotProjector();
+        PixelShader = compile ps_2_a psDx9_SpotProjectorShadowNV();
     }
 }
 
@@ -1940,8 +1940,8 @@ technique SpotProjectorShadow <
         StencilZFail = KEEP;
         StencilPass = KEEP;
 
-        VertexShader = compile vs_2_0 vsDx9_SpotProjector();
-        PixelShader = compile ps_2_0 psDx9_SpotProjectorShadow();
+        VertexShader = compile vs_2_a vsDx9_SpotProjector();
+        PixelShader = compile ps_2_a psDx9_SpotProjectorShadow();
     }
 }
 
@@ -1973,8 +1973,8 @@ technique SpotProjectorShadowNV40 <
         StencilZFail = KEEP;
         StencilPass = KEEP;
 
-        VertexShader = compile vs_2_0 vsDx9_SpotProjector();
-        PixelShader = compile ps_2_0 psDx9_SpotProjectorShadowNV40();
+        VertexShader = compile vs_2_a vsDx9_SpotProjector();
+        PixelShader = compile ps_2_a psDx9_SpotProjectorShadowNV40();
     }
 }
 
@@ -1997,8 +1997,8 @@ technique BlitBackLightContrib <
         AlphaBlendEnable = FALSE;
         StencilEnable = FALSE;
 
-        VertexShader = compile vs_2_0 vsDx9_BlitBackLightContribPoint();
-        PixelShader = compile ps_2_0 psDx9_BlitBackLightContrib();
+        VertexShader = compile vs_2_a vsDx9_BlitBackLightContribPoint();
+        PixelShader = compile ps_2_a psDx9_BlitBackLightContrib();
     }
 
     pass spot
@@ -2011,8 +2011,8 @@ technique BlitBackLightContrib <
         AlphaBlendEnable = FALSE;
         StencilEnable = FALSE;
 
-        VertexShader = compile vs_2_0 vsDx9_BlitBackLightContribSpot();
-        PixelShader = compile ps_2_0 psDx9_BlitBackLightContrib();
+        VertexShader = compile vs_2_a vsDx9_BlitBackLightContribSpot();
+        PixelShader = compile ps_2_a psDx9_BlitBackLightContrib();
     }
 
     pass spotprojector
@@ -2025,8 +2025,8 @@ technique BlitBackLightContrib <
         AlphaBlendEnable = FALSE;
         StencilEnable = FALSE;
 
-        VertexShader = compile vs_2_0 vsDx9_BlitBackLightContribSpotProjector();
-        PixelShader = compile ps_2_0 psDx9_BlitBackLightContrib();
+        VertexShader = compile vs_2_a vsDx9_BlitBackLightContribSpotProjector();
+        PixelShader = compile ps_2_a psDx9_BlitBackLightContrib();
     }
 }
 
@@ -2039,8 +2039,8 @@ technique Combine
 
         StencilEnable = FALSE;
 
-        VertexShader = compile vs_2_0 vsDx9_Combine();
-        PixelShader = compile ps_2_0 psDx9_Combine();
+        VertexShader = compile vs_2_a vsDx9_Combine();
+        PixelShader = compile ps_2_a psDx9_Combine();
     }
 
     pass transparent
@@ -2058,7 +2058,7 @@ technique Combine
         StencilZFail = KEEP;
         StencilPass = KEEP;
 
-        VertexShader = compile vs_2_0 vsDx9_Combine();
-        PixelShader = compile ps_2_0 psDx9_CombineTransparent();
+        VertexShader = compile vs_2_a vsDx9_Combine();
+        PixelShader = compile ps_2_a psDx9_CombineTransparent();
     }
 }

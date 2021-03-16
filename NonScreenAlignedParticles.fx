@@ -185,8 +185,8 @@ technique NSAParticleShowFill
         DestBlend = ONE;
         FogEnable = TRUE;
 
-        VertexShader = compile vs_2_0 vsParticle(viewMat, projMat, tParameters);
-        PixelShader = compile ps_2_0 psParticleShowFill();
+        VertexShader = compile vs_2_a vsParticle(viewMat, projMat, tParameters);
+        PixelShader = compile ps_2_a psParticleShowFill();
     }
 }
 
@@ -210,8 +210,8 @@ technique NSAParticleLow
         DestBlend = INVSRCALPHA;
         FogEnable = TRUE;
 
-        VertexShader = compile vs_2_0 vsParticle(viewMat, projMat, tParameters);
-        PixelShader = compile ps_2_0 psParticleLow();
+        VertexShader = compile vs_2_a vsParticle(viewMat, projMat, tParameters);
+        PixelShader = compile ps_2_a psParticleLow();
     }
 }
 
@@ -235,8 +235,8 @@ technique NSAParticleMedium
         DestBlend = INVSRCALPHA;
         FogEnable = TRUE;
 
-        VertexShader = compile vs_2_0 vsParticle(viewMat, projMat, tParameters);
-        PixelShader = compile ps_2_0 psParticleMedium();
+        VertexShader = compile vs_2_a vsParticle(viewMat, projMat, tParameters);
+        PixelShader = compile ps_2_a psParticleMedium();
     }
 }
 
@@ -260,8 +260,8 @@ technique NSAParticleHigh
         DestBlend = INVSRCALPHA;
         FogEnable = TRUE;
 
-        VertexShader = compile vs_2_0 vsParticle(viewMat, projMat, tParameters);
-        PixelShader = compile ps_2_0 psParticleHigh();
+        VertexShader = compile vs_2_a vsParticle(viewMat, projMat, tParameters);
+        PixelShader = compile ps_2_a psParticleHigh();
     }
 }
 
@@ -402,7 +402,7 @@ technique ParticleHeatShimmer
         DestBlend = InvSrcAlpha;
         FogEnable = FALSE;
 
-        VertexShader = compile vs_2_0 vsParticleHeatShimmer(viewMat, projMat, tParameters);
-        PixelShader = compile ps_2_0 psParticleHeatShimmer();
+        VertexShader = compile vs_2_a vsParticleHeatShimmer(viewMat, projMat, tParameters);
+        PixelShader = compile ps_2_a psParticleHeatShimmer();
     }
 }

@@ -69,8 +69,8 @@ technique Text <
 {
     pass p0
     {
-        VertexShader = compile vs_2_0 HPosVS();
-        PixelShader = compile ps_2_0 HPosPS();
+        VertexShader = compile vs_2_a HPosVS();
+        PixelShader = compile ps_2_a HPosPS();
     }
 }
 
@@ -118,7 +118,7 @@ technique Overlay <
         ColorOp[1] = DISABLE;
         AlphaOp[1] = DISABLE;
 
-        VertexShader = compile vs_2_0 HPosVS();
+        VertexShader = compile vs_2_a HPosVS();
         PixelShader = NULL;
     }
 }

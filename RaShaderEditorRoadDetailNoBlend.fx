@@ -81,7 +81,7 @@ float2 tex1	: TEXCOORD1
     VS_OUTPUT Out = (VS_OUTPUT)0;
 
     float4 wPos = mul(inPos * PosUnpack, World);
-    wPos.y += .01;
+    wPos.y += 0.01;
 
 
     Out.Pos	= mul(wPos, ViewProjection);

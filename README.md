@@ -19,31 +19,31 @@ Sources used for this project:
 
 # Shader Status
 
-BundleMesh | Status | Note
----------- | ------ | ----
+BundleMesh                 | Status | Note
+-------------------------- | ------ | ----
 BundledMesh_debug.fx       | Stable
 BundledMesh_editor.fx      | Stable
 BundledMesh_lightmapgen.fx | Stable
 BundledMesh_nv3x.fx        | Stable
 BundledMesh_r3x0.fx        | Stable
 
-Common | Status | Note
------- | ------ | ----
+Common               | Status | Note
+-------------------- | ------ | ----
 Common.dfx           | Stable
 commonsamplers.dfx   | Stable
 commonvertexlight.fx | Stable
 datatypes.fx         | Stable
 
-Debug | Status | Note
------ | ------ | ----
-DebugCircleShader.fx        | Stable
-DebugD3DXMeshShapeShader.fx | Stable
-DebugLineGraph.fx           | Stable
-DebugSphereShader.fx        | Stable
+Debug                       | Status   | Note
+--------------------------- | -------- | ----
+DebugCircleShader.fx        | Unstable | Sun flickering
+DebugD3DXMeshShapeShader.fx | Unstable | Sun flickering
+DebugLineGraph.fx           | Unstable | Sun flickering
+DebugSphereShader.fx        | Unstable | Sun flickering
 
-Lighting | Status | Note
--------- | ------ | ----
-Decals.fx            | Stable | Sun flickering
+Lighting             | Status | Note
+-------------------- | ------ | ----
+Decals.fx            | Stable
 Font.fx              | Stable
 FSQuadDrawer.fx      | Stable
 FXCommon.fx          | Stable
@@ -51,8 +51,8 @@ LightGeom.fx         | Stable
 LightManager_r3x0.fx | Stable
 LoadingScreen.fx     | Stable
 
-Particles | Status | Note
---------- | ------ | --------
+Particles                    | Status | Note
+---------------------------- | ------ | --------
 MeshParticleMesh_nv3x.fx     | Stable
 MeshParticleMesh.fx          | Stable
 Nametag.fx                   | Stable
@@ -60,8 +60,8 @@ NonScreenAlignedParticles.fx | Stable
 Particles.fx                 | Stable
 PointSpriteParticles.fx      | Stable
 
-PostProduction | Status | Note
--------------- | ------ | ----
+PostProduction         | Status | Note
+---------------------- | ------ | ----
 PortedFontShader.fx    | Stable
 PortedMenuShader.fx    | Stable
 PostProduction_nv3x.fx | Stable
@@ -71,18 +71,40 @@ RaCommon.fx            | Stable
 RaDefines.fx           | Stable
 Rain.fx                | Stable
 
-RaShader | Status | Note
--------- | ------ | ----
-RaShader1Dif.fx             | Stable
-RaShader1Dif1BoneSkinned.fx | Stable
-RaShader2DifDet.fx          | Stable
-RaShaderBM.fx               | Broken | Shows black when use 2.0+, slowdown if under 2.a
-RaShaderBM.mfx              | Broken
-RaShaderBMActiveCammo.fx    | Broken
-RaShaderBMadditive.fx       | Broken
-RaShaderBMCommon.fx         | Broken
-RaShaderBMZOnly.fx          | Broken
-RaShaderDefault.fx          | Stable
-RaShaderEditorRoad.fx       |
-RaShaderEditorRoadDetail.fx |
-RaShaderLeaf.fx             |
+RaShader                          | Status   | Note
+--------------------------------- | -------- | ----
+RaShader1Dif.fx                   | Stable
+RaShader1Dif1BoneSkinned.fx       | Stable
+RaShader2DifDet.fx                | Stable
+RaShaderBM.fx                     | Broken   | Shows black when use 2.0+, slowdown if under 2.a
+RaShaderBM.mfx                    | Stable
+RaShaderBMActiveCammo.fx          | Stable
+RaShaderBMadditive.fx             | Stable
+RaShaderBMCommon.fx               | Stable
+RaShaderBMZOnly.fx                | Stable
+RaShaderDefault.fx                | Stable
+RaShaderEditorRoad.fx             | Stable
+RaShaderEditorRoadDetail.fx       | Stable
+RaShaderLeaf.fx                   | Unstable | 2_0+ update generate hiccups when particles are present
+RaShaderLeafOG.fx                 | Stable
+RaShaderLeafPointLight.fx         | Stable
+RaShaderLeafPointLightShadowed.fx | Stable
+RaShaderLeafShadowed.fx           | Stable
+RaShaderRoad.fx                   | Unstable
+RaShaderRoadDetail.fx             | Unstable
+RaShaderRoadDetailNoBlend.fx      | Unstable
+
+RaShaderSM/STM                    | Status | Note
+--------------------------------- | ------ | ----
+RaShaderSM.fx                     |
+RaShaderSM.mfx                    |
+RaShaderSMActiveCamo.fx           |
+RaShaderSMCommon.fx               |
+RaShaderSTM.fx                    |
+RaShaderSTM.mfx                   |
+RaShaderSTMCommon.fx              |
+RaShaderTrunkOG.fx                |
+RaShaderTrunkSTMBase.fx           |
+RaShaderTrunkSTMBaseShadowed.fx   |
+RaShaderTrunkSTMDetail.fx         |
+RaShaderTrunkSTMDetailShadowed.fx |
