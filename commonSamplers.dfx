@@ -18,23 +18,23 @@ sampler wrapBilinSamplers6 : register(s6) = sampler_state { Texture = <texture6>
 sampler wrapBilinSamplers7 : register(s7) = sampler_state { Texture = <texture7>; MinFilter = Linear; MagFilter = Linear; MipFilter = Linear; AddressU = Wrap; AddressV = Wrap; };
 
 #if ALLOW_ANISO_FILTERING_STATICMESH
-    #define wrapAnisoSamplers0 _wrapAnisoSamplers0
-    #define wrapAnisoSamplers1 _wrapAnisoSamplers1
-    #define wrapAnisoSamplers2 _wrapAnisoSamplers2
-    #define wrapAnisoSamplers3 _wrapAnisoSamplers3
-    #define wrapAnisoSamplers4 _wrapAnisoSamplers4
-    #define wrapAnisoSamplers5 _wrapAnisoSamplers5
-    #define wrapAnisoSamplers6 _wrapAnisoSamplers6
-    #define wrapAnisoSamplers7 _wrapAnisoSamplers7
+	#define wrapAnisoSamplers0 _wrapAnisoSamplers0
+	#define wrapAnisoSamplers1 _wrapAnisoSamplers1
+	#define wrapAnisoSamplers2 _wrapAnisoSamplers2
+	#define wrapAnisoSamplers3 _wrapAnisoSamplers3
+	#define wrapAnisoSamplers4 _wrapAnisoSamplers4
+	#define wrapAnisoSamplers5 _wrapAnisoSamplers5
+	#define wrapAnisoSamplers6 _wrapAnisoSamplers6
+	#define wrapAnisoSamplers7 _wrapAnisoSamplers7
 #else
-    #define wrapAnisoSamplers0 wrapBilinSamplers0
-    #define wrapAnisoSamplers1 wrapBilinSamplers1
-    #define wrapAnisoSamplers2 wrapBilinSamplers2
-    #define wrapAnisoSamplers3 wrapBilinSamplers3
-    #define wrapAnisoSamplers4 wrapBilinSamplers4
-    #define wrapAnisoSamplers5 wrapBilinSamplers5
-    #define wrapAnisoSamplers6 wrapBilinSamplers6
-    #define wrapAnisoSamplers7 wrapBilinSamplers7
+	#define wrapAnisoSamplers0 wrapBilinSamplers0
+	#define wrapAnisoSamplers1 wrapBilinSamplers1
+	#define wrapAnisoSamplers2 wrapBilinSamplers2
+	#define wrapAnisoSamplers3 wrapBilinSamplers3
+	#define wrapAnisoSamplers4 wrapBilinSamplers4
+	#define wrapAnisoSamplers5 wrapBilinSamplers5
+	#define wrapAnisoSamplers6 wrapBilinSamplers6
+	#define wrapAnisoSamplers7 wrapBilinSamplers7
 #endif
 
 sampler _wrapAnisoSamplers0 : register(s0) = sampler_state { Texture = <texture0>; MaxAnisotropy = 8; MinFilter = Anisotropic; MagFilter = Linear; MipFilter = Linear; AddressU = Wrap; AddressV = Wrap; };
@@ -65,23 +65,23 @@ sampler clampBilinSamplers6 : register(s6) = sampler_state { Texture = <texture6
 sampler clampBilinSamplers7 : register(s7) = sampler_state { Texture = <texture7>; MinFilter = Linear; MagFilter = Linear; MipFilter = Linear; AddressU = Clamp; AddressV = Clamp; };
 
 #if ALLOW_ANISO_FILTERING_STATICMESH
-    #define clampAnisoSamplers0 _clampAnisoSamplers0
-    #define clampAnisoSamplers1 _clampAnisoSamplers1
-    #define clampAnisoSamplers2 _clampAnisoSamplers2
-    #define clampAnisoSamplers3 _clampAnisoSamplers3
-    #define clampAnisoSamplers4 _clampAnisoSamplers4
-    #define clampAnisoSamplers5 _clampAnisoSamplers5
-    #define clampAnisoSamplers6 _clampAnisoSamplers6
-    #define clampAnisoSamplers7 _clampAnisoSamplers7
+	#define clampAnisoSamplers0 _clampAnisoSamplers0
+	#define clampAnisoSamplers1 _clampAnisoSamplers1
+	#define clampAnisoSamplers2 _clampAnisoSamplers2
+	#define clampAnisoSamplers3 _clampAnisoSamplers3
+	#define clampAnisoSamplers4 _clampAnisoSamplers4
+	#define clampAnisoSamplers5 _clampAnisoSamplers5
+	#define clampAnisoSamplers6 _clampAnisoSamplers6
+	#define clampAnisoSamplers7 _clampAnisoSamplers7
 #else
-    #define clampAnisoSamplers0 clampBilinSamplers0
-    #define clampAnisoSamplers1 clampBilinSamplers1
-    #define clampAnisoSamplers2 clampBilinSamplers2
-    #define clampAnisoSamplers3 clampBilinSamplers3
-    #define clampAnisoSamplers4 clampBilinSamplers4
-    #define clampAnisoSamplers5 clampBilinSamplers5
-    #define clampAnisoSamplers6 clampBilinSamplers6
-    #define clampAnisoSamplers7 clampBilinSamplers7
+	#define clampAnisoSamplers0 clampBilinSamplers0
+	#define clampAnisoSamplers1 clampBilinSamplers1
+	#define clampAnisoSamplers2 clampBilinSamplers2
+	#define clampAnisoSamplers3 clampBilinSamplers3
+	#define clampAnisoSamplers4 clampBilinSamplers4
+	#define clampAnisoSamplers5 clampBilinSamplers5
+	#define clampAnisoSamplers6 clampBilinSamplers6
+	#define clampAnisoSamplers7 clampBilinSamplers7
 #endif
 
 sampler _clampAnisoSamplers0 : register(s0) = sampler_state { Texture = <texture0>; MaxAnisotropy = 8; MinFilter = Anisotropic; MagFilter = Linear; MipFilter = Linear; AddressU = CLAMP; AddressV = CLAMP; };
