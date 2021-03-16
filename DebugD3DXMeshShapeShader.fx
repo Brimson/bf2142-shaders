@@ -12,17 +12,17 @@ sampler sampler0 = sampler_state
     AddressU = WRAP;
     AddressV = WRAP;
     MinFilter = ANISOTROPIC;
-    MagFilter = ANISOTROPIC;
+    MagFilter =  ANISOTROPIC;
     MaxAnisotropy = 8;
     MipFilter = LINEAR;
 };
 
 float TextureScale : TEXTURESCALE;
 
-float4 LhtDir = {1.0f, 0.0f, 0.0f, 1.0f};    //light Direction
-float4 lightDiffuse = {1.0f, 1.0f, 1.0f, 1.0f}; // Light Diffuse
-float4 MaterialAmbient : MATERIALAMBIENT = {0.5f, 0.5f, 0.5f, 1.0f};
-float4 MaterialDiffuse : MATERIALDIFFUSE = {1.0f, 1.0f, 1.0f, 1.0f};
+float4 LhtDir = { 1.0f, 0.0f, 0.0f, 1.0f };    // light Direction
+float4 lightDiffuse = { 1.0f, 1.0f, 1.0f, 1.0f }; // Light Diffuse
+float4 MaterialAmbient : MATERIALAMBIENT = { 0.5f, 0.5f, 0.5f, 1.0f };
+float4 MaterialDiffuse : MATERIALDIFFUSE = { 1.0f, 1.0f, 1.0f, 1.0f };
 
 float4 ConeSkinValues : CONESKINVALUES;
 
@@ -93,7 +93,7 @@ VS2PS CM_VShader(APP2VS indata,
     Pos = mul(indata.Pos, world);
     outdata.Pos = mul(float4(Pos.xyz, 1.0f), wvp);
 
-    outdata.Diffuse.xyz = materialAmbient.xyz + 0.1f*Diffuse(indata.Normal,float4(-1.f,-1.f,1.f,0.f)) * materialDiffuse.xyz;
+    outdata.Diffuse.xyz = materialAmbient.xyz + 0.1f * Diffuse(indata.Normal, float4(-1.0f, -1.0f, 1.0f, 0.0f)) * materialDiffuse.xyz;
     outdata.Diffuse.w = 0.8f;
 
     return outdata;
@@ -138,7 +138,6 @@ VS2PS VShader2(APP2VS indata,
     // Lighting. Shade (Ambient + etc.)
     outdata.Diffuse.xyz = materialAmbient.xyz;
     outdata.Diffuse.w = 0.3f;
-
     return outdata;
 }
 
@@ -159,7 +158,7 @@ VS2PS_Grid VShader_Grid(APP2VS indata,
     outdata.Diffuse.xyz = materialAmbient.xyz + Diffuse(indata.Normal,lhtDir) * materialDiffuse.xyz;
     outdata.Diffuse.w = MaterialAmbient.a;
 
-    outdata.Tex = indata.Pos.xz*0.5 + 0.5;
+    outdata.Tex = indata.Pos.xz * 0.5 + 0.5;
     outdata.Tex *= textureScale;
 
     return outdata;
@@ -170,7 +169,7 @@ PS2FB PShader_Grid(VS2PS_Grid indata)
     PS2FB outdata;
     float4 tex = tex2D(sampler0, indata.Tex);
     outdata.Col.rgb = tex * indata.Diffuse;
-    outdata.Col.a = (1-tex.b);
+    outdata.Col.a = (1-tex.b);// * indata.Diffuse.a;
     return outdata;
 }
 
@@ -190,7 +189,7 @@ VS2PS OccVShader(APP2VS indata,
     Pos = mul(indata.Pos, world);
     outdata.Pos = mul(Pos, wvp);
 
-    outdata.Diffuse = 1;
+    outdata.Diffuse = 1.0;
     return outdata;
 }
 
@@ -384,6 +383,7 @@ technique gamePlayObject
     }
 }
 
+
 technique bounding
 <
     int DetailLevel = DLHigh+DLNormal+DLLow+DLAbysmal;
@@ -482,7 +482,6 @@ VS2PS vsSpotLight(APP2VS indata)
     // Lighting. Shade (Ambient + etc.)
     outdata.Diffuse.rgb = MaterialAmbient.rgb;
     outdata.Diffuse.a = MaterialAmbient.a;
-
     return outdata;
 }
 
@@ -625,7 +624,7 @@ VS2PS_F vsFrustum(APP2VS_F indata)
 
 float4 psFrustum(VS2PS_F indata, uniform float alphaval) : COLOR
 {
-    return float4(indata.Col.rgb, indata.Col.a*alphaval);
+    return float4(indata.Col.rgb, indata.Col.a * alphaval);
 }
 
 technique wirefrustum

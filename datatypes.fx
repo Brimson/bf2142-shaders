@@ -1,6 +1,6 @@
 #ifndef DATA_TYPES
     #define DATA_TYPES
-    #if 1 // USEPARTIALPRECISIONTYPES
+    #if 1  //USEPARTIALPRECISIONTYPES
         typedef half scalar;
         typedef vector<half, 1> vec1;
         typedef vector<half, 2> vec2;

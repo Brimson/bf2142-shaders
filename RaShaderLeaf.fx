@@ -10,7 +10,7 @@
 
 #include "shaders/dataTypes.fx"
 #include "shaders/RaCommon.fx"
- 
+
 //vec3	TreeSkyColor;
 vec4 	OverGrowthAmbient;
 Light	Lights[1];
@@ -32,7 +32,7 @@ struct VS_OUTPUT
 #if _HASSHADOW_
 	vec4 TexShadow	: TEXCOORD2;
 #endif
-	
+
 	vec4 Color  : COLOR0;
 	scalar Fog	: FOG;
 };
@@ -50,7 +50,7 @@ sampler DiffuseMapSampler = sampler_state
 };
 
 // INPUTS TO THE VERTEX SHADER FROM THE APP
-string reqVertexElement[] = 
+string reqVertexElement[] =
 {
 #ifdef OVERGROWTH	//tl: TODO - Compress overgrowth patches as well.
  	"Position",
@@ -89,8 +89,8 @@ VS_OUTPUT basicVertexShader
 #else
   	normal = normal * NormalUnpack.x + NormalUnpack.y;
 	Out.Tex0.xy *= TexUnpack;
-#endif	
-	
+#endif
+
 #ifdef _POINTLIGHT_
 	vec3 lightVec = vec3(Lights[0].pos.xyz - inPos);
 	float LdotN	= 1;//saturate( (dot(normal, -normalize(lightVec))));
@@ -101,7 +101,7 @@ VS_OUTPUT basicVertexShader
 #ifdef OVERGROWTH
 	Out.Color.rgb = Lights[0].color * (inPos.w / 32767) * LdotN* (inPos.w / 32767) ;
 	OverGrowthAmbient *= (inPos.w / 32767);
-#else	
+#else
 	Out.Color.rgb = Lights[0].color * LdotN;
 #endif
 
@@ -118,7 +118,7 @@ Out.tex1 = vec3(0,0,0);
 	Out.Color.rgb *= 1 - saturate(dot(lightVec, lightVec) * Lights[0].attenuation);
 	Out.Color.rgb *= calcFog(Out.Pos.w);
 #endif
-	
+
 	#if defined(OVERGROWTH) && HASALPHA2MASK
 		Out.Color.a = Transparency.a*2;
 	#else
@@ -141,11 +141,11 @@ vec4 basicPixelShader(VS_OUTPUT VsOut) : COLOR
 	vec4 vertexColor = vec4(VsOut.Color.rgb, VsOut.Color.a*2);
 	vertexColor.rgb += VsOut.tex1;
 #endif
-	
+
 	//tl: use compressed color register to avoid this being compiled as a 2.0 shader.
-	
+
 	vec4 outCol = diffuseMap * vertexColor*2;
-	
+
 	return outCol;
 };
 
@@ -178,7 +178,7 @@ string InstanceParameters[] =
 #endif
 };
 
-string TemplateParameters[] = 
+string TemplateParameters[] =
 {
 	"DiffuseMap",
 	"PosUnpack",
@@ -203,14 +203,14 @@ technique defaultTechnique
 		{
 			ps_1_4
 			texld r1, t0
-			texld r2, t1	
+			texld r2, t1
 			mul_x4 r0.xyz, v0, r2
 			add r0.xyz, r0, c0
 			mul r0.xyz, r0, r1
 			+mul_x4 r0.w, v0.w, r1.w
 		#if defined(OVERGROWTH) && HASALPHA2MASK
 			mul_x2 r0.w, r0.w, r1.w
-		#endif		
+		#endif
 		};
 	#endif
 #else
@@ -235,6 +235,7 @@ technique defaultTechnique
 			};
 	#endif
 #endif
+
 #ifdef ENABLE_WIREFRAME
 		FillMode			= WireFrame;
 #endif

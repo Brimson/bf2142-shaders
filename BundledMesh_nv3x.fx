@@ -20,7 +20,7 @@ vec3 CalcReflectionVector(vec3 ViewToPos, vec3 Normal)
 float refractionIndexRatio = 0.15;
 static float R0 = pow(1.0 - refractionIndexRatio, 2.0) / pow(1.0 + refractionIndexRatio, 2.0);
 
-VO_HemiAndSunShadows BasicShader (appdataAnimatedUV input )
+VO_HemiAndSunShadows BasicShader (appdataAnimatedUV input)
 {
     VO_HemiAndSunShadows Out = (VO_HemiAndSunShadows)0;
 
@@ -34,25 +34,24 @@ VO_HemiAndSunShadows BasicShader (appdataAnimatedUV input )
     Out.HPos = mul(vec4(Pos.xyz, 1.0f), viewProjMatrix);
 
     // Shadow
-    //Out.TexShadow =  mul(Pos, ViewPortMatrix);
     Out.TexShadow1 =  mul(vec4(Pos, 1.0), vpLightTrapezMat);
     vec2 TexShadow2 = mul(vec4(Pos, 1.0), vpLightMat).zw;
     TexShadow2.x -= 0.003;
-    Out.TexShadow1.z = (TexShadow2.x*Out.TexShadow1.w)/TexShadow2.y; 	// (zL*wT)/wL == zL/wL post homo
+    Out.TexShadow1.z = (TexShadow2.x * Out.TexShadow1.w) / TexShadow2.y; // (zL*wT)/wL == zL/wL post homo
 
     // Hemi lookup values
     vec3 AlmostNormal = mul(input.Normal, mOneBoneSkinning[IndexArray[0]]);
-    Out.GroundUVAndLerp.xy	= ((Pos + (hemiMapInfo.z * 0.5) + AlmostNormal * 1.0).xz - hemiMapInfo.xy) / hemiMapInfo.z;
-    Out.GroundUVAndLerp.y	= 1 - Out.GroundUVAndLerp.y;
-    Out.GroundUVAndLerp.z	= (AlmostNormal.y+1)/2;
-    Out.GroundUVAndLerp.z  -= hemiMapInfo.w;
+    Out.GroundUVAndLerp.xy = ((Pos + (hemiMapInfo.z * 0.5) + AlmostNormal * 1.0).xz - hemiMapInfo.xy) / hemiMapInfo.z;
+    Out.GroundUVAndLerp.y  = 1.0 - Out.GroundUVAndLerp.y;
+    Out.GroundUVAndLerp.z  = (AlmostNormal.y * 0.5) + 0.5;
+    Out.GroundUVAndLerp.z -= hemiMapInfo.w;
 
     // Cross product * flip to create BiNormal
-    float flip = 1;
+    float flip = 1.0;
     vec3 binormal = normalize(cross(input.Tan, input.Normal)) * flip;
 
     // Need to calculate the WorldI based on each matBone skinning world matrix
-    mat3x3 TanBasis = mat3x3(	input.Tan, binormal, input.Normal	);
+    mat3x3 TanBasis = mat3x3(input.Tan, binormal, input.Normal);
 
     // Calculate WorldTangent directly... inverse is the transpose for affine rotations
     mat3x3 worldI = transpose(mul(TanBasis, mOneBoneSkinning[IndexArray[0]]));
@@ -71,20 +70,20 @@ VO_HemiAndSunShadows BasicShader (appdataAnimatedUV input )
     // Environment map
     float3 ReflectionVector = CalcReflectionVector(worldEyeVec, AlmostNormal);
     Out.EnvMap.xyz	= ReflectionVector;
-    Out.EnvMap.w = pow((R0 + (1.0 - R0) * (1.0 - dot(-worldEyeVec, AlmostNormal))), 2);
+    Out.EnvMap.w = pow((R0 + (1.0 - R0) * (1.0 - dot(-worldEyeVec, AlmostNormal))), 2.0);
 
     return Out;
 }
 
-VO_HemiAndSunShadows vs_HemiAndSunShadows( appdataAnimatedUV input )
+VO_HemiAndSunShadows vs_HemiAndSunShadows(appdataAnimatedUV input)
 {
-    VO_HemiAndSunShadows Out = BasicShader ( input );
+    VO_HemiAndSunShadows Out = BasicShader (input);
     return Out;
 }
 
-VO_HemiAndSunShadows vs_HemiAndSunShadowsAnimatedUV( appdataAnimatedUV input )
+VO_HemiAndSunShadows vs_HemiAndSunShadowsAnimatedUV(appdataAnimatedUV input)
 {
-    VO_HemiAndSunShadows Out = BasicShader ( input );
+    VO_HemiAndSunShadows Out = BasicShader (input);
 
     // NOTE: In theory this gets evaluated once (compiler magic)
     int4 IndexVector = D3DCOLORtoUBYTE4(input.BlendIndices);
@@ -114,26 +113,25 @@ vec4 ps_HemiAndSunShadows(VO_HemiAndSunShadows indata) : COLOR
     vec4 outColor = (vec4)1;
 
     vec4 TN = tex2D(sampler0, indata.TexCoord0);
-    TN.rgb = normalize(TN.rgb * 2 - 1);
+    TN.rgb = normalize((TN.rgb * 2.0) - 1.0);
 
     vec4 dot3Light = saturate(dot(normalize(indata.LightVec), TN));
 
-    vec3 specular = pow(dot(normalize(indata.HalfVec), TN), 64) * TN.a;
-
+    vec3 specular = pow(dot(normalize(indata.HalfVec), TN), 64.0) * TN.a;
 
     // dynamic shadows
     {
-        scalar dirShadow = 1;
+        scalar dirShadow = 1.0;
 
-        vec4 texel = vec4(0.5 / 1024.0, 0.5 / 1024.0, 0, 0);
+        vec4 texel = vec4(0.5 / 1024.0, 0.5 / 1024.0, 0.0, 0.0);
         vec4 samples;
         samples.x = tex2Dproj(ShadowMapSampler, indata.TexShadow1);
-        samples.y = tex2Dproj(ShadowMapSampler, indata.TexShadow1 + vec4(texel.x, 0, 0, 0));
-        samples.z = tex2Dproj(ShadowMapSampler, indata.TexShadow1 + vec4(0, texel.y, 0, 0));
+        samples.y = tex2Dproj(ShadowMapSampler, indata.TexShadow1 + vec4(texel.x, 0.0, 0.0, 0.0));
+        samples.z = tex2Dproj(ShadowMapSampler, indata.TexShadow1 + vec4(0.0, texel.y, 0.0, 0.0));
         samples.w = tex2Dproj(ShadowMapSampler, indata.TexShadow1 + texel);
 
         vec4 cmpbits = samples >= saturate(indata.TexShadow1.z/indata.TexShadow1.w);
-        dirShadow = dot(cmpbits, vec4(0.25, 0.25, 0.25, 0.25));
+        dirShadow = dot(cmpbits, 0.25);
 
         // killing both spec and dot3 if we are in shadows
         dot3Light *= dirShadow;
@@ -143,7 +141,7 @@ vec4 ps_HemiAndSunShadows(VO_HemiAndSunShadows indata) : COLOR
     vec4 TD = tex2D(sampler3, indata.TexCoord0);
 
     vec4 groundcolor = tex2D(sampler1, indata.GroundUVAndLerp.xy);
-    vec4 hemicolor   = lerp(groundcolor, skyColor, indata.GroundUVAndLerp.z) * ambientColor;
+    vec4 hemicolor = lerp(groundcolor, skyColor, indata.GroundUVAndLerp.z) * ambientColor;
 
     vec4 GI = tex2D(sampler2, indata.TexCoord0);
 
@@ -154,8 +152,8 @@ vec4 ps_HemiAndSunShadows(VO_HemiAndSunShadows indata) : COLOR
     // Environment map
     // NOTE: eyePos.w is just a reflection scaling value. Why do we have this besides the reflectivity (gloss map)data?
     vec3 envmapColor = texCUBE(samplerCube4, indata.EnvMap.xyz) * TN.a * eyePos.w;
-    outColor.rgb    += envmapColor * 2;
-    outColor.a      += indata.EnvMap.w * TD.a;
+    outColor.rgb	+= (envmapColor * 2.0);
+    outColor.a		+= indata.EnvMap.w * TD.a;
 
     #ifdef NORMAL_MAP
         outColor.rgb = TN.rgb;
@@ -170,7 +168,7 @@ vec4 ps_HemiAndSunShadows(VO_HemiAndSunShadows indata) : COLOR
         outColor = dot3Light;
     #endif
     #ifdef SPEC_LIGHT
-        outColor = vec4(specular, 1);
+        outColor = vec4(specular, 1.0);
     #endif
     #ifdef DIFFUSE_MAP
         outColor = TD;
@@ -222,7 +220,7 @@ struct VO_PointLight
     float Fog                : FOG;
 };
 
-VO_PointLight BasicShaderPoint (appdataAnimatedUV input )
+VO_PointLight BasicShaderPoint (appdataAnimatedUV input)
 {
     VO_PointLight Out = (VO_PointLight)0;
 
@@ -236,7 +234,7 @@ VO_PointLight BasicShaderPoint (appdataAnimatedUV input )
     Out.HPos = mul(vec4(Pos.xyz, 1.0f), viewProjMatrix);
 
     // Cross product * flip to create BiNormal
-    float flip = 1;
+    float flip = 1.0;
     vec3 binormal = normalize(cross(input.Tan, input.Normal)) * flip;
 
     // Need to calculate the WorldI based on each matBone skinning world matrix
@@ -246,7 +244,7 @@ VO_PointLight BasicShaderPoint (appdataAnimatedUV input )
     mat3x3 worldI = transpose(mul(TanBasis, mOneBoneSkinning[IndexArray[0]]));
 
     // Transform Light dir to Object space
-    scalar attenuation = 1 - saturate(dot(lightPos - Pos, lightPos - Pos) * attenuationSqrInv);
+    scalar attenuation = 1.0 - saturate(dot(lightPos - Pos, lightPos - Pos) * attenuationSqrInv);
     vec3 normalizedTanLightVec = normalize(mul(lightPos - Pos, worldI)) * attenuation ;
 
     Out.LightVec = normalizedTanLightVec;
@@ -262,15 +260,15 @@ VO_PointLight BasicShaderPoint (appdataAnimatedUV input )
     return Out;
 }
 
-VO_PointLight vs_pointLight( appdataAnimatedUV input )
+VO_PointLight vs_pointLight(appdataAnimatedUV input)
 {
-    VO_PointLight Out = BasicShaderPoint ( input );
+    VO_PointLight Out = BasicShaderPoint (input);
     return Out;
 }
 
-VO_PointLight vs_pointLightAnimated( appdataAnimatedUV input )
+VO_PointLight vs_pointLightAnimated(appdataAnimatedUV input)
 {
-    VO_PointLight Out = BasicShaderPoint ( input );
+    VO_PointLight Out = BasicShaderPoint (input);
 
     // NOTE: In theory this gets evaluated once (compiler magic)
     int4 IndexVector = D3DCOLORtoUBYTE4(input.BlendIndices);
@@ -280,7 +278,6 @@ VO_PointLight vs_pointLightAnimated( appdataAnimatedUV input )
     Out.TexCoord0 = mul(vec3(input.TexCoord1, 1.0), tmp).xy + input.TexCoord0;
 
     // TODO: (ROD) Gotta rotate the tangent space as well as the uv
-
     return Out;
 }
 
@@ -289,7 +286,7 @@ vec4 ps_pointLight(VO_PointLight inData) : COLOR
     vec4 outColor = (vec4)0;
 
     vec4 TN = tex2D(sampler0, inData.TexCoord0);
-    TN.rgb = TN.rgb * 2 - 1;
+    TN.rgb = TN.rgb * 2.0 - 1.0;
 
     vec4 dot3Light = saturate(dot(inData.LightVec, TN));
 
@@ -310,7 +307,7 @@ vec4 ps_pointLight(VO_PointLight inData) : COLOR
         outColor = dot3Light;
     #endif
     #ifdef SPEC_LIGHT
-        outColor = vec4(specular, 1);
+        outColor = vec4(specular, 1.0);
     #endif
     #ifdef DIFFUSE_MAP
         outColor = TD;
@@ -319,9 +316,10 @@ vec4 ps_pointLight(VO_PointLight inData) : COLOR
         outColor = TN.a;
     #endif
     #ifdef DISABLE_POINT
-        outColor = 0;
+        outColor = 0.0;
     #endif
 
+    // return vec4(inData.LightVec, 1.0);
     return outColor;
 }
 

@@ -1,4 +1,4 @@
-//#include "shaders/datatypes.fx"
+// #include "shaders/datatypes.fx"
 
 struct PointLightData
 {
@@ -26,17 +26,18 @@ vec4 lightColor : LightColor;
 vec3 calcPVPoint(PointLightData indata, vec3 wPos, vec3 normal)
 {
     vec3 lvec = lightPosAndAttSqrInv.xyz - wPos;
-    scalar radialAtt = saturate(1 - dot(lvec, lvec)*lightPosAndAttSqrInv.w);
+    scalar radialAtt = saturate(1.0 - dot(lvec, lvec) * lightPosAndAttSqrInv.w);
     lvec = normalize(lvec);
-    scalar intensity = dot(lvec, normal) * radialAtt;
 
+    scalar intensity = dot(lvec, normal) * radialAtt;
     return intensity * lightColor.xyz;
 }
 
 vec3 calcPVPointTerrain(vec3 wPos, vec3 normal)
 {
     vec3 lvec = pointLight.pos - wPos;
-    scalar radialAtt = saturate(1 - (dot(lvec, lvec))*pointLight.attSqrInv);
+    scalar radialAtt = saturate(1.0 - dot(lvec, lvec) * pointLight.attSqrInv);
+    // return radialAtt * pointLight.col;
     lvec = normalize(lvec);
     scalar intensity = dot(lvec, normal) * radialAtt;
 
@@ -47,12 +48,11 @@ vec3 calcPVSpot(SpotLightData indata, vec3 wPos, vec3 normal)
 {
     vec3 lvec = indata.pos - wPos;
 
-    scalar radialAtt = saturate(1 - dot(lvec, lvec)*indata.attSqrInv);
+    scalar radialAtt = saturate(1.0 - dot(lvec, lvec)*indata.attSqrInv);
     lvec = normalize(lvec);
 
     scalar conicalAtt =	saturate(dot(lvec, indata.dir)-indata.oneminusconeAngle) / indata.coneAngle;
 
     scalar intensity = dot(lvec, normal) * radialAtt * conicalAtt;
-
     return intensity * indata.col;
 }

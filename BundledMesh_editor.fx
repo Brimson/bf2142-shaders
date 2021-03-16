@@ -1,22 +1,8 @@
 
-float4 diffusePixelShader_marked(VS_OUTPUT2 input) : COLOR
+float4 diffusePixelShaderMarked(VS_OUTPUT2 input) : COLOR
 {
     const float4 ambient = float4(0.0, 0.0, 0.8, 0.0);
-    float4 diffuse = tex2D(diffuseSampler, input.TexCoord);
-    return saturate(diffuse * input.Diffuse + ambient);
-}
-
-float4 diffusePixelShader_submarked(VS_OUTPUT2 input) : COLOR
-{
-    const float4 ambient = float4(0.0, 0.0, 0.4, 0.0);
-    float4 diffuse = tex2D(diffuseSampler, input.TexCoord);
-    return saturate(diffuse * input.Diffuse + ambient);
-}
-
-float4 diffusePixelShader_subPartHighlight(VS_OUTPUT2 input) : COLOR
-{
-    const float4 ambient = float4(0.2f, 0.5f, 0.5f, 0.45f);
-    float4 diffuse = tex2D(diffuseSampler, input.TexCoord);
+    const float4 diffuse = tex2D(diffuseSampler, input.TexCoord);
     return saturate(diffuse * input.Diffuse + ambient);
 }
 
@@ -36,15 +22,21 @@ technique marked
                                                           viewInverseMatrix,
                                                           lightPos,
                                                           eyePos);
-        PixelShader = compile ps_2_0 diffusePixelShader_marked();
+        PixelShader = compile ps_2_0 diffusePixelShaderMarked();
     }
+}
+
+float4 diffusePixelShaderSubmarked(VS_OUTPUT2 input) : COLOR
+{
+    const float4 ambient = float4(0.0, 0.0, 0.4, 0.0);
+    const float4 diffuse = tex2D(diffuseSampler, input.TexCoord);
+    return saturate(diffuse * input.Diffuse + ambient);
 }
 
 technique submarked
 {
     pass p0
     {
-
         ZEnable = true;
         ZWriteEnable = true;
         CullMode = NONE;
@@ -57,14 +49,18 @@ technique submarked
                                                           viewInverseMatrix,
                                                           lightPos,
                                                           eyePos);
-        PixelShader = compile ps_2_0 diffusePixelShader_submarked();
-    }
+        PixelShader = compile ps_2_0 diffusePixelShaderSubmarked();
+}
+
+float4 diffusePixelShaderSubPartHighlight() : COLOR
+{
+    return float4(0.2f, 0.5f, 0.5f, 0.45f);
 }
 
 technique subPartHighlight
 <
-    int DetailLevel = DLHigh+DLNormal+DLLow+DLAbysmal;
-    int Compatibility = CMPR300+CMPNV2X;
+    int DetailLevel = DLHigh + DLNormal + DLLow + DLAbysmal;
+    int Compatibility = CMPR300 + CMPNV2X;
 >
 {
     pass p0
@@ -77,10 +73,7 @@ technique subPartHighlight
         ZFunc = EQUAL;
         ZWriteEnable = FALSE;
 
-        VertexShader = compile vs_2_0 diffuseVertexShader(viewProjMatrix,
-                                                          viewInverseMatrix,
-                                                          lightPos,
-                                                          eyePos);
-        PixelShader = compile ps_2_0 diffusePixelShader_subPartHighlight();
+        VertexShader = compile vs_2_0 diffuseVertexShader(viewProjMatrix,viewInverseMatrix,lightPos,eyePos);
+        PixelShader = compile ps_2_0 diffusePixelShaderSubPartHighlight();
     }
 }

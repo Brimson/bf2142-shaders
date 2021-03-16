@@ -1,292 +1,261 @@
-//
-/// BundledMesh MetaFx
-//
+/*
+    BundledMesh MetaFx
 
-//
-// This array specifies what the shaderPermutator should build
-// in the case below it will first look for reqVertexElement + "Base"
-// and get the common members of that array. And will then complement
-// that array for each permutation based on the requirements of each individual LITERAL
-//
-string GenerateStructs[] =
-{
-	"reqVertexElement",
-	"GlobalParameters",
-	"TemplateParameters",
-	"InstanceParameters"
-};
-
-
-//
-// this is the common vertexElement members
-//
-string reqVertexElementBase[] = 
-{
- 	"PositionPacked",
- 	"NormalPacked8",
-	"Bone4Idcs",
-	"TBasePacked2D",
-};
-
-//
-// this is the common global parameters
-//
-string GlobalParametersBase[] = 
-{
-	"ViewProjection",
-	"SpecularPower",
-	"SpecLUT64SpecularColor",
-	"NormalizationCube",
-	"FogRange",
-	"FogColor",
-	"WorldSpaceCamPos", // should be as an "inverted specialized" instead
-	"GlobalTime"
-};
-
-//
-// this is the common template parameters
-//
-string TemplateParametersBase[] = 
-{
-	"DiffuseMap",
-	"PosUnpack",
-	"TexUnpack",
-	"NormalUnpack"
-};
-
-//
-// this is the common instance parameters
-//
-string InstanceParametersBase[] = 
-{
-	"AlphaBlendEnable",
-	"DepthWrite",
-	"AlphaTest",
-	"AlphaTestRef",
-	"SrcBlend",
-	"DestBlend",
-	"Lights",
-	"GeomBones",
-	"Transparency",
-	"simpleUVTranslation",
-	"HemiMapConstantColor",
-};
-
-
-//
-// Literals, and their requirements
-//
-
-const dword _nothing_	: LITERAL;
-
-const dword _hasuvanimation_	: LITERAL
-<
-	string reqVertexElement[] = 
-	{
-	 	"TUVAnimationPacked2D"
-	};
-	string InstanceParameters[] = 
-	{
-		"UserData"
-	};
->;
-
-const dword _hasnormalmap_	: LITERAL
-<
-	string reqVertexElement[] = 
-	{
-	 	"TangentSpacePacked8"
-	};
-	string TemplateParameters[] = 
-	{
-		"NormalMap"
-	};
->;
-
-const dword _hasgimap_	: LITERAL
-<
-	string TemplateParameters[] = 
-	{
-		"GIMap"
-	};
->;
-
-const dword _hasenvmap_	: LITERAL
-<
-	string TemplateParameters[] = 
-	{
-		"CubeMap",		//Funky name!!!
-	};
->;
-
-const dword _hascockpit_	: LITERAL;
-
-const dword _hasshadow_	: LITERAL
-<
-	string GlobalParameters[] = 
-	{
-		"ShadowMap"
-	};
-	string InstanceParameters[] = 
-	{
-		"ShadowProjMat",
-		"ShadowTrapMat"
-	};
->;
-
-const dword _hasshadowocclusion_	: LITERAL
-<
-	string GlobalParameters[] = 
-	{
-		"ShadowOccluderMap"
-	};
-	string InstanceParameters[] = 
-	{
-		"ShadowOccProjMat",
-		"ShadowTrapMat"
-	};
->;
-
-const dword _hashemiocclusion_	: LITERAL;
-
-const dword _hascolormapgloss_	: LITERAL;
-
-/*const dword _hasnormalmapgloss_	: LITERAL
-<
-	string TemplateParameters[] = 
-	{
-		"NormalMap"
-	};
->;
+    This array specifies what the shaderPermutator should build
+    in the case below it will first look for reqVertexElement + "Base"
+    and get the common members of that array. And will then complement
+    that array for each permutation based on the requirements of each individual LITERAL
 */
 
-
-const dword _hasstaticgloss_	: LITERAL
-<
-	string TemplateParameters[] = 
-	{
-		"StaticGloss"
-	};
->;
-
-const dword _hasdot3alphatest_	: LITERAL;
-
-const dword _usehemimap_	: LITERAL
-<
-	string GlobalParameters[] = 
-	{
-		"HemiMap",
-		"HemiMapConstants",
-		"HemiMapSkyColor"
-	};
-	string TemplateParameters[] =
-	{ 
-		"InvHemiHeightScale"
-	};
-	string InstanceParameters[] =
-	{
-		"HeightOverTerrain"
-	};
->;
-
-const dword _pointlight_	: LITERAL;
-
-//const dword _useperpixelnormalize_	: LITERAL;
-//const dword _userenormalizedtextures_	: LITERAL;
-
-
-//
-// This is the array of the shader permutations to generate.
-// the resulting shadername is the name of this file + the permutationname - "_"
-// ie. RaShaderSTMBaseDetail etc
-//
-string GenerateShaderPermutations[] =
+string GenerateStructs[] =
 {
-	"_nothing_",
-	"_hasnormalmap_",
-	"_hasgimap_",
-	"_hasenvmap_",
-	"_hasuvanimation_",
-	"_hasnormalmap_|_hasgimap_",
-	"_hasnormalmap_|_hasenvmap_",
-	"_hasgimap_|_hasenvmap_",
-	"_hasnormalmap_|_hasgimap_|_hasenvmap_",
-	"_hasuvanimation_|_hasnormalmap_",
-	"_hasuvanimation_|_hasgimap_",
-	"_hasuvanimation_|_hasenvmap_",
-	"_hasuvanimation_|_hasnormalmap_|_hasgimap_",
-	"_hasuvanimation_|_hasnormalmap_|_hasenvmap_",
-	"_hasuvanimation_|_hasgimap_|_hasenvmap_",
-	"_hasuvanimation_|_hasnormalmap_|_hasgimap_|_hasenvmap_",
-	"_usehemimap_",
-	"_hasnormalmap_|_usehemimap_",
-	"_hasgimap_|_usehemimap_",
-	"_hasenvmap_|_usehemimap_",
-	"_hasnormalmap_|_hasgimap_|_usehemimap_",
-	"_hasnormalmap_|_hasenvmap_|_usehemimap_",
-	"_hasgimap_|_hasenvmap_|_usehemimap_",
-	"_hasnormalmap_|_hasgimap_|_hasenvmap_|_usehemimap_",
-	"_hasuvanimation_|_usehemimap_",
-	"_hasuvanimation_|_hasnormalmap_|_usehemimap_",
-	"_hasuvanimation_|_hasgimap_|_usehemimap_",
-	"_hasuvanimation_|_hasenvmap_|_usehemimap_",
-	"_hasuvanimation_|_hasnormalmap_|_hasgimap_|_usehemimap_",
-	"_hasuvanimation_|_hasnormalmap_|_hasenvmap_|_usehemimap_",
-	"_hasuvanimation_|_hasgimap_|_hasenvmap_|_usehemimap_",
-	"_hasuvanimation_|_hasnormalmap_|_hasgimap_|_hasenvmap_|_usehemimap_",
+    "reqVertexElement",
+    "GlobalParameters",
+    "TemplateParameters",
+    "InstanceParameters"
 };
 
-//
+// this is the common vertexElement members
+string reqVertexElementBase[] =
+{
+    "PositionPacked",
+    "NormalPacked8",
+    "Bone4Idcs",
+    "TBasePacked2D",
+};
+
+// this is the common global parameters
+string GlobalParametersBase[] =
+{
+    "ViewProjection",
+    "SpecularPower",
+    "SpecLUT64SpecularColor",
+    "NormalizationCube",
+    "FogRange",
+    "FogColor",
+    "WorldSpaceCamPos", // should be as an "inverted specialized" instead
+    "GlobalTime"
+};
+
+// this is the common template parameters
+string TemplateParametersBase[] =
+{
+    "DiffuseMap",
+    "PosUnpack",
+    "TexUnpack",
+    "NormalUnpack"
+};
+
+// this is the common instance parameters
+string InstanceParametersBase[] =
+{
+    "AlphaBlendEnable",
+    "DepthWrite",
+    "AlphaTest",
+    "AlphaTestRef",
+    "SrcBlend",
+    "DestBlend",
+    "Lights",
+    "GeomBones",
+    "Transparency",
+    "simpleUVTranslation",
+    "HemiMapConstantColor",
+};
+
+// Literals, and their requirements
+const dword _nothing_ : LITERAL;
+
+const dword _hasuvanimation_ : LITERAL
+<
+    string reqVertexElement[] =
+    {
+        "TUVAnimationPacked2D"
+    };
+    string InstanceParameters[] =
+    {
+        "UserData"
+    };
+>;
+
+const dword _hasnormalmap_ : LITERAL
+<
+    string reqVertexElement[] =
+    {
+        "TangentSpacePacked8"
+    };
+    string TemplateParameters[] =
+    {
+        "NormalMap"
+    };
+>;
+
+const dword _hasgimap_ : LITERAL
+<
+    string TemplateParameters[] =
+    {
+        "GIMap"
+    };
+>;
+
+const dword _hasenvmap_ : LITERAL
+<
+    string TemplateParameters[] =
+    {
+        "CubeMap",
+    };
+>;
+
+const dword _hascockpit_ : LITERAL;
+
+const dword _hasshadow_ : LITERAL
+<
+    string GlobalParameters[] =
+    {
+        "ShadowMap"
+    };
+    string InstanceParameters[] =
+    {
+        "ShadowProjMat",
+        "ShadowTrapMat"
+    };
+>;
+
+const dword _hasshadowocclusion_ : LITERAL
+<
+    string GlobalParameters[] =
+    {
+        "ShadowOccluderMap"
+    };
+    string InstanceParameters[] =
+    {
+        "ShadowOccProjMat",
+        "ShadowTrapMat"
+    };
+>;
+
+const dword _hashemiocclusion_ : LITERAL;
+const dword _hascolormapgloss_ : LITERAL;
+const dword _hasstaticgloss_ : LITERAL
+<
+    string TemplateParameters[] =
+    {
+        "StaticGloss"
+    };
+>;
+
+const dword _hasdot3alphatest_ : LITERAL;
+const dword _usehemimap_ : LITERAL
+<
+    string GlobalParameters[] =
+    {
+        "HemiMap",
+        "HemiMapConstants",
+        "HemiMapSkyColor"
+    };
+    string TemplateParameters[] =
+    {
+        "InvHemiHeightScale"
+    };
+    string InstanceParameters[] =
+    {
+        "HeightOverTerrain"
+    };
+>;
+
+const dword _pointlight_ : LITERAL;
+
+/*
+    This is the array of the shader permutations to generate.
+    the resulting shadername is the name of this file + the permutationname - "_"
+    ie. RaShaderSTMBaseDetail etc
+*/
+
+string GenerateShaderPermutations[] =
+{
+    "_nothing_",
+    "_hasnormalmap_",
+    "_hasgimap_",
+    "_hasenvmap_",
+    "_hasuvanimation_",
+    "_hasnormalmap_|_hasgimap_",
+    "_hasnormalmap_|_hasenvmap_",
+    "_hasgimap_|_hasenvmap_",
+    "_hasnormalmap_|_hasgimap_|_hasenvmap_",
+    "_hasuvanimation_|_hasnormalmap_",
+    "_hasuvanimation_|_hasgimap_",
+    "_hasuvanimation_|_hasenvmap_",
+    "_hasuvanimation_|_hasnormalmap_|_hasgimap_",
+    "_hasuvanimation_|_hasnormalmap_|_hasenvmap_",
+    "_hasuvanimation_|_hasgimap_|_hasenvmap_",
+    "_hasuvanimation_|_hasnormalmap_|_hasgimap_|_hasenvmap_",
+    "_usehemimap_",
+    "_hasnormalmap_|_usehemimap_",
+    "_hasgimap_|_usehemimap_",
+    "_hasenvmap_|_usehemimap_",
+    "_hasnormalmap_|_hasgimap_|_usehemimap_",
+    "_hasnormalmap_|_hasenvmap_|_usehemimap_",
+    "_hasgimap_|_hasenvmap_|_usehemimap_",
+    "_hasnormalmap_|_hasgimap_|_hasenvmap_|_usehemimap_",
+    "_hasuvanimation_|_usehemimap_",
+    "_hasuvanimation_|_hasnormalmap_|_usehemimap_",
+    "_hasuvanimation_|_hasgimap_|_usehemimap_",
+    "_hasuvanimation_|_hasenvmap_|_usehemimap_",
+    "_hasuvanimation_|_hasnormalmap_|_hasgimap_|_usehemimap_",
+    "_hasuvanimation_|_hasnormalmap_|_hasenvmap_|_usehemimap_",
+    "_hasuvanimation_|_hasgimap_|_hasenvmap_|_usehemimap_",
+    "_hasuvanimation_|_hasnormalmap_|_hasgimap_|_hasenvmap_|_usehemimap_",
+};
+
+
 // for each shader in the permutation array, the following variants will be generated
-//
+
 string GenerateShaderModifiers[] =
 {
-	"_hasshadow_",
-	"_hascolormapgloss_",
-	"_hasstaticgloss_",
-	"_hasshadow_|_hascolormapgloss_",
-	"_hasshadow_|_hasstaticgloss_",
-	
-	"_hasshadow_|_hashemiocclusion_",
-	"_hasshadow_|_hasshadowocclusion_",
-	"_hasshadow_|_hascolormapgloss_|_hasshadowocclusion_",
-	"_hasshadow_|_hasstaticgloss_|_hasshadowocclusion_",
-	"_hasshadow_|_hascolormapgloss_|_hashemiocclusion_",
-	"_hasshadow_|_hasstaticgloss_|_hashemiocclusion_",
+    "_hasshadow_",
+    "_hascolormapgloss_",
+    "_hasstaticgloss_",
+    "_hasshadow_|_hascolormapgloss_",
+    "_hasshadow_|_hasstaticgloss_",
 
-	"_hashemiocclusion_",
-	"_hascolormapgloss_|_hashemiocclusion_",
-	"_hasstaticgloss_|_hashemiocclusion_",
+    "_hasshadow_|_hashemiocclusion_",
+    "_hasshadow_|_hasshadowocclusion_",
+    "_hasshadow_|_hascolormapgloss_|_hasshadowocclusion_",
+    "_hasshadow_|_hasstaticgloss_|_hasshadowocclusion_",
+    "_hasshadow_|_hascolormapgloss_|_hashemiocclusion_",
+    "_hasshadow_|_hasstaticgloss_|_hashemiocclusion_",
 
-	"_hascolormapgloss_|_hasdot3alphatest_",
-	"_hasstaticgloss_|_hasdot3alphatest_",
-	"_hasshadow_|_hascolormapgloss_|_hasdot3alphatest_",
-	"_hasshadow_|_hascolormapgloss_|_hasdot3alphatest_|_hasshadowocclusion_",
-	"_hasshadow_|_hascolormapgloss_|_hasdot3alphatest_|_hashemiocclusion_",
-	"_hascolormapgloss_|_hasdot3alphatest_|_hashemiocclusion_",
+    "_hashemiocclusion_",
+    "_hascolormapgloss_|_hashemiocclusion_",
+    "_hasstaticgloss_|_hashemiocclusion_",
 
-	"_hasshadow_|_hasstaticgloss_|_hasdot3alphatest_",
-	"_hasshadow_|_hasstaticgloss_|_hasdot3alphatest_|_hasshadowocclusion_",
-	"_hasshadow_|_hasstaticgloss_|_hasdot3alphatest_|_hashemiocclusion_",
+    "_hascolormapgloss_|_hasdot3alphatest_",
+    "_hasstaticgloss_|_hasdot3alphatest_",
+    "_hasshadow_|_hascolormapgloss_|_hasdot3alphatest_",
+    "_hasshadow_|_hascolormapgloss_|_hasdot3alphatest_|_hasshadowocclusion_",
+    "_hasshadow_|_hascolormapgloss_|_hasdot3alphatest_|_hashemiocclusion_",
+    "_hascolormapgloss_|_hasdot3alphatest_|_hashemiocclusion_",
 
-	"_hascockpit_",
-	"_hascolormapgloss_|_hascockpit_",
-	"_hasstaticgloss_|_hascockpit_",
-	"_hascolormapgloss_|_hasdot3alphatest_|_hascockpit_",
-	"_hasstaticgloss_|_hasdot3alphatest_|_hascockpit_",
+    "_hasshadow_|_hasstaticgloss_|_hasdot3alphatest_",
+    "_hasshadow_|_hasstaticgloss_|_hasdot3alphatest_|_hasshadowocclusion_",
+    "_hasshadow_|_hasstaticgloss_|_hasdot3alphatest_|_hashemiocclusion_",
 
-	// pointlight
-	"_pointlight_",
-	"_hascolormapgloss_|_pointlight_",
-	"_hasstaticgloss_|_pointlight_",
-	"_hascolormapgloss_|_hasdot3alphatest_|_pointlight_",
+    "_hascockpit_",
+    "_hascolormapgloss_|_hascockpit_",
+    "_hasstaticgloss_|_hascockpit_",
+    "_hascolormapgloss_|_hasdot3alphatest_|_hascockpit_",
+    "_hasstaticgloss_|_hasdot3alphatest_|_hascockpit_",
+
+    // pointlight
+    "_pointlight_",
+    "_hascolormapgloss_|_pointlight_",
+    "_hasstaticgloss_|_pointlight_",
+    "_hascolormapgloss_|_hasdot3alphatest_|_pointlight_",
 };
 
 string DeprecationList[] =
 {
-	{"hasnormalmap", ""},
-	{"usehemimap", "hasenvmap", ""},
-	{"hasshadow", "hasdot3alphatest", "hascolormapgloss", "hasshadowocclusion" , ""},
-	{"hasuvanimation", "hasgimap", ""},
+    {"hasnormalmap", ""},
+    {"usehemimap", "hasenvmap", ""},
+    {"hasshadow", "hasdot3alphatest", "hascolormapgloss", "hasshadowocclusion" , ""},
+    {"hasuvanimation", "hasgimap", ""},
 };
-

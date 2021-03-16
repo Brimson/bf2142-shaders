@@ -73,8 +73,7 @@ VS2PS VShader(APP2VS indata,
     return outdata;
 }
 
-PS2FB PShader(VS2PS indata,
-    uniform sampler2D colorMap)
+PS2FB PShader(VS2PS indata, uniform sampler2D colorMap)
 {
     PS2FB outdata;
     float4 base = tex2D(colorMap, indata.Tex0);
@@ -82,17 +81,19 @@ PS2FB PShader(VS2PS indata,
     return outdata;
 }
 
-PS2FB PShaderMarked(VS2PS indata,
-    uniform sampler2D colorMap)
+PS2FB PShaderMarked(VS2PS indata, uniform sampler2D colorMap)
 {
     PS2FB outdata;
+
     float4 base = tex2D(colorMap, indata.Tex0);
     outdata.Col = (indata.Diffuse * base)+float4(1.f,0.f,0.f,0.f);
+
     return outdata;
 }
 
 
-technique t0_States <bool Restore = false;> {
+technique t0_States < bool Restore = false; >
+{
     pass BeginStates
     {
         CullMode = NONE;
