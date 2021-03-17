@@ -1,41 +1,43 @@
-// Global variables	we use to hold the view	matrix,	projection matrix,
-// ambient material, diffuse material, and the light vector	that 
-// describes the direction to the light	source.	 These variables are 
-// initialized from	the	application.
+/*
+    Global variables we use to hold the view matrix, projection matrix,
+    ambient material, diffuse material, and the light vector that
+    describes the direction to the light source. These variables are
+    initialized from the application.
+*/
 #include "shaders/RaCommon.fx"
 
 bool AlphaBlendEnable = false;
 
-float4x4	Bones[52];
-float4x4	world;
-vector		textureFactor = float4(1.0f, 1.0f, 1.0f, 1.0f);
+float4x4 Bones[52];
+float4x4 world;
+vector   textureFactor = float4(1.0f, 1.0f, 1.0f, 1.0f);
 
 texture	DiffuseMap;
 sampler DiffuseMapSampler = sampler_state
 {
-	Texture = (DiffuseMap);
-	MipFilter = LINEAR;
-	MinFilter = LINEAR;
-	MagFilter = LINEAR;
-	AddressU  = WRAP;
-	AddressV  = WRAP;
-	MipMapLodBias = 0;
+    Texture = (DiffuseMap);
+    MipFilter = LINEAR;
+    MinFilter = LINEAR;
+    MagFilter = LINEAR;
+    AddressU  = WRAP;
+    AddressV  = WRAP;
+    MipMapLodBias = 0;
 };
 
-//-----------VS/PS----
+// vs - ps
 
 struct VS_OUTPUT
 {
-	float4 Pos	: POSITION0;
-	float2 Tex	: TEXCOORD0;
-	float  Fog	: FOG;
+    float4 Pos : POSITION0;
+    float2 Tex : TEXCOORD0;
+    float  Fog : FOG;
 };
 
-string reqVertexElement[] = 
+string reqVertexElement[] =
 {
- 	"Position",
- 	"TBase2D",
- 	"Bone4Idcs"
+    "Position",
+    "TBase2D",
+    "Bone4Idcs"
 };
 
 VS_OUTPUT basicVertexShader
@@ -45,51 +47,51 @@ float2 tex0	: TEXCOORD0,
 float4 blendIndices : BLENDINDICES
 )
 {
-	VS_OUTPUT Out = (VS_OUTPUT)0;
+    VS_OUTPUT Out = (VS_OUTPUT)0;
 
-	// Compensate for lack of UBYTE4 on Geforce3
-	int4 indexVector = D3DCOLORtoUBYTE4(blendIndices);
-	int indexArray[4] = (int[4])indexVector;
+    // Compensate for lack of UBYTE4 on Geforce3
+    int4 indexVector = D3DCOLORtoUBYTE4(blendIndices);
+    int indexArray[4] = (int[4])indexVector;
 
-	Out.Pos		= mul(float4(inPos, 1), mul(Bones[indexArray[0]], ViewProjection));
-	Out.Fog		= calcFog(Out.Pos.w);
-	Out.Tex		= tex0;
+    Out.Pos = mul(float4(inPos, 1), mul(Bones[indexArray[0]], ViewProjection));
+    Out.Fog = calcFog(Out.Pos.w);
+    Out.Tex = tex0;
 
-	return Out;
+    return Out;
 }
 
 float4 PixelShader(VS_OUTPUT VsOut) : COLOR
 {
-	return tex2D(DiffuseMapSampler, VsOut.Tex) * float4(1,0,1,1);
+    return tex2D(DiffuseMapSampler, VsOut.Tex) * float4(1.0, 0.0, 1.0, 1.0);
 };
 
-string TemplateParameters[] = 
+string TemplateParameters[] =
 {
-	"DiffuseMap",
-	"ViewProjection"
+    "DiffuseMap",
+    "ViewProjection"
 };
 
-string InstanceParameters[] = 
+string InstanceParameters[] =
 {
-	"Bones",
-	"AlphaBlendEnable"
+    "Bones",
+    "AlphaBlendEnable"
 };
 
 technique defaultTechnique
 {
-	pass P0
-	{
-		vertexShader	= compile vs_1_1 basicVertexShader();
-		pixelShader		= compile ps_1_3 PixelShader();
+    pass P0
+    {
+        vertexShader = compile vs_2_0 basicVertexShader();
+        pixelShader = compile ps_2_0 PixelShader();
 
-#ifdef ENABLE_WIREFRAME
-		FillMode		= WireFrame;
-#endif
+        #ifdef ENABLE_WIREFRAME
+            FillMode = WireFrame;
+        #endif
 
-		AlphaTestEnable = < AlphaTest >;
-		AlphaBlendEnable= < AlphaBlendEnable >;
-		AlphaRef		= < alphaRef >;
-		SrcBlend		= < srcBlend >;
-		DestBlend		= < destBlend >;
-	}
+        AlphaTestEnable  = < AlphaTest >;
+        AlphaBlendEnable = < AlphaBlendEnable >;
+        AlphaRef         = < alphaRef >;
+        SrcBlend         = < srcBlend >;
+        DestBlend        = < destBlend >;
+    }
 }
