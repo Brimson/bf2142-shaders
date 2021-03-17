@@ -83,29 +83,29 @@ RaShader1Dif.fx                   | Stable
 RaShader1Dif1BoneSkinned.fx       | Stable
 RaShader2DifDet.fx                | Stable
 RaShaderBM.fx                     | Broken   | Shows black when use 2.0+, slowdown if under 2.a
-RaShaderBM.mfx                    | Stable
-RaShaderBMActiveCammo.fx          | Stable
-RaShaderBMadditive.fx             | Stable
-RaShaderBMCommon.fx               | Stable
-RaShaderBMZOnly.fx                | Stable
+RaShaderBM.mfx                    | Unstable
+RaShaderBMActiveCammo.fx          | Unstable
+RaShaderBMadditive.fx             | Unstable
+RaShaderBMCommon.fx               | Unstable
+RaShaderBMZOnly.fx                | Unstable
 RaShaderDefault.fx                | Stable
 RaShaderEditorRoad.fx             | Stable
 RaShaderEditorRoadDetail.fx       | Stable
-RaShaderLeaf.fx                   | Unstable | 2_0+ update generate hiccups when particles are present
-RaShaderLeafOG.fx                 | Stable
-RaShaderLeafPointLight.fx         | Stable
-RaShaderLeafPointLightShadowed.fx | Stable
-RaShaderLeafShadowed.fx           | Stable
-RaShaderRoad.fx                   | Unstable
-RaShaderRoadDetail.fx             | Unstable
-RaShaderRoadDetailNoBlend.fx      | Unstable
+RaShaderLeaf.fx                   | Broken   | 2_0+ update generate hiccups when particles are present
+RaShaderLeafOG.fx                 | Broken
+RaShaderLeafPointLight.fx         | Broken
+RaShaderLeafPointLightShadowed.fx | Broken
+RaShaderLeafShadowed.fx           | Broken
+RaShaderRoad.fx                   | Stable
+RaShaderRoadDetail.fx             | Stable
+RaShaderRoadDetailNoBlend.fx      | Stable
 
 RaShaderSM/STM                    | Status | Note
 --------------------------------- | ------ | ----
-RaShaderSM.fx                     |
-RaShaderSM.mfx                    |
-RaShaderSMActiveCamo.fx           |
-RaShaderSMCommon.fx               |
+RaShaderSM.fx                     | Broken | Lags and objects disappeares if forced 2_x
+RaShaderSM.mfx                    | Stable |
+RaShaderSMActiveCamo.fx           | Stable |
+RaShaderSMCommon.fx               | Stable |
 RaShaderSTM.fx                    |
 RaShaderSTM.mfx                   |
 RaShaderSTMCommon.fx              |
