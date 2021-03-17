@@ -101,14 +101,14 @@ RaShaderRoadDetailNoBlend.fx      | Stable
 RaShaderSM/STM                    | Status | Note
 --------------------------------- | ------ | ----
 RaShaderSM.fx                     | Broken | Lags and objects disappeares if forced 2_x
-RaShaderSM.mfx                    | Stable |
-RaShaderSMActiveCamo.fx           | Stable |
-RaShaderSMCommon.fx               | Stable |
-RaShaderSTM.fx                    |
-RaShaderSTM.mfx                   |
-RaShaderSTMCommon.fx              |
+RaShaderSM.mfx                    | Stable
+RaShaderSMActiveCamo.fx           | Stable
+RaShaderSMCommon.fx               | Stable
+RaShaderSTM.fx                    | Broken | Lags hard when replaced `psmodel/vsmodel` with 2.0
+RaShaderSTM.mfx                   | Stable
+RaShaderSTMCommon.fx              | Stable
 RaShaderTrunkOG.fx                |
-RaShaderTrunkSTMBase.fx           |
-RaShaderTrunkSTMBaseShadowed.fx   |
+RaShaderTrunkSTMBase.fx           | Stable
+RaShaderTrunkSTMBaseShadowed.fx   | Stable
 RaShaderTrunkSTMDetail.fx         |
-RaShaderTrunkSTMDetailShadowed.fx |
+RaShaderTrunkSTMDetailShadowed.fx | Stable
