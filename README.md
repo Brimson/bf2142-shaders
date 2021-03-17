@@ -2,15 +2,13 @@
 
 ## About
 
-DirectX 9.0 shader model update for Battlefield 2142
-
 Remember to clear the shader cache at `...\Documents\Battlefield 2142\mods\bf2142`
 
-Tested on:
+**Tested on:**
 - Windows 10 64-bit
 - RX 580
 
-Todo:
+**Todo:**
 - Cleanup and organize shader formatting for readability
 - Learn more about HLSL and porting asm (especially vs_1_1 asm)
 - Encourage shader compiler to use dot-product calculations instead of `MAD + MUL`
@@ -18,7 +16,7 @@ Todo:
 - Use optimization techniques from https://www.gdcvault.com/play/1018182/Low-Level-Thinking-in-High
 - Support vs_2_0 and ps_2_0 if possible
 
-Sources used for this project:
+**Sources used for this project:**
 - Project Reality's `shaders_client.zip` as reference
 - https://docs.microsoft.com/en-us/windows/win32/direct3dhlsl/dx9-graphics-reference-asm
 - http://developer.download.nvidia.com/assets/gamedev/docs/GDC2K1_DX8_Pixel_Shaders.pdf
