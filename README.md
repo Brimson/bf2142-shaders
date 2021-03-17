@@ -2,7 +2,7 @@
 
 ## About
 
-Shader Model 2.0 update for Battlefield 2142
+DirectX 9.0 shader model update for Battlefield 2142
 
 Remember to clear the shader cache at `...\Documents\Battlefield 2142\mods\bf2142`
 
