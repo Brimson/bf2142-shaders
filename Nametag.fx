@@ -99,7 +99,7 @@ sampler sampler2_bilin = sampler_state
 
 struct APP2VS
 {
-	float4 Pos	: POSITION;    
+	float4 Pos	: POSITION;
 	float2 Tex0	: TEXCOORD0;
 	int4 Indices	: BLENDINDICES0;
 };
@@ -136,16 +136,16 @@ VS2PS vsNametag(APP2VS input)
 	VS2PS output = (VS2PS)0;
 
 	float4 indexedTrans = Transformations[input.Indices.x];
-	
+
 	output.Pos.xyz = input.Pos + indexedTrans;
 	output.Pos.w = 1;
-	
+
 	output.Tex0 = input.Tex0;
-	
+
 	output.Col = lerp(Colors[input.Indices.y], Colors[input.Indices.z], crossFadeValue);
 	output.Col.a = Alphas[input.Indices.x];
 	output.Col.a *= 1 - saturate(indexedTrans.w * vFadeoutValues.x + vFadeoutValues.y);
-	
+
 	return output;
 }
 
@@ -176,17 +176,17 @@ VS2PS2TEXT vsNametag_healthbar(APP2VS input)
 
 	output.Pos.xyz = input.Pos + HealthBarTrans;
 	output.Pos.w = 1;
-	
+
 	output.Tex0 = input.Tex0;
 	output.Tex1 = input.Tex0;
-	
+
 	output.Col0.rgb = input.Tex0.x;
 	output.Col0.a = 1 - saturate(HealthBarTrans.w * vFadeoutValues.x + vFadeoutValues.y);
 
 	float4 Col0 = Colors[colorIndex1];
 	float4 Col1 = Colors[colorIndex2];
 	output.Col1 = lerp(Col0, Col1, crossFadeValue);
-	
+
 	return output;
 }
 
@@ -195,31 +195,31 @@ VS2PS vsNametag_vehicleIcons(APP2VS input)
 	VS2PS output = (VS2PS)0;
 
 	float3 tempPos = input.Pos;
-	
+
 	// since indata is aspectcompensated we need to compensate for that
 	tempPos.y /= fAspectComp;
-	
+
 	float3 rotPos;
 	rotPos.x = dot(tempPos, float3(IconRot.x, IconRot.z, 0));
 	rotPos.y = dot(tempPos, float3(IconRot.y, IconRot.w, 0));
 	rotPos.z = input.Pos.z;
-	
+
 	// fix aspect again
 	rotPos.y *= fAspectComp;
 
 	output.Pos.xyz = rotPos + HealthBarTrans;
 	output.Pos.w = 1;
-	
-	output.Tex0 = input.Tex0 + iconTexOffset;	
+
+	output.Tex0 = input.Tex0 + iconTexOffset;
 	output.Tex1 = input.Tex0 * iconFlashTexScaleOffset.xy + iconFlashTexScaleOffset.zw;
 
 	float4 Col0 = Colors[colorIndex1];
 	float4 Col1 = Colors[colorIndex2];
-	
+
 	output.Col = lerp(Col0, Col1, crossFadeValue);
 	output.Col.a = Alphas[alphaIndex];
 	output.Col.a *= 1 - saturate(HealthBarTrans.w * vFadeoutValues.x + vFadeoutValues.y);
-		
+
 	return output;
 }
 
@@ -228,31 +228,31 @@ VS2PS vsNametag_barIcons(APP2VS input)
 	VS2PS output = (VS2PS)0;
 
 	float3 tempPos = input.Pos;
-	
+
 	// since indata is aspectcompensated we need to compensate for that
 	tempPos.y /= fAspectComp;
-	
+
 	float3 rotPos;
 	rotPos.x = dot(tempPos, float3(IconRot.x, IconRot.z, 0));
 	rotPos.y = dot(tempPos, float3(IconRot.y, IconRot.w, 0));
 	rotPos.z = input.Pos.z;
-	
+
 	// fix aspect again
 	rotPos.y *= fAspectComp;
 
 	output.Pos.xyz = rotPos + HealthBarTrans;
 	output.Pos.w = 1;
-	
-	output.Tex0 = input.Tex0 + iconTexOffset;	
+
+	output.Tex0 = input.Tex0 + iconTexOffset;
 	output.Tex1 = input.Tex0 * iconFlashTexScaleOffset.xy + iconFlashTexScaleOffset.zw;
 
 	float4 Col0 = Colors[colorIndex1];
 	float4 Col1 = Colors[colorIndex2];
-	
+
 	output.Col = lerp(Col0, Col1, crossFadeValue);
 	output.Col.a = 1.0;
 	output.Col.a *= 1 - saturate(HealthBarTrans.w * vFadeoutValues.x + vFadeoutValues.y);
-		
+
 	return output;
 }
 
@@ -262,22 +262,22 @@ VS3PS vsNametag_selectableVehicleIcons(APP2VS input)
 	VS3PS output = (VS3PS)0;
 
 	float3 tempPos = input.Pos;
-	
+
 	// since indata is aspectcompensated we need to compensate for that
 	tempPos.y /= fAspectComp;
-	
+
 	float3 rotPos;
 	rotPos.x = dot(tempPos, float3(IconRot.x, IconRot.z, 0));
 	rotPos.y = dot(tempPos, float3(IconRot.y, IconRot.w, 0));
 	rotPos.z = input.Pos.z;
-	
+
 	// fix aspect again
 	rotPos.y *= fAspectComp;
 
 	output.Pos.xyz = rotPos + HealthBarTrans;
 	output.Pos.w = 1;
-	
-	output.Tex0 = input.Tex0 + iconTexOffset;	
+
+	output.Tex0 = input.Tex0 + iconTexOffset;
 	output.Tex1 = input.Tex0 + iconTexOffset;
 	output.Tex2 = input.Tex0 * iconFlashTexScaleOffset.xy + iconFlashTexScaleOffset.zw;
 
@@ -292,8 +292,8 @@ VS3PS vsNametag_selectableVehicleIcons(APP2VS input)
 
 	float4 Col0 = Colors[colorIndex1];
 	float4 Col1 = Colors[colorIndex2];
-	float4 Col2 = Colors[colorIndex3];	
-	
+	float4 Col2 = Colors[colorIndex3];
+
 	output.Col = lerp(Col0, Col1, crossFadeValue);
 	output.Col.a *= 1 - saturate(HealthBarTrans.w * vFadeoutValues.x + vFadeoutValues.y);
 	output.Col1 = Col2;
@@ -313,12 +313,12 @@ float4 psNametag_selectableIcon(VS3PS indata) : COLOR0
 	float4 tx0 = tex2D(sampler0_bilin, indata.Tex0);
 	float4 tx1 = tex2D(sampler1_bilin, indata.Tex1);
 	float4 tx2 = tex2D(sampler2_bilin, indata.Tex2);
-	float4 result = lerp(tx1, tx2, crossFadeValue);// * indata.Col;	
+	float4 result = lerp(tx1, tx2, crossFadeValue);// * indata.Col;
 	result.rgb *= indata.Col.rgb;
-	
+
 	//result.rgb = lerp(tx0.rgb * indata.Col1.rgb, result.rgb, result.a);
 	result.rgb = lerp(tx0.a*indata.Col1.rgb, result.rgb, result.a);
-	result.a += tx0.a;	
+	result.a += tx0.a;
 	return result;
 }
 
@@ -346,12 +346,12 @@ float4 psNametag_healthbarVert(VS2PS2TEXT indata) : COLOR0
 {
 	float4 tx0 = tex2D(sampler0_point, indata.Tex0);
 	float4 tx1 = tex2D(sampler1_point, indata.Tex1);
-	return lerp(tx1, tx0, (1.f - fHealthValue)<indata.Col0.b) * indata.Col0.a * indata.Col1;	
+	return lerp(tx1, tx0, (1.f - fHealthValue)<indata.Col0.b) * indata.Col0.a * indata.Col1;
 }
 
 technique nametag
 <
-	int Declaration[] = 
+	int Declaration[] =
 	{
 		// StreamNo, DataType, Usage, UsageIdx
 		{ 0, D3DDECLTYPE_FLOAT3, D3DDECLUSAGE_POSITION, 0 },
@@ -371,7 +371,7 @@ technique nametag
 		CullMode = NONE;
 		ZEnable = FALSE;
 		ZWriteEnable = FALSE;
-		
+
 		VertexShader = compile vs_1_1 vsNametag();
 		PixelShader = compile ps_1_1 psNametag();
 	}
@@ -379,7 +379,7 @@ technique nametag
 
 technique nametag_arrow
 <
-	int Declaration[] = 
+	int Declaration[] =
 	{
 		// StreamNo, DataType, Usage, UsageIdx
 		{ 0, D3DDECLTYPE_FLOAT3, D3DDECLUSAGE_POSITION, 0 },
@@ -399,7 +399,7 @@ technique nametag_arrow
 		CullMode = NONE;
 		ZEnable = FALSE;
 		ZWriteEnable = FALSE;
-	
+
 		VertexShader = compile vs_1_1 vsNametag_arrow();
 		PixelShader = compile ps_1_1 psNametag_arrow();
 	}
@@ -408,7 +408,7 @@ technique nametag_arrow
 
 technique nametag_healthbar
 <
-	int Declaration[] = 
+	int Declaration[] =
 	{
 		// StreamNo, DataType, Usage, UsageIdx
 		{ 0, D3DDECLTYPE_FLOAT3, D3DDECLUSAGE_POSITION, 0 },
@@ -428,15 +428,15 @@ technique nametag_healthbar
 		CullMode = NONE;
 		ZEnable = FALSE;
 		ZWriteEnable = FALSE;
-		
+
 		VertexShader = compile vs_1_1 vsNametag_healthbar();
 		PixelShader = compile ps_1_1 psNametag_healthbar();
 	}
-}	
+}
 
 technique nametag_vehicleIcons
 <
-	int Declaration[] = 
+	int Declaration[] =
 	{
 		// StreamNo, DataType, Usage, UsageIdx
 		{ 0, D3DDECLTYPE_FLOAT3, D3DDECLUSAGE_POSITION, 0 },
@@ -456,15 +456,15 @@ technique nametag_vehicleIcons
 		CullMode = NONE;
 		ZEnable = FALSE;
 		ZWriteEnable = FALSE;
-		
+
 		VertexShader = compile vs_1_1 vsNametag_vehicleIcons();
 		PixelShader = compile ps_1_4 psNametag_icon();
 	}
-}	
+}
 
 technique nametag_barIcons
 <
-	int Declaration[] = 
+	int Declaration[] =
 	{
 		// StreamNo, DataType, Usage, UsageIdx
 		{ 0, D3DDECLTYPE_FLOAT3, D3DDECLUSAGE_POSITION, 0 },
@@ -484,7 +484,7 @@ technique nametag_barIcons
 		CullMode = NONE;
 		ZEnable = FALSE;
 		ZWriteEnable = FALSE;
-		
+
 		VertexShader = compile vs_1_1 vsNametag_barIcons();
 		PixelShader = compile ps_1_4 psNametag_icon();
 	}
@@ -492,7 +492,7 @@ technique nametag_barIcons
 
 technique nametag_selectableVehicleIcons
 <
-	int Declaration[] = 
+	int Declaration[] =
 	{
 		// StreamNo, DataType, Usage, UsageIdx
 		{ 0, D3DDECLTYPE_FLOAT3, D3DDECLUSAGE_POSITION, 0 },
@@ -512,8 +512,8 @@ technique nametag_selectableVehicleIcons
 		CullMode = NONE;
 		ZEnable = FALSE;
 		ZWriteEnable = FALSE;
-		
+
 		VertexShader = compile vs_1_1 vsNametag_selectableVehicleIcons();
 		PixelShader = compile ps_1_4 psNametag_selectableIcon();
 	}
-}	
+}
