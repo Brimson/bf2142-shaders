@@ -6,6 +6,10 @@ Shader Model 2.0 update for Battlefield 2142
 
 Remember to clear the shader cache at `...\Documents\Battlefield 2142\mods\bf2142`
 
+Tested on:
+- Windows 10 64-bit
+- RX 580
+
 Todo:
 - Cleanup and organize shader formatting for readability
 - Learn more about HLSL and porting asm (especially vs_1_1 asm)
@@ -38,14 +42,14 @@ datatypes.fx         | Stable
 
 Debug                       | Status   | Note
 --------------------------- | -------- | ----
-DebugCircleShader.fx        | Unstable | Sun flickering
+DebugCircleShader.fx        | Unstable | Causes sun flickering if 2_x (perhaps due to zwrite)
 DebugD3DXMeshShapeShader.fx | Unstable | Sun flickering
 DebugLineGraph.fx           | Unstable | Sun flickering
 DebugSphereShader.fx        | Unstable | Sun flickering
 
 Lighting             | Status | Note
 -------------------- | ------ | ----
-Decals.fx            | Stable
+Decals.fx            | Stable | Decal lighting only at light direction (same as vanilla)
 Font.fx              | Stable
 FSQuadDrawer.fx      | Stable
 FXCommon.fx          | Stable
