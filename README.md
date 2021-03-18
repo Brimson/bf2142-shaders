@@ -56,7 +56,7 @@ LightManager_r3x0.fx | Stable
 LoadingScreen.fx     | Stable
 
 Particles                    | Status | Note
----------------------------- | ------ | --------
+---------------------------- | ------ | ----
 MeshParticleMesh_nv3x.fx     | Stable
 MeshParticleMesh.fx          | Stable
 Nametag.fx                   | Stable
@@ -98,13 +98,13 @@ RaShaderRoad.fx                   | Stable
 RaShaderRoadDetail.fx             | Stable
 RaShaderRoadDetailNoBlend.fx      | Stable
 
-RaShaderSM/STM                    | Status | Note
---------------------------------- | ------ | ----
-RaShaderSM.fx                     | Broken | Lags and objects disappeares if forced 2_x
+RaShaderSM/STM                    | Status   | Note
+--------------------------------- | -------- | ----
+RaShaderSM.fx                     | Broken   | Lags and objects disappeares if forced 2_x
 RaShaderSM.mfx                    | Stable
 RaShaderSMActiveCamo.fx           | Stable
 RaShaderSMCommon.fx               | Stable
-RaShaderSTM.fx                    | Broken | Lags hard when replaced `psmodel/vsmodel` with 2.0
+RaShaderSTM.fx                    | Broken   | Lags hard when replaced `psmodel/vsmodel` with 2.0
 RaShaderSTM.mfx                   | Stable
 RaShaderSTMCommon.fx              | Stable
 RaShaderTrunkOG.fx                |
@@ -122,5 +122,18 @@ RaShaderWaterHighEnd3D.fx         | Stable
 RaShaderWaterSurrounding2D.fx     | Stable
 RaShaderWaterSurrounding3D.fx     | Stable
 RaShaderWaterSurrounding3D.fx     | Stable
-Road.fx                           | Stable
-RoadCompiled.fx                   | Stable
+
+SkinnedMesh + Misc         | Status | Note
+-------------------------- | ------ | ----
+Road.fx                    | Stable
+RoadCompiled.fx            | Stable
+SimpleAlphaBlendShader.fx  | Stable
+SkinnedMesh_dx9.dfx        | Stable
+SkinnedMesh_r3x0.fx        | Stable
+SkinnedMesh.fx             | Stable
+SkyDome.fx                 | Stable
+SplineShader.fx            | Stable
+
+StaticMesh                 | Status | Note
+-------------------------- | ------ | ----
+
