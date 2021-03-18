@@ -112,3 +112,15 @@ RaShaderTrunkSTMBase.fx           | Stable
 RaShaderTrunkSTMBaseShadowed.fx   | Stable
 RaShaderTrunkSTMDetail.fx         |
 RaShaderTrunkSTMDetailShadowed.fx | Stable
+RaShaderWater.fx                  | Stable
+RaShaderWater2D.fx                | Stable
+RaShaderWater3D.fx                | Stable
+RaShaderWaterBase.fx              | Unstable | Doesn't work if forcing the high-end shader
+RaShaderWaterDistant2D.fx         | Stable
+RaShaderWaterDistant3D.fx         | Stable
+RaShaderWaterHighEnd3D.fx         | Stable
+RaShaderWaterSurrounding2D.fx     | Stable
+RaShaderWaterSurrounding3D.fx     | Stable
+RaShaderWaterSurrounding3D.fx     | Stable
+Road.fx                           | Stable
+RoadCompiled.fx                   | Stable
