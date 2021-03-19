@@ -154,11 +154,11 @@ Terrain                        | Status | Note
 TerrainEditorShader.fx         | Stable
 TerrainShader_backup.fx        | Stable
 TerrainShader_debug.fx         | Stable
-TerrainShader_Hi.fx            | Broken | Doesn't drop fps, but terrain glitches
-TerrainShader_Low.fx           | Broken | Doesn't drop fps, but terrain glitches
+TerrainShader_Hi.fx            | Stable
+TerrainShader_Low.fx           | Stable
 TerrainShader_nv3x_leftover.fx |
 TerrainShader_nv3x.fx          |
 TerrainShader_r3x0.fx          |
-TerrainShader_Shared.fx        | Broken | Doesn't drop fps, but terrain glitches
+TerrainShader_Shared.fx        | Stable
 TerrainShader.fx               |
 TerrainUGShader.fx             |
