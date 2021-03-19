@@ -123,28 +123,42 @@ RaShaderWaterSurrounding2D.fx     | Stable
 RaShaderWaterSurrounding3D.fx     | Stable
 RaShaderWaterSurrounding3D.fx     | Stable
 
-SkinnedMesh + Misc         | Status | Note
--------------------------- | ------ | ----
-Road.fx                    | Stable
-RoadCompiled.fx            | Stable
-SimpleAlphaBlendShader.fx  | Stable
-SkinnedMesh_dx9.dfx        | Stable
-SkinnedMesh_r3x0.fx        | Stable
-SkinnedMesh.fx             | Stable
-SkyDome.fx                 | Stable
-SplineShader.fx            | Stable
+SkinnedMesh + Misc        | Status | Note
+------------------------- | ------ | ----
+Road.fx                   | Stable
+RoadCompiled.fx           | Stable
+SimpleAlphaBlendShader.fx | Stable
+SkinnedMesh_dx9.dfx       | Stable
+SkinnedMesh_r3x0.fx       | Stable
+SkinnedMesh.fx            | Stable
+SkyDome.fx                | Stable
+SplineShader.fx           | Stable
 
-StaticMesh + Misc          | Status | Note
--------------------------- | ------ | ----
-StaticMesh_debug.fx        | Stable
-StaticMesh_dx9.dfx         | Stable
-StaticMesh_editor.fx       | Stable
-StaticMesh_lightmapgen.fx  | Stable
-StaticMesh_nv3x.fx         | Stable
-StaticMesh_nv3xpp.fx       | Stable
-StaticMesh_r3x0.fx         | Stable
-StaticMesh.dfx             | Stable
-StaticMesh.fx              | Stable
-STM1_4.fx                  |
-SunFog.fx                  |
-SwiffMenu.fx               |
+StaticMesh + Misc         | Status | Note
+------------------------- | ------ | ----
+StaticMesh_debug.fx       | Stable
+StaticMesh_dx9.dfx        | Stable
+StaticMesh_editor.fx      | Stable
+StaticMesh_lightmapgen.fx | Stable
+StaticMesh_nv3x.fx        | Stable
+StaticMesh_nv3xpp.fx      | Stable
+StaticMesh_r3x0.fx        | Stable
+StaticMesh.dfx            | Stable
+StaticMesh.fx             | Stable
+STM1_4.fx                 | Stable
+SunFog.fx                 | Stable
+SwiffMenu.fx              | Stable
+
+Terrain                        | Status | Note
+------------------------------ | ------ | ----
+TerrainEditorShader.fx         |
+TerrainShader_backup.fx        |
+TerrainShader_debug.fx         |
+TerrainShader_Hi.fx            |
+TerrainShader_Low.fx           |
+TerrainShader_nv3x_leftover.fx |
+TerrainShader_nv3x.fx          |
+TerrainShader_r3x0.fx          |
+TerrainShader_Shared.fx        |
+TerrainShader.fx               |
+TerrainUGShader.fx             |
