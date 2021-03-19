@@ -27,9 +27,9 @@ BundleMesh                 | Status | Note
 -------------------------- | ------ | ----
 BundledMesh_debug.fx       | Stable
 BundledMesh_editor.fx      | Stable
-BundledMesh_lightmapgen.fx | Stable
-BundledMesh_nv3x.fx        | Stable
-BundledMesh_r3x0.fx        | Stable
+BundledMesh_lightmapgen.fx | Stable | Ports caused lighting intensity change (should fix)
+BundledMesh_nv3x.fx        | Stable | Ports caused lighting intensity change (should fix)
+BundledMesh_r3x0.fx        | Stable | Ports caused lighting intensity change (should fix)
 
 Common               | Status | Note
 -------------------- | ------ | ----
@@ -134,6 +134,17 @@ SkinnedMesh.fx             | Stable
 SkyDome.fx                 | Stable
 SplineShader.fx            | Stable
 
-StaticMesh                 | Status | Note
+StaticMesh + Misc          | Status | Note
 -------------------------- | ------ | ----
-
+StaticMesh_debug.fx        | Stable
+StaticMesh_dx9.dfx         | Stable
+StaticMesh_editor.fx       | Stable
+StaticMesh_lightmapgen.fx  | Stable
+StaticMesh_nv3x.fx         | Stable
+StaticMesh_nv3xpp.fx       | Stable
+StaticMesh_r3x0.fx         | Stable
+StaticMesh.dfx             | Stable
+StaticMesh.fx              | Stable
+STM1_4.fx                  |
+SunFog.fx                  |
+SwiffMenu.fx               |
