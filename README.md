@@ -156,9 +156,17 @@ TerrainShader_backup.fx        | Stable
 TerrainShader_debug.fx         | Stable
 TerrainShader_Hi.fx            | Stable
 TerrainShader_Low.fx           | Stable
-TerrainShader_nv3x_leftover.fx |
-TerrainShader_nv3x.fx          |
-TerrainShader_r3x0.fx          |
+TerrainShader_nv3x_leftover.fx | Stable
+TerrainShader_nv3x.fx          | Stable
+TerrainShader_r3x0.fx          | Stable
 TerrainShader_Shared.fx        | Stable
-TerrainShader.fx               |
-TerrainUGShader.fx             |
+TerrainShader.fx               | Stable
+TerrainUGShader.fx             | Stable
+
+Misc                          | Status | Note
+----------------------------- | ------ | ----
+Trail.fx                      |
+TreeBillboard.fx              |
+TreeMesh.fx                   |
+TreeMeshBillboardGenerator.fx |
+Undergrowth.fx                |
