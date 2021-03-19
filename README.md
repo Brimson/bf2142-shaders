@@ -2,7 +2,7 @@
 
 ## About
 
-Remember to clear the shader cache at `...\Documents\Battlefield 2142\mods\bf2142`
+Remember to clear the shader cache at `...\Documents\Battlefield 2142\mods\bf2142` before installing
 
 **Tested on:**
 - Windows 10 64-bit
@@ -151,14 +151,14 @@ SwiffMenu.fx              | Stable
 
 Terrain                        | Status | Note
 ------------------------------ | ------ | ----
-TerrainEditorShader.fx         |
-TerrainShader_backup.fx        |
-TerrainShader_debug.fx         |
-TerrainShader_Hi.fx            |
-TerrainShader_Low.fx           |
+TerrainEditorShader.fx         | Stable
+TerrainShader_backup.fx        | Stable
+TerrainShader_debug.fx         | Stable
+TerrainShader_Hi.fx            | Broken | Doesn't drop fps, but terrain glitches
+TerrainShader_Low.fx           | Broken | Doesn't drop fps, but terrain glitches
 TerrainShader_nv3x_leftover.fx |
 TerrainShader_nv3x.fx          |
 TerrainShader_r3x0.fx          |
-TerrainShader_Shared.fx        |
+TerrainShader_Shared.fx        | Broken | Doesn't drop fps, but terrain glitches
 TerrainShader.fx               |
 TerrainUGShader.fx             |
