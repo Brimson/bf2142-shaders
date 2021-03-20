@@ -165,8 +165,8 @@ TerrainUGShader.fx             | Stable
 
 Misc                          | Status | Note
 ----------------------------- | ------ | ----
-Trail.fx                      |
-TreeBillboard.fx              |
-TreeMesh.fx                   |
-TreeMeshBillboardGenerator.fx |
-Undergrowth.fx                |
+Trail.fx                      | Stable
+TreeBillboard.fx              | Stable
+TreeMesh.fx                   | Stable
+TreeMeshBillboardGenerator.fx | Stable
+Undergrowth.fx                | Stable
