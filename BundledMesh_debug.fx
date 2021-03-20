@@ -29,7 +29,6 @@ technique showTangentBasis
 {
     pass p0
     {
-
         ZEnable = true;
         ZWriteEnable = false;
         AlphaBlendEnable = false;
@@ -37,7 +36,6 @@ technique showTangentBasis
         ColorArg1[0] = DIFFUSE;
         AlphaOp[0] = SELECTARG1;
         AlphaArg1[0] = DIFFUSE;
-
         VertexShader = compile vs_2_0 vsShowTanBasis();
     }
 }

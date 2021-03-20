@@ -1,5 +1,5 @@
 // Fog
-vec4 fogDistances : fogDistances : register(vs_1_1, c93);
+vec4 fogDistances : fogDistances : register(vs_2_0, c93);
 
 float calcFog(float w)
 {
