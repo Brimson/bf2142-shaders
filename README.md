@@ -47,7 +47,7 @@ DebugSphereShader.fx        | Unstable | Sun flickering
 
 Lighting             | Status | Note
 -------------------- | ------ | ----
-Decals.fx            | Stable | Decal lighting only at light direction (same as vanilla)
+Decals.fx            | Stable
 Font.fx              | Stable
 FSQuadDrawer.fx      | Stable
 FXCommon.fx          | Stable
@@ -80,12 +80,12 @@ RaShader                          | Status   | Note
 RaShader1Dif.fx                   | Stable
 RaShader1Dif1BoneSkinned.fx       | Stable
 RaShader2DifDet.fx                | Stable
-RaShaderBM.fx                     | Broken   | Shows black when use 2.0+, slowdown if under 2.a
-RaShaderBM.mfx                    | Unstable
-RaShaderBMActiveCammo.fx          | Unstable
-RaShaderBMadditive.fx             | Unstable
-RaShaderBMCommon.fx               | Unstable
-RaShaderBMZOnly.fx                | Unstable
+RaShaderBM.fx                     | Stable
+RaShaderBM.mfx                    | Stable
+RaShaderBMActiveCammo.fx          | Stable
+RaShaderBMadditive.fx             | Stable
+RaShaderBMCommon.fx               | Stable
+RaShaderBMZOnly.fx                | Stable
 RaShaderDefault.fx                | Stable
 RaShaderEditorRoad.fx             | Stable
 RaShaderEditorRoadDetail.fx       | Stable
