@@ -98,13 +98,13 @@ RaShaderRoad.fx                   | Stable
 RaShaderRoadDetail.fx             | Stable
 RaShaderRoadDetailNoBlend.fx      | Stable
 
-RaShaderSM/STM                    | Status   | Note
---------------------------------- | -------- | ----
-RaShaderSM.fx                     | Broken   | Lags and objects disappeares if forced 2_x
+RaShaderSM/STM                    | Status | Note
+--------------------------------- | ------ | ----
+RaShaderSM.fx                     | Stable
 RaShaderSM.mfx                    | Stable
 RaShaderSMActiveCamo.fx           | Stable
 RaShaderSMCommon.fx               | Stable
-RaShaderSTM.fx                    | Broken   | Lags hard when replaced `psmodel/vsmodel` with 2.0
+RaShaderSTM.fx                    | Broken | Lags hard when replaced `psmodel/vsmodel` with 2.0
 RaShaderSTM.mfx                   | Stable
 RaShaderSTMCommon.fx              | Stable
 RaShaderTrunkOG.fx                |
@@ -112,16 +112,19 @@ RaShaderTrunkSTMBase.fx           | Stable
 RaShaderTrunkSTMBaseShadowed.fx   | Stable
 RaShaderTrunkSTMDetail.fx         |
 RaShaderTrunkSTMDetailShadowed.fx | Stable
-RaShaderWater.fx                  | Stable
-RaShaderWater2D.fx                | Stable
-RaShaderWater3D.fx                | Stable
-RaShaderWaterBase.fx              | Unstable | Doesn't work if forcing the high-end shader
-RaShaderWaterDistant2D.fx         | Stable
-RaShaderWaterDistant3D.fx         | Stable
-RaShaderWaterHighEnd3D.fx         | Stable
-RaShaderWaterSurrounding2D.fx     | Stable
-RaShaderWaterSurrounding3D.fx     | Stable
-RaShaderWaterSurrounding3D.fx     | Stable
+
+RaShaderWater                 | Status   | Note
+----------------------------- | -------- | ----
+RaShaderWater.fx              | Stable
+RaShaderWater2D.fx            | Stable
+RaShaderWater3D.fx            | Stable
+RaShaderWaterBase.fx          | Unstable | Doesn't work if forcing the high-end shader
+RaShaderWaterDistant2D.fx     | Stable
+RaShaderWaterDistant3D.fx     | Stable
+RaShaderWaterHighEnd3D.fx     | Stable
+RaShaderWaterSurrounding2D.fx | Stable
+RaShaderWaterSurrounding3D.fx | Stable
+RaShaderWaterSurrounding3D.fx | Stable
 
 SkinnedMesh + Misc        | Status | Note
 ------------------------- | ------ | ----

@@ -2,7 +2,6 @@
 
 // common StaticMesh samplers
 
-
 // Fallback stuff
 string DeprecationList[] =
 {
@@ -64,9 +63,9 @@ sampler NormalMapSampler = sampler_state
 vec4	ObjectSpaceCamPos;
 vec4	WorldSpaceCamPos;
 
-int		AlphaTestRef		= 0;
-bool	DepthWrite			= 1;
-bool	DoubleSided			= 2;
+int		AlphaTestRef = 0;
+bool	DepthWrite   = 1;
+bool	DoubleSided  = 2;
 
 vec4 	DiffuseColor;
 vec4 	SpecularColor;
