@@ -27,9 +27,9 @@ BundleMesh                 | Status | Note
 -------------------------- | ------ | ----
 BundledMesh_debug.fx       | Stable
 BundledMesh_editor.fx      | Stable
-BundledMesh_lightmapgen.fx | Stable | Ports caused lighting intensity change (should fix)
-BundledMesh_nv3x.fx        | Stable | Ports caused lighting intensity change (should fix)
-BundledMesh_r3x0.fx        | Stable | Ports caused lighting intensity change (should fix)
+BundledMesh_lightmapgen.fx | Stable
+BundledMesh_nv3x.fx        | Stable
+BundledMesh_r3x0.fx        | Stable
 
 Common               | Status | Note
 -------------------- | ------ | ----
@@ -89,11 +89,11 @@ RaShaderBMZOnly.fx                | Unstable
 RaShaderDefault.fx                | Stable
 RaShaderEditorRoad.fx             | Stable
 RaShaderEditorRoadDetail.fx       | Stable
-RaShaderLeaf.fx                   | Broken   | 2_0+ update generate hiccups when particles are present
-RaShaderLeafOG.fx                 | Broken
-RaShaderLeafPointLight.fx         | Broken
-RaShaderLeafPointLightShadowed.fx | Broken
-RaShaderLeafShadowed.fx           | Broken
+RaShaderLeaf.fx                   | Stable
+RaShaderLeafOG.fx                 | Stable
+RaShaderLeafPointLight.fx         | Stable
+RaShaderLeafPointLightShadowed.fx | Stable
+RaShaderLeafShadowed.fx           | Stable
 RaShaderRoad.fx                   | Stable
 RaShaderRoadDetail.fx             | Stable
 RaShaderRoadDetailNoBlend.fx      | Stable
