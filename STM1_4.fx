@@ -2,7 +2,7 @@
 #include "shaders/RaCommon.fx"
 #include "shaders/RaShaderSTMCommon.fx"
 
-#define skyNormal vec3(0.78,0.52,0.65)
+#define skyNormal vec3(0.78, 0.52, 0.65)
 #define SPECULARCOLOR float3(0.3, 0.3, 0.35)
 
 #define  _PARALLAXDETAIL_ 1

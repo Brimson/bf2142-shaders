@@ -1,17 +1,6 @@
+
 #include "shaders/datatypes.fx"
 #include "shaders/raCommon.fx"
-
-/*
-    #define USE_FRESNEL
-    #define USE_SPECULAR
-    #define USE_SHADOWS
-    #define PIXEL_CAMSPACE
-    #define USE_3DTEXTURE
-
-    #define PS_20
-*/
-
-#define ASM14
 
 // Affects how transparency is claculated depending on camera height.
 // Try increasing/decreasing ADD_ALPHA slighty for different results
@@ -309,7 +298,7 @@ vec4 Water(in VS_OUTPUT_WATER VsData) : COLOR
     #endif
 
     #ifdef USE_FRESNEL
-        finalColor.a =  lightmap.r * fresnel + _WaterColor.w;
+        finalColor.a = lightmap.r * fresnel + _WaterColor.w;
     #else
         finalColor.a = lightmap.r + _WaterColor.w;
     #endif
@@ -317,95 +306,19 @@ vec4 Water(in VS_OUTPUT_WATER VsData) : COLOR
     return finalColor;
 }
 
-#ifndef ASM14
-    vec4 Water14 ( in VS_OUTPUT_WATER VsData) : COLOR
-    {
-        vec4 finalColor;
-
-        #ifdef NO_LIGHTMAP // F85BD0
-            vec4 lightmap = PointColor;
-        #else
-            vec4 lightmap = tex2D(LightMapSampler, VsData.lmtex);
-        #endif
-
-        vec4 t0 = tex2D(WaterMapSampler0, VsData.Tex);
-        vec4 t1 = tex2D(WaterMapSampler1, VsData.Tex);
-        vec4 TN = lerp(t0, t1, WaterCycleTime);
-
-        TN.rgb = (TN.rgb * 2)-1;
-
-        vec3 reflection = reflect(VsData.Position, TN);
-        vec3 envcol = texCUBE(CubeMapSampler, reflection);
-
-        return float4(envcol, 1);
-
-        scalar shadFac = lightmap.g;//
-        scalar lerpMod = -(1 - saturate(shadFac+SHADOW_FACTOR));
-
-        finalColor.rgb = lerp(WaterColor, envcol, COLOR_ENVMAP_RATIO + lerpMod);
-
-        float a = 2;
-
-        finalColor.a = lightmap.r * a;
-
-        return finalColor;
-    }
-#endif
-
 technique defaultShader
 {
     pass P0
     {
-        vertexshader = compile vs_1_1 waterVertexShader();
-
-        #ifdef PS_20
-            pixelshader = compile PSMODEL Water();
-        #else
-            #ifdef ASM14
-                Sampler[0] = (WaterMapSampler0);
-                Sampler[1] = (WaterMapSampler1);
-                Sampler[2] = (CubeMapSampler);
-                Sampler[3] = (LightMapSampler);
-                PixelShaderConstantF[0] = (WaterCycleTime);
-                PixelShaderConstantF[1] = (WaterColor);
-                PixelShaderConstantF[2] = (WaterScroll);
-                PixelShaderConstantF[3] = (PointColor);
-
-                PixelShader = asm
-                {
-                    ps_1_4
-
-                    texld r0, t0
-                    texld r1, t0
-                    texcrd r2.xyz, t2
-
-                    lrp r3.rgb, c0.x, r1, r0 // r3 = lerp() between the 2 water normal maps
-                    dp3 r1.w, r2, r3_bx2
-                    mad r0.xyz, r3_bx2, -r1_x2.w, r2
-
-                    phase
-
-                    texld r2, r0
-
-                    #ifdef NO_LIGHTMAP // F85BD0
-                        mov	r3,c3
-                    #else
-                        texld r3, t1
-                    #endif
-                        add_d2	r1.g, r3.g, c2.z
-                        lrp	r0.rgb, r1.g, r2, c1
-                        +add r0.w, r3.r, c1.w
-                    };
-                #else
-                    pixelshader = compile ps_1_4 Water14();
-                #endif
-        #endif
+        vertexshader = compile vs_2_0 waterVertexShader();
+        pixelshader = compile ps_2_0 Water();
 
         fogenable = true;
 
         #ifdef ENABLE_WIREFRAME
             FillMode = WireFrame;
         #endif
+
         CullMode         = NONE;
         AlphaBlendEnable = true;
         AlphaTestEnable  = true;

@@ -98,13 +98,13 @@ RaShaderRoad.fx                   | Stable
 RaShaderRoadDetail.fx             | Stable
 RaShaderRoadDetailNoBlend.fx      | Stable
 
-RaShaderSM/STM                    | Status | Note
---------------------------------- | ------ | ----
+RaShaderSM/STM                    | Status   | Note
+--------------------------------- | -------- | ----
 RaShaderSM.fx                     | Stable
 RaShaderSM.mfx                    | Stable
 RaShaderSMActiveCamo.fx           | Stable
 RaShaderSMCommon.fx               | Stable
-RaShaderSTM.fx                    | Broken | Lags hard when replaced `psmodel/vsmodel` with 2.0
+RaShaderSTM.fx                    | Unstable | Output is very bright if `ps_2_0`
 RaShaderSTM.mfx                   | Stable
 RaShaderSTMCommon.fx              | Stable
 RaShaderTrunkOG.fx                |
