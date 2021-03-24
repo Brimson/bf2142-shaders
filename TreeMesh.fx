@@ -245,8 +245,8 @@ OUT_vsBumpSpecularHemiAndSunPV vsBumpSpecularHemiAndSunPV
 
     // Hemi lookup values
     vec3 AlmostNormal = input.Normal.xyz;
-    Out.GroundUVAndLerp.xy = (input.Pos +(HeightmapSize/2) + AlmostNormal*1).xz / HeightmapSize;
-    Out.GroundUVAndLerp.z = (AlmostNormal.y+1)/2;
+    Out.GroundUVAndLerp.xy = (input.Pos + (HeightmapSize * 0.5) + AlmostNormal).xz / HeightmapSize;
+    Out.GroundUVAndLerp.z = AlmostNormal.y * 0.5 + 0.5;
 
     // Cross product to create BiNormal
     vec3 binormal = normalize(cross(input.Tan, input.Normal));
@@ -277,7 +277,7 @@ float4 psBumpSpecularHemiAndSunPV(  OUT_vsBumpSpecularHemiAndSunPV indata,
                                     uniform float4 SunColor) : COLOR
 {
     vec4 normalmap = tex2D(sampler0, indata.NormalMap);
-    vec3 expandedNormal = (normalmap.xyz - 0.5) * 2;
+    vec3 expandedNormal = normalmap.xyz * 2.0 - 1.0;
     vec4 diffuse = tex2D(sampler3, indata.NormalMap);
     vec2 intensityuv = float2(dot(indata.LightVec, expandedNormal), dot(indata.HalfVec, expandedNormal));
 
@@ -287,7 +287,7 @@ float4 psBumpSpecularHemiAndSunPV(  OUT_vsBumpSpecularHemiAndSunPV indata,
 
     vec4 groundcolor = tex2D(sampler1, indata.GroundUVAndLerp.xy);
     vec4 hemicolor = lerp(groundcolor, SkyColor, indata.GroundUVAndLerp.z - hemiLerpBias);
-    vec4 result = AmbientColor*hemicolor + (realintensity * groundcolor.a * groundcolor.a);
+    vec4 result = AmbientColor * hemicolor + (realintensity * groundcolor.a * groundcolor.a);
     result.a = diffuse.a;
     return result;
 }
@@ -374,9 +374,6 @@ OUT_vsBumpSpecularPointLight vsBumpSpecularPointLight
     // Need to calculate the WorldI based on each matBone skinning world matrix
     float3x3 TanBasis = float3x3( input.Tan.xyz, binormal, input.Normal.xyz);
 
-    // Calculate WorldTangent directly... inverse is the transpose for affine rotations
-    // float3x3 worldI = transpose(mul(TanBasis, mOneBoneSkinning[IndexArray[0]]));
-
     // Pass-through texcoords
     Out.NormalMap = input.TexCoord;
 
@@ -392,7 +389,6 @@ OUT_vsBumpSpecularPointLight vsBumpSpecularPointLight
     float3 tanEyeVec = mul(objEyeVec, TanBasis);
 
     Out.HalfVec = normalize(normalize(tanLightVec) + normalize(tanEyeVec));
-    //Out.HalfVec = (normalize(tanLightVec) + normalize(tanEyeVec)) * 0.5;
 
     return Out;
 }
@@ -402,15 +398,15 @@ float4 psBumpSpecularPointLight(OUT_vsBumpSpecularPointLight indata,
                                 uniform float4 LightColor) : COLOR
 {
     float4 normalmap = tex2D(sampler0, indata.NormalMap);
-    float3 expandedNormal = (normalmap.xyz - 0.5) * 2;
+    float3 expandedNormal = normalmap.xyz * 2.0 - 1.0;
     vec4 diffuse = tex2D(sampler3, indata.NormalMap);
 
     float3 normalizedLVec = normalize(indata.LightVec);
     float2 intensityuv = float2(dot(normalizedLVec,expandedNormal), dot(indata.HalfVec,expandedNormal));
-    float4 realintensity = intensityuv.r + pow(intensityuv.g,36)*normalmap.a;
+    float4 realintensity = intensityuv.r + pow(intensityuv.g, 36.0) * normalmap.a;
     realintensity *= LightColor;
 
-    float attenuation = saturate(1-dot(indata.ObjectLightVec,indata.ObjectLightVec)*AttenuationSqrInv);
+    float attenuation = saturate(1.0 - dot(indata.ObjectLightVec, indata.ObjectLightVec) * AttenuationSqrInv);
     vec4 result = attenuation * realintensity;
     result.a = diffuse.a;
     return result;
@@ -508,19 +504,19 @@ OUT_vsBumpSpecularSpotLight vsBumpSpecularSpotLight
 float4 psBumpSpecularSpotLight( OUT_vsBumpSpecularSpotLight indata,
                                 uniform float AttenuationSqrInv,
                                 uniform float4 LightColor,
-                                uniform float LightConeAngle ) : COLOR
+                                uniform float LightConeAngle) : COLOR
 {
     float offCenter = dot(normalize(indata.LightVec), indata.LightDir);
-    float conicalAtt = saturate(offCenter-(1-LightConeAngle))/LightConeAngle;
+    float conicalAtt = saturate(offCenter - (1.0 - LightConeAngle)) / LightConeAngle;
 
     float4 normalmap = tex2D(sampler0, indata.NormalMap);
-    float3 expandedNormal = (normalmap.xyz - 0.5) * 2;
+    float3 expandedNormal = normalmap.xyz * 2.0 - 1.0;
 
     float3 normalizedLVec = normalize(indata.LightVec);
     float2 intensityuv = float2(dot(normalizedLVec,expandedNormal), dot(indata.HalfVec,expandedNormal));
-    float4 realintensity = intensityuv.r + pow(intensityuv.g,36)*normalmap.a;
+    float4 realintensity = intensityuv.r + pow(intensityuv.g, 36.0) * normalmap.a;
     realintensity *= LightColor;
-    float radialAtt = 1-saturate(dot(indata.LightVec,indata.LightVec)*AttenuationSqrInv);
+    float radialAtt = 1.0 - saturate(dot(indata.LightVec, indata.LightVec) * AttenuationSqrInv);
     return realintensity * conicalAtt * radialAtt;
 }
 
@@ -565,7 +561,8 @@ technique SpotLight
     }
 }
 
-struct OUT_vsBumpSpecularMulDiffuse {
+struct OUT_vsBumpSpecularMulDiffuse
+{
     float4 HPos       : POSITION;
     float2 DiffuseMap : TEXCOORD0;
 };
