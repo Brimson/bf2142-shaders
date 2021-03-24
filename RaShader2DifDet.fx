@@ -47,10 +47,10 @@ float4x4 ViewProjection;
 
 VS_OUTPUT basicVertexShader
 (
-float3 inPos: POSITION0,
-float3 inNormal: NORMAL,
-float2 tex0	: TEXCOORD0,
-float2 tex1	: TEXCOORD1
+    float3 inPos: POSITION0,
+    float3 inNormal: NORMAL,
+    float2 tex0 : TEXCOORD0,
+    float2 tex1 : TEXCOORD1
 )
 {
     VS_OUTPUT Out = (VS_OUTPUT)0;

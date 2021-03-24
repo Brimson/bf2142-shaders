@@ -12,14 +12,14 @@ scalar	TexUnpack;
 
 vector textureFactor = float4(1.0f, 1.0f, 1.0f, 1.0f);
 
-//-----------VS/PS----
+// VS --- PS
 
 struct VS_OUTPUT
 {
-    float4 Pos	: POSITION0;
-    float3 Tex0AndZFade	: TEXCOORD0;
-    float4 lightTex : TEXCOORD2;
-    float Fog : Fog;
+    float4 Pos          : POSITION0;
+    float3 Tex0AndZFade : TEXCOORD0;
+    float4 lightTex     : TEXCOORD2;
+    float Fog           : Fog;
 };
 
 texture	LightMap;
@@ -57,26 +57,25 @@ string reqVertexElement[] =
 
 VS_OUTPUT basicVertexShader
 (
-float4 inPos: POSITION0,
-float2 tex0	: TEXCOORD0
+    float4 inPos: POSITION0,
+    float2 tex0	: TEXCOORD0
 )
 {
     VS_OUTPUT Out = (VS_OUTPUT)0;
 
     float4 wPos = mul(inPos * PosUnpack, World);
-    wPos.y += .01;
+    wPos.y += 0.01;
 
     Out.Pos	= mul(wPos, ViewProjection);
     Out.Tex0AndZFade.xy = tex0 * TexUnpack;
 
-    Out.lightTex.xy = Out.Pos.xy/Out.Pos.w;
-    Out.lightTex.xy = (Out.lightTex.xy + 1) / 2;
-    Out.lightTex.y = 1-Out.lightTex.y;
+    Out.lightTex.xy = (Out.Pos.xy / Out.Pos.w) * 0.5 + 0.5;
+    Out.lightTex.y = 1.0 - Out.lightTex.y;
     Out.lightTex.xy = Out.lightTex.xy * Out.Pos.w;
     Out.lightTex.zw = Out.Pos.zw;
 
     float cameraDist = length(WorldSpaceCamPos - wPos);
-    Out.Tex0AndZFade.z = 1 - saturate((cameraDist * RoadFadeOut.x) - RoadFadeOut.y);
+    Out.Tex0AndZFade.z = 1.0 - saturate((cameraDist * RoadFadeOut.x) - RoadFadeOut.y);
 
     Out.Fog = calcFog(Out.Pos.w);
 

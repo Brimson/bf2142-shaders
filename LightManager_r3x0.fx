@@ -201,14 +201,11 @@ VS2PS_D3DXMesh vsDx9_SunLightShadowDynamicObjects(APP2VS_D3DXMesh indata)
     scaledPos = mul(scaledPos, mCamP);
     outdata.Pos = scaledPos;
 
-    outdata.TexCoord0.xy = outdata.Pos.xy / outdata.Pos.w;
-    outdata.TexCoord0.xy = (outdata.TexCoord0.xy * 0.5) + 0.5;
+    outdata.TexCoord0.xy = (outdata.Pos.xy / outdata.Pos.ww) * 0.5 + 0.5;
     outdata.TexCoord0.y = 1.0 - outdata.TexCoord0.y;
-    outdata.TexCoord0.x += 0.5 / 800.0;
-    outdata.TexCoord0.y += 0.5 / 600.0;
+    outdata.TexCoord0.xy += vec2(0.5 / 800.0, 0.5 / 600.0);
     outdata.TexCoord0.xy = outdata.TexCoord0.xy * outdata.Pos.w;
     outdata.TexCoord0.zw = outdata.Pos.zw;
-
     return outdata;
 }
 
@@ -226,10 +223,10 @@ PS2FB_DiffSpec psDx9_SunLightShadowDynamicObjectsNV(VS2PS_D3DXMesh indata)
 
     scalar texel = 1.0 / 1024.0;
     vec4 staticSamples;
-    staticSamples.x = tex2D(sampler4bilin, lightUV + vec2(-texel*1, -texel*2)).r;
-    staticSamples.y = tex2D(sampler4bilin, lightUV + vec2( texel*1, -texel*2)).r;
-    staticSamples.z = tex2D(sampler4bilin, lightUV + vec2(-texel*1,  texel*2)).r;
-    staticSamples.w = tex2D(sampler4bilin, lightUV + vec2( texel*1,  texel*2)).r;
+    staticSamples.x = tex2D(sampler4bilin, lightUV + vec2(-texel, -texel * 2.0)).r;
+    staticSamples.y = tex2D(sampler4bilin, lightUV + vec2( texel, -texel * 2.0)).r;
+    staticSamples.z = tex2D(sampler4bilin, lightUV + vec2(-texel,  texel * 2.0)).r;
+    staticSamples.w = tex2D(sampler4bilin, lightUV + vec2( texel,  texel * 2.0)).r;
     staticSamples.x = dot(staticSamples, 0.25);
 
     scalar diff = saturate(dot(viewNormal.xyz, -LightDir.xyz));
@@ -360,14 +357,11 @@ VS2PS_D3DXMesh vsDx9_SunLightShadowStaticObjects(APP2VS_D3DXMesh indata)
     scaledPos = mul(scaledPos, mCamP);
     outdata.Pos = scaledPos;
 
-    outdata.TexCoord0.xy = outdata.Pos.xy / outdata.Pos.w;
-    outdata.TexCoord0.xy = (outdata.TexCoord0.xy * 0.5) + 0.5;
+    outdata.TexCoord0.xy = (outdata.Pos.xy / outdata.Pos.ww) * 0.5 + 0.5;
     outdata.TexCoord0.y = 1.0 - outdata.TexCoord0.y;
-    outdata.TexCoord0.x += 0.000625;
-    outdata.TexCoord0.y += 0.000833;
+    outdata.TexCoord0.xy += vec2(0.000625, 0.000833);
     outdata.TexCoord0.xy = outdata.TexCoord0.xy * outdata.Pos.w;
     outdata.TexCoord0.zw = outdata.Pos.zw;
-
     return outdata;
 }
 
@@ -377,9 +371,7 @@ PS2FB_DiffSpec psDx9_SunLightShadowStaticObjectsNV(VS2PS_D3DXMesh indata)
 
     vec4 viewNormal = tex2Dproj(sampler0, indata.TexCoord0);
     vec4 viewPos = tex2Dproj(sampler1, indata.TexCoord0);
-
     vec4 lightMap = tex2Dproj(sampler2, indata.TexCoord0);
-
     vec4 lightUV = mul(viewPos, mLightVP);
 
     lightUV.xy = clamp(lightUV.xy, vViewportMap.xy, vViewportMap.zw);
@@ -438,14 +430,11 @@ VS2PS_D3DXMesh vsDx9_PointLight(APP2VS_D3DXMesh indata)
     vec3 wPos = indata.Pos * LightAttenuationRange + LightWorldPos.xyz;
     outdata.Pos = mul(vec4(wPos, 1.0), mVP);
 
-    outdata.TexCoord0.xy = outdata.Pos.xy/outdata.Pos.w;
-    outdata.TexCoord0.xy = (outdata.TexCoord0.xy * 0.5) + 0.5;
+    outdata.TexCoord0.xy = (outdata.Pos.xy / outdata.Pos.ww) * 0.5 + 0.5;
     outdata.TexCoord0.y = 1.0 - outdata.TexCoord0.y;
-    outdata.TexCoord0.x += 0.000625;
-    outdata.TexCoord0.y += 0.000833;
+    outdata.TexCoord0.xy += vec2(0.000625, 0.000833);
     outdata.TexCoord0.xy = outdata.TexCoord0.xy * outdata.Pos.w;
     outdata.TexCoord0.zw = outdata.Pos.zw;
-
     return outdata;
 }
 
@@ -695,14 +684,11 @@ VS2PS_D3DXMesh vsDx9_SpotLight(APP2VS_D3DXMesh indata)
     vec4 scaledPos = indata.Pos * vec4(1.5, 1.5, 1.0, 1.0) + vec4(0.0, 0.0, 0.5, 0.0);
     outdata.Pos = mul(scaledPos, mWVP);
 
-    outdata.TexCoord0.xy = outdata.Pos.xy / outdata.Pos.w;
-    outdata.TexCoord0.xy = (outdata.TexCoord0.xy * 0.5) + 0.5;
+    outdata.TexCoord0.xy = (outdata.Pos.xy / outdata.Pos.ww) * 0.5 + 0.5;
     outdata.TexCoord0.y = 1.0 - outdata.TexCoord0.y;
-    outdata.TexCoord0.x += 0.000625;
-    outdata.TexCoord0.y += 0.000833;
+    outdata.TexCoord0.xy += vec2(0.000625, 0.000833);
     outdata.TexCoord0.xy = outdata.TexCoord0.xy * outdata.Pos.w;
     outdata.TexCoord0.zw = outdata.Pos.zw;
-
     return outdata;
 }
 
@@ -874,11 +860,9 @@ VS2PS_D3DXMesh vsDx9_SpotProjector(APP2VS_D3DXMesh indata)
     vec4 properPos = indata.Pos + vec4(0.0, 0.0, 0.5, 0.0);
     outdata.Pos = mul(properPos, mWVP);
 
-    outdata.TexCoord0.xy = outdata.Pos.xy / outdata.Pos.w;
-    outdata.TexCoord0.xy = (outdata.TexCoord0.xy * 0.5) + 0.5;
+    outdata.TexCoord0.xy = (outdata.Pos.xy / outdata.Pos.ww) * 0.5 + 0.5;
     outdata.TexCoord0.y = 1.0 - outdata.TexCoord0.y;
-    outdata.TexCoord0.x += 0.000625;
-    outdata.TexCoord0.y += 0.000833;
+    outdata.TexCoord0.xy += vec2(0.000625, 0.000833);
     outdata.TexCoord0.xy = outdata.TexCoord0.xy * outdata.Pos.w;
     outdata.TexCoord0.zw = outdata.Pos.zw;
 
@@ -1085,11 +1069,9 @@ VS2PS_D3DXMesh vsDx9_BlitBackLightContribPoint(APP2VS_D3DXMesh indata)
     vec3 wPos = indata.Pos * LightAttenuationRange + LightWorldPos.xyz;
     outdata.Pos = mul(vec4(wPos, 1.0), mVP);
 
-    outdata.TexCoord0.xy = outdata.Pos.xy/outdata.Pos.w;
-    outdata.TexCoord0.xy = (outdata.TexCoord0.xy * 0.5) + 0.5;
+    outdata.TexCoord0.xy = (outdata.Pos.xy / outdata.Pos.ww) * 0.5 + 0.5;
     outdata.TexCoord0.y = 1.0 - outdata.TexCoord0.y;
-    outdata.TexCoord0.x += 0.000625;
-    outdata.TexCoord0.y += 0.000833;
+    outdata.TexCoord0.xy += vec2(0.000625, 0.000833);
     outdata.TexCoord0.xy = outdata.TexCoord0.xy * outdata.Pos.w;
     outdata.TexCoord0.zw = outdata.Pos.zw;
 
@@ -1103,11 +1085,9 @@ VS2PS_D3DXMesh vsDx9_BlitBackLightContribSpot(APP2VS_D3DXMesh indata)
     vec4 scaledPos = indata.Pos * vec4(1.5, 1.5, 1.0, 1.0) + vec4(0.0, 0.0, 0.5, 0.0);
     outdata.Pos = mul(scaledPos, mWVP);
 
-    outdata.TexCoord0.xy = outdata.Pos.xy/outdata.Pos.w;
-    outdata.TexCoord0.xy = (outdata.TexCoord0.xy * 0.5) + 0.5;
+    outdata.TexCoord0.xy = (outdata.Pos.xy / outdata.Pos.ww) * 0.5 + 0.5;
     outdata.TexCoord0.y = 1.0 - outdata.TexCoord0.y;
-    outdata.TexCoord0.x += 0.000625;
-    outdata.TexCoord0.y += 0.000833;
+    outdata.TexCoord0.xy += vec2(0.000625, 0.000833);
     outdata.TexCoord0.xy = outdata.TexCoord0.xy * outdata.Pos.w;
     outdata.TexCoord0.zw = outdata.Pos.zw;
 
@@ -1126,11 +1106,9 @@ VS2PS_D3DXMesh vsDx9_BlitBackLightContribSpotProjector(APP2VS_D3DXMesh indata)
 
     outdata.Pos = mul(properPos, mWVP);
 
-    outdata.TexCoord0.xy = outdata.Pos.xy / outdata.Pos.w;
-    outdata.TexCoord0.xy = (outdata.TexCoord0.xy * 0.5) + 0.5;
+    outdata.TexCoord0.xy = (outdata.Pos.xy / outdata.Pos.ww) * 0.5 + 0.5;
     outdata.TexCoord0.y = 1.0 - outdata.TexCoord0.y;
-    outdata.TexCoord0.x += 0.000625;
-    outdata.TexCoord0.y += 0.000833;
+    outdata.TexCoord0.xy += vec2(0.000625, 0.000833);
     outdata.TexCoord0.xy = outdata.TexCoord0.xy * outdata.Pos.w;
     outdata.TexCoord0.zw = outdata.Pos.zw;
 
@@ -1180,7 +1158,6 @@ PS2FB_Combine psDx9_CombineTransparent(VS2PS_Quad indata)
     vec4 spec1 = tex2D(sampler3, indata.TexCoord0);
 
     vec4 diffTot = lightmap + diff1;
-
     vec4 specTot = spec1;
 
     outdata.Col0 = diffTot * diffTex + specTot;

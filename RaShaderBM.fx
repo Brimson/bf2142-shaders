@@ -314,7 +314,7 @@ BMVariableVSOutput vs(BMVariableVSInput input)
     #if _POINTLIGHT_
         Out.SpecularLightOrPointFog = calcFog(Out.HPos.w);
     #else
-        Out.Fog = calcFog(Out.HPos.w); 		//always fog
+        Out.Fog = calcFog(Out.HPos.w); //always fog
     #endif
 
     return Out;
@@ -322,7 +322,6 @@ BMVariableVSOutput vs(BMVariableVSInput input)
 
 vec4 ps(BMVariableVSOutput input) : COLOR
 {
-    //return vec4(1,0,0,1);//DestBlend * 0.3;
     #if _FINDSHADER_
         return 1;
     #endif
@@ -330,7 +329,7 @@ vec4 ps(BMVariableVSOutput input) : COLOR
 
         vec4 texDiffuse = tex2D(DiffuseMapSampler, input.TexDiffuse);
 
-    #ifdef	DIFFUSE_CHANNEL
+    #ifdef DIFFUSE_CHANNEL
         return texDiffuse;
     #endif
 
@@ -358,8 +357,9 @@ vec4 ps(BMVariableVSOutput input) : COLOR
         vec3 lightVec = input.Interpolated[__LVECINTERPIDX];
 
         #if _POINTLIGHT_
-            scalar attenuation = 1 - saturate(dot(lightVec,lightVec) * Lights[0].attenuation);
+            scalar attenuation = 1.0 - saturate(dot(lightVec,lightVec) * Lights[0].attenuation);
         #endif
+
         //tl: don't normalize if lvec is world space sun direction
         #if _USEPERPIXELNORMALIZE_ && (_HASNORMALMAP_ || _POINTLIGHT_)
             lightVec = fastNormalize(lightVec);

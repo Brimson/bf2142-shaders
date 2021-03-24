@@ -195,11 +195,10 @@ struct VS_OUTPUT2
     float Fog     : FOG;
 };
 
-
-VS_OUTPUT bumpSpecularVertexShaderBlinn1(appdata input,
-                                        uniform mat4x4 ViewProj,
-                                        uniform mat4x4 ViewInv,
-                                        uniform vec4 LightPos)
+VS_OUTPUT bumpSpecularVertexShaderBlinn1(   appdata input,
+                                            uniform mat4x4 ViewProj,
+                                            uniform mat4x4 ViewInv,
+                                            uniform vec4 LightPos)
 {
     VS_OUTPUT Out = (VS_OUTPUT)0;
 
@@ -335,10 +334,12 @@ VS_OUTPUT2 diffuseVertexShader(appdata input,
     // Pass-through texcoords
     Out.TexCoord = input.TexCoord;
 
-    // Need to calculate the WorldI based on each matBone skinning world matrix
-    // There must be a more efficient way to do this...
-    // Inverse is simplified to M-1 = Rt * T,
-    // where Rt is the transpose of the rotaional part and T is the translation
+    /*
+        Need to calculate the WorldI based on each matBone skinning world matrix
+        There must be a more efficient way to do this...
+        Inverse is simplified to M-1 = Rt * T,
+        where Rt is the transpose of the rotaional part and T is the translation
+    */
     mat4x4 worldI;
     mat3x3 R;
     R[0] = vec3(mOneBoneSkinning[IndexArray[0]][0].xyz);
@@ -357,7 +358,7 @@ VS_OUTPUT2 diffuseVertexShader(appdata input,
     vec3 normalizedLightVec = normalize(lightDirObjSpace);
 
     scalar color = 0.8 + max(0.0, dot(Normal, normalizedLightVec));
-    Out.Diffuse = vec4(color, color, color, 1.0);
+    Out.Diffuse = vec2(color, 1.0).xxxy;
     Out.Fog = 0.0;
 
     return Out;
@@ -495,12 +496,10 @@ VS_OUTPUT_Alpha vsAlpha(appdata input, uniform mat4x4 ViewProj)
     Out.DiffuseMap = input.TexCoord.xy;
 
     // Hacked to only support 800/600
-    Out.Tex1.xy = Out.HPos.xy / Out.HPos.w;
-    Out.Tex1.xy = (Out.Tex1.xy * 0.5) + 0.5;
+    Out.Tex1.xy = (Out.HPos.xy / Out.HPos.ww) * 0.5 + 0.5;
     Out.Tex1.y = 1.0 - Out.Tex1.y;
     Out.Tex1.xy += vTexProjOffset;
-    Out.Tex1.xy = Out.Tex1.xy * Out.HPos.w;
-    Out.Tex1.zw = Out.HPos.zw;
+    Out.Tex1 = vec4(Out.Tex1.xy * Out.HPos.ww, Out.HPos.zw);
     Out.Fog = 0.0;
 
     return Out;
@@ -528,12 +527,10 @@ VS_OUTPUT_AlphaEnvMap vsAlphaEnvMap(appdata input, uniform mat4x4 ViewProj)
     Out.HPos = mul(vec4(Pos.xyz, 1.0), ViewProj);
 
     // Hacked to only support 800/600
-    Out.TexPos.xy = Out.HPos.xy/Out.HPos.w;
-    Out.TexPos.xy = (Out.TexPos.xy * 0.5) + 0.5;
+    Out.TexPos.xy = (Out.HPos.xy / Out.HPos.w) * 0.5 + 0.5;
     Out.TexPos.y = 1.0 - Out.TexPos.y;
     Out.TexPos.xy += vTexProjOffset;
-    Out.TexPos.xy = Out.TexPos.xy * Out.HPos.w;
-    Out.TexPos.zw = Out.HPos.zw;
+    Out.TexPos = vec4(Out.TexPos.xy * Out.HPos.ww, Out.HPos.zw);
 
     // Pass-through texcoords
     Out.DiffuseMap = input.TexCoord;
@@ -558,7 +555,7 @@ VS_OUTPUT_AlphaEnvMap vsAlphaEnvMap(appdata input, uniform mat4x4 ViewProj)
     // Transform eye pos to tangent space
     Out.EyeVecAndReflection.xyz = Pos - eyePos.xyz;
     Out.EyeVecAndReflection.w = eyePos.w;
-    Out.Fog = 0;
+    Out.Fog = 0.0;
     return Out;
 }
 
@@ -639,12 +636,9 @@ VS_OUTPUT_AlphaScope vsAlphaScope(appdata input, uniform mat4x4 ViewProj)
 
     scalar f = dot(wNormal, worldEyeVec);
     f = smoothstep(0.965, 1.0, f);
-    Out.Tex0AndTrans.z = f;
 
-    Out.Tex0AndTrans.xy = input.TexCoord;
-
-    Out.Tex1.xy = Out.HPos.xy / Out.HPos.w;
-    Out.Tex1.xy = (Out.Tex1.xy * 0.5) + 0.5;
+    Out.Tex0AndTrans.xyz = vec3(input.TexCoord, f);
+    Out.Tex1.xy = (Out.HPos.xy / Out.HPos.ww) * 0.5 + 0.5;
     Out.Tex1.y = 1.0 - Out.Tex1.y;
     Out.Fog = 0.0;
 
@@ -735,8 +729,7 @@ VS2PS_ShadowMapAlpha vsShadowMapAlpha(appdata input)
     vec3 Pos = mul(unpackPos, mOneBoneSkinning[IndexArray[0]]);
 
     Out.HPos = calcShadowProjCoords(vec4(Pos.xyz, 1.0), vpLightTrapezMat, vpLightMat);
-    Out.Tex0PosZW.xy = input.TexCoord;
-    Out.Tex0PosZW.zw = Out.HPos.zw;
+    Out.Tex0PosZW = vec4(input.TexCoord.xy, Out.HPos.zw);
     return Out;
 }
 
@@ -766,13 +759,10 @@ VS2PS_ShadowMap vsShadowMapPoint(appdata input)
     scalar d = length(hPos.xyz);
     hPos.xyz /= d;
     hPos.z += 1.0;
-    Out.HPos.x = hPos.x / hPos.z;
-    Out.HPos.y = hPos.y / hPos.z;
+    Out.HPos.xy = hPos.xy / hPos.zz;
     Out.HPos.z = (d * paraboloidZValues.x) + paraboloidZValues.y;
     Out.HPos.w = 1.0;
-
     Out.PosZW = Out.HPos.zw;
-
     return Out;
 }
 
@@ -798,14 +788,10 @@ VS2PS_ShadowMapAlpha vsShadowMapPointAlpha(appdata input)
     hPos.xyz /= d;
     hPos.z += 1.0;
 
-    Out.HPos.x = hPos.x / hPos.z;
-    Out.HPos.y = hPos.y / hPos.z;
+    Out.HPos.xy = hPos.xy / hPos.zz;
     Out.HPos.z = (d * paraboloidZValues.x) + paraboloidZValues.y;
     Out.HPos.w = 1.0;
-
-    Out.Tex0PosZW.xy = input.TexCoord;
-    Out.Tex0PosZW.zw = Out.HPos.zw;
-
+    Out.Tex0PosZW = vec4(input.TexCoord.xy, Out.HPos.zw);
     return Out;
 }
 

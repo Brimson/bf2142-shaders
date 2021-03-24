@@ -44,9 +44,8 @@ VS2PS_DT_Dx9 vsDx9_DT(APP2VS_DT_Dx9 indata)
 
     outdata.Pos = mul(wPos, mViewProj);
 
-    outdata.PosTex.xy = outdata.Pos.xy/outdata.Pos.w;
-    outdata.PosTex.xy = (outdata.PosTex.xy + 1) / 2;
-    outdata.PosTex.y = 1-outdata.PosTex.y;
+    outdata.PosTex.xy = (outdata.Pos.xy / outdata.Pos.ww) * 0.5 + 0.5;
+    outdata.PosTex.y = 1.0-outdata.PosTex.y;
     outdata.PosTex.zw = outdata.Pos.zw;
 
     outdata.Tex0And1.xy = indata.TexCoord0;
@@ -87,10 +86,8 @@ VS2PS_DT2_Dx9 vsDx9_DT2(APP2VS_DT_Dx9 indata)
 
     outdata.Pos = mul(wPos, mViewProj);
 
-    outdata.Tex0AndPos.zw = outdata.Pos.xy/outdata.Pos.w;
-    outdata.Tex0AndPos.zw = (outdata.Tex0AndPos.zw + 1) / 2;
-    outdata.Tex0AndPos.w = 1-outdata.Tex0AndPos.w;
-
+    outdata.Tex0AndPos.zw = (outdata.Pos.xy / outdata.Pos.w) * 0.5 + 0.5;
+    outdata.Tex0AndPos.w = 1.0 - outdata.Tex0AndPos.w;
     outdata.Tex0AndPos.xy = indata.TexCoord0;
 
     return outdata;
@@ -139,4 +136,3 @@ technique Dx9Style_DT
         PixelShader = compile ps_2_0 psDx9_DT2();
     }
 }
-

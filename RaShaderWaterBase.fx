@@ -200,7 +200,7 @@ VS_OUTPUT_WATER waterVertexShader
         vec3 tex;
         tex.xy = (wPos.xz / vec2(29.13, 31.81));
         tex.xy += (WaterScroll.xy * WaterCycleTime);
-        tex.z = WaterCycleTime*10 + (tex.x*0.7 + tex.y*1.13);
+        tex.z = WaterCycleTime * 10.0 + dot(tex.xy, vec2(0.7, 1.13));
     #else
         vec2 tex;
         tex.xy = (wPos.xz / vec2(99.13, 71.81));

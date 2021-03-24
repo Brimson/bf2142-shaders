@@ -79,7 +79,7 @@ float getBinormalFlipping(VS_IN input)
 {
     int4 IndexVector = D3DCOLORtoUBYTE4(input.BlendIndices);
     int IndexArray[4] = (int[4])IndexVector;
-    return 1.f + IndexArray[2] * -2.f;
+    return 1.0f + IndexArray[2] * -2.0f;
 }
 
 vec4 getWorldPos(VS_IN input)

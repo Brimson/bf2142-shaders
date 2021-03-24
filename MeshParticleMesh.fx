@@ -24,7 +24,7 @@ float4 m_transparencyGraph : TRANSPARENCYGRAPH;
 
 float4 ageAndAlphaArray[52] : AgeAndAlphaArray;
 float lightmapIntensityOffset : LightmapIntensityOffset;
-mat4x3 mOneBoneSkinning[52]: matONEBONESKINNING; /* : register(c50) < bool sparseArray = true; int arrayStart = 50; >; */
+mat4x3 mOneBoneSkinning[52]: matONEBONESKINNING;
 
 struct OUT_vsDiffuse
 {
@@ -79,9 +79,7 @@ float4 psDiffuse(OUT_vsDiffuse indata) : COLOR
 {
     vec4 outColor = tex2D(diffuseSampler, indata.DiffuseMap.xy) * indata.color;
     vec4 tLut = tex2D(lutSampler, indata.GroundUV);
-
     outColor.rgb *= calcParticleLighting(tLut.a, indata.LerpAndLMapIntOffset, indata.lightFactor.a);
-
     return outColor;
 }
 

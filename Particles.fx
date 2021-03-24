@@ -17,14 +17,9 @@ struct TemplateParameters
 // TODO: change the value 10 to the approprite max value for the current hardware, need to make this a variable
 TemplateParameters tParameters[10] : TemplateParameters;
 
-// PI
 scalar PI = 3.1415926535897932384626433832795;
-
-// Time
 scalar fracTime : FracTime;
-
-// Texel size
-vec2 texelSize : TexelSize = { 1.0f/800.f, 1.0f/600.f };
+vec2 texelSize : TexelSize = { 1.0f / 800.f, 1.0f / 600.f };
 
 // Back buffer texture
 uniform texture backbufferTexture: BackBufferTexture;
@@ -123,20 +118,18 @@ VS_PARTICLE_OUTPUT vsParticle(appdata input, uniform mat4x4 myWV, uniform mat4x4
     return Out;
 }
 
-
 #define LOW
-// #define MED
-// #define HIGH
 
 vec4 psParticle(VS_PARTICLE_OUTPUT input) : COLOR
 {
     float4 tDiffuse = tex2D( diffuseSampler, input.texCoords0.xy);
+
     #ifndef LOW
         float4 tDiffuse2 = tex2D( diffuseSampler2, input.texCoords1);
     #endif
 
     #ifdef HIGH
-        float4 tLut = tex2D( lutSampler, input.texCoords2.xy);
+        float4 tLut = tex2D(lutSampler, input.texCoords2.xy);
     #else
         float4 tLut = 1.0;
     #endif
@@ -198,7 +191,6 @@ float4 psParticleAdditiveLow(VS_PARTICLE_OUTPUT input) : COLOR
 
     // mask with alpha since were doing an add
     color.rgb *= color.a * input.lightFactorAndAlphaBlend.b;
-
     return color;
 }
 
@@ -389,10 +381,8 @@ VS_HEAT_SHIMMER_OUTPUT vsParticleHeatShimmer(appdata input, uniform mat4x4 myWV,
     size += input.randomSizeAlphaAndIntensityBlendFactor.x;
 
     // displace vertex
-    vec2 rotation = input.rotation*OneOverShort;
-    pos.x = input.displaceCoords.x * size + pos.x;
-    pos.y = input.displaceCoords.y * size + pos.y;
-
+    vec2 rotation = input.rotation * OneOverShort;
+    pos.xy = input.displaceCoords.xy * size + pos.xy;
     Out.HPos = mul(pos, myWP);
 
     // compute texcoords

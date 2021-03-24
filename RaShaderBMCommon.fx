@@ -84,7 +84,7 @@ vec4 Ambient;
 vec4 HemiMapConstantColor;
 vec4 HemiMapSkyColor;
 
-float InvHemiHeightScale = 100;
+float InvHemiHeightScale = 100.0;
 float HeightOverTerrain = 0.0;
 float Reflectivity;
 

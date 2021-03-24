@@ -366,44 +366,44 @@ vec4 eyePosObjectSpace : EyePosObjectSpace;
 
 struct appdata
 {
-    vec4 Pos : POSITION;
-    vec3 Normal : NORMAL;
+    vec4 Pos      : POSITION;
+    vec3 Normal   : NORMAL;
     vec2 TexCoord : TEXCOORD0;
-    vec3 Tan    : TANGENT;
-    vec3 Binorm : BINORMAL;
+    vec3 Tan      : TANGENT;
+    vec3 Binorm   : BINORMAL;
 };
 
 struct VS_OUTPUT
 {
-    vec4 HPos       : POSITION;
-    vec2 NormalMap  : TEXCOORD0;
-    vec3 LightVec   : TEXCOORD1;
-    vec3 HalfVec    : TEXCOORD2;
-    vec2 DiffMap    : TEXCOORD3;
+    vec4 HPos      : POSITION;
+    vec2 NormalMap : TEXCOORD0;
+    vec3 LightVec  : TEXCOORD1;
+    vec3 HalfVec   : TEXCOORD2;
+    vec2 DiffMap   : TEXCOORD3;
 };
 
 struct VS_OUTPUTSS
 {
-    vec4 HPos       : POSITION;
-    vec4 TanNormal  : COLOR0;
-    vec4 TanLight   : COLOR1;
-    vec2 NormalMap  : TEXCOORD0;
-    vec3 LightVec   : TEXCOORD1;
-    vec3 HalfVec    : TEXCOORD2;
-    vec2 DiffMap    : TEXCOORD3;
+    vec4 HPos      : POSITION;
+    vec4 TanNormal : COLOR0;
+    vec4 TanLight  : COLOR1;
+    vec2 NormalMap : TEXCOORD0;
+    vec3 LightVec  : TEXCOORD1;
+    vec3 HalfVec   : TEXCOORD2;
+    vec2 DiffMap   : TEXCOORD3;
 };
 
 struct VS_OUTPUT2
 {
-    vec4 HPos       : POSITION;
-    vec2 TexCoord   : TEXCOORD0;
-    vec4 Diffuse    : COLOR;
+    vec4 HPos     : POSITION;
+    vec2 TexCoord : TEXCOORD0;
+    vec4 Diffuse  : COLOR;
 };
 
 struct VS_OUTPUT3
 {
-    vec4 HPos       : POSITION;
-    vec2 TexCoord   : TEXCOORD0;
+    vec4 HPos     : POSITION;
+    vec2 TexCoord : TEXCOORD0;
 };
 
 
@@ -451,15 +451,15 @@ struct APPDATA_ShadowMap
 
 struct VS2PS_ShadowMap
 {
-    vec4 Pos    : POSITION;
-    vec2 PosZW  : TEXCOORD0;
+    vec4 Pos   : POSITION;
+    vec2 PosZW : TEXCOORD0;
 };
 
 struct VS2PS_ShadowMapAlpha
 {
-    vec4 Pos    : POSITION;
-    vec2 Tex    : TEXCOORD0;
-    vec2 PosZW  : TEXCOORD1;
+    vec4 Pos   : POSITION;
+    vec2 Tex   : TEXCOORD0;
+    vec2 PosZW : TEXCOORD1;
 };
 
 vec4 calcShadowProjCoords(vec4 Pos, mat4x4 matTrap, mat4x4 matLight)

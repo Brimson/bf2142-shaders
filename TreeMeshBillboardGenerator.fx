@@ -1,21 +1,21 @@
 #line 2 "TreeMeshBillboardGenerator.fx"
 
-float4x4 mvpMatrix : WorldViewProjection;   // : register(vs_2_0, c0);
-float4x4 worldIMatrix : WorldI;             // : register(vs_2_0, c4);
-float4x4 viewInverseMatrix : ViewI;         //: register(vs_2_0, c8);
+float4x4 mvpMatrix : WorldViewProjection; // : register(vs_2_0, c0);
+float4x4 worldIMatrix : WorldI;           // : register(vs_2_0, c4);
+float4x4 viewInverseMatrix : ViewI;       // : register(vs_2_0, c8);
 
 // Sprite parameters
-float4x4 worldViewMatrix : WorldView;
-float4x4 projMatrix : Projection;
-float4 spriteScale :  SpriteScale;
-float4 shadowSpherePoint : ShadowSpherePoint;
+float4x4 worldViewMatrix               : WorldView;
+float4x4 projMatrix                    : Projection;
+float4 spriteScale                     :  SpriteScale;
+float4 shadowSpherePoint               : ShadowSpherePoint;
 float4 boundingboxScaledInvGradientMag : BoundingboxScaledInvGradientMag;
-float4 invBoundingBoxScale : InvBoundingBoxScale;
-float4 shadowColor : ShadowColor;
-float4 lightColor : LightColor;
+float4 invBoundingBoxScale             : InvBoundingBoxScale;
+float4 shadowColor                     : ShadowColor;
+float4 lightColor                      : LightColor;
 
-float4 ambColor : Ambient = { 0.0f, 0.0f, 0.0f, 1.0f };
-float4 diffColor : Diffuse = { 1.0f, 1.0f, 1.0f, 1.0f };
+float4 ambColor  : Ambient  = { 0.0f, 0.0f, 0.0f, 1.0f };
+float4 diffColor : Diffuse  = { 1.0f, 1.0f, 1.0f, 1.0f };
 float4 specColor : Specular = { 0.0f, 0.0f, 0.0f, 1.0f };
 
 dword colorWriteEnable : ColorWriteEnable;
@@ -38,13 +38,13 @@ texture colorLUT: TEXLAYER2
     string TextureType = "2D";
 >;
 
-float4 eyePos : EyePosition = {0.0f, 0.0f, 1.0f, 0.0f};
+float4 eyePos : EyePosition = { 0.0f, 0.0f, 1.0f, 0.0f };
 
 float4 lightPos : LightPosition
 <
     string Object = "PointLight";
     string Space = "World";
-> = {0.0f, 0.0f, 1.0f, 1.f};
+> = { 0.0f, 0.0f, 1.0f, 1.0f };
 
 struct appdata
 {
@@ -189,7 +189,7 @@ VS_OUTPUT2 spriteVertexShader
 {
     VS_OUTPUT2 Out = (VS_OUTPUT2)0;
     float4 pos =  mul(input.Pos, WorldView);
-    float4 scaledPos = float4(float2(input.Width_height.xy * SpriteScale.xy), 0, 0) + (pos);
+    float4 scaledPos = float4(float2(input.Width_height.xy * SpriteScale.xy), 0.0, 0.0) + pos;
      Out.HPos = mul(scaledPos, Proj);
     Out.TexCoord = input.TexCoord;
 
@@ -199,10 +199,10 @@ VS_OUTPUT2 spriteVertexShader
     float4 eyeShadowSperePos = eyeSpaceSherePoint * InvBoundingBoxScale;
     float4 vectorMagnitude = normalize(shadowSpherePos - eyeShadowSperePos);
     float shadowFactor = vectorMagnitude * BoundingboxScaledInvGradientMag;
-    shadowFactor = min(shadowFactor,1);
-    float3 shadowColorInt = ShadowColor*(1-shadowFactor);
+    shadowFactor = min(shadowFactor, 1.0);
+    float3 shadowColorInt = ShadowColor * (1.0 - shadowFactor);
     float3 color = LightColor*shadowFactor+shadowColorInt;
-    Out.Diffuse =  float4(color,1.f);
+    Out.Diffuse = float4(color, 1.0f);
 
     return Out;
 }

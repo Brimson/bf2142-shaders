@@ -38,7 +38,6 @@ struct PS2FB_fullMRT
     vec4 Col0 : COLOR0;
     vec4 Col1 : COLOR1;
     vec4 Col2 : COLOR2;
-    // vec4 Col3 : COLOR3;
 };
 
 struct VS_OUTPUT_AlphaDX9
@@ -50,8 +49,7 @@ struct VS_OUTPUT_AlphaDX9
 };
 
 // [mharris]
-OUT_vsDiffuseZ vsDiffuseZ(appdataDiffuseZ input,
-                          uniform mat4x4 ViewProj)
+OUT_vsDiffuseZ vsDiffuseZ(appdataDiffuseZ input, uniform mat4x4 ViewProj)
 {
     OUT_vsDiffuseZ Out;
 
@@ -67,8 +65,7 @@ OUT_vsDiffuseZ vsDiffuseZ(appdataDiffuseZ input,
 }
 
 // [mharris]
-OUT_vsDiffuseZ vsDiffuseZAnimatedUV(appdataDiffuseZAnimatedUV input,
-                                    uniform mat4x4 ViewProj)
+OUT_vsDiffuseZ vsDiffuseZAnimatedUV(appdataDiffuseZAnimatedUV input, uniform mat4x4 ViewProj)
 {
     OUT_vsDiffuseZ Out;
 
@@ -179,13 +176,10 @@ VS_OUTPUT_AlphaDX9 vsAlphaDX9DirectionalShadow(appdata input, uniform mat4x4 Vie
     Out.Tex0 = vec4(input.TexCoord.xy, 1.0, 1.0);
 
     // Hacked to only support 800/600
-    Out.Tex1.xy = Out.HPos.xy / Out.HPos.w;
-    Out.Tex1.xy = Out.Tex1.xy * 0.5 + 0.5;
+    Out.Tex1.xy = (Out.HPos.xy / Out.HPos.ww) * 0.5 + 0.5;
     Out.Tex1.y = 1.0 - Out.Tex1.y;
-    Out.Tex1.x += 0.000625;
-    Out.Tex1.y += 0.000833;
-    Out.Tex1.xy = Out.Tex1.xy * Out.HPos.w;
-    Out.Tex1.zw = Out.HPos.zw;
+    Out.Tex1.xy += vec2(0.000625, 0.000833);
+    Out.Tex1 = vec4(Out.Tex1.xy * Out.HPos.ww, Out.HPos.zw);
     return Out;
 }
 
@@ -212,7 +206,7 @@ PS2FB_fullMRT psFullMRT(OUT_vsFullMRT indata,
     vec4 groundcolor = tex2D(sampler1, indata.GroundUVAndLerp.xy);
     vec4 hemicolor = lerp(groundcolor, SkyColor, indata.GroundUVAndLerp.z);
 
-    outdata.Col0 = AmbientColor*hemicolor;
+    outdata.Col0 = AmbientColor * hemicolor;
     outdata.Col1 = indata.wPos;
     return outdata;
 }
@@ -369,7 +363,6 @@ PS2FB_fullMRT psFullMRTwGIHemiShadowsAnimatedUV(OUT_vsFullMRTAnimatedUV indata,
     outdata.Col0 *= groundcolor.a * groundcolor.a;
     outdata.Col0 *= tex2D(sampler3, indata.TexCoord2);
     outdata.Col1 = indata.wPos;
-
     return outdata;
 }
 
@@ -399,7 +392,6 @@ vec4 psAlphaDX9(VS_OUTPUT_Alpha indata) : COLOR
 {
     vec4 diffuse = tex2D(sampler0, indata.DiffuseMap);
     vec4 projlight = tex2Dproj(sampler1, indata.Tex1);
-
     vec4 Output = diffuse * projlight + projlight.a;
     Output.a = diffuse.a;
     return Output;

@@ -96,18 +96,6 @@ VO_HemiAndSunShadows vs_HemiAndSunShadowsAnimatedUV(appdataAnimatedUV input)
     return Out;
 }
 
-/*
-    #define DOT3_LIGHT
-    #define SPEC_LIGHT
-    #define HEMI_LIGHT
-    #define DIFFUSE_MAP
-    #define GLOSS _MAP
-    #define GI_MAP
-    #define NORMAL_MAP
-    #define DISABLE_HEMI
-    #define DISABLE_POINT
-*/
-
 vec4 ps_HemiAndSunShadows(VO_HemiAndSunShadows indata) : COLOR
 {
     vec4 outColor = (vec4)1;
@@ -123,12 +111,12 @@ vec4 ps_HemiAndSunShadows(VO_HemiAndSunShadows indata) : COLOR
     {
         scalar dirShadow = 1.0;
 
-        vec4 texel = vec4(0.5 / 1024.0, 0.5 / 1024.0, 0.0, 0.0);
+        vec2 texel = vec2(0.5 / 1024.0, 0.0)
         vec4 samples;
         samples.x = tex2Dproj(ShadowMapSampler, indata.TexShadow1);
-        samples.y = tex2Dproj(ShadowMapSampler, indata.TexShadow1 + vec4(texel.x, 0.0, 0.0, 0.0));
-        samples.z = tex2Dproj(ShadowMapSampler, indata.TexShadow1 + vec4(0.0, texel.y, 0.0, 0.0));
-        samples.w = tex2Dproj(ShadowMapSampler, indata.TexShadow1 + texel);
+        samples.y = tex2Dproj(ShadowMapSampler, indata.TexShadow1 + texel.xyyy);
+        samples.z = tex2Dproj(ShadowMapSampler, indata.TexShadow1 + texel.yxyy);
+        samples.w = tex2Dproj(ShadowMapSampler, indata.TexShadow1 + texel.xxyy);
 
         vec4 cmpbits = samples >= saturate(indata.TexShadow1.z/indata.TexShadow1.w);
         dirShadow = dot(cmpbits, 0.25);
@@ -152,32 +140,39 @@ vec4 ps_HemiAndSunShadows(VO_HemiAndSunShadows indata) : COLOR
     // Environment map
     // NOTE: eyePos.w is just a reflection scaling value. Why do we have this besides the reflectivity (gloss map)data?
     vec3 envmapColor = texCUBE(samplerCube4, indata.EnvMap.xyz) * TN.a * eyePos.w;
-    outColor.rgb	+= (envmapColor * 2.0);
-    outColor.a		+= indata.EnvMap.w * TD.a;
+    outColor.rgb    += (envmapColor * 2.0);
+    outColor.a      += indata.EnvMap.w * TD.a;
 
     #ifdef NORMAL_MAP
         outColor.rgb = TN.rgb;
     #endif
+
     #ifdef GI_MAP
         outColor.rgb = GI;
     #endif
+
     #ifdef HEMI_LIGHT
         outColor.rgb = hemicolor * ambientColor;
     #endif
+
     #ifdef DOT3_LIGHT
         outColor = dot3Light;
     #endif
+
     #ifdef SPEC_LIGHT
         outColor = vec4(specular, 1.0);
     #endif
+
     #ifdef DIFFUSE_MAP
         outColor = TD;
     #endif
+
     #ifdef GLOSS_MAP
         outColor = TN.a;
     #endif
+
     #ifdef DISABLE_HEMI
-        outColor = 0;
+        outColor = 0.0;
     #endif
 
     return outColor;
@@ -303,23 +298,27 @@ vec4 ps_pointLight(VO_PointLight inData) : COLOR
     #ifdef NORMAL_MAP
         outColor.rgb = TN.rgb;
     #endif
+
     #ifdef DOT3_LIGHT
         outColor = dot3Light;
     #endif
+
     #ifdef SPEC_LIGHT
         outColor = vec4(specular, 1.0);
     #endif
+
     #ifdef DIFFUSE_MAP
         outColor = TD;
     #endif
+
     #ifdef GLOSS_MAP
         outColor = TN.a;
     #endif
+
     #ifdef DISABLE_POINT
         outColor = 0.0;
     #endif
 
-    // return vec4(inData.LightVec, 1.0);
     return outColor;
 }
 

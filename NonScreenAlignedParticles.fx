@@ -16,13 +16,8 @@ struct TemplateParameters
 // TODO: change the value 10 to the approprite max value for the current hardware, need to make this a variable
 TemplateParameters tParameters[10] : TemplateParameters;
 
-// PI
 scalar PI = 3.1415926535897932384626433832795;
-
-// Time
 scalar fracTime : FracTime;
-
-// Texel size
 vec2 texelSize : TexelSize = {1.0f/800.f, 1.0f/600.f};
 
 // Back buffer texture

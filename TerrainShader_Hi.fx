@@ -92,7 +92,6 @@ vec4 Hi_PS_FullDetail(Hi_VS2PS_FullDetail indata) : COLOR
                                 (zplaneLowDetailmap.y * indata.BlendValueAndFade.z)	;
 
             lowDetailmap *= (4 * lerp(0.5, mounten, lowComponent.z));
-
             vec3 bothDetailmap = detailmap * lowDetailmap;
             vec3 detailout = lerp(2*bothDetailmap, lowDetailmap, indata.BlendValueAndFade.w);
         #else
@@ -397,7 +396,6 @@ vec4 Hi_PS_FullDetailWithEnvMap(Hi_VS2PS_FullDetailWithEnvMap indata) : COLOR
                                 (zplaneLowDetailmap.y * indata.BlendValueAndFade.z)	;
 
             lowDetailmap *= (4 * lerp(0.5, mounten, lowComponent.z));
-
             vec3 bothDetailmap = detailmap * lowDetailmap;
             vec3 detailout = lerp(2*bothDetailmap, lowDetailmap, indata.BlendValueAndFade.w);
         #else
@@ -471,7 +469,7 @@ Hi_VS2PS_FullDetailWithEnvMap Hi_VS_FullDetailWithEnvMap(Shared_APP2VS_Default i
     #endif
 
     outdata.FogAndFade2.x = calcFog(outdata.Pos.w);
-    outdata.FogAndFade2.yzw = 0.5+interpVal*0.5;
+    outdata.FogAndFade2.yzw = 0.5 + interpVal * 0.5;
 
     #if HIGHTERRAIN
         outdata.BlendValueAndFade.w = interpVal;
@@ -554,7 +552,7 @@ vec4 Hi_PS_DirectionalLightShadows(Shared_VS2PS_DirectionalLightShadows indata) 
 
     vec4 avgShadowValue = getShadowFactor(ShadowMapSampler, indata.ShadowTex);
 
-    vec4 light = saturate(lightmap.z * vGIColor*2) * 0.5;
+    vec4 light = saturate(lightmap.z * vGIColor * 2.0) * 0.5;
     if (avgShadowValue.z < lightmap.y)
         light.w = avgShadowValue.z;
     else
@@ -703,7 +701,7 @@ technique Hi_Terrain
         ZEnable = TRUE;
         ZWriteEnable = TRUE;
         ZFunc = LESSEQUAL;
-         AlphaBlendEnable = FALSE;
+        AlphaBlendEnable = FALSE;
 
         #if IS_NV4X
             StencilEnable = true;
@@ -786,7 +784,7 @@ technique Hi_Terrain
         ZWriteEnable = FALSE;
         ZFunc = LESSEQUAL;
         AlphaTestEnable = TRUE;
-        AlphaRef = 15;	// tl: leave cap above 0 for better results
+        AlphaRef = 15; // tl: leave cap above 0 for better results
         AlphaFunc = GREATER;
         AlphaBlendEnable = TRUE;
         SrcBlend = SRCALPHA;

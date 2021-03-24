@@ -67,7 +67,7 @@ vec4 psDx9_detailDiffuse(VS2PS_vsDx9_detailDiffuse indata) : COLOR
         scalar chartcontrib = dot(vComponentsel, component);
 
         scalar color = lerp(1, yplaneLowDetailmap.z, saturate(lowComponent.x+lowComponent.y));
-        scalar totBlendValue = blendValue.x + blendValue.y + blendValue.z;
+        scalar totBlendValue = dot(blendValue.xyz, 1.0);
         scalar blue = (xplaneLowDetailmap.y * blendValue.x/totBlendValue) + (yplaneLowDetailmap.x * blendValue.y/totBlendValue) + (zplaneLowDetailmap.y * blendValue.z/totBlendValue);
         color *= lerp(1, blue, lowComponent.z);
 
@@ -163,7 +163,7 @@ vec4 psDx9_detailDiffuseMounten(VS2PS_vsDx9_detailDiffuseMounten indata) : COLOR
         scalar chartcontrib = dot(vComponentsel, component);
 
         scalar color = lerp(1, yplaneLowDetailmap.z, saturate(lowComponent.x+lowComponent.y));
-        scalar totBlendValue = blendValue.x + blendValue.y + blendValue.z;
+        scalar totBlendValue = dot(blendValue.xyz, 1.0);
         scalar blue = (xplaneLowDetailmap.y * blendValue.x/totBlendValue) + (yplaneLowDetailmap.x * blendValue.y/totBlendValue) + (zplaneLowDetailmap.y * blendValue.z/totBlendValue);
         color *= lerp(1, blue, lowComponent.z);
 
@@ -191,7 +191,7 @@ VS2PS_vsDx9_detailDiffuseMounten vsDx9_detailDiffuseMounten(APP2VS_detailDiffuse
     scalar yDelta = dot(vMorphDeltaSelector, indata.MorphDelta) * interpVal;
     wPos.y -= yDelta * vScaleTransY.x;
 
-    float3 tex = float3((indata.Pos0.y * vTexScale.z), -(((indata.Pos1.x - yDelta) * vTexScale.y)) , (indata.Pos0.x * vTexScale.x));
+    float3 tex = float3(indata.Pos0.y * vTexScale.z, -(indata.Pos1.x - yDelta) * vTexScale.y, indata.Pos0.x * vTexScale.x);
     float2 xPlaneTexCord = tex.xy;
     float2 yPlaneTexCord = tex.zx;
     float2 zPlaneTexCord = tex.zy;
@@ -257,12 +257,11 @@ vec4 psDx9_diffuseLOD1Plus(VS2PS_vsDx9_diffuseLOD1Plus indata) : COLOR
         vec3 blendValue = indata.BlendValue;
 
         scalar color = lerp(1, yplaneLowDetailmap.z, saturate(lowComponent.x+lowComponent.y));
-        scalar totBlendValue = blendValue.x + blendValue.y + blendValue.z;
+        scalar totBlendValue = dot(blendValue.xyz, 1.0);
         scalar blue = (xplaneLowDetailmap.y * blendValue.x/totBlendValue) + (yplaneLowDetailmap.x * blendValue.y/totBlendValue) + (zplaneLowDetailmap.y * blendValue.z/totBlendValue);
+
         color *= lerp(1, blue, lowComponent.z);
-
         vec4 lowDetailmap = color;
-
         return lowDetailmap * colormap;
     #endif
 }

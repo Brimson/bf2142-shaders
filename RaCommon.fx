@@ -34,7 +34,7 @@ int destBlend = 6;
 bool alphaBlendEnable = true;
 
 int alphaRef = 20;
-int CullMode = 3;	//D3DCULL_CCW
+int CullMode = 3; // D3DCULL_CCW
 
 scalar GlobalTime;
 scalar WindSpeed = 0;
@@ -56,9 +56,9 @@ vec4 FogColor : fogColor;
 
 scalar calcFog(scalar w)
 {
-    half2 fogVals = w*FogRange.xy + FogRange.zw;
+    half2 fogVals = w * FogRange.xy + FogRange.zw;
     half close = max(fogVals.y, FogColor.w);
-    half far = pow(fogVals.x,3);
+    half far = pow(fogVals.x, 3.0);
     return close-far;
 }
 
@@ -71,40 +71,41 @@ scalar calcFog(scalar w)
     #endif
 #endif
 
-#define NO_VAL vec3(1, 1, 0)
+#define NO_VAL vec3(1.0, 1.0, 0.0)
 
-vec4 showChannel(
+vec4 showChannel
+(
     vec3 diffuse = NO_VAL,
     vec3 normal = NO_VAL,
-    scalar specular = 0,
-    scalar alpha = 0,
-    vec3 shadow = 0,
+    scalar specular = 0.0,
+    scalar alpha = 0.0,
+    vec3 shadow = 0.0,
     vec3 environment = NO_VAL)
 {
-    vec4 returnVal = vec4(0, 1, 1, 0);
+    vec4 returnVal = vec4(0.0, 1.0, 1.0, 0.0);
 
     #ifdef DIFFUSE_CHANNEL
-        returnVal = vec4(diffuse, 1);
+        returnVal = vec4(diffuse, 1.0);
     #endif
 
     #ifdef NORMAL_CHANNEL
-        returnVal = vec4(normal, 1);
+        returnVal = vec4(normal, 1.0);
     #endif
 
     #ifdef SPECULAR_CHANNEL
-        returnVal = vec4(specular, specular, specular, 1);
+        returnVal = vec4(specular, specular, specular, 1.0);
     #endif
 
     #ifdef ALPHA_CHANNEL
-        returnVal = vec4(alpha, alpha, alpha, 1);
+        returnVal = vec4(alpha, alpha, alpha, 1.0);
     #endif
 
     #ifdef ENVIRONMENT_CHANNEL
-        returnVal = vec4(environment, 1);
+        returnVal = vec4(environment, 1.0);
     #endif
 
     #ifdef SHADOW_CHANNEL
-        returnVal = vec4(shadow, 1);
+        returnVal = vec4(shadow, 1.0);
     #endif
 
     return returnVal;
@@ -155,18 +156,19 @@ sampler ShadowOccluderMapSampler
 vec4 calcShadowProjection(vec4 pos, uniform scalar BIAS = -0.003, uniform bool ISOCCLUDER = false)
 {
     vec4 texShadow1 =  mul(pos, ShadowTrapMat);
-
     vec2 texShadow2;
+
     if(ISOCCLUDER)
         texShadow2 = mul(pos, ShadowOccProjMat).zw;
     else
         texShadow2 = mul(pos, ShadowProjMat).zw;
 
     texShadow2.x += BIAS;
+
     #if !NVIDIA
         texShadow1.z = texShadow2.x;
     #else
-        texShadow1.z = (texShadow2.x*texShadow1.w)/texShadow2.y; 	// (zL*wT)/wL == zL/wL post homo
+        texShadow1.z = (texShadow2.x * texShadow1.w) / texShadow2.y; // (zL*wT)/wL == zL/wL post homo
     #endif
 
     return texShadow1;
@@ -175,7 +177,7 @@ vec4 calcShadowProjection(vec4 pos, uniform scalar BIAS = -0.003, uniform bool I
 //tl: Make _sure_ pos and matrices are in same space!
 vec4 calcShadowProjectionExact(vec4 pos, uniform scalar BIAS = -0.003)
 {
-    vec4 texShadow1 =  mul(pos, ShadowTrapMat);
+    vec4 texShadow1 = mul(pos, ShadowTrapMat);
     vec2 texShadow2 = mul(pos, ShadowProjMat).zw;
     texShadow2.x += BIAS;
     texShadow1.z = texShadow2.x;
@@ -202,14 +204,14 @@ vec4 getShadowFactorExactOther(sampler shadowSampler, vec4 shadowCoords, uniform
     }
     else
     {
-        vec4 texel = vec4(0.5 / 1024.0, 0.5 / 1024.0, 0, 0);
+        vec2 texel = vec2(0.5 / 1024.0, 0.0);
         vec4 samples = 0;
         samples.x = tex2Dproj(shadowSampler, shadowCoords).r;
-        samples.y = tex2Dproj(shadowSampler, shadowCoords + vec4(texel.x, 0, 0, 0)).r;
-        samples.z = tex2Dproj(shadowSampler, shadowCoords + vec4(0, texel.y, 0, 0)).r;
-        samples.w = tex2Dproj(shadowSampler, shadowCoords + texel).r;
+        samples.y = tex2Dproj(shadowSampler, shadowCoords + texel.xyyy).r;
+        samples.z = tex2Dproj(shadowSampler, shadowCoords + texel.yxyy).r;
+        samples.w = tex2Dproj(shadowSampler, shadowCoords + texel.xxyy).r;
         vec4 cmpbits = samples >= saturate(shadowCoords.z);
-        return dot(cmpbits, vec4(0.25, 0.25, 0.25, 0.25));
+        return dot(cmpbits, 0.25);
     }
 }
 

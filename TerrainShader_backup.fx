@@ -44,54 +44,54 @@ sampler sampler4 = sampler_state { Texture = (texture4); };
 
 struct APP2VS_BM_Dx9
 {
-    float4	Pos0 : POSITION0;
-    float2	TexCoord0 : TEXCOORD0;
-    float4	Pos1 : POSITION1;
-    float4	MorphDelta : POSITION2;
-    float3	Normal : NORMAL;
+    float4 Pos0       : POSITION0;
+    float2 TexCoord0  : TEXCOORD0;
+    float4 Pos1       : POSITION1;
+    float4 MorphDelta : POSITION2;
+    float3 Normal     : NORMAL;
 };
 
 struct APP2VS_BM_Dx8
 {
-    float4	Pos0 : POSITION0;
-    float4	Pos1 : POSITION1;
-    float4	MorphDelta : POSITION2;
+    float4 Pos0       : POSITION0;
+    float4 Pos1       : POSITION1;
+    float4 MorphDelta : POSITION2;
 };
 
 struct VS2PS_BM_Dx9_Base
 {
-    float4	Pos : POSITION;
-    float2	Tex0 : TEXCOORD0;
+    float4 Pos  : POSITION;
+    float2 Tex0 : TEXCOORD0;
 };
 
 struct VS2PS_BM_Dx9
 {
-    float4	Pos : POSITION;
-    float2	Tex0 : TEXCOORD0;
-    float4	Color : COLOR;
+    float4 Pos   : POSITION;
+    float2 Tex0  : TEXCOORD0;
+    float4 Color : COLOR;
 };
 
 struct VS2PS_BM_Dx8
 {
-    float4	Pos : POSITION;
-    float2	Tex0 : TEXCOORD0;
+    float4 Pos  : POSITION;
+    float2 Tex0 : TEXCOORD0;
 };
 
 struct LightSourceData
 {
-    float3	pos;
-    float	attSqrInv;
-    float3	col;
-    float	coneAngle;
-    float3	dir;
-    float	oneminusconeAngle;
+    float3 pos;
+    float  attSqrInv;
+    float3 col;
+    float  coneAngle;
+    float3 dir;
+    float  oneminusconeAngle;
 };
 
 LightSourceData lightSources[3] : LightSourceArray;
 
 float4 psDx9_BM_Base(VS2PS_BM_Dx9_Base indata) : COLOR
 {
-    return tex2D(sampler0Clamp, indata.Tex0)+0.5;
+    return tex2D(sampler0Clamp, indata.Tex0) + 0.5;
 }
 
 VS2PS_BM_Dx9_Base vsDx9_BM_Base(APP2VS_BM_Dx9 indata)
@@ -117,7 +117,7 @@ VS2PS_BM_Dx9_Base vsDx9_BM_Base(APP2VS_BM_Dx9 indata)
 float4 psDx9_BM_Pt(VS2PS_BM_Dx9 indata) : COLOR
 {
     return vMorphDeltaSelector * vDebugColor + 0.1;
-    return vMorphDeltaSelector * 0.5 + tex2D(sampler0Clamp, indata.Tex0)+vDebugColor;
+    return vMorphDeltaSelector * 0.5 + tex2D(sampler0Clamp, indata.Tex0) + vDebugColor;
     float4 lightmap = tex2D(sampler0Clamp, indata.Tex0);
     return lightmap + indata.Color;
 }
@@ -234,14 +234,12 @@ technique Dx9Style_BM
     pass base
     {
         AlphaBlendEnable = FALSE;
-        // FillMode = WIREFRAME;
         VertexShader = compile vs_2_0 vsDx9_BM_Base();
         PixelShader = compile ps_2_0 psDx9_BM_Base();
     }
 
     pass point
     {
-        // AlphaBlendEnable = FALSE;
         AlphaBlendEnable = TRUE;
         SrcBlend = ONE;
         DestBlend = INVDESTCOLOR;
@@ -283,33 +281,33 @@ technique Dx8Style_BM
 
 struct APP2VS_DT_Dx9
 {
-    float4 Pos0 : POSITION0;
-    float2 TexCoord0 : TEXCOORD0;
-    float4 Pos1 : POSITION1;
+    float4 Pos0       : POSITION0;
+    float2 TexCoord0  : TEXCOORD0;
+    float4 Pos1       : POSITION1;
     float4 MorphDelta : POSITION2;
 };
 
 struct APP2VS_DT_Dx8
 {
-    float4	Pos0 : POSITION0;
-    float4	Pos1 : POSITION1;
-    float4	MorphDelta : POSITION2;
+    float4 Pos0       : POSITION0;
+    float4 Pos1       : POSITION1;
+    float4 MorphDelta : POSITION2;
 };
 
 struct VS2PS_DT_Dx8
 {
-    float4 Pos : POSITION;
+    float4 Pos  : POSITION;
     float2 Tex0 : TEXCOORD0;
     float2 Tex1 : TEXCOORD1;
     float2 Tex2 : TEXCOORD2;
-    float4 Col : COLOR;
+    float4 Col  : COLOR;
 };
 
 struct VS2PS_DT_Dx9
 {
-    float4 Pos : POSITION;
-    float4 Tex0And1 : TEXCOORD0;
-    float4 PosTex : TEXCOORD1;
+    float4 Pos              : POSITION;
+    float4 Tex0And1         : TEXCOORD0;
+    float4 PosTex           : TEXCOORD1;
     float4 ColorAndFadeLerp : COLOR;
 };
 
@@ -358,8 +356,8 @@ VS2PS_DT_Dx9 vsDx9_DT(APP2VS_DT_Dx9 indata)
 
 struct VS2PS_DT2_Dx9
 {
-    float4	Pos : POSITION;
-    float4	Tex0AndPos : TEXCOORD0;
+    float4 Pos        : POSITION;
+    float4 Tex0AndPos : TEXCOORD0;
 };
 
 float4 psDx9_DT2(VS2PS_DT2_Dx9 indata) : COLOR
@@ -455,8 +453,8 @@ technique Dx9Style_DT
 
 struct VSTanOut
 {
-    float4 HPos	: POSITION;
-    float4 Diffuse 	: COLOR;
+    float4 HPos    : POSITION;
+    float4 Diffuse : COLOR;
 };
 
 VSTanOut vsShowTanBasis(float4 Pos : POSITION, float4 Col : COLOR)

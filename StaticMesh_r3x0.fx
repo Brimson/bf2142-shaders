@@ -3,7 +3,7 @@
 vec2 calculateOffsetCoordinatesFromAlpha(vec2 inTexCoords, vec2 inHeightTexCoords, sampler2D inHeightSampler, vec4 inScaleBias, vec3 inEyeVecUnNormalized)
 {
     vec2 height = tex2D(inHeightSampler, inHeightTexCoords).aa;
-    vec3 eyeVecN = normalize(inEyeVecUnNormalized) * vec3(1, -1.0, 1.0);
+    vec3 eyeVecN = normalize(inEyeVecUnNormalized) * vec3(1.0, -1.0, 1.0);
 
     height = height * inScaleBias.xy + inScaleBias.wz;
     return inTexCoords + height * eyeVecN.xy;
@@ -13,7 +13,7 @@ vec2 calculateOffsetCoordinatesFromAlpha(vec2 inTexCoords, vec2 inHeightTexCoord
 
 struct appdata_vsZAndDiffuseBase
 {
-    vec4 Pos : POSITION;
+    vec4 Pos          : POSITION;
     vec2 TexCoordDiff : TEXCOORD0;
 };
 
@@ -38,14 +38,14 @@ vec4 psZAndDiffuseBase(VS_OUT_vsZAndDiffuseBase indata) : COLOR
 
 struct appdata_ZAndDiffuseBaseDetail
 {
-    vec4 Pos : POSITION;
-    vec2 TexCoordDiff : TEXCOORD0;
+    vec4 Pos            : POSITION;
+    vec2 TexCoordDiff   : TEXCOORD0;
     vec2 TexCoordDetail : TEXCOORD1;
 };
 
 struct VS_OUT_ZAndDiffuseBaseDetail
 {
-    vec4 HPos   : POSITION;
+    vec4 HPos       : POSITION;
     vec2 Tex0Diff   : TEXCOORD0;
     vec2 Tex1Detail : TEXCOORD1;
 };
@@ -69,11 +69,11 @@ vec4 psZAndDiffuseBaseDetail(VS_OUT_ZAndDiffuseBaseDetail indata) : COLOR
 
 struct appdata_ZAndDiffuseBaseDetailParallax
 {
-    vec4 Pos : POSITION;
-    vec2 TexCoordDiff : TEXCOORD0;
+    vec4 Pos            : POSITION;
+    vec2 TexCoordDiff   : TEXCOORD0;
     vec2 TexCoordDetail : TEXCOORD1;
-    vec3 Tan : TANGENT;
-    vec3 Normal : NORMAL;
+    vec3 Tan            : TANGENT;
+    vec3 Normal         : NORMAL;
 };
 
 struct VS_OUT_ZAndDiffuseBaseDetailParallax
@@ -112,10 +112,10 @@ vec4 psZAndDiffuseBaseDetailParallax(VS_OUT_ZAndDiffuseBaseDetailParallax indata
 
 struct appdata_ZAndDiffuseBaseDetailDirt
 {
-    vec4 Pos : POSITION;
-    vec2 TexCoordDiff : TEXCOORD0;
+    vec4 Pos            : POSITION;
+    vec2 TexCoordDiff   : TEXCOORD0;
     vec2 TexCoordDetail : TEXCOORD1;
-    vec2 TexCoordDirt : TEXCOORD2;
+    vec2 TexCoordDirt   : TEXCOORD2;
 };
 
 struct VS_OUT_ZAndDiffuseBaseDetailDirt
@@ -146,12 +146,12 @@ vec4 psZAndDiffuseBaseDetailDirt(VS_OUT_ZAndDiffuseBaseDetailDirt indata) : COLO
 
 struct appdata_ZAndDiffuseBaseDetailDirtParallax
 {
-    vec4 Pos : POSITION;
-    vec2 TexCoordDiff : TEXCOORD0;
+    vec4 Pos            : POSITION;
+    vec2 TexCoordDiff   : TEXCOORD0;
     vec2 TexCoordDetail : TEXCOORD1;
-    vec2 TexCoordDirt : TEXCOORD2;
-    vec3 Tan : TANGENT;
-    vec3 Normal : NORMAL;
+    vec2 TexCoordDirt   : TEXCOORD2;
+    vec3 Tan            : TANGENT;
+    vec3 Normal         : NORMAL;
 };
 
 struct VS_OUT_ZAndDiffuseBaseDetailDirtParallax
@@ -190,10 +190,10 @@ vec4 psZAndDiffuseBaseDetailDirtParallax(VS_OUT_ZAndDiffuseBaseDetailDirtParalla
 
 struct appdata_ZAndDiffuseBaseDetailCrack
 {
-    vec4 Pos : POSITION;
-    vec2 TexCoordDiff : TEXCOORD0;
+    vec4 Pos            : POSITION;
+    vec2 TexCoordDiff   : TEXCOORD0;
     vec2 TexCoordDetail : TEXCOORD1;
-    vec2 TexCoordCrack : TEXCOORD2;
+    vec2 TexCoordCrack  : TEXCOORD2;
 };
 
 struct VS_OUT_ZAndDiffuseBaseDetailCrack
@@ -227,12 +227,12 @@ vec4 psZAndDiffuseBaseDetailCrack(VS_OUT_ZAndDiffuseBaseDetailCrack indata) : CO
 
 struct appdata_ZAndDiffuseBaseDetailCrackParallax
 {
-    vec4 Pos : POSITION;
-    vec2 TexCoordDiff : TEXCOORD0;
+    vec4 Pos            : POSITION;
+    vec2 TexCoordDiff   : TEXCOORD0;
     vec2 TexCoordDetail : TEXCOORD1;
-    vec2 TexCoordCrack : TEXCOORD2;
-    vec3 Tan    : TANGENT;
-    vec3 Normal : NORMAL;
+    vec2 TexCoordCrack  : TEXCOORD2;
+    vec3 Tan            : TANGENT;
+    vec3 Normal         : NORMAL;
 };
 
 struct VS_OUT_ZAndDiffuseBaseDetailCrackParallax
@@ -273,11 +273,11 @@ vec4 psZAndDiffuseBaseDetailCrackParallax(VS_OUT_ZAndDiffuseBaseDetailCrackParal
 
 struct appdata_ZAndDiffuseBaseDetailDirtCrack
 {
-    vec4 Pos : POSITION;
-    vec2 TexCoordDiff : TEXCOORD0;
+    vec4 Pos            : POSITION;
+    vec2 TexCoordDiff   : TEXCOORD0;
     vec2 TexCoordDetail : TEXCOORD1;
-    vec2 TexCoordDirt : TEXCOORD2;
-    vec2 TexCoordCrack : TEXCOORD3;
+    vec2 TexCoordDirt   : TEXCOORD2;
+    vec2 TexCoordCrack  : TEXCOORD3;
 };
 
 struct VS_OUT_ZAndDiffuseBaseDetailDirtCrack
@@ -312,17 +312,19 @@ vec4 psZAndDiffuseBaseDetailDirtCrack(VS_OUT_ZAndDiffuseBaseDetailDirtCrack inda
     return color;
 }
 
-struct appdata_ZAndDiffuseBaseDetailDirtCrackParallax {
-    vec4 Pos : POSITION;
-    vec2 TexCoordDiff : TEXCOORD0;
+struct appdata_ZAndDiffuseBaseDetailDirtCrackParallax
+{
+    vec4 Pos            : POSITION;
+    vec2 TexCoordDiff   : TEXCOORD0;
     vec2 TexCoordDetail : TEXCOORD1;
-    vec2 TexCoordDirt : TEXCOORD2;
-    vec2 TexCoordCrack : TEXCOORD3;
-    vec3 Tan : TANGENT;
-    vec3 Normal : NORMAL;
+    vec2 TexCoordDirt   : TEXCOORD2;
+    vec2 TexCoordCrack  : TEXCOORD3;
+    vec3 Tan            : TANGENT;
+    vec3 Normal         : NORMAL;
 };
 
-struct VS_OUT_ZAndDiffuseBaseDetailDirtCrackParallax {
+struct VS_OUT_ZAndDiffuseBaseDetailDirtCrackParallax
+{
     vec4 HPos       : POSITION;
     vec2 Tex0Diff   : TEXCOORD0;
     vec2 Tex1Detail : TEXCOORD1;
@@ -552,19 +554,20 @@ struct PS2FB_fullMRT4
 
 struct appdata_vsGBuffBase
 {
-    vec4 Pos : POSITION;
+    vec4 Pos          : POSITION;
     vec2 TexCoordDiff : TEXCOORD0;
-    vec3 Tan    : TANGENT;
-    vec3 Normal : NORMAL;
+    vec3 Tan          : TANGENT;
+    vec3 Normal       : NORMAL;
 };
 
-struct VS_OUT_vsGBuffBase {
-    vec4 HPos   : POSITION;
-    vec2 Tex0Diff   : TEXCOORD0;
-    vec4 wPos   : TEXCOORD1;
-    vec3 Mat1   : TEXCOORD2;
-    vec3 Mat2   : TEXCOORD3;
-    vec3 Mat3   : TEXCOORD4;
+struct VS_OUT_vsGBuffBase
+{
+    vec4 HPos     : POSITION;
+    vec2 Tex0Diff : TEXCOORD0;
+    vec4 wPos     : TEXCOORD1;
+    vec3 Mat1     : TEXCOORD2;
+    vec3 Mat2     : TEXCOORD3;
+    vec3 Mat3     : TEXCOORD4;
 };
 
 VS_OUT_vsGBuffBase vsGBuffBase(appdata_vsGBuffBase input)
@@ -609,23 +612,23 @@ PS2FB_fullMRT psGBuffBase(VS_OUT_vsGBuffBase indata)
 
 struct appdata_GBuffBaseLM
 {
-    vec4 Pos : POSITION;
+    vec4 Pos          : POSITION;
     vec2 TexCoordDiff : TEXCOORD0;
     vec2 TexCoordLMap : TEXCOORD1;
-    vec3 Tan    : TANGENT;
-    vec3 Normal	: NORMAL;
+    vec3 Tan          : TANGENT;
+    vec3 Normal	      : NORMAL;
 };
 
 
 struct VS_OUT_GBuffBaseLM
 {
-    vec4 HPos       : POSITION;
-    vec2 Tex0Diff   : TEXCOORD0;
-    vec2 Tex1LMap   : TEXCOORD1;
-    vec4 wPos   : TEXCOORD2;
-    vec3 Mat1   : TEXCOORD3;
-    vec3 Mat2   : TEXCOORD4;
-    vec3 Mat3   : TEXCOORD5;
+    vec4 HPos     : POSITION;
+    vec2 Tex0Diff : TEXCOORD0;
+    vec2 Tex1LMap : TEXCOORD1;
+    vec4 wPos     : TEXCOORD2;
+    vec3 Mat1     : TEXCOORD3;
+    vec3 Mat2     : TEXCOORD4;
+    vec3 Mat3     : TEXCOORD5;
 };
 
 VS_OUT_GBuffBaseLM vsGBuffBaseLM(appdata_GBuffBaseLM input)
@@ -669,14 +672,15 @@ PS2FB_fullMRT psGBuffBaseLM(VS_OUT_GBuffBaseLM indata)
     return outdata;
 }
 
-struct VS_OUT_GBuffBaseLMAT {
-    vec4 HPos       : POSITION;
-    vec2 Tex0Diff   : TEXCOORD0;
-    vec2 Tex1LMap   : TEXCOORD1;
-    vec4 wPos   : TEXCOORD2;
-    vec3 Mat1   : TEXCOORD3;
-    vec3 Mat2   : TEXCOORD4;
-    vec3 Mat3   : TEXCOORD5;
+struct VS_OUT_GBuffBaseLMAT
+{
+    vec4 HPos      : POSITION;
+    vec2 Tex0Diff  : TEXCOORD0;
+    vec2 Tex1LMap  : TEXCOORD1;
+    vec4 wPos      : TEXCOORD2;
+    vec3 Mat1      : TEXCOORD3;
+    vec3 Mat2      : TEXCOORD4;
+    vec3 Mat3      : TEXCOORD5;
     vec4 TexCoord6 : TEXCOORD6;
 };
 
@@ -745,9 +749,10 @@ PS2FB_fullMRT4 psGBuffBaseLMAT0(VS_OUT_GBuffBaseLMAT indata)
     return outdata;
 }
 
-struct VS_OUT_GBuffBaseLMAT1 {
-    vec4 Pos			: POSITION;
-    vec4 TexCoord0	: TEXCOORD0;
+struct VS_OUT_GBuffBaseLMAT1
+{
+    vec4 Pos       : POSITION;
+    vec4 TexCoord0 : TEXCOORD0;
 };
 
 VS_OUT_GBuffBaseLMAT1 vsGBuffBaseLMAT1(appdata_GBuffBaseLM indata)
@@ -783,20 +788,20 @@ PS2FB_fullMRT psGBuffBaseLMAT1_MRT(VS_OUT_GBuffBaseLMAT1 indata)
 
 struct appdata_GBuffBaseDetail
 {
-    vec4 Pos : POSITION;
+    vec4 Pos            : POSITION;
     vec2 TexCoordDetail : TEXCOORD0;
-    vec3 Tan    : TANGENT;
-    vec3 Normal : NORMAL;
+    vec3 Tan            : TANGENT;
+    vec3 Normal         : NORMAL;
 };
 
 struct VS_OUT_GBuffBaseDetail
 {
-    vec4 HPos   : POSITION;
+    vec4 HPos       : POSITION;
     vec2 Tex1Detail : TEXCOORD0;
-    vec4 wPos   : TEXCOORD1;
-    vec3 Mat1   : TEXCOORD2;
-    vec3 Mat2   : TEXCOORD3;
-    vec3 Mat3   : TEXCOORD4;
+    vec4 wPos       : TEXCOORD1;
+    vec3 Mat1       : TEXCOORD2;
+    vec3 Mat2       : TEXCOORD3;
+    vec3 Mat3       : TEXCOORD4;
 };
 
 VS_OUT_GBuffBaseDetail vsGBuffBaseDetail(appdata_GBuffBaseDetail input)
@@ -842,10 +847,10 @@ struct VS_OUT_GBuffBaseDetailParallax
 {
     vec4 HPos       : POSITION;
     vec2 Tex1Detail : TEXCOORD0;
-    vec4 wPos   : TEXCOORD1;
-    vec3 Mat1   : TEXCOORD2;
-    vec3 Mat2   : TEXCOORD3;
-    vec3 Mat3   : TEXCOORD4;
+    vec4 wPos       : TEXCOORD1;
+    vec3 Mat1       : TEXCOORD2;
+    vec3 Mat2       : TEXCOORD3;
+    vec3 Mat3       : TEXCOORD4;
     vec3 tanEyeVec  : TEXCOORD5;
 };
 
@@ -891,12 +896,13 @@ PS2FB_fullMRT psGBuffBaseDetailParallax(VS_OUT_GBuffBaseDetailParallax indata)
     return outdata;
 }
 
-struct appdata_GBuffBaseDetailLM {
-    vec4	Pos : POSITION;
-    vec2	TexCoordDetail : TEXCOORD0;
-    vec2	TexCoordLMap : TEXCOORD1;
-    vec3 Tan		: TANGENT;
-    vec3 Normal	: NORMAL;
+struct appdata_GBuffBaseDetailLM
+{
+    vec4 Pos            : POSITION;
+    vec2 TexCoordDetail : TEXCOORD0;
+    vec2 TexCoordLMap   : TEXCOORD1;
+    vec3 Tan            : TANGENT;
+    vec3 Normal         : NORMAL;
 };
 
 struct VS_OUT_GBuffBaseDetailLM
@@ -1007,20 +1013,20 @@ PS2FB_fullMRT psGBuffBaseDetailLMParallax(VS_OUT_GBuffBaseDetailLMParallax indat
 
 struct appdata_GBuffBaseDetailDirt
 {
-    vec4 Pos : POSITION;
+    vec4 Pos            : POSITION;
     vec2 TexCoordDetail : TEXCOORD0;
-    vec3 Tan    : TANGENT;
-    vec3 Normal : NORMAL;
+    vec3 Tan            : TANGENT;
+    vec3 Normal         : NORMAL;
 };
 
 struct VS_OUT_GBuffBaseDetailDirt
 {
-    vec4 HPos   : POSITION;
+    vec4 HPos       : POSITION;
     vec2 Tex1Detail : TEXCOORD0;
-    vec4 wPos   : TEXCOORD1;
-    vec3 Mat1   : TEXCOORD2;
-    vec3 Mat2   : TEXCOORD3;
-    vec3 Mat3   : TEXCOORD4;
+    vec4 wPos       : TEXCOORD1;
+    vec3 Mat1       : TEXCOORD2;
+    vec3 Mat2       : TEXCOORD3;
+    vec3 Mat3       : TEXCOORD4;
 };
 
 VS_OUT_GBuffBaseDetailDirt vsGBuffBaseDetailDirt(appdata_GBuffBaseDetailDirt input)
@@ -1119,21 +1125,22 @@ PS2FB_fullMRT psGBuffBaseDetailDirtParallax(VS_OUT_GBuffBaseDetailDirtParallax i
 
 struct appdata_GBuffBaseDetailDirtLM
 {
-    vec4 Pos : POSITION;
+    vec4 Pos            : POSITION;
     vec2 TexCoordDetail : TEXCOORD0;
-    vec2 TexCoordLMap : TEXCOORD1;
-    vec3 Tan    : TANGENT;
-    vec3 Normal : NORMAL;
+    vec2 TexCoordLMap   : TEXCOORD1;
+    vec3 Tan            : TANGENT;
+    vec3 Normal         : NORMAL;
 };
 
-struct VS_OUT_GBuffBaseDetailDirtLM {
-    vec4 HPos   : POSITION;
+struct VS_OUT_GBuffBaseDetailDirtLM
+{
+    vec4 HPos       : POSITION;
     vec2 Tex1Detail : TEXCOORD0;
     vec2 Tex3LMap   : TEXCOORD1;
-    vec4 wPos   : TEXCOORD2;
-    vec3 Mat1   : TEXCOORD3;
-    vec3 Mat2   : TEXCOORD4;
-    vec3 Mat3   : TEXCOORD5;
+    vec4 wPos       : TEXCOORD2;
+    vec3 Mat1       : TEXCOORD3;
+    vec3 Mat2       : TEXCOORD4;
+    vec3 Mat3       : TEXCOORD5;
 };
 
 VS_OUT_GBuffBaseDetailDirtLM vsGBuffBaseDetailDirtLM(appdata_GBuffBaseDetailDirtLM input)
@@ -1183,10 +1190,10 @@ struct VS_OUT_GBuffBaseDetailDirtLMParallax
     vec4 HPos       : POSITION;
     vec2 Tex1Detail : TEXCOORD0;
     vec2 Tex3LMap   : TEXCOORD1;
-    vec4 wPos   : TEXCOORD2;
-    vec3 Mat1   : TEXCOORD3;
-    vec3 Mat2   : TEXCOORD4;
-    vec3 Mat3   : TEXCOORD5;
+    vec4 wPos       : TEXCOORD2;
+    vec3 Mat1       : TEXCOORD3;
+    vec3 Mat2       : TEXCOORD4;
+    vec3 Mat3       : TEXCOORD5;
     vec3 tanEyeVec  : TEXCOORD6;
 };
 
@@ -1237,22 +1244,22 @@ PS2FB_fullMRT psGBuffBaseDetailDirtLMParallax(VS_OUT_GBuffBaseDetailDirtLMParall
 
 struct appdata_GBuffBaseDetailCrack
 {
-    vec4 Pos : POSITION;
+    vec4 Pos            : POSITION;
     vec2 TexCoordDetail : TEXCOORD0;
-    vec2 TexCoordCrack : TEXCOORD1;
-    vec3 Tan    : TANGENT;
-    vec3 Normal : NORMAL;
+    vec2 TexCoordCrack  : TEXCOORD1;
+    vec3 Tan            : TANGENT;
+    vec3 Normal         : NORMAL;
 };
 
 struct VS_OUT_GBuffBaseDetailCrack
 {
-    vec4 HPos   : POSITION;
+    vec4 HPos       : POSITION;
     vec2 Tex1Detail : TEXCOORD0;
     vec2 Tex2Crack  : TEXCOORD1;
-    vec4 wPos   : TEXCOORD2;
-    vec3 Mat1   : TEXCOORD3;
-    vec3 Mat2   : TEXCOORD4;
-    vec3 Mat3   : TEXCOORD5;
+    vec4 wPos       : TEXCOORD2;
+    vec3 Mat1       : TEXCOORD3;
+    vec3 Mat2       : TEXCOORD4;
+    vec3 Mat3       : TEXCOORD5;
 };
 
 VS_OUT_GBuffBaseDetailCrack vsGBuffBaseDetailCrack(appdata_GBuffBaseDetailCrack input)
@@ -1300,15 +1307,16 @@ PS2FB_fullMRT psGBuffBaseDetailCrack(VS_OUT_GBuffBaseDetailCrack indata)
     return outdata;
 }
 
-struct VS_OUT_GBuffBaseDetailCrackParallax {
-    vec4 HPos   : POSITION;
+struct VS_OUT_GBuffBaseDetailCrackParallax
+{
+    vec4 HPos       : POSITION;
     vec2 Tex1Detail : TEXCOORD0;
-    vec2 Tex2Crack : TEXCOORD1;
-    vec4 wPos   : TEXCOORD2;
-    vec3 Mat1   : TEXCOORD3;
-    vec3 Mat2   : TEXCOORD4;
-    vec3 Mat3   : TEXCOORD5;
-    vec3 tanEyeVec : TEXCOORD6;
+    vec2 Tex2Crack  : TEXCOORD1;
+    vec4 wPos       : TEXCOORD2;
+    vec3 Mat1       : TEXCOORD3;
+    vec3 Mat2       : TEXCOORD4;
+    vec3 Mat3       : TEXCOORD5;
+    vec3 tanEyeVec  : TEXCOORD6;
 };
 
 VS_OUT_GBuffBaseDetailCrackParallax vsGBuffBaseDetailCrackParallax(appdata_GBuffBaseDetailCrack input)
@@ -1361,24 +1369,24 @@ PS2FB_fullMRT psGBuffBaseDetailCrackParallax(VS_OUT_GBuffBaseDetailCrackParallax
 
 struct appdata_GBuffBaseDetailCrackLM
 {
-    vec4 Pos : POSITION;
+    vec4 Pos            : POSITION;
     vec2 TexCoordDetail : TEXCOORD0;
-    vec2 TexCoordCrack : TEXCOORD1;
-    vec2 TexCoordLMap : TEXCOORD2;
-    vec3 Tan    : TANGENT;
-    vec3 Normal : NORMAL;
+    vec2 TexCoordCrack  : TEXCOORD1;
+    vec2 TexCoordLMap   : TEXCOORD2;
+    vec3 Tan            : TANGENT;
+    vec3 Normal         : NORMAL;
 };
 
 struct VS_OUT_GBuffBaseDetailCrackLM
 {
-    vec4 HPos   : POSITION;
+    vec4 HPos       : POSITION;
     vec2 Tex1Detail : TEXCOORD0;
     vec2 Tex2Crack  : TEXCOORD1;
     vec2 Tex3LMap   : TEXCOORD2;
-    vec4 wPos   : TEXCOORD3;
-    vec3 Mat1   : TEXCOORD4;
-    vec3 Mat2   : TEXCOORD5;
-    vec3 Mat3   : TEXCOORD6;
+    vec4 wPos       : TEXCOORD3;
+    vec3 Mat1       : TEXCOORD4;
+    vec3 Mat2       : TEXCOORD5;
+    vec3 Mat3       : TEXCOORD6;
 };
 
 VS_OUT_GBuffBaseDetailCrackLM vsGBuffBaseDetailCrackLM(appdata_GBuffBaseDetailCrackLM input)
@@ -1429,14 +1437,14 @@ PS2FB_fullMRT psGBuffBaseDetailCrackLM(VS_OUT_GBuffBaseDetailCrackLM indata)
 
 struct VS_OUT_GBuffBaseDetailCrackLMParallax
 {
-    vec4 HPos   : POSITION;
+    vec4 HPos       : POSITION;
     vec2 Tex1Detail : TEXCOORD0;
     vec2 Tex2Crack  : TEXCOORD1;
     vec2 Tex3LMap   : TEXCOORD2;
-    vec4 wPos   : TEXCOORD3;
-    vec3 Mat1   : TEXCOORD4;
-    vec3 Mat2   : TEXCOORD5;
-    vec3 Mat3   : TEXCOORD6;
+    vec4 wPos       : TEXCOORD3;
+    vec3 Mat1       : TEXCOORD4;
+    vec3 Mat2       : TEXCOORD5;
+    vec3 Mat3       : TEXCOORD6;
     vec3 tanEyeVec  : TEXCOORD7;
 };
 
@@ -1491,22 +1499,22 @@ PS2FB_fullMRT psGBuffBaseDetailCrackLMParallax(VS_OUT_GBuffBaseDetailCrackLMPara
 
 struct appdata_GBuffBaseDetailDirtCrack
 {
-    vec4 Pos : POSITION;
+    vec4 Pos            : POSITION;
     vec2 TexCoordDetail : TEXCOORD0;
-    vec2 TexCoordCrack : TEXCOORD1;
-    vec3 Tan    : TANGENT;
-    vec3 Normal	: NORMAL;
+    vec2 TexCoordCrack  : TEXCOORD1;
+    vec3 Tan            : TANGENT;
+    vec3 Normal	        : NORMAL;
 };
 
 struct VS_OUT_GBuffBaseDetailDirtCrack
 {
-    vec4 HPos   : POSITION;
+    vec4 HPos       : POSITION;
     vec2 Tex1Detail : TEXCOORD0;
     vec2 Tex3Crack  : TEXCOORD1;
-    vec4 wPos   : TEXCOORD2;
-    vec3 Mat1   : TEXCOORD3;
-    vec3 Mat2   : TEXCOORD4;
-    vec3 Mat3   : TEXCOORD5;
+    vec4 wPos       : TEXCOORD2;
+    vec3 Mat1       : TEXCOORD3;
+    vec3 Mat2       : TEXCOORD4;
+    vec3 Mat3       : TEXCOORD5;
 };
 
 VS_OUT_GBuffBaseDetailDirtCrack vsGBuffBaseDetailDirtCrack(appdata_GBuffBaseDetailDirtCrack input)
@@ -1556,13 +1564,13 @@ PS2FB_fullMRT psGBuffBaseDetailDirtCrack(VS_OUT_GBuffBaseDetailDirtCrack indata)
 
 struct VS_OUT_GBuffBaseDetailDirtCrackParallax
 {
-    vec4 HPos   : POSITION;
+    vec4 HPos       : POSITION;
     vec2 Tex1Detail : TEXCOORD0;
-    vec2 Tex3Crack : TEXCOORD1;
-    vec4 wPos   : TEXCOORD2;
-    vec3 Mat1   : TEXCOORD3;
-    vec3 Mat2   : TEXCOORD4;
-    vec3 Mat3   : TEXCOORD5;
+    vec2 Tex3Crack  : TEXCOORD1;
+    vec4 wPos       : TEXCOORD2;
+    vec3 Mat1       : TEXCOORD3;
+    vec3 Mat2       : TEXCOORD4;
+    vec3 Mat3       : TEXCOORD5;
     vec3 tanEyeVec  : TEXCOORD6;
 };
 
@@ -1616,22 +1624,23 @@ PS2FB_fullMRT psGBuffBaseDetailDirtCrackParallax(VS_OUT_GBuffBaseDetailDirtCrack
 
 struct appdata_GBuffBaseDetailDirtCrackLM
 {
-    vec4 Pos : POSITION;
+    vec4 Pos            : POSITION;
     vec2 TexCoordDetail : TEXCOORD0;
-    vec2 TexCoordCrack : TEXCOORD1;
-    vec2 TexCoordLMap : TEXCOORD2;
-    vec3 Tan    : TANGENT;
-    vec3 Normal : NORMAL;
+    vec2 TexCoordCrack  : TEXCOORD1;
+    vec2 TexCoordLMap   : TEXCOORD2;
+    vec3 Tan            : TANGENT;
+    vec3 Normal         : NORMAL;
 };
 
-struct VS_OUT_GBuffBaseDetailDirtCrackLM {
-    vec4 HPos   : POSITION;
-    vec2 Tex1Detail : TEXCOORD0;
+struct VS_OUT_GBuffBaseDetailDirtCrackLM
+{
+    vec4 HPos             : POSITION;
+    vec2 Tex1Detail       : TEXCOORD0;
     vec4 Tex3CrackAndLMap : TEXCOORD1;
-    vec4 wPos   : TEXCOORD2;
-    vec3 Mat1   : TEXCOORD3;
-    vec3 Mat2   : TEXCOORD4;
-    vec3 Mat3   : TEXCOORD5;
+    vec4 wPos             : TEXCOORD2;
+    vec3 Mat1             : TEXCOORD3;
+    vec3 Mat2             : TEXCOORD4;
+    vec3 Mat3             : TEXCOORD5;
 };
 
 VS_OUT_GBuffBaseDetailDirtCrackLM vsGBuffBaseDetailDirtCrackLM(appdata_GBuffBaseDetailDirtCrackLM input)
@@ -1682,14 +1691,14 @@ PS2FB_fullMRT psGBuffBaseDetailDirtCrackLM(VS_OUT_GBuffBaseDetailDirtCrackLM ind
 
 struct VS_OUT_GBuffBaseDetailDirtCrackLMParallax
 {
-    vec4 HPos   : POSITION;
-    vec2 Tex1Detail : TEXCOORD0;
-    vec4 Tex3CrackAndLMap : TEXCOORD1;
-    vec4 wPos   : TEXCOORD2;
-    vec3 Mat1   : TEXCOORD3;
-    vec3 Mat2   : TEXCOORD4;
-    vec3 Mat3   : TEXCOORD5;
-    vec3 tanEyeVec  : TEXCOORD6;
+    vec4 HPos               : POSITION;
+    vec2 Tex1Detail         : TEXCOORD0;
+    vec4 Tex3CrackAndLMap   : TEXCOORD1;
+    vec4 wPos               : TEXCOORD2;
+    vec3 Mat1               : TEXCOORD3;
+    vec3 Mat2               : TEXCOORD4;
+    vec3 Mat3               : TEXCOORD5;
+    vec3 tanEyeVec          : TEXCOORD6;
 };
 
 VS_OUT_GBuffBaseDetailDirtCrackLMParallax vsGBuffBaseDetailDirtCrackLMParallax(appdata_GBuffBaseDetailDirtCrackLM input)

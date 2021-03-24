@@ -93,10 +93,10 @@ technique Point
         FogEnable = FALSE;
         ZEnable = TRUE;
         ZFunc = LESSEQUAL;
-        ZWriteEnable = false;//TRUE;
+        ZWriteEnable = false;
         AlphaBlendEnable = TRUE;
         SrcBlend = SrcAlpha;
-        DestBlend = One;//InvSrcAlpha;
+        DestBlend = One;
         CullMode = NONE;
 
         VertexShader = compile vs_2_0 vsPoint();
@@ -175,7 +175,7 @@ CELL_VSOUT vsCells(VSINPUT input)
     float visibility = cellVisibility[input.Data.x];
 
     output.Color = vec4(visibility, 1.0 - visibility, 1.0 - visibility, 1.0);
-    output.Pos = mul(vec4(particlePos,1), wvp);
+    output.Pos = mul(vec4(particlePos, 1.0), wvp);
     output.TexCoord = input.TexCoord;
     return output;
 }

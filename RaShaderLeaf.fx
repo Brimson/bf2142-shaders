@@ -10,18 +10,18 @@
 #include "shaders/dataTypes.fx"
 #include "shaders/RaCommon.fx"
 
-vec4 	OverGrowthAmbient;
-Light	Lights[1];
-vec4	PosUnpack;
-vec2	NormalUnpack;
-scalar	TexUnpack;
-scalar	ObjRadius = 2;
+vec4   OverGrowthAmbient;
+Light  Lights[1];
+vec4   PosUnpack;
+vec2   NormalUnpack;
+scalar TexUnpack;
+scalar ObjRadius = 2;
 
 struct VS_OUTPUT
 {
-    vec4 Pos  : POSITION0;
-    vec2 Tex0 : TEXCOORD0;
-    vec3 tex1 : TEXCOORD1;
+    vec4 Pos   : POSITION0;
+    vec2 Tex0  : TEXCOORD0;
+    vec3 tex1  : TEXCOORD1;
     #if _HASSHADOW_
         vec4 TexShadow : TEXCOORD2;
     #endif
@@ -44,7 +44,7 @@ sampler DiffuseMapSampler = sampler_state
 // INPUTS TO THE VERTEX SHADER FROM THE APP
 string reqVertexElement[] =
 {
-    #ifdef OVERGROWTH	//tl: TODO - Compress overgrowth patches as well.
+    #ifdef OVERGROWTH // tl: TODO - Compress overgrowth patches as well.
         "Position",
         "Normal",
         "TBase2D"
@@ -70,7 +70,7 @@ VS_OUTPUT basicVertexShader
         inPos.xyz +=  sin((GlobalTime / (ObjRadius + inPos.y)) * WindSpeed) * (ObjRadius + inPos.y) * (ObjRadius + inPos.y) / LEAF_MOVEMENT;// *  WindSpeed / 16384;//clamp(abs(inPos.z * inPos.x), 0, WindSpeed);
     #endif
 
-    Out.Pos	= mul(vec4(inPos.xyz, 1), WorldViewProjection);
+    Out.Pos	= mul(vec4(inPos.xyz, 1.0), WorldViewProjection);
 
     Out.Fog	= calcFog(Out.Pos.w);
     Out.Tex0.xy = tex0;
@@ -85,7 +85,7 @@ VS_OUTPUT basicVertexShader
 
     #ifdef _POINTLIGHT_
         vec3 lightVec = vec3(Lights[0].pos.xyz - inPos);
-        float LdotN	= 1;
+        float LdotN	= 1.0;
     #else
         scalar LdotN = saturate((dot(normal, -Lights[0].dir) + 0.6) / 1.4);
     #endif

@@ -130,7 +130,7 @@ Shared_VS2PS_PointLight Shared_VS_PointLight(Shared_APP2VS_Default indata)
     outdata.Tex0 = (indata.Pos0.xy * ScaleBaseUV * vColorLightTex.x) + vColorLightTex.y;
 
     //tl: uncompress normal
-    indata.Normal = indata.Normal * 2 - 1;
+    indata.Normal = indata.Normal * 2.0 - 1.0;
     outdata.Color = vec4(calcPVPointTerrain(wPos.xyz, indata.Normal), 0);
 
     return outdata;
@@ -164,7 +164,6 @@ vec4 Shared_PS_LowDetail(Shared_VS2PS_LowDetail indata) : COLOR
     #endif
 
     #if HIGHTERRAIN
-
         vec4 colormap = tex2D(sampler0Clamp, indata.Tex0a.xy);
         vec4 lowComponent = tex2D(sampler5Clamp, indata.Tex3);
 
@@ -175,9 +174,7 @@ vec4 Shared_PS_LowDetail(Shared_VS2PS_LowDetail indata) : COLOR
         scalar mounten =    (xplaneLowDetailmap.y * indata.BlendValueAndWater.x) +
                             (yplaneLowDetailmap.x * indata.BlendValueAndWater.y) +
                             (zplaneLowDetailmap.y * indata.BlendValueAndWater.z);
-
         vec4 outColor = 4 * colormap * light * 2 * lerp(0.5, yplaneLowDetailmap.z, lowComponent.x) * lerp(0.5, mounten, lowComponent.z);
-
         return lerp(outColor, terrainWaterColor, indata.BlendValueAndWater.w);
     #else
         vec4 colormap = tex2D(ssampler0Clamp, indata.Tex0a.xy);
@@ -467,9 +464,7 @@ vec4 Shared_PS_STNormal(Shared_VS2PS_STNormal indata) : COLOR
                         (yplaneLowDetailmap.x * indata.BlendValue.y) +
                         (zplaneLowDetailmap.y * indata.BlendValue.z);
     lowDetailmap *= lerp(0.5, mounten, lowComponent.z);
-
     vec4 outColor = lowDetailmap * colormap * 4;
-
     return outColor;
 }
 

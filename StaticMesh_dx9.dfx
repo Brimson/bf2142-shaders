@@ -17,10 +17,10 @@ struct appdata_variable
     vec2 TexCrack   : TEXCOORD4;
 };
 
-#define DiffuseColor LightPos[0].rgb // Define alias
+#define DiffuseColor LightPos[0].rgb  // Define alias
 #define SpecularColor LightPos[1].rgb // Define alias
-#define TexShadow TexPos // Define alias
-#define TexDirt	LightPos[2] // Define alias
+#define TexShadow TexPos              // Define alias
+#define TexDirt	LightPos[2]           // Define alias
 
 struct VS_OUT_variable
 {
@@ -156,7 +156,7 @@ vec2 calculateParallaxCoordinatesFromAlpha(vec2 inHeightTexCoords, sampler2D inH
 vec4 getCompositeDiffuse(VS_OUT_variable indata, vec3 normalizedTanEyeVec)
 {
     vec4 base, detail, dirt, crack;
-    vec4 totalDiffuse = 0;
+    vec4 totalDiffuse = 0.0;
 
     if(_HASBASE_)
     {
@@ -249,13 +249,7 @@ vec3 getDiffusePixelLighting(vec4 lightmap, vec3 compNormals, vec3 normalizedLig
 float getSpecularPixelLighting(vec4 lightmap, vec4 compNormals, vec3 normalizedLightVec, vec3 normalizedEyeVec)
 {
     vec3 halfVec = normalize(normalizedLightVec + normalizedEyeVec);
-    float specular = pow(dot((compNormals.xyz), halfVec), 32) * compNormals.a;
-
-    // move this to second pass (or in the single pass case to the main ps)
-    // specular *= saturate(3*lightmap.g);/* * 0.2;*/
-    // specular *= saturate(3*lightmap.g);/* * 0.2;*/
-    // mask
-
+    float specular = pow(dot((compNormals.xyz), halfVec), 32.0) * compNormals.a;
     specular *= lightmap.g;
     return specular;
 }
@@ -268,7 +262,7 @@ vec4 psStaticMesh(VS_OUT_variable indata) : COLOR
     vec3 normEyeVec = normalize(indata.TanEyeVec);
 
     outColor = getCompositeDiffuse(indata, normEyeVec);
-    outColor.rgb *= 2;
+    outColor.rgb *= 2.0;
 
     if(_HASPIXELLIGHT_)
     {
@@ -345,7 +339,7 @@ VS_OUT_variable vsStaticMeshMultiPassLighting(appdata_variable input)
         vec3 objEyeVec = normalize(vsEyePosObjSpace - input.Pos);
         vec3 halfVec = (-vsLightDirObjSpace + objEyeVec) * 0.5;
         scalar spec = dot(input.Normal, halfVec);
-        vec4 light = lit(diff, spec, 32);
+        vec4 light = lit(diff, spec, 32.0);
         Out.DiffuseColor = light.y * vsSunColor;
         Out.SpecularColor = light.z * 0.7;
     }
@@ -373,8 +367,8 @@ VS_OUT_variable vsStaticMeshMultiPassLighting(appdata_variable input)
 vec4 psStaticMeshMultiPassLighting(VS_OUT_variable indata) : COLOR
 {
     vec4 outColor;
-    // project shadows
 
+    // project shadows
     scalar dirShadow = 1;
     if (_HASDIRSHADOW_)
     {
@@ -382,13 +376,14 @@ vec4 psStaticMeshMultiPassLighting(VS_OUT_variable indata) : COLOR
         vec4 samples;
 
         samples.x = tex2Dproj(clampPointSamplers7, indata.TexShadow);
-        samples.y = tex2Dproj(clampPointSamplers7, indata.TexShadow + vec4(texel.x, 0, 0, 0));
-        samples.z = tex2Dproj(clampPointSamplers7, indata.TexShadow + vec4(0, texel.y, 0, 0));
-        samples.w = tex2Dproj(clampPointSamplers7, indata.TexShadow + vec4(texel.x, texel.y, 0, 0));
+        samples.y = tex2Dproj(clampPointSamplers7, indata.TexShadow + vec4(texel.x, 0.0, 0.0, 0.0));
+        samples.z = tex2Dproj(clampPointSamplers7, indata.TexShadow + vec4(0.0, texel.y, 0.0, 0.0));
+        samples.w = tex2Dproj(clampPointSamplers7, indata.TexShadow + vec4(texel.xy, 0.0, 0.0));
 
         vec4 cmpbits = samples >= saturate(indata.TexShadow.z/indata.TexShadow.w);
         dirShadow = dot(cmpbits, 0.25);
     }
+
     // return dirShadow;
     vec4 lightmap = getLightmap(indata);
     lightmap.g *= dirShadow;
@@ -429,8 +424,7 @@ VS_OUT_variable vsStaticMeshMultiPassColor(appdata_variable input)
     // output position early
     Out.HPos = mul(input.Pos, transpose(vsWorldViewProj));
 
-    Out.TexPos.xy = Out.HPos.xy/Out.HPos.w;
-    Out.TexPos.xy = Out.TexPos.xy * 0.5 + 0.5;
+    Out.TexPos.xy = (Out.HPos.xy / Out.HPos.w) * 0.5 + 0.5;
     Out.TexPos.y = 1.0 - Out.TexPos.y;
     Out.TexPos.xy += vsTexProjOffset;
     Out.TexPos.xy = Out.TexPos.xy * Out.HPos.w;
@@ -440,7 +434,6 @@ VS_OUT_variable vsStaticMeshMultiPassColor(appdata_variable input)
     {
         if(_HASPARALLAX_)
             calculateTangentVectors(input.Normal, input.Tan, input.Pos, vsEyePosObjSpace, Out.TanLightVec, Out.TanEyeVec);
-
     }
     else
     {
@@ -471,23 +464,22 @@ VS_OUT_variable vsStaticMeshMultiPassColor(appdata_variable input)
 
 vec4 psStaticMeshMultiPassColor(VS_OUT_variable indata) : COLOR
 {
-    vec4 outColor = 1;
+    vec4 outColor = 1.0;
 
     vec3 normEyeVec = normalize(indata.TanEyeVec);
 
     vec4 compDiffuse = getCompositeDiffuse(indata, normEyeVec);
-    compDiffuse.rgb *= 2;
+    compDiffuse.rgb *= 2.0;
 
     vec4 accumLight = tex2Dproj(clampPointSamplers7, indata.TexPos);
 
     if(OUTPUTSPECULAR)
-        return vec4(accumLight.a*SPECULARCOLOR,1);
+        return vec4(accumLight.a*SPECULARCOLOR, 1.0);
 
     outColor.rgb = (compDiffuse * accumLight.rgb) + (accumLight.a * SPECULARCOLOR);
     outColor.a = compDiffuse.a;
     return outColor;
 }
-
 
 technique _STATICMESH_MULTIPASS_
 {

@@ -16,11 +16,11 @@ vector textureFactor = float4(1.0f, 1.0f, 1.0f, 1.0f);
 
 struct VS_OUTPUT
 {
-    float4 Pos	: POSITION0;
-    float3 Tex0AndZFade	: TEXCOORD0;
-    float2 Tex1	: TEXCOORD1;
-    float4 lightTex : TEXCOORD2;
-    float Fog : Fog;
+    float4 Pos          : POSITION0;
+    float3 Tex0AndZFade : TEXCOORD0;
+    float2 Tex1         : TEXCOORD1;
+    float4 lightTex     : TEXCOORD2;
+    float Fog           : Fog;
 };
 
 texture	LightMap;
@@ -88,8 +88,7 @@ float2 tex1	: TEXCOORD1
     Out.Tex0AndZFade.xy = tex0 * TexUnpack;
     Out.Tex1 = tex1 * TexUnpack;
 
-    Out.lightTex.xy = Out.Pos.xy/Out.Pos.w;
-    Out.lightTex.xy = Out.lightTex.xy * 0.5 + 0.5;
+    Out.lightTex.xy = (Out.Pos.xy / Out.Pos.w) * 0.5 + 0.5;
     Out.lightTex.y = 1.0 - Out.lightTex.y;
     Out.lightTex.xy = Out.lightTex.xy * Out.Pos.w;
     Out.lightTex.zw = Out.Pos.zw;

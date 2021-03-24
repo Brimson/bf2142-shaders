@@ -48,25 +48,25 @@ sampler samplerWrap2 = sampler_state
 
 struct appdata
 {
-    vec4 Pos            : POSITION;
-    vec4 BlendIndices   : BLENDINDICES;
-    vec2 TexCoord       : TEXCOORD0;
-    vec2 TexCoord1      : TEXCOORD1;
+    vec4 Pos          : POSITION;
+    vec4 BlendIndices : BLENDINDICES;
+    vec2 TexCoord     : TEXCOORD0;
+    vec2 TexCoord1    : TEXCOORD1;
 };
 
 struct appdataNoClouds
 {
-    vec4 Pos            : POSITION;
-    vec4 BlendIndices   : BLENDINDICES;
-    vec2 TexCoord       : TEXCOORD0;
+    vec4 Pos          : POSITION;
+    vec4 BlendIndices : BLENDINDICES;
+    vec2 TexCoord     : TEXCOORD0;
 };
 
 struct VS_OUTPUT
 {
-    vec4 HPos : POSITION;
-    vec2 Tex0 : TEXCOORD0;
-    vec2 Tex1 : TEXCOORD1;
-    vec4 FadeOut: COLOR0;
+    vec4 HPos    : POSITION;
+    vec2 Tex0    : TEXCOORD0;
+    vec2 Tex1    : TEXCOORD1;
+    vec4 FadeOut : COLOR0;
 };
 
 struct VS_OUTPUTNoClouds
@@ -77,11 +77,11 @@ struct VS_OUTPUTNoClouds
 
 struct VS_OUTPUTDualClouds
 {
-    vec4 HPos : POSITION;
-    vec2 Tex0 : TEXCOORD0;
-    vec2 Tex1 : TEXCOORD1;
-    vec2 Tex2 : TEXCOORD2;
-    vec4 FadeOut: COLOR0;
+    vec4 HPos    : POSITION;
+    vec2 Tex0    : TEXCOORD0;
+    vec2 Tex1    : TEXCOORD1;
+    vec2 Tex2    : TEXCOORD2;
+    vec4 FadeOut : COLOR0;
 };
 
 VS_OUTPUT vsSkyDome(appdata input)
@@ -147,7 +147,6 @@ vec4 psSkyDomeDualClouds(VS_OUTPUTDualClouds indata) : COLOR
 VS_OUTPUTNoClouds vsSkyDomeSunFlare(appdataNoClouds input)
 {
     VS_OUTPUTNoClouds Out;
-    // Out.HPos = input.Pos * 10000;
     Out.HPos = mul(vec4(input.Pos.xyz, 1.0), viewProjMatrix);
     Out.Tex0 = input.TexCoord;
     return Out;
@@ -155,8 +154,6 @@ VS_OUTPUTNoClouds vsSkyDomeSunFlare(appdataNoClouds input)
 
 vec4 psSkyDomeSunFlare(VS_OUTPUT indata) : COLOR
 {
-    // return 1;
-    // return vec4(flareParams[0], 0.0, 0.0, 1.0);
     vec3 rgb = tex2D(samplerClamp, indata.Tex0).rgb * flareParams[0];
     return vec4(rgb, 1.0);
 }
@@ -232,7 +229,6 @@ technique SkyDomeSunFlare
         SrcBlend = ONE;
         DestBlend = ONE;
         FogEnable = FALSE;
-        // ColorWriteEnable = 0;
         VertexShader = compile vs_2_0 vsSkyDomeSunFlare();
         PixelShader = compile ps_2_0 psSkyDomeSunFlare();
     }
@@ -255,8 +251,6 @@ technique SkyDomeFlareOccludeCheck
         AlphaTestEnable = TRUE;
         AlphaRef = 50;
         AlphaFunc = GREATER;
-        // AlphaRef = 255;
-        // AlphaFunc = LESS;
 
         FogEnable = FALSE;
 
@@ -282,8 +276,6 @@ technique SkyDomeFlareOcclude
         AlphaTestEnable = TRUE;
         AlphaRef = 50;
         AlphaFunc = GREATER;
-        // AlphaRef = 255;
-        // AlphaFunc = LESS;
 
         FogEnable = FALSE;
 

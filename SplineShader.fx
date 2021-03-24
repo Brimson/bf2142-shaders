@@ -12,7 +12,6 @@ float4 SplineVS(float4 Pos : POSITION, float3 Normal : NORMAL) : POSITION
 float4 SplinePS() : COLOR0
 {
     return vDiffuse;
-    // return float4(1.0, 0.0, 0.0, 0.5);
 }
 
 float4 ControlPointVS(float4 Pos : POSITION) : POSITION
@@ -42,12 +41,6 @@ technique spline
     {
         CullMode = NONE;
         AlphaBlendEnable = FALSE;
-        // Lighting = TRUE;
-        // FillMode = WIREFRAME;
-        // ColorWriteEnable = 0;
-        // ZWriteEnable = 0;
-        // ZEnable = (zbuffer);
-        // ZEnable = FALSE;
         DepthBias = -0.0003;
         AlphaBlendEnable = TRUE;
         SrcBlend = SRCALPHA;

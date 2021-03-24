@@ -162,14 +162,14 @@ technique projectroad
             dcl_position0 v0
 
             add r0.xyz, v0.xzw, -c[0].xyz
-            mul r0.xyz, r0.xyz, c[1].xyw		// z = 0, w = 1
+            mul r0.xyz, r0.xyz, c[1].xyw // z = 0, w = 1
             add oPos.x, r0.x, -c[1].w
             add oPos.y, r0.y, -c[1].w
             mov oPos.z, r0.z
-            mov oPos.w, c[1].w			// z = 0, w = 1
+            mov oPos.w, c[1].w // z = 0, w = 1
             add r1, v0.y, -c[2].x
             mul oD0, r1, c[2].y
-            mov oD0.a, c[1].z	// z = 0
+            mov oD0.a, c[1].z // z = 0
         };
 
         PixelShader = asm

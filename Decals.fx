@@ -20,9 +20,35 @@ texture shadowMapTex: ShadowMapTex;
 
 texture normalMap: NormalMap;
 
-sampler sampler0 = sampler_state { Texture = (texture0); AddressU = CLAMP; AddressV = CLAMP; MinFilter = LINEAR; MagFilter = LINEAR; MipFilter = LINEAR; };
-sampler sampler1 = sampler_state { Texture = (texture1); AddressU = CLAMP; AddressV = CLAMP; MinFilter = LINEAR; MagFilter = LINEAR; MipFilter = LINEAR; };
-sampler sampler2 = sampler_state { Texture = (normalMap); AddressU = CLAMP; AddressV = CLAMP; MinFilter = LINEAR; MagFilter = LINEAR; MipFilter = LINEAR; };
+sampler sampler0 = sampler_state
+{
+    Texture = (texture0);
+    AddressU = CLAMP;
+    AddressV = CLAMP;
+    MinFilter = LINEAR;
+    MagFilter = LINEAR;
+    MipFilter = LINEAR;
+};
+
+sampler sampler1 = sampler_state
+{
+    Texture = (texture1);
+    AddressU = CLAMP;
+    AddressV = CLAMP;
+    MinFilter = LINEAR;
+    MagFilter = LINEAR;
+    MipFilter = LINEAR;
+};
+
+sampler sampler2 = sampler_state
+{
+    Texture = (normalMap);
+    AddressU = CLAMP;
+    AddressV = CLAMP;
+    MinFilter = LINEAR;
+    MagFilter = LINEAR;
+    MipFilter = LINEAR;
+};
 
 struct appdata
 {
@@ -56,7 +82,7 @@ OUT_vsDecal vsDecal(appdata input)
     vec3 worldNorm = mul(input.Normal.xyz, (mat3x3)instanceTransformations[index]);
     Out.Diffuse = saturate(dot(worldNorm, -sunDirection)) * sunColor;
 
-    scalar alpha = 1.0f - saturate((Out.HPos.z - decalFadeDistanceAndInterval.x)/decalFadeDistanceAndInterval.y);
+    scalar alpha = 1.0f - saturate((Out.HPos.z - decalFadeDistanceAndInterval.x) / decalFadeDistanceAndInterval.y);
     alpha *= input.TexCoordsInstanceIndexAndAlpha.w;
     Out.Alpha = alpha;
     Out.Color = input.Color;
@@ -68,7 +94,7 @@ OUT_vsDecal vsDecal(appdata input)
     return Out;
 }
 
-vec4 psDecal(	OUT_vsDecal indata) : COLOR
+vec4 psDecal(OUT_vsDecal indata) : COLOR
 {
     vec3 lighting =  ambientColor + indata.Diffuse;
     vec4 outColor = tex2D(sampler0, indata.Texture0);
@@ -119,14 +145,12 @@ OUT_vsDecalShadowed vsDecalShadowed(appdata input)
     vec3 color = input.Color;
     scalar alpha = 1.0f - saturate((Out.HPos.z - decalFadeDistanceAndInterval.x)/decalFadeDistanceAndInterval.y);
     alpha *= input.TexCoordsInstanceIndexAndAlpha.w;
+
     Out.Alpha = alpha;
-
     Out.Color = color;
-
     Out.ViewPortMap = 0.0;
     Out.TexShadow = 0.0;
     Out.TexShadow.z -= 0.007;
-
     Out.Texture0 = input.TexCoordsInstanceIndexAndAlpha.xy;
     Out.Fog = calcFog(Out.HPos.w);
 

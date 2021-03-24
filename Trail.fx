@@ -91,8 +91,8 @@ VS_TRAIL_OUTPUT vsTrail(appdata input, uniform mat4x4 myWV, uniform mat4x4 myWP)
     scalar age = input.intensityAgeAnimBlendFactorAndAlpha[1];
 
     // FADE values
-    scalar fadeIn = saturate(age/tParameters.m_fadeInOutTileFactorAndUVOffsetVelocity.x);
-    scalar fadeOut = saturate((1.f - age)/tParameters.m_fadeInOutTileFactorAndUVOffsetVelocity.y);
+    scalar fadeIn = saturate(age / tParameters.m_fadeInOutTileFactorAndUVOffsetVelocity.x);
+    scalar fadeOut = saturate((1.0f - age) / tParameters.m_fadeInOutTileFactorAndUVOffsetVelocity.y);
 
     vec3 eyeVec = eyePos - input.pos;
 
@@ -112,22 +112,22 @@ VS_TRAIL_OUTPUT vsTrail(appdata input, uniform mat4x4 myWV, uniform mat4x4 myWP)
     fadeFactor *= fadeIn * fadeOut;
 
     // age factor polynomials
-    vec4 pc = {age*age*age, age*age, age, 1.f};
+    vec4 pc = {age * age * age, age * age, age, 1.0f};
 
     // comput size of particle using the constants of the templ[input.ageFactorAndGraphIndex.y]ate (mSizeGraph)
-    scalar size = min(dot(tParameters.m_sizeGraph, pc), 1) * tParameters.m_uvRangeLMapIntensiyAndParticleMaxSize.w;
+    scalar size = min(dot(tParameters.m_sizeGraph, pc), 1.0) * tParameters.m_uvRangeLMapIntensiyAndParticleMaxSize.w;
 
     // displace vertex
-    vec4 pos = mul(vec4(input.pos.xyz + size*(input.localCoords.xyz*input.texCoords.y), 1), myWV);
+    vec4 pos = mul(vec4(input.pos.xyz + size * (input.localCoords.xyz * input.texCoords.y), 1.0), myWV);
     Out.HPos = mul(pos, myWP);
 
-    scalar colorBlendFactor = min(dot(tParameters.m_colorBlendGraph, pc), 1);
+    scalar colorBlendFactor = min(dot(tParameters.m_colorBlendGraph, pc), 1.0);
     vec3 color = colorBlendFactor * tParameters.m_color2.rgb;
     color += (1 - colorBlendFactor) * tParameters.m_color1AndLightFactor.rgb;
 
     // lighting??
 
-    scalar alphaBlendFactor = min(dot(tParameters.m_transparencyGraph, pc), 1) * input.intensityAgeAnimBlendFactorAndAlpha[3];
+    scalar alphaBlendFactor = min(dot(tParameters.m_transparencyGraph, pc), 1.0) * input.intensityAgeAnimBlendFactorAndAlpha[3];
     alphaBlendFactor *= fadeFactor;
 
     Out.color.rgb = color/2;
@@ -135,7 +135,7 @@ VS_TRAIL_OUTPUT vsTrail(appdata input, uniform mat4x4 myWV, uniform mat4x4 myWP)
 
     Out.animBFactorAndLMapIntOffset.x = input.intensityAgeAnimBlendFactorAndAlpha[2];
 
-    scalar lightMapIntensity = saturate(clamp((input.pos.y - hemiShadowAltitude) / 10.f, 0.f, 1.0f) + tParameters.m_uvRangeLMapIntensiyAndParticleMaxSize.z);
+    scalar lightMapIntensity = saturate(saturate((input.pos.y - hemiShadowAltitude) * 0.1f) + tParameters.m_uvRangeLMapIntensiyAndParticleMaxSize.z);
     Out.animBFactorAndLMapIntOffset.yz = lightMapIntensity;
 
     // compute texcoords for trail
@@ -157,8 +157,8 @@ VS_TRAIL_OUTPUT vsTrail(appdata input, uniform mat4x4 myWV, uniform mat4x4 myWP)
     Out.texCoords1 = rotatedTexCoords.xy + uvOffsets.zw;
 
     // hemi lookup coords
-    Out.texCoords2.xy = ((input.pos + (hemiMapInfo.z/2)).xz - hemiMapInfo.xy) / hemiMapInfo.z;
-    Out.texCoords2.y = 1 - Out.texCoords2.y;
+    Out.texCoords2.xy = ((input.pos + (hemiMapInfo.z * 0.5)).xz - hemiMapInfo.xy) / hemiMapInfo.z;
+    Out.texCoords2.y = 1.0 - Out.texCoords2.y;
 
     Out.lightFactorAndAlpha.a = tParameters.m_color1AndLightFactor.a;
 
@@ -174,7 +174,7 @@ vec4 psTrailHigh(VS_TRAIL_OUTPUT input) : COLOR
     vec4 tLut = tex2D( lutSampler, input.texCoords2.xy);
 
     vec4 color = lerp(tDiffuse, tDiffuse2, input.animBFactorAndLMapIntOffset.x);
-    color.rgb *= 2*input.color.rgb;
+    color.rgb *= 2.0 * input.color.rgb;
     color.rgb *= calcParticleLighting(tLut.a, input.animBFactorAndLMapIntOffset.z, input.lightFactorAndAlpha.a);
     color.a *= input.lightFactorAndAlpha.b;
 
@@ -187,27 +187,24 @@ vec4 psTrailMedium(VS_TRAIL_OUTPUT input) : COLOR
     vec4 tDiffuse2 = tex2D(trailDiffuseSampler2, input.texCoords1);
 
     vec4 color = lerp(tDiffuse, tDiffuse2, input.animBFactorAndLMapIntOffset.x);
-    color.rgb *= 2*input.color.rgb;
+    color.rgb *= 2.0 * input.color.rgb;
     color.rgb *= calcParticleLighting(1, input.animBFactorAndLMapIntOffset.z, input.lightFactorAndAlpha.a);
     color.a *= input.lightFactorAndAlpha.b;
-
     return color;
 }
 
 vec4 psTrailLow(VS_TRAIL_OUTPUT input) : COLOR
 {
     vec4 color = tex2D( trailDiffuseSampler, input.texCoords0.xy);
-    color.rgb *= 2*input.color.rgb;
+    color.rgb *= 2.0 * input.color.rgb;
     color.a *= input.lightFactorAndAlpha.b;
-
     return color;
 }
 
 vec4 psTrailShowFill(VS_TRAIL_OUTPUT input) : COLOR
 {
     // apply sun fog
-    vec4 color = effectSunColor.rrrr;
-    return color;
+    return effectSunColor.rrrr;
 }
 
 // Ordinary technique
@@ -348,14 +345,14 @@ VS_HEAT_SHIMMER_OUTPUT vsParticleHeatShimmer(appdata input, uniform mat4x4 myWV,
     fadeFactor *= fadeIn * fadeOut;
 
     // age factor polynomials
-    vec4 pc = {age*age*age, age*age, age, 1.f};
+    vec4 pc = {age * age * age, age * age, age, 1.0f};
 
-    scalar alphaBlendFactor = min(dot(tParameters.m_transparencyGraph, pc), 1) * input.intensityAgeAnimBlendFactorAndAlpha[3];
+    scalar alphaBlendFactor = min(dot(tParameters.m_transparencyGraph, pc), 1.0) * input.intensityAgeAnimBlendFactorAndAlpha[3];
     alphaBlendFactor *= fadeFactor;
     Out.texCoords1AndAlphaBlend.z = alphaBlendFactor;
 
     // comput size of particle using the constants of the templ[input.ageFactorAndGraphIndex.y]ate (mSizeGraph)
-    scalar size = min(dot(tParameters.m_sizeGraph, pc), 1) * tParameters.m_uvRangeLMapIntensiyAndParticleMaxSize.w;
+    scalar size = min(dot(tParameters.m_sizeGraph, pc), 1.0) * tParameters.m_uvRangeLMapIntensiyAndParticleMaxSize.w;
 
     // displace vertex
     vec4 pos = mul(vec4(input.pos.xyz + size*(input.localCoords.xyz*input.texCoords.y), 1), myWV);
@@ -381,7 +378,7 @@ VS_HEAT_SHIMMER_OUTPUT vsParticleHeatShimmer(appdata input, uniform mat4x4 myWV,
     vec4 uvOffsets = input.uvOffsets * OneOverShort;
     Out.texCoords0.xy = rotatedTexCoords + uvOffsets.xy;
 
-    Out.texCoords1AndAlphaBlend.xy = (vec2(Out.HPos.x,-Out.HPos.y)/Out.HPos.w+1.f)/2.f;
+    Out.texCoords1AndAlphaBlend.xy = (vec2(Out.HPos.x,-Out.HPos.y) / Out.HPos.w) * 0.5 + 0.5;
     Out.texCoords1AndAlphaBlend.xy += texelSize/2;
 
     // Set the timing offset for this instance

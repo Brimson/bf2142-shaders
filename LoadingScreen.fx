@@ -45,7 +45,7 @@ technique Screen
         StencilEnable = false;
         AlphaTestEnable = false;
         CullMode = None;
-        TexCoordIndex[0] =0;
+        TexCoordIndex[0] = 0;
         TextureTransformFlags[0] = Disable;
         Sampler[0] = <TexMapSampler>;
     }

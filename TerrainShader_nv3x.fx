@@ -156,7 +156,7 @@ vec4 psDx9_BM_MulDFast(VS2PS_BM_Dx9_MulDFast indata) : COLOR
 {
     vec4 colormap = tex2D(sampler0Clamp, indata.Tex0.xy);
     vec4 accumlights = tex2Dproj(sampler1Clamp, indata.Tex1);
-    vec4 light = (accumlights.w * vSunColor) + accumlights*2;
+    vec4 light = (accumlights.w * vSunColor) + accumlights * 2.0;
     return colormap * light;
 }
 
@@ -171,7 +171,7 @@ VS2PS_BM_Dx9_MulDFast vsDx9_BM_MulDFast(APP2VS_BM_Dx9 indata)
 
     outdata.Tex0.xy = indata.TexCoord0;
     outdata.Tex1.xy = outdata.Pos.xy/outdata.Pos.w;
-    outdata.Tex1.xy = (outdata.Tex1.xy + 1) / 2;
+    outdata.Tex1.xy = outdata.Tex1.xy * 0.5 + 0.5;
     outdata.Tex1.y = 1-outdata.Tex1.y;
     outdata.Tex1.xy += vTexProjOffset;
     outdata.Tex1.xy = outdata.Tex1.xy * outdata.Pos.w;
@@ -198,7 +198,7 @@ vec4 psDx9_BM_MulD2(VS2PS_BM_Dx9_MulD indata) : COLOR
 {
     vec4 colormap = tex2D(sampler0Clamp, indata.Tex0a);
     vec4 accumlights = tex2Dproj(sampler1Clamp, indata.Tex1);
-    vec4 light = ((accumlights.w * vSunColor) + accumlights)*2;
+    vec4 light = ((accumlights.w * vSunColor) + accumlights) * 2.0;
     return colormap * light;
 }
 
@@ -214,11 +214,11 @@ vec4 psDx9_BM_MulD(VS2PS_BM_Dx9_MulD indata) : COLOR
     vec4 xplaneLowDetailmap = tex2D(sampler4Wrap2, indata.Tex2a);
     vec4 zplaneLowDetailmap = tex2D(sampler4Wrap3, indata.Tex2b);
 
-    scalar mounten = (xplaneLowDetailmap.y * indata.BlendValueAndWater.x) +
-                     (yplaneLowDetailmap.x * indata.BlendValueAndWater.y) +
-                     (zplaneLowDetailmap.y * indata.BlendValueAndWater.z);
+    scalar mounten =    (xplaneLowDetailmap.y * indata.BlendValueAndWater.x) +
+                        (yplaneLowDetailmap.x * indata.BlendValueAndWater.y) +
+                        (zplaneLowDetailmap.y * indata.BlendValueAndWater.z);
 
-    vec4 outColor = colormap * light * 4 * lerp(0.5, yplaneLowDetailmap.z, lowComponent.x) * lerp(0.5, mounten, lowComponent.z);
+    vec4 outColor = colormap * light * 4.0 * lerp(0.5, yplaneLowDetailmap.z, lowComponent.x) * lerp(0.5, mounten, lowComponent.z);
     return lerp(terrainWaterColor, outColor, indata.BlendValueAndWater.w);
 }
 
@@ -253,11 +253,11 @@ VS2PS_BM_Dx9_MulD vsDx9_BM_MulD(APP2VS_BM_Dx9 indata)
     outdata.Tex2b.y += vFarTexTiling.w;
 
     outdata.BlendValueAndWater.xyz = saturate(abs(indata.Normal) - vBlendMod);
-    scalar tot = dot(1, outdata.BlendValueAndWater.xyz);
+    scalar tot = dot(1.0, outdata.BlendValueAndWater.xyz);
     outdata.BlendValueAndWater.xyz /= tot;
 
     outdata.Tex1.xy = outdata.Pos.xy/outdata.Pos.w;
-    outdata.Tex1.xy = (outdata.Tex1.xy + 1) / 2;
+    outdata.Tex1.xy = outdata.Tex1.xy * 0.5 + 0.5;
     outdata.Tex1.y = 1-outdata.Tex1.y;
     outdata.Tex1.xy += vTexProjOffset;
     outdata.Tex1.xy = outdata.Tex1.xy * outdata.Pos.w;
@@ -302,8 +302,8 @@ vec4 psDx9_BM_MulDDetail(VS2PS_BM_Dx9_MulDDetail indata) : COLOR
     scalar mounten =    (xplaneLowDetailmap.y * indata.BlendValueAndFade.x) +
                         (yplaneLowDetailmap.x * indata.BlendValueAndFade.y) +
                         (zplaneLowDetailmap.y * indata.BlendValueAndFade.z);
-    lowDetailmap *= (4 * lerp(0.5, mounten, lowComponent.z));
 
+    lowDetailmap *= (4 * lerp(0.5, mounten, lowComponent.z));
     vec4 bothDetailmap = detailmap * lowDetailmap;
     vec4 detailout = lerp(2*bothDetailmap, lowDetailmap, indata.BlendValueAndFade.w);
 
@@ -351,7 +351,7 @@ VS2PS_BM_Dx9_MulDDetail vsDx9_BM_MulDDetail(APP2VS_BM_Dx9 indata)
     outdata.BlendValueAndFade.xyz /= tot;
 
     outdata.Tex1.xy = outdata.Pos.xy/outdata.Pos.w;
-    outdata.Tex1.xy = (outdata.Tex1.xy + 1) / 2;
+    outdata.Tex1.xy = outdata.Tex1.xy * 0.5 + 0.5;
     outdata.Tex1.y = 1-outdata.Tex1.y;
     outdata.Tex1.xy += vTexProjOffset;
     outdata.Tex1.xy = outdata.Tex1.xy * outdata.Pos.w;
@@ -397,6 +397,7 @@ vec4 psDx9_BM_MulDDetailMounten(VS2PS_BM_Dx9_MulDDetailMounten indata) : COLOR
     scalar mounten =    (xplaneLowDetailmap.y * indata.BlendValueAndFade.x) +
                         (yplaneLowDetailmap.x * indata.BlendValueAndFade.y) +
                         (zplaneLowDetailmap.y * indata.BlendValueAndFade.z);
+
     lowDetailmap *= (4 * lerp(0.5, mounten, lowComponent.z));
 
     vec4 detailmap =    (xplaneDetailmap * indata.BlendValueAndFade.x) +
@@ -454,7 +455,7 @@ VS2PS_BM_Dx9_MulDDetailMounten vsDx9_BM_MulDDetailMounten(APP2VS_BM_Dx9 indata)
     outdata.BlendValueAndFade.xyz /= tot;
 
     outdata.Tex1.xy = outdata.Pos.xy/outdata.Pos.w;
-    outdata.Tex1.xy = (outdata.Tex1.xy + 1) / 2;
+    outdata.Tex1.xy = outdata.Tex1.xy * 0.5 + 0.5;
     outdata.Tex1.y = 1-outdata.Tex1.y;
     outdata.Tex1.xy += vTexProjOffset;
     outdata.Tex1.xy = outdata.Tex1.xy * outdata.Pos.w;
@@ -549,7 +550,7 @@ VS2PS_BM_Dx9_MulDDetailWithEnvMap vsDx9_BM_MulDDetailWithEnvMap(APP2VS_BM_Dx9 in
     outdata.BlendValueAndFade.xyz /= tot;
 
     outdata.Tex1.xy = outdata.Pos.xy/outdata.Pos.w;
-    outdata.Tex1.xy = (outdata.Tex1.xy + 1) / 2;
+    outdata.Tex1.xy = outdata.Tex1.xy * 0.5 + 0.5;
     outdata.Tex1.y = 1-outdata.Tex1.y;
     outdata.Tex1.xy += vTexProjOffset;
     outdata.Tex1.xy = outdata.Tex1.xy * outdata.Pos.w;
@@ -898,9 +899,7 @@ vec4 psSTNormal(STVS2PSNormal indata) : COLOR
                         (yplaneLowDetailmap.x * indata.BlendValue.y) +
                         (zplaneLowDetailmap.y * indata.BlendValue.z);
     lowDetailmap *= lerp(0.5, mounten, lowComponent.z);
-
     vec4 outColor = lowDetailmap * colormap * 4;
-
     return outColor;
 }
 

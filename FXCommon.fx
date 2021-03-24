@@ -55,6 +55,5 @@ vec3 calcParticleLighting(scalar lm, scalar lmOffset, scalar lightFactor)
 {
     float lut = saturate(lm + lmOffset);
     vec3 diffuse = lerp(effectShadowColor, effectSunColor, lut);
-
     return lerp(1.0, diffuse, lightFactor);
 }

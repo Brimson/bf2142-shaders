@@ -42,9 +42,9 @@ string reqVertexElement[] =
 
 VS_OUTPUT basicVertexShader
 (
-float3 inPos: POSITION0,
-float2 tex0	: TEXCOORD0,
-float4 blendIndices : BLENDINDICES
+    float3 inPos: POSITION0,
+    float2 tex0	: TEXCOORD0,
+    float4 blendIndices : BLENDINDICES
 )
 {
     VS_OUTPUT Out = (VS_OUTPUT)0;

@@ -4,7 +4,7 @@
 
 struct appdata_ZOnly
 {
-    float4 Pos : POSITION;
+    float4 Pos          : POSITION;
     float4 BlendIndices : BLENDINDICES;
 };
 
@@ -17,20 +17,8 @@ struct VS_OUT_Base2
 // VS_OUT_Base2 vsZOnly(appdata_ZOnly input)
 float4 vsZOnly(appdata_ZOnly input) : POSITION
 {
-    /*
-        // Compensate for lack of UBYTE4 on Geforce3
-        int4 IndexVector = D3DCOLORtoUBYTE4(input.BlendIndices);
-        int IndexArray[4] = (int[4])IndexVector;
-    */
-     float3 Pos = input.Pos;//mul(input.Pos, mOneBoneSkinning[IndexArray[0]]);
-     return mul(float4(Pos.xyz, 1.0f), viewProjMatrix);
-    /*
-        VS_OUT_Base2 a;
-        a.HPos = mul(float4(Pos.xyz, 1.0f), viewProjMatrix);
-        a.col = a.HPos;
-        a.col.xy = (a.col.xy*0.5)+0.5;
-        return a;
-    */
+    float3 Pos = input.Pos;
+    return mul(float4(Pos.xyz, 1.0f), viewProjMatrix);
 }
 
 float4 psZOnly() : COLOR
@@ -50,8 +38,6 @@ technique ZOnly
         AlphaRef = 50;
         AlphaFunc = GREATER;
 
-        // ColorWriteEnable = RED|BLUE|GREEN|ALPHA;
-
         VertexShader = compile vs_2_0 vsZOnly();
         PixelShader = compile ps_2_0 psZOnly();
     }
@@ -60,54 +46,31 @@ technique ZOnly
 
 struct appdata_Base
 {
-    float4	Pos : POSITION;
-    float4  BlendIndices : BLENDINDICES;
-    // float2 TexCoordDiff : TEXCOORD1;
+    float4 Pos          : POSITION;
+    float4 BlendIndices : BLENDINDICES;
 };
 
 struct VS_OUT_Base
 {
     float4 HPos : POSITION;
-    // float2 Tex0Diff : TEXCOORD0;
 };
 
 VS_OUT_Base vsBase(appdata_Base input)
 {
     VS_OUT_Base Out;
-    /*
-        // Compensate for lack of UBYTE4 on Geforce3
-        int4 IndexVector = D3DCOLORtoUBYTE4(input.BlendIndices);
-        int IndexArray[4] = (int[4])IndexVector;
-    */
-    /*
-        float3 Pos = mul(input.Pos, mOneBoneSkinning[IndexArray[0]]);
-        Out.HPos = mul(float4(Pos.xyz, 1.0f), viewProjMatrix);
-        Out.HPos = mul(input.Pos, viewProjMatrix);
-    */
     Out.HPos = mul(input.Pos, transpose(viewProjMatrix));
-    /*
-        Pass-through texcoords
-        Out.Tex0Diff = input.TexCoordDiff;
-    */
     return Out;
 }
 
 float4 psBase(VS_OUT_Base indata) : COLOR
 {
     return 0.5;
-    /*
-        return float4(indata.Tex1.x,indata.Tex1.y, indata.Tex0.x, 1);
-        return tex2D(samplerWrap0, indata.Tex0Diff);
-        return tex2D(samplerWrap1, indata.Tex1LMap) * tex2D(samplerWrap0, indata.Tex0Diff);
-    */
 }
 
 float4 psBaseAT(VS_OUT_Base indata) : COLOR
 {
-    // return float4(indata.Tex1.x,indata.Tex1.y, indata.Tex0.x, 1);
-    vec4 baseAT = 1.0;//tex2D(samplerWrap0, indata.Tex0Diff);
+    vec4 baseAT = 1.0;
     return baseAT.a;
-    // return tex2D(samplerWrap1, indata.Tex1LMap) * tex2D(samplerWrap0, indata.Tex0Diff);
 }
 
 technique ZOnlyBaseAT
@@ -132,16 +95,12 @@ technique OnePassbase
     pass p0
     {
         AlphaBlendEnable = FALSE;
-        //ZWriteEnable = FALSE;
-        //ZFunc = EQUAL;
         ZFunc = LESSEQUAL;
         AlphaTestEnable = <alphaTest>;
         AlphaRef = 50;
         AlphaFunc = GREATER;
 
         ColorWriteEnable = RED|BLUE|GREEN|ALPHA;
-        // ColorWriteEnable = 0;
-        // FillMode = WIREFRAME;
 
         VertexShader = compile vs_2_0 vsBase();
         PixelShader = compile ps_2_0 psBase();
@@ -166,41 +125,28 @@ technique OnePassbasealpha
 
 struct appdata_BaseLM
 {
-    float4	Pos : POSITION;
-    float4  BlendIndices : BLENDINDICES;
-    float2	TexCoordDiff : TEXCOORD0;
-    float2	TexCoordLMap : TEXCOORD1;
-    // float3 Tan : TANGENT;
-    // float3 Binorm : BINORMAL;
+    float4 Pos          : POSITION;
+    float4 BlendIndices : BLENDINDICES;
+    float2 TexCoordDiff : TEXCOORD0;
+    float2 TexCoordLMap : TEXCOORD1;
 };
-
 
 struct VS_OUT_BaseLM
 {
-    float4 HPos : POSITION;
+    float4 HPos     : POSITION;
     float2 Tex0Diff : TEXCOORD0;
     float2 Tex1LMap : TEXCOORD1;
 };
-
 
 VS_OUT_BaseLM vsBaseLM(appdata_BaseLM input)
 {
     VS_OUT_BaseLM Out;
 
-    /*
-        // Compensate for lack of UBYTE4 on Geforce3
-        int4 IndexVector = D3DCOLORtoUBYTE4(input.BlendIndices);
-        int IndexArray[4] = (int[4])IndexVector;
-
-        float3 Pos = mul(input.Pos, mOneBoneSkinning[IndexArray[0]]);
-        Out.HPos = mul(float4(Pos.xyz, 1.0f), viewProjMatrix);
-    */
     Out.HPos = mul(input.Pos, viewProjMatrix);
 
     // Pass-through texcoords
     Out.Tex0Diff = input.TexCoordDiff;
     Out.Tex1LMap = (input.TexCoordLMap*lightmapOffset.xy) + lightmapOffset.zw;
-
     return Out;
 }
 
@@ -215,13 +161,10 @@ technique OnePassbaseLM
     pass p0
     {
         AlphaBlendEnable = FALSE;
-        // ZWriteEnable = FALSE;
-        // ZFunc = EQUAL;
         ZFunc = LESSEQUAL;
         AlphaTestEnable = <alphaTest>;
         AlphaRef = 50;
         AlphaFunc = GREATER;
-        // AlphaTestRef = 0.f;
         ColorWriteEnable = RED|BLUE|GREEN|ALPHA;
 
         VertexShader = compile vs_2_0 vsBaseLM();
@@ -231,33 +174,23 @@ technique OnePassbaseLM
 
 struct appdata_BaseDetail
 {
-    float4 Pos : POSITION;
-    float4 BlendIndices : BLENDINDICES;
-    float2 TexCoordDiff : TEXCOORD0;
+    float4 Pos            : POSITION;
+    float4 BlendIndices   : BLENDINDICES;
+    float2 TexCoordDiff   : TEXCOORD0;
     float2 TexCoordDetail : TEXCOORD1;
-    // float3 Tan : TANGENT;
-    // float3 Binorm : BINORMAL;
 };
 
 struct VS_OUT_BaseDetail
 {
-    float4 HPos : POSITION;
-    float2 Tex0Diff : TEXCOORD0;
-    float2 Tex1Detail   : TEXCOORD1;
+    float4 HPos       : POSITION;
+    float2 Tex0Diff   : TEXCOORD0;
+    float2 Tex1Detail : TEXCOORD1;
 };
 
 VS_OUT_BaseDetail vsBaseDetail(appdata_BaseDetail input)
 {
     VS_OUT_BaseDetail Out;
 
-    /*
-        // Compensate for lack of UBYTE4 on Geforce3
-        int4 IndexVector = D3DCOLORtoUBYTE4(input.BlendIndices);
-        int IndexArray[4] = (int[4])IndexVector;
-
-        float3 Pos = mul(input.Pos, mOneBoneSkinning[IndexArray[0]]);
-        Out.HPos = mul(float4(Pos.xyz, 1.0f), viewProjMatrix);
-    */
     Out.HPos = mul(input.Pos, viewProjMatrix);
 
     // Pass-through texcoords
@@ -283,7 +216,6 @@ technique OnePassbasedetail
     pass p0
     {
         AlphaBlendEnable = FALSE;
-        // ZWriteEnable = FALSE;
         ZFunc = LESSEQUAL;
         AlphaTestEnable = <alphaTest>;
         AlphaRef = 50;
@@ -298,19 +230,17 @@ technique OnePassbasedetail
 
 struct appdata_BaseDetailLM
 {
-    float4	Pos : POSITION;
-    float4  BlendIndices : BLENDINDICES;
-    float2	TexCoordDiff : TEXCOORD0;
-    float2	TexCoordDetail : TEXCOORD1;
-    float2	TexCoordLMap : TEXCOORD2;
-    // float3 Tan : TANGENT;
-    // float3 Binorm : BINORMAL;
+    float4 Pos            : POSITION;
+    float4 BlendIndices   : BLENDINDICES;
+    float2 TexCoordDiff   : TEXCOORD0;
+    float2 TexCoordDetail : TEXCOORD1;
+    float2 TexCoordLMap   : TEXCOORD2;
 };
 
 struct VS_OUT_BaseDetailLM
 {
-    float4 HPos : POSITION;
-    float2 Tex0Diff : TEXCOORD0;
+    float4 HPos         : POSITION;
+    float2 Tex0Diff     : TEXCOORD0;
     float2 Tex1Detail   : TEXCOORD1;
     float2 Tex2LMap     : TEXCOORD2;
 };
@@ -318,15 +248,6 @@ struct VS_OUT_BaseDetailLM
 VS_OUT_BaseDetailLM vsBaseDetailLM(appdata_BaseDetailLM input)
 {
     VS_OUT_BaseDetailLM Out;
-
-    /*
-        // Compensate for lack of UBYTE4 on Geforce3
-        int4 IndexVector = D3DCOLORtoUBYTE4(input.BlendIndices);
-        int IndexArray[4] = (int[4])IndexVector;
-
-        float3 Pos = mul(input.Pos, mOneBoneSkinning[IndexArray[0]]);
-        Out.HPos = mul(float4(Pos.xyz, 1.0f), viewProjMatrix);
-    */
 
     Out.HPos = mul(input.Pos, viewProjMatrix);
 
@@ -356,7 +277,6 @@ technique OnePassbasedetailLM
     pass p0
     {
         AlphaBlendEnable = FALSE;
-        //ZWriteEnable = FALSE;
         ZFunc = LESSEQUAL;
         AlphaTestEnable = <alphaTest>;
         AlphaRef = 50;
@@ -371,35 +291,25 @@ technique OnePassbasedetailLM
 
 struct appdata_BaseDetailDirt
 {
-    float4	Pos : POSITION;
-    float4  BlendIndices : BLENDINDICES;
-    float2	TexCoordDiff : TEXCOORD0;
-    float2	TexCoordDetail : TEXCOORD1;
-    float2	TexCoordDirt : TEXCOORD2;
-    // float3 Tan       : TANGENT;
-    // float3 Binorm    : BINORMAL;
+    float4 Pos            : POSITION;
+    float4 BlendIndices   : BLENDINDICES;
+    float2 TexCoordDiff   : TEXCOORD0;
+    float2 TexCoordDetail : TEXCOORD1;
+    float2 TexCoordDirt   : TEXCOORD2;
 };
 
 struct VS_OUT_BaseDetailDirt
 {
-    float4 HPos     : POSITION;
-    float2 Tex0Diff     : TEXCOORD0;
-    float2 Tex1Detail   : TEXCOORD1;
-    float2 Tex2Dirt : TEXCOORD2;
+    float4 HPos       : POSITION;
+    float2 Tex0Diff   : TEXCOORD0;
+    float2 Tex1Detail : TEXCOORD1;
+    float2 Tex2Dirt   : TEXCOORD2;
 };
 
 VS_OUT_BaseDetailDirt vsBaseDetailDirt(appdata_BaseDetailDirt input)
 {
     VS_OUT_BaseDetailDirt Out;
 
-    /*
-        // Compensate for lack of UBYTE4 on Geforce3
-        int4 IndexVector = D3DCOLORtoUBYTE4(input.BlendIndices);
-        int IndexArray[4] = (int[4])IndexVector;
-
-        float3 Pos = mul(input.Pos, mOneBoneSkinning[IndexArray[0]]);
-        Out.HPos = mul(float4(Pos.xyz, 1.0f), viewProjMatrix);
-    */
     Out.HPos = mul(input.Pos, viewProjMatrix);
 
     // Pass-through texcoords
@@ -425,7 +335,6 @@ technique OnePassbasedetaildirt
     pass p0
     {
         AlphaBlendEnable = FALSE;
-        //ZWriteEnable = FALSE;
         ZFunc = LESSEQUAL;
         AlphaTestEnable = <alphaTest>;
         AlphaRef = 50;
@@ -438,38 +347,29 @@ technique OnePassbasedetaildirt
     }
 }
 
-struct appdata_BaseDetailDirtLM {
-    float4	Pos : POSITION;
-    float4  BlendIndices : BLENDINDICES;
-    float2	TexCoordDiff : TEXCOORD0;
-    float2	TexCoordDetail : TEXCOORD1;
-    float2	TexCoordDirt : TEXCOORD2;
-    float2	TexCoordLMap : TEXCOORD3;
-    // float3 Tan   : TANGENT;
-    // float3 Binorm    : BINORMAL;
+struct appdata_BaseDetailDirtLM
+{
+    float4 Pos            : POSITION;
+    float4 BlendIndices   : BLENDINDICES;
+    float2 TexCoordDiff   : TEXCOORD0;
+    float2 TexCoordDetail : TEXCOORD1;
+    float2 TexCoordDirt   : TEXCOORD2;
+    float2 TexCoordLMap   : TEXCOORD3;
 };
 
 struct VS_OUT_BaseDetailDirtLM
 {
-    float4 HPos : POSITION;
-    float2 Tex0Diff : TEXCOORD0;
-    float2 Tex1Detail   : TEXCOORD1;
-    float2 Tex2Dirt : TEXCOORD2;
-    float2 Tex3LMap : TEXCOORD3;
+    float4 HPos       : POSITION;
+    float2 Tex0Diff   : TEXCOORD0;
+    float2 Tex1Detail : TEXCOORD1;
+    float2 Tex2Dirt   : TEXCOORD2;
+    float2 Tex3LMap   : TEXCOORD3;
 };
 
 VS_OUT_BaseDetailDirtLM vsBaseDetailDirtLM(appdata_BaseDetailDirtLM input)
 {
     VS_OUT_BaseDetailDirtLM Out;
 
-    /*
-        // Compensate for lack of UBYTE4 on Geforce3
-        int4 IndexVector = D3DCOLORtoUBYTE4(input.BlendIndices);
-        int IndexArray[4] = (int[4])IndexVector;
-
-        float3 Pos = mul(input.Pos, mOneBoneSkinning[IndexArray[0]]);
-        Out.HPos = mul(float4(Pos.xyz, 1.0f), viewProjMatrix);
-    */
     Out.HPos = mul(input.Pos, viewProjMatrix);
 
     // Pass-through texcoords
@@ -497,7 +397,6 @@ technique OnePassbasedetaildirtLM
     pass p0
     {
         AlphaBlendEnable = FALSE;
-        //ZWriteEnable = FALSE;
         ZFunc = LESSEQUAL;
         AlphaTestEnable = <alphaTest>;
         AlphaRef = 50;
@@ -512,35 +411,25 @@ technique OnePassbasedetaildirtLM
 
 struct appdata_BaseDetailCrack
 {
-    float4	Pos : POSITION;
-    float4  BlendIndices : BLENDINDICES;
-    float2	TexCoordDiff : TEXCOORD0;
-    float2	TexCoordDetail : TEXCOORD1;
-    float2	TexCoordCrack : TEXCOORD2;
-    // float3 Tan       : TANGENT;
-    // float3 Binorm    : BINORMAL;
+    float4 Pos            : POSITION;
+    float4 BlendIndices   : BLENDINDICES;
+    float2 TexCoordDiff   : TEXCOORD0;
+    float2 TexCoordDetail : TEXCOORD1;
+    float2 TexCoordCrack  : TEXCOORD2;
 };
 
 struct VS_OUT_BaseDetailCrack
 {
-    float4 HPos     : POSITION;
-    float2 Tex0Diff : TEXCOORD0;
-    float2 Tex1Detail   : TEXCOORD1;
-    float2 Tex2Crack    : TEXCOORD2;
+    float4 HPos       : POSITION;
+    float2 Tex0Diff   : TEXCOORD0;
+    float2 Tex1Detail : TEXCOORD1;
+    float2 Tex2Crack  : TEXCOORD2;
 };
 
 VS_OUT_BaseDetailCrack vsBaseDetailCrack(appdata_BaseDetailCrack input)
 {
     VS_OUT_BaseDetailCrack Out;
 
-    /*
-        // Compensate for lack of UBYTE4 on Geforce3
-        int4 IndexVector = D3DCOLORtoUBYTE4(input.BlendIndices);
-        int IndexArray[4] = (int[4])IndexVector;
-
-        float3 Pos = mul(input.Pos, mOneBoneSkinning[IndexArray[0]]);
-        Out.HPos = mul(float4(Pos.xyz, 1.0f), viewProjMatrix);
-    */
     Out.HPos = mul(input.Pos, viewProjMatrix);
 
     // Pass-through texcoords
@@ -555,11 +444,8 @@ float4 psBaseDetailCrack(VS_OUT_BaseDetailCrack indata) : COLOR
     float4 detail = tex2D(samplerWrap1, indata.Tex1Detail);
     float4 base = tex2D(samplerWrap0, indata.Tex0Diff);
     float4 crack = tex2D(samplerWrap2, indata.Tex2Crack);
-    // return float4(fmod(indata.Tex2Crack.x,1),fmod(indata.Tex2Crack.y,1),0.f,1.f);
-    // return crack;
+
     float4 color = base * detail * (1.0 - crack.a);
-    // color.a = detail.a;
-    // return color;
     color.rgb = crack.rgb * crack.a + color.rgb;
     color.a = detail.a;
     return color;
@@ -570,7 +456,6 @@ technique OnePassbasedetailcrack
     pass p0
     {
         AlphaBlendEnable = FALSE;
-        // ZWriteEnable = FALSE;
         ZFunc = LESSEQUAL;
         AlphaTestEnable = <alphaTest>;
         AlphaRef = 50;
@@ -585,37 +470,27 @@ technique OnePassbasedetailcrack
 
 struct appdata_BaseDetailCrackLM
 {
-    float4	Pos : POSITION;
-    float4  BlendIndices : BLENDINDICES;
-    float2	TexCoordDiff : TEXCOORD0;
-    float2	TexCoordDetail : TEXCOORD1;
-    float2	TexCoordCrack : TEXCOORD2;
-    float2	TexCoordLMap : TEXCOORD3;
-    // float3 Tan       : TANGENT;
-    // float3 Binorm    : BINORMAL;
+    float4 Pos            : POSITION;
+    float4 BlendIndices   : BLENDINDICES;
+    float2 TexCoordDiff   : TEXCOORD0;
+    float2 TexCoordDetail : TEXCOORD1;
+    float2 TexCoordCrack  : TEXCOORD2;
+    float2 TexCoordLMap   : TEXCOORD3;
 };
 
 struct VS_OUT_BaseDetailCrackLM
 {
-    float4 HPos     : POSITION;
-    float2 Tex0Diff : TEXCOORD0;
-    float2 Tex1Detail   : TEXCOORD1;
-    float2 Tex2Crack    : TEXCOORD2;
-    float2 Tex3LMap : TEXCOORD3;
+    float4 HPos       : POSITION;
+    float2 Tex0Diff   : TEXCOORD0;
+    float2 Tex1Detail : TEXCOORD1;
+    float2 Tex2Crack  : TEXCOORD2;
+    float2 Tex3LMap   : TEXCOORD3;
 };
 
 VS_OUT_BaseDetailCrackLM vsBaseDetailCrackLM(appdata_BaseDetailCrackLM input)
 {
     VS_OUT_BaseDetailCrackLM Out;
 
-    /*
-        // Compensate for lack of UBYTE4 on Geforce3
-        int4 IndexVector = D3DCOLORtoUBYTE4(input.BlendIndices);
-        int IndexArray[4] = (int[4])IndexVector;
-
-        float3 Pos = mul(input.Pos, mOneBoneSkinning[IndexArray[0]]);
-        Out.HPos = mul(float4(Pos.xyz, 1.0f), viewProjMatrix);
-    */
     Out.HPos = mul(input.Pos, viewProjMatrix);
 
     // Pass-through texcoords
@@ -632,9 +507,8 @@ float4 psBaseDetailCrackLM(VS_OUT_BaseDetailCrackLM indata) : COLOR
     float4 base = tex2D(samplerWrap0, indata.Tex0Diff);
     float4 crack = tex2D(samplerWrap2, indata.Tex2Crack);
     float4 lightmap = tex2D(samplerWrap3, indata.Tex3LMap);
-    // return float4(indata.Tex4LMap.x,indata.Tex4LMap.y,0.f,1.f);
-    float4 color = base * detail * (1-crack.a);
-    color.rgb = crack.rgb*crack.a + color.rgb;
+    float4 color = base * detail * (1.0 - crack.a);
+    color.rgb = crack.rgb * crack.a + color.rgb;
     color.rgb = color.rgb * lightmap.rgb;
     color.a = detail.a;
     return color;
@@ -645,7 +519,6 @@ technique OnePassbasedetailcrackLM
     pass p0
     {
         AlphaBlendEnable = FALSE;
-        //ZWriteEnable = FALSE;
         ZFunc = LESSEQUAL;
         AlphaTestEnable = <alphaTest>;
         AlphaRef = 50;
@@ -659,37 +532,27 @@ technique OnePassbasedetailcrackLM
 
 struct appdata_BaseDetailDirtCrack
 {
-    float4	Pos : POSITION;
-    float4  BlendIndices : BLENDINDICES;
-    float2	TexCoordDiff : TEXCOORD0;
-    float2	TexCoordDetail : TEXCOORD1;
-    float2	TexCoordDirt : TEXCOORD2;
-    float2	TexCoordCrack : TEXCOORD3;
-    //    float3 Tan    : TANGENT;
-    //    float3 Binorm	: BINORMAL;
+    float4 Pos            : POSITION;
+    float4 BlendIndices   : BLENDINDICES;
+    float2 TexCoordDiff   : TEXCOORD0;
+    float2 TexCoordDetail : TEXCOORD1;
+    float2 TexCoordDirt   : TEXCOORD2;
+    float2 TexCoordCrack  : TEXCOORD3;
 };
 
 struct VS_OUT_BaseDetailDirtCrack
 {
-    float4 HPos		: POSITION;
-    float2 Tex0Diff		: TEXCOORD0;
-    float2 Tex1Detail	: TEXCOORD1;
-    float2 Tex2Dirt		: TEXCOORD2;
-    float2 Tex3Crack	: TEXCOORD3;
+    float4 HPos       : POSITION;
+    float2 Tex0Diff   : TEXCOORD0;
+    float2 Tex1Detail : TEXCOORD1;
+    float2 Tex2Dirt   : TEXCOORD2;
+    float2 Tex3Crack  : TEXCOORD3;
 };
 
 VS_OUT_BaseDetailDirtCrack vsBaseDetailDirtCrack(appdata_BaseDetailDirtCrack input)
 {
     VS_OUT_BaseDetailDirtCrack Out;
 
-    /*
-        // Compensate for lack of UBYTE4 on Geforce3
-        int4 IndexVector = D3DCOLORtoUBYTE4(input.BlendIndices);
-        int IndexArray[4] = (int[4])IndexVector;
-
-        float3 Pos = mul(input.Pos, mOneBoneSkinning[IndexArray[0]]);
-        Out.HPos = mul(float4(Pos.xyz, 1.0f), viewProjMatrix);
-    */
     Out.HPos = mul(input.Pos, viewProjMatrix);
     // Pass-through texcoords
     Out.Tex0Diff = input.TexCoordDiff;
@@ -705,8 +568,7 @@ float4 psBaseDetailDirtCrack(VS_OUT_BaseDetailDirtCrack indata) : COLOR
     float4 base = tex2D(samplerWrap0, indata.Tex0Diff);
     float4 dirt = tex2D(samplerWrap2, indata.Tex2Dirt);
     float4 crack = tex2D(samplerWrap3, indata.Tex3Crack);
-    // return float4(fmod(indata.Tex3Crack.x,1),fmod(indata.Tex3Crack.y,1),0.f,1.f);
-    // return dirt;
+
     float4 color = base * detail * dirt * (1-crack.a);
     color.rgb = crack.rgb*crack.a + color.rgb;
     color.a = detail.a;
@@ -718,7 +580,6 @@ technique OnePassbasedetaildirtcrack
     pass p0
     {
         AlphaBlendEnable = FALSE;
-        //ZWriteEnable = FALSE;
         ZFunc = LESSEQUAL;
         AlphaTestEnable = <alphaTest>;
         AlphaRef = 50;
@@ -732,39 +593,29 @@ technique OnePassbasedetaildirtcrack
 
 struct appdata_BaseDetailDirtCrackLM
 {
-    float4	Pos : POSITION;
-    float4  BlendIndices : BLENDINDICES;
-    float2	TexCoordDiff : TEXCOORD0;
-    float2	TexCoordDetail : TEXCOORD1;
-    float2	TexCoordDirt : TEXCOORD2;
-    float2	TexCoordCrack : TEXCOORD3;
-    float2	TexCoordLMap : TEXCOORD4;
-    // float3 Tan       : TANGENT;
-    // float3 Binorm    : BINORMAL;
+    float4 Pos            : POSITION;
+    float4 BlendIndices   : BLENDINDICES;
+    float2 TexCoordDiff   : TEXCOORD0;
+    float2 TexCoordDetail : TEXCOORD1;
+    float2 TexCoordDirt   : TEXCOORD2;
+    float2 TexCoordCrack  : TEXCOORD3;
+    float2 TexCoordLMap   : TEXCOORD4;
 };
 
 struct VS_OUT_BaseDetailDirtCrackLM
 {
-    float4 HPos		: POSITION;
-    float2 Tex0Diff		: TEXCOORD0;
-    float2 Tex1Detail	: TEXCOORD1;
-    float2 Tex2Dirt		: TEXCOORD2;
-    float2 Tex3Crack	: TEXCOORD3;
-    float2 Tex4LMap		: TEXCOORD4;
+    float4 HPos       : POSITION;
+    float2 Tex0Diff   : TEXCOORD0;
+    float2 Tex1Detail : TEXCOORD1;
+    float2 Tex2Dirt   : TEXCOORD2;
+    float2 Tex3Crack  : TEXCOORD3;
+    float2 Tex4LMap   : TEXCOORD4;
 };
 
 VS_OUT_BaseDetailDirtCrackLM vsBaseDetailDirtCrackLM(appdata_BaseDetailDirtCrackLM input)
 {
     VS_OUT_BaseDetailDirtCrackLM Out;
 
-    /*
-        // Compensate for lack of UBYTE4 on Geforce3
-        int4 IndexVector = D3DCOLORtoUBYTE4(input.BlendIndices);
-        int IndexArray[4] = (int[4])IndexVector;
-
-        float3 Pos = mul(input.Pos, mOneBoneSkinning[IndexArray[0]]);
-        Out.HPos = mul(float4(Pos.xyz, 1.0f), viewProjMatrix);
-    */
     Out.HPos = mul(input.Pos, viewProjMatrix);
 
     // Pass-through texcoords
@@ -772,7 +623,7 @@ VS_OUT_BaseDetailDirtCrackLM vsBaseDetailDirtCrackLM(appdata_BaseDetailDirtCrack
     Out.Tex1Detail = input.TexCoordDetail;
     Out.Tex2Dirt = input.TexCoordDirt;
     Out.Tex3Crack = input.TexCoordCrack;
-    Out.Tex4LMap = (input.TexCoordLMap*lightmapOffset.xy) + lightmapOffset.zw;
+    Out.Tex4LMap = (input.TexCoordLMap * lightmapOffset.xy) + lightmapOffset.zw;
     return Out;
 }
 
@@ -783,8 +634,8 @@ float4 psBaseDetailDirtCrackLM(VS_OUT_BaseDetailDirtCrackLM indata) : COLOR
     float4 dirt = tex2D(samplerWrap2, indata.Tex2Dirt);
     float4 crack = tex2D(samplerWrap3, indata.Tex3Crack);
     float4 lightmap = tex2D(samplerWrap4, indata.Tex4LMap);
-    // return float4(indata.Tex4LMap.x,indata.Tex4LMap.y,0.f,1.f);
-    float4 color = base * detail * dirt * (1-crack.a);
+
+    float4 color = base * detail * dirt * (1.0 - crack.a);
     color.rgb = crack.rgb*crack.a + color.rgb;
     color.rgb = color.rgb * lightmap.rgb;
     color.a = detail.a;
@@ -796,7 +647,6 @@ technique OnePassbasedetaildirtcrackLM
     pass p0
     {
         AlphaBlendEnable = FALSE;
-        // ZWriteEnable = FALSE;
         ZFunc = LESSEQUAL;
         AlphaTestEnable = <alphaTest>;
         AlphaRef = 50;
@@ -810,29 +660,23 @@ technique OnePassbasedetaildirtcrackLM
 
 
 
-struct appdata_LightmapOnly {
-    float4	Pos : POSITION;
-    float4  BlendIndices : BLENDINDICES;
-    float2	TexCoordLMap : TEXCOORD0;
+struct appdata_LightmapOnly
+{
+    float4 Pos          : POSITION;
+    float4 BlendIndices : BLENDINDICES;
+    float2 TexCoordLMap : TEXCOORD0;
 };
 
-struct VS_OUT_LightmapOnly {
-    float4 HPos		: POSITION;
-    float2 Tex0		: TEXCOORD0;
+struct VS_OUT_LightmapOnly
+{
+    float4 HPos : POSITION;
+    float2 Tex0 : TEXCOORD0;
 };
 
 VS_OUT_LightmapOnly vsLightmapOnly(appdata_LightmapOnly input)
 {
     VS_OUT_LightmapOnly Out;
 
-    /*
-        // Compensate for lack of UBYTE4 on Geforce3
-        int4 IndexVector = D3DCOLORtoUBYTE4(input.BlendIndices);
-        int IndexArray[4] = (int[4])IndexVector;
-
-        float3 Pos = mul(input.Pos, mOneBoneSkinning[IndexArray[0]]);
-        Out.HPos = mul(float4(Pos.xyz, 1.0f), viewProjMatrix);
-    */
     Out.HPos = mul(input.Pos, viewProjMatrix);
 
     // Pass-through texcoords
@@ -843,7 +687,6 @@ VS_OUT_LightmapOnly vsLightmapOnly(appdata_LightmapOnly input)
 
 float4 psLightmapOnly(VS_OUT_LightmapOnly indata) : COLOR
 {
-    // return float4(0.15, 0.15, 0.2, 1);
     return tex2D(samplerWrap0, indata.Tex0);
 }
 
@@ -872,31 +715,27 @@ technique LightmapOnly
 }
 
 
-struct appdata_Light {
-    float4	Pos : POSITION;
-    float4  BlendIndices : BLENDINDICES;
-    float4  Normal : NORMAL;
+struct appdata_Light
+{
+    float4 Pos          : POSITION;
+    float4 BlendIndices : BLENDINDICES;
+    float4 Normal       : NORMAL;
 };
 
-struct VS_OUT_PointLight {
-    float4 HPos		: POSITION;
-    float4 Color	: COLOR;
+struct VS_OUT_PointLight
+{
+    float4 HPos  : POSITION;
+    float4 Color : COLOR;
 };
 
 VS_OUT_PointLight vsPointLight(appdata_Light input)
 {
     VS_OUT_PointLight Out;
 
-    /*
-        // Compensate for lack of UBYTE4 on Geforce3
-        int4 IndexVector = D3DCOLORtoUBYTE4(input.BlendIndices);
-        int IndexArray[4] = (int[4])IndexVector;
-    */
-
-    float3 wPos = input.Pos; // mul(input.Pos, mOneBoneSkinning[IndexArray[0]]);
+    float3 wPos = input.Pos;
     Out.HPos = mul(float4(wPos.xyz, 1.0f), viewProjMatrix);
 
-    float3 wNormal = input.Normal; // mul(input.Normal, mOneBoneSkinning[IndexArray[0]]);	//Fake
+    float3 wNormal = input.Normal;
     Out.Color = float4(calcPVPoint(pointLight, wPos, wNormal), 1);
     return Out;
 }
@@ -940,16 +779,10 @@ VS_OUT_SpotLight vsSpotLight(appdata_Light input)
 {
     VS_OUT_SpotLight Out;
 
-    /*
-        // Compensate for lack of UBYTE4 on Geforce3
-        int4 IndexVector = D3DCOLORtoUBYTE4(input.BlendIndices);
-        int IndexArray[4] = (int[4])IndexVector;
-    */
-
-    float3 wPos = input.Pos;//mul(input.Pos, mOneBoneSkinning[IndexArray[0]]);
+    float3 wPos = input.Pos;
     Out.HPos = mul(float4(wPos.xyz, 1.0f), viewProjMatrix);
 
-    float3 wNormal = input.Normal;// mul(input.Normal, mOneBoneSkinning[IndexArray[0]]);	//Fake
+    float3 wNormal = input.Normal;
     Out.Color = float4(calcPVSpot(spotLight, wPos, wNormal), 1);
 
     return Out;
@@ -1064,8 +897,6 @@ technique basedetaildirtcrack
         AlphaBlendEnable = TRUE;
         SrcBlend = DESTCOLOR;
         DestBlend = ZERO;
-        // SrcBlend = ONE;
-        // DestBlend = ONE;
         ColorWriteEnable = RED|BLUE|GREEN|ALPHA;
 
         VertexShader = compile vs_2_0 vsBaseDetailDirtCrack();

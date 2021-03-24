@@ -14,7 +14,7 @@ float4 pointLightColor[4]            : PointLightColor;
 int    alphaRefValue                 : AlphaRef;
 float1 lightingScale                 : LightingScale;
 
-float4 Transparency_x8	: TRANSPARENCY_X8;
+float4 Transparency_x8 : TRANSPARENCY_X8;
 
 #if NVIDIA
     #define _CUSTOMSHADOWSAMPLER_ s3
@@ -139,7 +139,7 @@ VS2PS VShader(
     VS2PS outdata = (VS2PS)0;
 
     float4 pos = float4((indata.Pos.xyz / 32767 * posOffsetAndScale.w), 1.0);
-    pos.xz += swayOffsets[indata.Packed.z*255].xy * indata.Packed.y * 3.0f;
+    pos.xz += swayOffsets[indata.Packed.z * 255].xy * indata.Packed.y * 3.0f;
     pos.xyz += posOffsetAndScale.xyz;
 
     float3 vec = pos - cameraPos;
@@ -189,7 +189,7 @@ float4 PShader
     float4 base = tex2D(colormap, indata.Tex0.xy);
     float4 terrainColor;
     terrainColor.rgb = tex2D(terrainColormap, indata.Tex1);
-    terrainColor.rgb = lerp(terrainColor.rgb, 1, indata.LightAndScale.w);
+    terrainColor.rgb = lerp(terrainColor.rgb, 1.0, indata.LightAndScale.w);
     float3 terrainLightMap = tex2D(terrainLightmap, indata.Tex2);
     float4 terrainShadow;
     if (shadowmapEnable)
@@ -197,7 +197,7 @@ float4 PShader
         terrainShadow = getShadowFactor(ShadowMapSampler, indata.TexShadow, 1);
     }
     else
-        terrainShadow = 1;
+        terrainShadow = 1.0;
 
     vec3 pointColor;
     if (pointLightEnable)
@@ -205,10 +205,10 @@ float4 PShader
     else
         pointColor = 0;
 
-    float3 terrainLight = (terrainLightMap.y * vSunColor * terrainShadow + pointColor) * 2 + (terrainLightMap.z * vGIColor);
+    float3 terrainLight = (terrainLightMap.y * vSunColor * terrainShadow + pointColor) * 2.0 + (terrainLightMap.z * vGIColor);
 
-    terrainColor.rgb = base.rgb * terrainColor.rgb * terrainLight.rgb * 2;
-    terrainColor.a = base.a * Transparency_x8.a * 4;
+    terrainColor.rgb = base.rgb * terrainColor.rgb * terrainLight.rgb * 2.0;
+    terrainColor.a = base.a * Transparency_x8.a * 4.0;
     terrainColor.a = terrainColor.a + terrainColor.a;
 
     return terrainColor;
@@ -312,18 +312,17 @@ float4 PShader_Simple(
         float3 light = indata.SunLight * terrainShadow;
         light += indata.LightAndScale.rgb;
 
-        color = base * indata.TerrainColor * light * 2;
+        color = base * indata.TerrainColor * light * 2.0;
     }
     else
     {
-        color = base * indata.TerrainColor * 2;
+        color = base * indata.TerrainColor * 2.0;
     }
 
     vec4 outcol;
     outcol.rgb = color;
-    outcol.a = base.a * Transparency_x8.a * 4;
+    outcol.a = base.a * Transparency_x8.a * 4.0;
     outcol.a = outcol.a + outcol.a;
-
     return outcol;
 }
 

@@ -3,15 +3,15 @@
 
 struct VSTanOut
 {
-    float4 HPos	: POSITION;
-    float4 Diffuse 	: COLOR;
+    float4 HPos    : POSITION;
+    float4 Diffuse : COLOR;
 };
 
 VSTanOut vsShowTanBasis(float4 Pos : POSITION, float4 Col : COLOR)
 {
     VSTanOut Out;
     Pos.y += 0.15;
-     Out.HPos = mul(Pos, mViewProj);
+    Out.HPos = mul(Pos, mViewProj);
     Out.Diffuse = Col;
     return Out;
 }

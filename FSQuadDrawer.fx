@@ -56,7 +56,6 @@ scalar bloomWeightScale : BLOOMWEIGHTSCALE;
 scalar contrastAmount : CONTRAST;
 
 vec2 camouflageOffset : CAMOUFLAGEOFFSET;
-
 vec2 texelSize : TEXELSIZE;
 
 struct APP2VS_blit
@@ -377,7 +376,7 @@ vec4 psDx9_FSBMGaussianBlur15x15HorizontalFilter2(VS2PS_blit indata) : COLOR
     vec4 accum = 0;
 
     for(int tap = 0; tap < 15; ++tap)
-        accum += tex2D(sampler0bilin, indata.TexCoord0 + 2*gaussianBlur15x15HorizontalSampleOffsets[tap]) * gaussianBlur15x15HorizontalSampleWeights[tap];
+        accum += tex2D(sampler0bilin, indata.TexCoord0 + 2.0 *gaussianBlur15x15HorizontalSampleOffsets[tap]) * gaussianBlur15x15HorizontalSampleWeights[tap];
 
     return accum;
 }
@@ -387,7 +386,7 @@ vec4 psDx9_FSBMGaussianBlur15x15VerticalFilter2(VS2PS_blit indata) : COLOR
     vec4 accum = 0;
 
     for(int tap = 0; tap < 15; ++tap)
-        accum += tex2D(sampler0bilin, indata.TexCoord0 + 2*gaussianBlur15x15VerticalSampleOffsets[tap]) * gaussianBlur15x15VerticalSampleWeights[tap];
+        accum += tex2D(sampler0bilin, indata.TexCoord0 + 2.0 *gaussianBlur15x15VerticalSampleOffsets[tap]) * gaussianBlur15x15VerticalSampleWeights[tap];
 
     return accum;
 }
@@ -396,8 +395,8 @@ vec4 psDx9_FSBMGrowablePoisson13Filter(VS2PS_blit indata) : COLOR
 {
     vec4 accum = 0;
     scalar samples = 1;
-
     accum = tex2D(sampler0point, indata.TexCoord0);
+
     for(int tap = 0; tap < 11; ++tap)
     {
         vec4 v = tex2D(sampler0point, indata.TexCoord0 + growablePoisson13SampleOffsets[tap] * 0.1 * accum.a);
@@ -414,8 +413,8 @@ vec4 psDx9_FSBMGrowablePoisson13Filter(VS2PS_blit indata) : COLOR
 vec4 psDx9_FSBMGrowablePoisson13AndDilationFilter(VS2PS_blit indata) : COLOR
 {
     vec4 center = tex2D(sampler0point, indata.TexCoord0);
-
     vec4 accum = 0.0;
+
     if(center.a > 0.0)
     {
         accum.rgb = center;
@@ -442,7 +441,6 @@ vec4 psDx9_FSBMScaleUpBloomFilter(VS2PS_blit indata) : COLOR
 {
     return tex2D(sampler0point, indata.TexCoord0);
 }
-
 
 vec4 psDx9_FSBMClear(VS2PS_blit indata) : COLOR
 {
@@ -539,7 +537,7 @@ vec4 psDx9_FSBMCamouflageBlur(VS2PS_blit indata) : COLOR
 vec4 psDx9_FSBMContrast(VS2PS_blit indata) : COLOR
 {
     vec4 src = tex2D(sampler0bilin, indata.TexCoord0);
-    src = saturate(src * src *src);
+    src = saturate(src * src * src);
     float sat = 0.0;
     vec3 lumVec = vec3(0.3086, 0.6094, 0.0820);
     float invSat = 1.0 - sat;

@@ -86,11 +86,11 @@ sampler sampler2 = sampler_state
 
 struct VS2PS
 {
-    float4  Pos : POSITION;
-    float2  Tex0 : TEXCOORD0;
-    float2  Tex1 : TEXCOORD2;
-    float   Fog : TEXCOORD1;
-    float4  Color : COLOR;
+    float4 Pos   : POSITION;
+    float2 Tex0  : TEXCOORD0;
+    float2 Tex1  : TEXCOORD2;
+    float  Fog   : TEXCOORD1;
+    float4 Color : COLOR;
 };
 
 struct PS2FB
@@ -143,9 +143,9 @@ float4 PShaderColorOnlyPointFiler(VS2PS indata) : COLOR
 
 struct APP2VS
 {
-    float2	Pos0 : POSITION0;
-    float2	TexCoord0 : TEXCOORD0;
-    float4	Pos1 : POSITION1;
+    float2 Pos0      : POSITION0;
+    float2 TexCoord0 : TEXCOORD0;
+    float4 Pos1      : POSITION1;
 };
 
 VS2PS vs(APP2VS indata)
@@ -241,9 +241,9 @@ technique t0 <
 
 struct VS2PSEditorGrid
 {
-    float4	Pos : POSITION;
-    float2	Tex0 : TEXCOORD0;
-    float2	Tex1 : TEXCOORD1;
+    float4 Pos  : POSITION;
+    float2 Tex0 : TEXCOORD0;
+    float2 Tex1 : TEXCOORD1;
 };
 
 VS2PSEditorGrid vsEditorGrid(APP2VS indata)
@@ -287,9 +287,9 @@ technique EditorGrid
 
 struct VS2PSEditorTopoGrid
 {
-    float4	Pos : POSITION;
-    float2	Tex1 : TEXCOORD1;
-    float4	Col : COLOR0;
+    float4 Pos  : POSITION;
+    float2 Tex1 : TEXCOORD1;
+    float4 Col  : COLOR0;
 };
 
 VS2PSEditorTopoGrid vsEditorTopoGrid(APP2VS indata)
@@ -427,23 +427,23 @@ sampler sampler6Clamp = sampler_state
 
 struct APP2VSEditorDetailTextured
 {
-    float4 Pos0 : POSITION0;
+    float4 Pos0      : POSITION0;
     float2 TexCoord0 : TEXCOORD0;
-    float4 Pos1 : POSITION1;
-    float3 Normal : NORMAL;
+    float4 Pos1      : POSITION1;
+    float3 Normal    : NORMAL;
 };
 
 struct VS2PSEditorDetailTextured
 {
-    float4 Pos : POSITION;
-    float2 Tex0 : TEXCOORD0;
-    float2 Tex1 : TEXCOORD1;
-    float2 Tex2 : TEXCOORD2;
-    float2 Tex3 : TEXCOORD3;
-    float2 Tex4 : TEXCOORD4;
-    float4 BlendValueAndFade : TEXCOORD5;
+    float4 Pos                     : POSITION;
+    float2 Tex0                    : TEXCOORD0;
+    float2 Tex1                    : TEXCOORD1;
+    float2 Tex2                    : TEXCOORD2;
+    float2 Tex3                    : TEXCOORD3;
+    float2 Tex4                    : TEXCOORD4;
+    float4 BlendValueAndFade       : TEXCOORD5;
     float3 FogAndWaterFadeAndFade2 : TEXCOORD6;
-    float2 BiFixTex : TEXCOORD7;
+    float2 BiFixTex                : TEXCOORD7;
 };
 
 VS2PSEditorDetailTextured vsEditorDetailTextured(APP2VSEditorDetailTextured indata)
@@ -509,7 +509,9 @@ float4 psEditorDetailTextured(VS2PSEditorDetailTextured indata) : COLOR
     float chartcontrib = dot(componentsel, component.xyz);
 
     float4 lowDetailmap = lerp(1.0, yplaneLowDetailmap.z, lowComponent.x * indata.FogAndWaterFadeAndFade2.z);
-    float mounten = dot(float3(xplaneLowDetailmap.y, yplaneLowDetailmap.x, zplaneLowDetailmap.y), blendValue.xyz);
+    float mounten = (xplaneLowDetailmap.y * blendValue.x) +
+                    (yplaneLowDetailmap.x * blendValue.y) +
+                    (zplaneLowDetailmap.y * blendValue.z);
     lowDetailmap *= lerp(1.0, mounten, lowComponent.z);
 
     float4 bothDetailmap = detailmap * lowDetailmap;
@@ -542,7 +544,9 @@ float4 psEditorDetailTexturedColorOnly(VS2PSEditorDetailTextured indata) : COLOR
     float chartcontrib = dot(componentsel, component.xyz);
 
     float4 lowDetailmap = lerp(1.0, yplaneLowDetailmap.z, lowComponent.x*indata.FogAndWaterFadeAndFade2.z);
-    float mounten = dot(float3(xplaneLowDetailmap.y, yplaneLowDetailmap.x, zplaneLowDetailmap.y), blendValue.xyz);
+    float mounten = (xplaneLowDetailmap.y * blendValue.x) +
+                    (yplaneLowDetailmap.x * blendValue.y) +
+                    (zplaneLowDetailmap.y * blendValue.z);
     lowDetailmap *= lerp(1.0, mounten, lowComponent.z);
 
     float4 bothDetailmap = detailmap * lowDetailmap;
@@ -560,15 +564,15 @@ float4 psEditorDetailTexturedColorOnly(VS2PSEditorDetailTextured indata) : COLOR
 
 struct VS2PSEditorDetailTexturedPlaneMapping
 {
-    float4	Pos : POSITION;
-    float4	Tex0AndBiFixTex : TEXCOORD0;
-    float2	Tex1 : TEXCOORD1;
-    float2	Tex2 : TEXCOORD2;
-    float2	Tex3 : TEXCOORD3;
-    float2	Tex4 : TEXCOORD4;
-    float4	BlendValueAndFade : TEXCOORD5;
-    float3	Tex5AndFade2 : TEXCOORD6;
-    float4	Tex6AndFogAndWaterFade : TEXCOORD7;
+    float4 Pos                    : POSITION;
+    float4 Tex0AndBiFixTex        : TEXCOORD0;
+    float2 Tex1                   : TEXCOORD1;
+    float2 Tex2                   : TEXCOORD2;
+    float2 Tex3                   : TEXCOORD3;
+    float2 Tex4                   : TEXCOORD4;
+    float4 BlendValueAndFade      : TEXCOORD5;
+    float3 Tex5AndFade2           : TEXCOORD6;
+    float4 Tex6AndFogAndWaterFade : TEXCOORD7;
 };
 
 VS2PSEditorDetailTexturedPlaneMapping vsEditorDetailTexturedPlaneMapping(APP2VSEditorDetailTextured indata)
@@ -640,7 +644,9 @@ float4 psEditorDetailTexturedPlaneMapping(VS2PSEditorDetailTexturedPlaneMapping 
     float chartcontrib = dot(componentsel, component.xyz);
 
     float4 lowDetailmap = lerp(1.0, yplaneLowDetailmap.z, lowComponent.x*indata.Tex5AndFade2.z);
-    float mounten = dot(float3(xplaneLowDetailmap.y, yplaneLowDetailmap.x, zplaneLowDetailmap.y), blendValue.xyz);
+    float mounten = (xplaneLowDetailmap.y * blendValue.x) +
+                    (yplaneLowDetailmap.x * blendValue.y) +
+                    (zplaneLowDetailmap.y * blendValue.z);
     lowDetailmap *= lerp(1.0, mounten, lowComponent.z);
 
     float4 detailmap = (xplaneDetailmap * blendValue.x) + (yplaneDetailmap * blendValue.y) + (zplaneDetailmap * blendValue.z);
@@ -675,7 +681,9 @@ float4 psEditorDetailTexturedPlaneMappingColorOnly(VS2PSEditorDetailTexturedPlan
     float chartcontrib = dot(componentsel, component.xyz);
 
     float4 lowDetailmap = lerp(1.0, yplaneLowDetailmap.z, lowComponent.x*indata.Tex5AndFade2.z);
-    float mounten = dot(float3(xplaneLowDetailmap.y, yplaneLowDetailmap.x, zplaneLowDetailmap.y), blendValue.xyz);
+    float mounten = (xplaneLowDetailmap.y * blendValue.x) +
+                    (yplaneLowDetailmap.x * blendValue.y) +
+                    (zplaneLowDetailmap.y * blendValue.z);
     lowDetailmap *= lerp(1.0, mounten, lowComponent.z);
 
     float4 detailmap = (xplaneDetailmap * blendValue.x) + (yplaneDetailmap * blendValue.y) + (zplaneDetailmap * blendValue.z);
@@ -695,15 +703,15 @@ float4 psEditorDetailTexturedPlaneMappingColorOnly(VS2PSEditorDetailTexturedPlan
 
 struct VS2PSEditorDetailTexturedWithEnvMap
 {
-    float4 Pos : POSITION;
-    float4 Tex0AndBiFixTex : TEXCOORD0;
-    float2 Tex1 : TEXCOORD1;
-    float2 Tex2 : TEXCOORD2;
-    float2 Tex3 : TEXCOORD3;
-    float2 Tex4 : TEXCOORD4;
-    float4 BlendValueAndFade : TEXCOORD5;
+    float4 Pos                     : POSITION;
+    float4 Tex0AndBiFixTex         : TEXCOORD0;
+    float2 Tex1                    : TEXCOORD1;
+    float2 Tex2                    : TEXCOORD2;
+    float2 Tex3                    : TEXCOORD3;
+    float2 Tex4                    : TEXCOORD4;
+    float4 BlendValueAndFade       : TEXCOORD5;
     float3 FogAndWaterFadeAndFade2 : TEXCOORD6;
-    float3 EnvMap : TEXCOORD7;
+    float3 EnvMap                  : TEXCOORD7;
 };
 
 texture texture7 : TEXLAYER7;
@@ -791,7 +799,9 @@ float4 psEditorDetailTexturedWithEnvMap(VS2PSEditorDetailTexturedWithEnvMap inda
     float chartcontrib = dot(componentsel, component.xyz);
 
     float4 lowDetailmap = lerp(1.0, yplaneLowDetailmap.z, lowComponent.x * indata.FogAndWaterFadeAndFade2.z);
-    float mounten = dot(float3(xplaneLowDetailmap.y, yplaneLowDetailmap.x, zplaneLowDetailmap.y), blendValue.xyz);
+    float mounten = (xplaneLowDetailmap.y * blendValue.x) +
+                    (yplaneLowDetailmap.x * blendValue.y) +
+                    (zplaneLowDetailmap.y * blendValue.z);
     lowDetailmap *= lerp(1.0, mounten, lowComponent.z);
 
     float4 bothDetailmap = detailmap * lowDetailmap;
@@ -823,7 +833,9 @@ float4 psEditorDetailTexturedWithEnvMapColorOnly(VS2PSEditorDetailTexturedWithEn
     float chartcontrib = dot(componentsel, component.xyz);
 
     float4 lowDetailmap = lerp(1.0, yplaneLowDetailmap.z, lowComponent.x * indata.FogAndWaterFadeAndFade2.z);
-    float mounten = dot(float3(xplaneLowDetailmap.y, yplaneLowDetailmap.x, zplaneLowDetailmap.y), blendValue.xyz);
+    float mounten = (xplaneLowDetailmap.y * blendValue.x) +
+                    (yplaneLowDetailmap.x * blendValue.y) +
+                    (zplaneLowDetailmap.y * blendValue.z);
     lowDetailmap *= lerp(1.0, mounten, lowComponent.z);
 
     float4 bothDetailmap = detailmap * lowDetailmap;
@@ -941,9 +953,9 @@ technique EditorDetailTextured
 
 struct APP2VS_vsEditorZFill
 {
-    float4	Pos0 : POSITION0;
-    float2	TexCoord0 : TEXCOORD0;
-    float4	Pos1 : POSITION1;
+    float4 Pos0      : POSITION0;
+    float2 TexCoord0 : TEXCOORD0;
+    float4 Pos1      : POSITION1;
 };
 
 float4 vsEditorZFill(APP2VS_vsEditorZFill indata) : POSITION
@@ -978,7 +990,7 @@ technique EditorDetailBasePass
 
 struct VS2PSEditorUndergrowth
 {
-    float4 Pos : POSITION;
+    float4 Pos  : POSITION;
     float2 Tex0 : TEXCOORD0;
 };
 
@@ -1184,23 +1196,23 @@ technique lightmapGeneration <
 
 struct SETVS2PS
 {
-    float4  Pos : POSITION;
-    float   WaterFade : TEXCOORD0;
-    float2  Tex1 : TEXCOORD1;
-    float2  Tex2 : TEXCOORD2;
-    float2  Tex3 : TEXCOORD3;
-    float2  BiFixTex : TEXCOORD4;
-    float2  BiFixTex2 : TEXCOORD6;
-    float   Fog : FOG;
-    float3  BlendValue : TEXCOORD5;
+    float4 Pos        : POSITION;
+    float  WaterFade  : TEXCOORD0;
+    float2 Tex1       : TEXCOORD1;
+    float2 Tex2       : TEXCOORD2;
+    float2 Tex3       : TEXCOORD3;
+    float2 BiFixTex   : TEXCOORD4;
+    float2 BiFixTex2  : TEXCOORD6;
+    float  Fog        : FOG;
+    float3 BlendValue : TEXCOORD5;
 };
 
 struct SETAPP2VS
 {
-    float2	Pos0 : POSITION0;
-    float2	TexCoord0 : TEXCOORD0;
-    float4	Pos1 : POSITION1;
-    float3	Normal : NORMAL;
+    float2 Pos0      : POSITION0;
+    float2 TexCoord0 : TEXCOORD0;
+    float4 Pos1      : POSITION1;
+    float3 Normal    : NORMAL;
 };
 
 SETVS2PS vsSET(SETAPP2VS indata)
@@ -1248,7 +1260,9 @@ float4 psSETNormal(SETVS2PS indata) : COLOR
     float4 zplaneLowDetailmap = 2.0 * tex2D(sampler3Wrap, indata.Tex3);
 
     float4 lowDetailmap = lerp(1, yplaneLowDetailmap.z, lowComponent.x);
-    float mounten = dot(float3(xplaneLowDetailmap.y, yplaneLowDetailmap.x, zplaneLowDetailmap.y), indata.blendValue.xyz);
+    float mounten = (xplaneLowDetailmap.y * indata.blendValue.x) +
+                    (yplaneLowDetailmap.x * indata.blendValue.y) +
+                    (zplaneLowDetailmap.y * indata.blendValue.z);
     lowDetailmap *= lerp(1.0, mounten, lowComponent.z);
 
     float4 outColor = lowDetailmap * colormap * light;

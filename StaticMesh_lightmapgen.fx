@@ -1,13 +1,13 @@
 
 struct VS_OUT_LightmapGen
 {
-    vec4 HPos       : POSITION;
-    vec2 Tex0Diff   : TEXCOORD0;
+    vec4 HPos     : POSITION;
+    vec2 Tex0Diff : TEXCOORD0;
 };
 
 struct appdata_LightmapGen
 {
-    vec4 Pos : POSITION;
+    vec4 Pos          : POSITION;
     vec2 TexCoordDiff : TEXCOORD0;
 };
 
@@ -23,9 +23,10 @@ VS_OUT_LightmapGen vsLightmapBase(appdata_LightmapGen input)
     return Out;
 }
 
-struct appdata_LightmapGen2 {
-    vec4 Pos : POSITION;
-    vec3 Normal : NORMAL;
+struct appdata_LightmapGen2
+{
+    vec4 Pos          : POSITION;
+    vec3 Normal       : NORMAL;
     vec2 TexCoordDiff : TEXCOORD0;
 };
 

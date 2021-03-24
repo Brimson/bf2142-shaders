@@ -1,20 +1,21 @@
 #line 2 "StaticMesh_nv3xpp.fx"
 
-struct appdata_Basendetail {
-    float4 Pos : POSITION;
+struct appdata_Basendetail
+{
+    float4 Pos          : POSITION;
     float4 BlendIndices : BLENDINDICES;
-    float3 Normal : NORMAL;
+    float3 Normal       : NORMAL;
     float2 TexCoordDiff : TEXCOORD0;
-    float3 Tan : TANGENT;
-    // float3 Binorm : BINORMAL;
+    float3 Tan          : TANGENT;
 };
 
-struct VS_OUT_Basendetail {
-    float4 HPos : POSITION;
-    float2 Tex0Diff     : TEXCOORD0;
-    float2 Tex1Normal   : TEXCOORD1;
-    float3 LightVec : TEXCOORD2;
-    float3 HalfVec  : TEXCOORD3;
+struct VS_OUT_Basendetail
+{
+    float4 HPos       : POSITION;
+    float2 Tex0Diff   : TEXCOORD0;
+    float2 Tex1Normal : TEXCOORD1;
+    float3 LightVec   : TEXCOORD2;
+    float3 HalfVec    : TEXCOORD3;
 };
 
 void vsBumpSpecularBlinn(vec3 Normal, vec3 Tan, vec3 Pos, int Index, out vec3 LightVec, out vec3 HalfVec)
@@ -26,7 +27,7 @@ void vsBumpSpecularBlinn(vec3 Normal, vec3 Tan, vec3 Pos, int Index, out vec3 Li
     mat3x3 TanBasis = mat3x3(Tan, binormal, Normal);
 
     // Calculate WorldTangent directly... inverse is the transpose for affine rotations
-    mat3x3 worldI = TanBasis;//mul(TanBasis, mOneBoneSkinning[Index]);
+    mat3x3 worldI = TanBasis;
     worldI = transpose(mul(worldI, worldMatrix));
 
     // Transform Light dir to Object space
@@ -40,21 +41,13 @@ void vsBumpSpecularBlinn(vec3 Normal, vec3 Tan, vec3 Pos, int Index, out vec3 Li
     vec3 tanEyeVec = mul(worldEyeVec, worldI);
 
     HalfVec = (normalizedTanLightVec + normalize(tanEyeVec))*0.5;
-    // HalfVec = normalize(normalizedTanLightVec + normalize(tanEyeVec));
-
-    // LightVec = Tan;
-    // HalfVec = Normal;
 }
 
 VS_OUT_Basendetail vsBasendetail(appdata_Basendetail input)
 {
     VS_OUT_Basendetail Out;
 
-    // Compensate for lack of UBYTE4 on Geforce3
-    // int4 IndexVector = D3DCOLORtoUBYTE4(input.BlendIndices);
-    // int IndexArray[4] = (int[4])IndexVector;
-
-    vec3 Pos = input.Pos;//mul(input.Pos, mOneBoneSkinning[IndexArray[0]]);
+    vec3 Pos = input.Pos;
     Out.HPos = mul(float4(Pos.xyz, 1.0f), viewProjMatrix);
 
     // Pass-through texcoords
@@ -71,9 +64,9 @@ float4 psBasendetail(VS_OUT_Basendetail indata) : COLOR
     vec4 color = tex2D(samplerWrap0, indata.Tex0Diff);
     vec4 expandedNormal = tex2D(samplerWrap1, indata.Tex1Normal);
     expandedNormal.xyz = (expandedNormal.xyz * 2) - 1;
+
     vec2 intensityuv = float2(dot(normalize(indata.LightVec),expandedNormal), dot(normalize(indata.HalfVec),expandedNormal));
     vec4 intensity = tex2D(samplerClamp2, intensityuv);
-    // return intensity;
 
     vec4 outColor;
     outColor.rgb = intensity * sunColor * color + intensity.a*expandedNormal.a*dot(sunColor, 0.33);
@@ -87,15 +80,12 @@ technique OnePassbasendetail
     {
         AlphaBlendEnable = FALSE;
         ZWriteEnable = TRUE;
-        // ZFunc = EQUAL;
         ZFunc = LESSEQUAL;
         AlphaTestEnable = <alphaTest>;
         AlphaRef = 50;
         AlphaFunc = GREATER;
 
         ColorWriteEnable = RED|BLUE|GREEN|ALPHA;
-        // ColorWriteEnable = 0;
-        // FillMode = WIREFRAME;
 
         VertexShader = compile vs_2_0 vsBasendetail();
         PixelShader = compile ps_2_0 psBasendetail();
@@ -118,17 +108,18 @@ technique OnePassbasealpha
 }
 
 
-struct appdata_BaseLMndetail {
-    float4 Pos : POSITION;
+struct appdata_BaseLMndetail
+{
+    float4 Pos          : POSITION;
     float4 BlendIndices : BLENDINDICES;
-    float3 Normal : NORMAL;
+    float3 Normal       : NORMAL;
     float2 TexCoordDiff : TEXCOORD0;
     float2 TexCoordLMap : TEXCOORD1;
-    float3 Tan  : TANGENT;
-    // float3 Binorm : BINORMAL;
+    float3 Tan          : TANGENT;
 };
 
-struct VS_OUT_BaseLMndetail {
+struct VS_OUT_BaseLMndetail
+{
     float4 HPos     : POSITION;
     float2 Tex0Diff : TEXCOORD0;
     float2 Tex1LMap : TEXCOORD1;
@@ -140,11 +131,7 @@ VS_OUT_BaseLMndetail vsBaseLMndetail(appdata_BaseLMndetail input)
 {
     VS_OUT_BaseLMndetail Out;
 
-    // Compensate for lack of UBYTE4 on Geforce3
-    // int4 IndexVector = D3DCOLORtoUBYTE4(input.BlendIndices);
-    // int IndexArray[4] = (int[4])IndexVector;
-
-    float3 Pos = input.Pos;//mul(input.Pos, mOneBoneSkinning[IndexArray[0]]);
+    float3 Pos = input.Pos;
     Out.HPos = mul(float4(Pos.xyz, 1.0f), viewProjMatrix);
 
     // Pass-through texcoords
@@ -159,8 +146,10 @@ VS_OUT_BaseLMndetail vsBaseLMndetail(appdata_BaseLMndetail input)
 float4 psBaseLMndetail(VS_OUT_BaseLMndetail indata) : COLOR
 {
     vec4 color = tex2D(samplerWrap0, indata.Tex0Diff);
+
     vec4 expandedNormal = tex2D(samplerWrap1, indata.Tex0Diff);
     expandedNormal.xyz = (expandedNormal.xyz * 2) - 1;
+
     vec2 intensityuv = float2(dot(normalize(indata.LightVec),expandedNormal), dot(normalize(indata.HalfVec),expandedNormal));
     vec4 intensity = tex2D(samplerClamp2, intensityuv);
     vec4 lightmap = tex2D(samplerWrap3, indata.Tex1LMap);
@@ -177,13 +166,10 @@ technique OnePassbaseLMndetail
     pass p0
     {
         AlphaBlendEnable = FALSE;
-        // ZWriteEnable = FALSE;
-        // ZFunc = EQUAL;
         ZFunc = LESSEQUAL;
         AlphaTestEnable = <alphaTest>;
         AlphaRef = 50;
         AlphaFunc = GREATER;
-        // AlphaTestRef = 0.f;
         ColorWriteEnable = RED|BLUE|GREEN|ALPHA;
 
         VertexShader = compile vs_2_0 vsBaseLMndetail();
@@ -191,33 +177,30 @@ technique OnePassbaseLMndetail
     }
 }
 
-struct appdata_BaseDetailndetail {
-    float4 Pos : POSITION;
-    float4 BlendIndices : BLENDINDICES;
-    float3 Normal : NORMAL;
-    float2 TexCoordDiff : TEXCOORD0;
+struct appdata_BaseDetailndetail
+{
+    float4 Pos            : POSITION;
+    float4 BlendIndices   : BLENDINDICES;
+    float3 Normal         : NORMAL;
+    float2 TexCoordDiff   : TEXCOORD0;
     float2 TexCoordDetail : TEXCOORD1;
-    float3 Tan : TANGENT;
-    // float3 Binorm : BINORMAL;
+    float3 Tan            : TANGENT;
 };
 
-struct VS_OUT_BaseDetailndetail {
-    float4 HPos     : POSITION;
-    float2 Tex0Diff : TEXCOORD0;
+struct VS_OUT_BaseDetailndetail
+{
+    float4 HPos       : POSITION;
+    float2 Tex0Diff   : TEXCOORD0;
     float2 Tex1Detail : TEXCOORD1;
-    float3 LightVec : TEXCOORD2;
-    float3 HalfVec : TEXCOORD3;
+    float3 LightVec   : TEXCOORD2;
+    float3 HalfVec    : TEXCOORD3;
 };
 
 VS_OUT_BaseDetailndetail vsBaseDetailndetail(appdata_BaseDetailndetail input)
 {
     VS_OUT_BaseDetailndetail Out;
 
-    // Compensate for lack of UBYTE4 on Geforce3
-    //int4 IndexVector = D3DCOLORtoUBYTE4(input.BlendIndices);
-    //int IndexArray[4] = (int[4])IndexVector;
-
-    float3 Pos = input.Pos;//mul(input.Pos, mOneBoneSkinning[IndexArray[0]]);
+    float3 Pos = input.Pos;
     Out.HPos = mul(float4(Pos.xyz, 1.0f), viewProjMatrix);
 
     // Pass-through texcoords
@@ -231,12 +214,12 @@ VS_OUT_BaseDetailndetail vsBaseDetailndetail(appdata_BaseDetailndetail input)
 
 float4 psBaseDetailndetail(VS_OUT_BaseDetailndetail indata) : COLOR
 {
-    // return vec4(1,1,1,1);
-    // return pow(dot(normalize(indata.HalfVec),tex2D(samplerWrap4, indata.Tex1Detail)*2-1), 36);
     vec4 color = tex2D(samplerWrap0, indata.Tex0Diff);
     vec4 detail = tex2D(samplerWrap1, indata.Tex1Detail);
+
     vec4 expandedNormal = tex2D(samplerWrap2, indata.Tex1Detail);
-    expandedNormal.xyz = expandedNormal.xyz * 2 - 1;
+    expandedNormal.xyz = expandedNormal.xyz * 2.0 - 1.0;
+
     vec2 intensityuv = float2(dot(normalize(indata.LightVec),expandedNormal), dot(normalize(indata.HalfVec),expandedNormal));
     vec4 intensity = tex2D(samplerClamp3, intensityuv);
 
@@ -251,7 +234,6 @@ technique OnePassbasedetailndetail
     pass p0
     {
         AlphaBlendEnable = FALSE;
-        //ZWriteEnable = FALSE;
         ZFunc = LESSEQUAL;
         AlphaTestEnable = <alphaTest>;
         AlphaRef = 50;
@@ -264,35 +246,32 @@ technique OnePassbasedetailndetail
     }
 }
 
-struct appdata_BaseDetailLMndetail {
-    float4 Pos : POSITION;
-    float4 BlendIndices : BLENDINDICES;
-    float3 Normal : NORMAL;
-    float2 TexCoordDiff : TEXCOORD0;
+struct appdata_BaseDetailLMndetail
+{
+    float4 Pos            : POSITION;
+    float4 BlendIndices   : BLENDINDICES;
+    float3 Normal         : NORMAL;
+    float2 TexCoordDiff   : TEXCOORD0;
     float2 TexCoordDetail : TEXCOORD1;
-    float2 TexCoordLMap : TEXCOORD2;
-    float3 Tan : TANGENT;
-    // float3 Binorm : BINORMAL;
+    float2 TexCoordLMap   : TEXCOORD2;
+    float3 Tan            : TANGENT;
 };
 
-struct VS_OUT_BaseDetailLMndetail {
-    float4 HPos     : POSITION;
-    float2 Tex0Diff : TEXCOORD0;
-    float2 Tex1Detail   : TEXCOORD1;
-    float2 Tex2LMap : TEXCOORD2;
-    float3 LightVec : TEXCOORD3;
-    float3 HalfVec  : TEXCOORD4;
+struct VS_OUT_BaseDetailLMndetail
+{
+    float4 HPos       : POSITION;
+    float2 Tex0Diff   : TEXCOORD0;
+    float2 Tex1Detail : TEXCOORD1;
+    float2 Tex2LMap   : TEXCOORD2;
+    float3 LightVec   : TEXCOORD3;
+    float3 HalfVec    : TEXCOORD4;
 };
 
 VS_OUT_BaseDetailLMndetail vsBaseDetailLMndetail(appdata_BaseDetailLMndetail input)
 {
     VS_OUT_BaseDetailLMndetail Out;
 
-    // Compensate for lack of UBYTE4 on Geforce3
-    //int4 IndexVector = D3DCOLORtoUBYTE4(input.BlendIndices);
-    //int IndexArray[4] = (int[4])IndexVector;
-
-    float3 Pos = input.Pos;//mul(input.Pos, mOneBoneSkinning[IndexArray[0]]);
+    float3 Pos = input.Pos;
     Out.HPos = mul(float4(Pos.xyz, 1.0f), viewProjMatrix);
 
     // Pass-through texcoords
@@ -309,8 +288,10 @@ float4 psBaseDetailLMndetail(VS_OUT_BaseDetailLMndetail indata) : COLOR
 {
     vec4 color = tex2D(samplerWrap0, indata.Tex0Diff);
     vec4 detail = tex2D(samplerWrap1, indata.Tex1Detail);
+
     vec4 expandedNormal = tex2D(samplerWrap2, indata.Tex1Detail);
-    expandedNormal.xyz = expandedNormal.xyz * 2 - 1;
+    expandedNormal.xyz = expandedNormal.xyz * 2.0 - 1.0;
+
     vec2 intensityuv = float2(dot(normalize(indata.LightVec),expandedNormal), dot(normalize(indata.HalfVec),expandedNormal));
     vec4 intensity = tex2D(samplerClamp3, intensityuv);
     vec4 lightmap = tex2D(samplerWrap4, indata.Tex2LMap);
@@ -327,7 +308,6 @@ technique OnePassbasedetailLMndetail
     pass p0
     {
         AlphaBlendEnable = FALSE;
-        // ZWriteEnable = FALSE;
         ZFunc = LESSEQUAL;
         AlphaTestEnable = <alphaTest>;
         AlphaRef = 50;
@@ -340,35 +320,32 @@ technique OnePassbasedetailLMndetail
     }
 }
 
-struct appdata_BaseDetailDirtndetail {
-    float4	Pos : POSITION;
-    float4  BlendIndices : BLENDINDICES;
-    float3	Normal : NORMAL;
-    float2	TexCoordDiff : TEXCOORD0;
-    float2	TexCoordDetail : TEXCOORD1;
-    float2	TexCoordDirt : TEXCOORD2;
-    float3 Tan : TANGENT;
-    // float3 Binorm : BINORMAL;
+struct appdata_BaseDetailDirtndetail
+{
+    float4 Pos            : POSITION;
+    float4 BlendIndices   : BLENDINDICES;
+    float3 Normal         : NORMAL;
+    float2 TexCoordDiff   : TEXCOORD0;
+    float2 TexCoordDetail : TEXCOORD1;
+    float2 TexCoordDirt   : TEXCOORD2;
+    float3 Tan            : TANGENT;
 };
 
-struct VS_OUT_BaseDetailDirtndetail {
-    float4 HPos		: POSITION;
-    float2 Tex0Diff		: TEXCOORD0;
-    float2 Tex1Detail	: TEXCOORD1;
-    float2 Tex2Dirt		: TEXCOORD2;
-    float3 LightVec		: TEXCOORD3;
-    float3 HalfVec		: TEXCOORD4;
+struct VS_OUT_BaseDetailDirtndetail
+{
+    float4 HPos       : POSITION;
+    float2 Tex0Diff   : TEXCOORD0;
+    float2 Tex1Detail : TEXCOORD1;
+    float2 Tex2Dirt   : TEXCOORD2;
+    float3 LightVec   : TEXCOORD3;
+    float3 HalfVec    : TEXCOORD4;
 };
 
 VS_OUT_BaseDetailDirtndetail vsBaseDetailDirtndetail(appdata_BaseDetailDirtndetail input)
 {
     VS_OUT_BaseDetailDirtndetail Out;
 
-    // Compensate for lack of UBYTE4 on Geforce3
-    //int4 IndexVector = D3DCOLORtoUBYTE4(input.BlendIndices);
-    //int IndexArray[4] = (int[4])IndexVector;
-
-    float3 Pos = input.Pos;//mul(input.Pos, mOneBoneSkinning[IndexArray[0]]);
+    float3 Pos = input.Pos;
     Out.HPos = mul(float4(Pos.xyz, 1.0f), viewProjMatrix);
 
     // Pass-through texcoords
@@ -387,7 +364,7 @@ float4 psBaseDetailDirtndetail(VS_OUT_BaseDetailDirtndetail indata) : COLOR
     vec4 detail = tex2D(samplerWrap1, indata.Tex1Detail);
     vec4 dirt = tex2D(samplerWrap2, indata.Tex2Dirt);
     vec4 expandedNormal = tex2D(samplerWrap3, indata.Tex1Detail);
-    expandedNormal.xyz = (expandedNormal.xyz * 2) - 1;
+    expandedNormal.xyz = (expandedNormal.xyz * 2.0) - 1.0;
     vec2 intensityuv = float2(dot(normalize(indata.LightVec),expandedNormal), dot(normalize(indata.HalfVec),expandedNormal));
     vec4 intensity = tex2D(samplerClamp4, intensityuv);
 
@@ -402,7 +379,6 @@ technique OnePassbasedetaildirtndetail
     pass p0
     {
         AlphaBlendEnable = FALSE;
-        //ZWriteEnable = FALSE;
         ZFunc = LESSEQUAL;
         AlphaTestEnable = <alphaTest>;
         AlphaRef = 50;
@@ -415,37 +391,34 @@ technique OnePassbasedetaildirtndetail
     }
 }
 
-struct appdata_BaseDetailDirtLMndetail {
-    float4	Pos : POSITION;
-    float4  BlendIndices : BLENDINDICES;
-    float3	Normal : NORMAL;
-    float2	TexCoordDiff : TEXCOORD0;
-    float2	TexCoordDetail : TEXCOORD1;
-    float2	TexCoordDirt : TEXCOORD2;
-    float2	TexCoordLMap : TEXCOORD3;
-    float3 Tan		: TANGENT;
-    // float3 Binorm	: BINORMAL;
+struct appdata_BaseDetailDirtLMndetail
+{
+    float4 Pos            : POSITION;
+    float4 BlendIndices   : BLENDINDICES;
+    float3 Normal         : NORMAL;
+    float2 TexCoordDiff   : TEXCOORD0;
+    float2 TexCoordDetail : TEXCOORD1;
+    float2 TexCoordDirt   : TEXCOORD2;
+    float2 TexCoordLMap   : TEXCOORD3;
+    float3 Tan            : TANGENT;
 };
 
-struct VS_OUT_BaseDetailDirtLMndetail {
-    float4 HPos		: POSITION;
-    float2 Tex0Diff		: TEXCOORD0;
-    float2 Tex1Detail	: TEXCOORD1;
-    float2 Tex2Dirt		: TEXCOORD2;
-    float2 Tex3LMap		: TEXCOORD3;
-    float3 LightVec		: TEXCOORD4;
-    float3 HalfVec		: TEXCOORD5;
+struct VS_OUT_BaseDetailDirtLMndetail
+{
+    float4 HPos       : POSITION;
+    float2 Tex0Diff   : TEXCOORD0;
+    float2 Tex1Detail : TEXCOORD1;
+    float2 Tex2Dirt   : TEXCOORD2;
+    float2 Tex3LMap   : TEXCOORD3;
+    float3 LightVec   : TEXCOORD4;
+    float3 HalfVec    : TEXCOORD5;
 };
 
 VS_OUT_BaseDetailDirtLMndetail vsBaseDetailDirtLMndetail(appdata_BaseDetailDirtLMndetail input)
 {
     VS_OUT_BaseDetailDirtLMndetail Out;
 
-    // Compensate for lack of UBYTE4 on Geforce3
-    //int4 IndexVector = D3DCOLORtoUBYTE4(input.BlendIndices);
-    //int IndexArray[4] = (int[4])IndexVector;
-
-    float3 Pos = input.Pos;//mul(input.Pos, mOneBoneSkinning[IndexArray[0]]);
+    float3 Pos = input.Pos;
     Out.HPos = mul(float4(Pos.xyz, 1.0f), viewProjMatrix);
 
     // Pass-through texcoords
@@ -464,15 +437,17 @@ float4 psBaseDetailDirtLMndetail(VS_OUT_BaseDetailDirtLMndetail indata) : COLOR
     vec4 color = tex2D(samplerWrap0, indata.Tex0Diff);
     vec4 detail = tex2D(samplerWrap1, indata.Tex1Detail);
     vec4 dirt = tex2D(samplerWrap2, indata.Tex2Dirt);
+
     vec4 expandedNormal = tex2D(samplerWrap3, indata.Tex1Detail);
-    expandedNormal.xyz = (expandedNormal.xyz * 2) - 1;
+    expandedNormal.xyz = (expandedNormal.xyz * 2.0) - 1.0;
+
     vec2 intensityuv = float2(dot(normalize(indata.LightVec),expandedNormal), dot(normalize(indata.HalfVec),expandedNormal));
     vec4 intensity = tex2D(samplerClamp4, intensityuv);
     vec4 lightmap = tex2D(samplerWrap5, indata.Tex3LMap);
     intensity *= lightmap.a;
 
     vec4 outColor;
-    outColor.rgb = ((intensity*sunColor) + lightmap) * color * detail * dirt + intensity.a*expandedNormal.a*dot(sunColor, 0.33);
+    outColor.rgb = ((intensity * sunColor) + lightmap) * color * detail * dirt + intensity.a * expandedNormal.a * dot(sunColor, 0.333);
     outColor.a = detail.a;
     return outColor;
 }
@@ -482,7 +457,6 @@ technique OnePassbasedetaildirtLMndetail
     pass p0
     {
         AlphaBlendEnable = FALSE;
-        //ZWriteEnable = FALSE;
         ZFunc = LESSEQUAL;
         AlphaTestEnable = <alphaTest>;
         AlphaRef = 50;
@@ -495,35 +469,32 @@ technique OnePassbasedetaildirtLMndetail
     }
 }
 
-struct appdata_BaseDetailCrackndetailncrack {
-    float4	Pos : POSITION;
-    float4  BlendIndices : BLENDINDICES;
-    float3	Normal : NORMAL;
-    float2	TexCoordDiff : TEXCOORD0;
-    float2	TexCoordDetail : TEXCOORD1;
-    float2	TexCoordCrack : TEXCOORD2;
-    float3 Tan		: TANGENT;
-    // float3 Binorm	: BINORMAL;
+struct appdata_BaseDetailCrackndetailncrack
+{
+    float4 Pos            : POSITION;
+    float4 BlendIndices   : BLENDINDICES;
+    float3 Normal         : NORMAL;
+    float2 TexCoordDiff   : TEXCOORD0;
+    float2 TexCoordDetail : TEXCOORD1;
+    float2 TexCoordCrack  : TEXCOORD2;
+    float3 Tan            : TANGENT;
 };
 
-struct VS_OUT_BaseDetailCrackndetailncrack {
-    float4 HPos		: POSITION;
-    float2 Tex0Diff		: TEXCOORD0;
-    float2 Tex1Detail	: TEXCOORD1;
-    float2 Tex2Crack	: TEXCOORD2;
-    float3 LightVec		: TEXCOORD3;
-    float3 HalfVec		: TEXCOORD4;
+struct VS_OUT_BaseDetailCrackndetailncrack
+{
+    float4 HPos       : POSITION;
+    float2 Tex0Diff   : TEXCOORD0;
+    float2 Tex1Detail : TEXCOORD1;
+    float2 Tex2Crack  : TEXCOORD2;
+    float3 LightVec   : TEXCOORD3;
+    float3 HalfVec    : TEXCOORD4;
 };
 
 VS_OUT_BaseDetailCrackndetailncrack vsBaseDetailCrackndetailncrack(appdata_BaseDetailCrackndetailncrack input)
 {
     VS_OUT_BaseDetailCrackndetailncrack Out;
 
-    // Compensate for lack of UBYTE4 on Geforce3
-    // int4 IndexVector = D3DCOLORtoUBYTE4(input.BlendIndices);
-    // int IndexArray[4] = (int[4])IndexVector;
-
-    float3 Pos = input.Pos;//mul(input.Pos, mOneBoneSkinning[IndexArray[0]]);
+    float3 Pos = input.Pos;
     Out.HPos = mul(float4(Pos.xyz, 1.0f), viewProjMatrix);
 
     // Pass-through texcoords
@@ -541,14 +512,16 @@ float4 psBaseDetailCrackndetailncrack(VS_OUT_BaseDetailCrackndetailncrack indata
     vec4 color = tex2D(samplerWrap0, indata.Tex0Diff);
     vec4 detail = tex2D(samplerWrap1, indata.Tex1Detail);
     vec4 crack = tex2D(samplerWrap2, indata.Tex2Crack);
-    vec4 expandedNormal = tex2D(samplerWrap3, indata.Tex1Detail) * (1-crack.a);
+
+    vec4 expandedNormal = tex2D(samplerWrap3, indata.Tex1Detail) * (1.0 - crack.a);
     vec4 expandedCrackNormal = tex2D(samplerWrap4, indata.Tex2Crack) * crack.a;
     expandedNormal = expandedNormal + expandedCrackNormal;
-    expandedNormal.xyz = expandedNormal.xyz * 2 - 1;
+    expandedNormal.xyz = expandedNormal.xyz * 2.0 - 1.0;
+
     vec2 intensityuv = float2(dot(normalize(indata.LightVec),expandedNormal), dot(normalize(indata.HalfVec),expandedNormal));
     vec4 intensity = tex2D(samplerClamp5, intensityuv);
 
-    vec3 maskedColor = color * detail * (1-crack.a);
+    vec3 maskedColor = color * detail * (1.0 - crack.a);
     maskedColor = crack.rgb*crack.a + maskedColor.rgb;
 
     vec4 outColor;
@@ -562,7 +535,6 @@ technique OnePassbasedetailcrackndetailncrack
     pass p0
     {
         AlphaBlendEnable = FALSE;
-        //ZWriteEnable = FALSE;
         ZFunc = LESSEQUAL;
         AlphaTestEnable = <alphaTest>;
         AlphaRef = 50;
@@ -575,35 +547,32 @@ technique OnePassbasedetailcrackndetailncrack
     }
 }
 
-struct appdata_BaseDetailCrackLMndetailncrack {
-    float4	Pos : POSITION;
-    float4  BlendIndices : BLENDINDICES;
-    float3	Normal : NORMAL;
-    float2	TexCoordDiff : TEXCOORD0;
-    float2	TexCoordDetail : TEXCOORD1;
-    float2	TexCoordCrack : TEXCOORD2;
-    float2	TexCoordLMap : TEXCOORD3;
-    float3 Tan		: TANGENT;
-    // float3 Binorm	: BINORMAL;
+struct appdata_BaseDetailCrackLMndetailncrack
+{
+    float4 Pos            : POSITION;
+    float4 BlendIndices   : BLENDINDICES;
+    float3 Normal         : NORMAL;
+    float2 TexCoordDiff   : TEXCOORD0;
+    float2 TexCoordDetail : TEXCOORD1;
+    float2 TexCoordCrack  : TEXCOORD2;
+    float2 TexCoordLMap   : TEXCOORD3;
+    float3 Tan            : TANGENT;
 };
 
-struct VS_OUT_BaseDetailCrackLMndetailncrack {
-    float4 HPos		: POSITION;
-    float2 Tex0Diff		: TEXCOORD0;
-    float2 Tex1Detail	: TEXCOORD1;
-    float2 Tex2Crack	: TEXCOORD2;
-    float2 Tex3LMap		: TEXCOORD3;
-    float3 LightVec		: TEXCOORD4;
-    float3 HalfVec		: TEXCOORD5;
+struct VS_OUT_BaseDetailCrackLMndetailncrack
+{
+    float4 HPos       : POSITION;
+    float2 Tex0Diff   : TEXCOORD0;
+    float2 Tex1Detail : TEXCOORD1;
+    float2 Tex2Crack  : TEXCOORD2;
+    float2 Tex3LMap   : TEXCOORD3;
+    float3 LightVec   : TEXCOORD4;
+    float3 HalfVec    : TEXCOORD5;
 };
 
 VS_OUT_BaseDetailCrackLMndetailncrack vsBaseDetailCrackLMndetailncrack(appdata_BaseDetailCrackLMndetailncrack input)
 {
     VS_OUT_BaseDetailCrackLMndetailncrack Out;
-
-    // Compensate for lack of UBYTE4 on Geforce3
-    //int4 IndexVector = D3DCOLORtoUBYTE4(input.BlendIndices);
-    //int IndexArray[4] = (int[4])IndexVector;
 
     float3 Pos = input.Pos;//mul(input.Pos, mOneBoneSkinning[IndexArray[0]]);
     Out.HPos = mul(float4(Pos.xyz, 1.0f), viewProjMatrix);
@@ -624,14 +593,17 @@ float4 psBaseDetailCrackLMndetailncrack(VS_OUT_BaseDetailCrackLMndetailncrack in
     vec4 color = tex2D(samplerWrap0, indata.Tex0Diff);
     vec4 detail = tex2D(samplerWrap1, indata.Tex1Detail);
     vec4 crack = tex2D(samplerWrap2, indata.Tex2Crack);
-    vec4 expandedNormal = tex2D(samplerWrap3, indata.Tex1Detail) * (1-crack.a);
+
+    vec4 expandedNormal = tex2D(samplerWrap3, indata.Tex1Detail) * (1.0 - crack.a);
     vec4 expandedCrackNormal = tex2D(samplerWrap4, indata.Tex2Crack) * crack.a;
     expandedNormal = expandedNormal + expandedCrackNormal;
-    expandedNormal.xyz = (expandedNormal.xyz * 2) - 1;
+    expandedNormal.xyz = (expandedNormal.xyz * 2.0) - 1.0;
+
     vec2 intensityuv = float2(dot(normalize(indata.LightVec),expandedNormal), dot(normalize(indata.HalfVec),expandedNormal));
     vec4 intensity = tex2D(samplerClamp5, intensityuv);
     vec4 lightmap = tex2D(samplerWrap6, indata.Tex3LMap);
     intensity *= lightmap.a;
+
     vec3 maskedColor = color * detail * (1-crack.a);
     maskedColor = crack.rgb*crack.a + maskedColor.rgb;
 
@@ -646,7 +618,6 @@ technique OnePassbasedetailcrackLMndetailncrack
     pass p0
     {
         AlphaBlendEnable = FALSE;
-        //ZWriteEnable = FALSE;
         ZFunc = LESSEQUAL;
         AlphaTestEnable = <alphaTest>;
         AlphaRef = 50;
@@ -658,37 +629,34 @@ technique OnePassbasedetailcrackLMndetailncrack
     }
 }
 
-struct appdata_BaseDetailDirtCrackndetailncrack {
-    float4	Pos : POSITION;
-    float4  BlendIndices : BLENDINDICES;
-    float3	Normal : NORMAL;
-    float2	TexCoordDiff : TEXCOORD0;
-    float2	TexCoordDetail : TEXCOORD1;
-    float2	TexCoordDirt : TEXCOORD2;
-    float2	TexCoordCrack : TEXCOORD3;
-    float3 Tan		: TANGENT;
-    // float3 Binorm	: BINORMAL;
+struct appdata_BaseDetailDirtCrackndetailncrack
+{
+    float4 Pos            : POSITION;
+    float4 BlendIndices   : BLENDINDICES;
+    float3 Normal         : NORMAL;
+    float2 TexCoordDiff   : TEXCOORD0;
+    float2 TexCoordDetail : TEXCOORD1;
+    float2 TexCoordDirt   : TEXCOORD2;
+    float2 TexCoordCrack  : TEXCOORD3;
+    float3 Tan            : TANGENT;
 };
 
-struct VS_OUT_BaseDetailDirtCrackndetailncrack {
-    float4 HPos		: POSITION;
-    float2 Tex0Diff		: TEXCOORD0;
-    float2 Tex1Detail	: TEXCOORD1;
-    float2 Tex2Dirt		: TEXCOORD2;
-    float2 Tex3Crack	: TEXCOORD3;
-    float3 LightVec		: TEXCOORD4;
-    float3 HalfVec		: TEXCOORD5;
+struct VS_OUT_BaseDetailDirtCrackndetailncrack
+{
+    float4 HPos       : POSITION;
+    float2 Tex0Diff   : TEXCOORD0;
+    float2 Tex1Detail : TEXCOORD1;
+    float2 Tex2Dirt   : TEXCOORD2;
+    float2 Tex3Crack  : TEXCOORD3;
+    float3 LightVec   : TEXCOORD4;
+    float3 HalfVec    : TEXCOORD5;
 };
 
 VS_OUT_BaseDetailDirtCrackndetailncrack vsBaseDetailDirtCrackndetailncrack(appdata_BaseDetailDirtCrackndetailncrack input)
 {
     VS_OUT_BaseDetailDirtCrackndetailncrack Out;
 
-    // Compensate for lack of UBYTE4 on Geforce3
-    //int4 IndexVector = D3DCOLORtoUBYTE4(input.BlendIndices);
-    //int IndexArray[4] = (int[4])IndexVector;
-
-    float3 Pos = input.Pos;//mul(input.Pos, mOneBoneSkinning[IndexArray[0]]);
+    float3 Pos = input.Pos;
     Out.HPos = mul(float4(Pos.xyz, 1.0f), viewProjMatrix);
 
     // Pass-through texcoords
@@ -704,34 +672,24 @@ VS_OUT_BaseDetailDirtCrackndetailncrack vsBaseDetailDirtCrackndetailncrack(appda
 
 float4 psBaseDetailDirtCrackndetailncrack(VS_OUT_BaseDetailDirtCrackndetailncrack indata) : COLOR
 {
-    // return indata.HalfVec.rgbb/2+0.5;
-    // return indata.LightVec.rgbb/2+0.5;
-    // return indata.LightVec.rgbb;
-    // return pow(dot(normalize(indata.HalfVec),tex2D(samplerWrap4, indata.Tex1Detail)*2-1), 36);
     vec4 color = tex2D(samplerWrap0, indata.Tex0Diff);
     vec4 detail = tex2D(samplerWrap1, indata.Tex1Detail);
     vec4 dirt = tex2D(samplerWrap2, indata.Tex2Dirt);
     vec4 crack = tex2D(samplerWrap3, indata.Tex3Crack);
+
     vec4 expandedNormal = tex2D(samplerWrap4, indata.Tex1Detail) * (1-crack.a);
     vec4 expandedCrackNormal = tex2D(samplerWrap5, indata.Tex3Crack) * crack.a;
-    // expandedNormal.xyz = (expandedNormal.xyz * 2) - 1;
-    // expandedCrackNormal.xyz = (expandedCrackNormal.xyz * 2) - 1;
     expandedNormal = expandedNormal + expandedCrackNormal;
-    // return expandedNormal;
-    expandedNormal.xyz = (expandedNormal.xyz * 2) - 1;
-    // return expandedNormal;
+    expandedNormal.xyz = (expandedNormal.xyz * 2.0) - 1.0;
+
     vec2 intensityuv = float2(dot(normalize(indata.LightVec),expandedNormal), dot(normalize(indata.HalfVec),expandedNormal));
     vec4 intensity = tex2D(samplerClamp6, intensityuv);
-    // return intensity.aaaa;
 
-    // return intensityuv.g;
-    // return pow(intensityuv.g,50);
-    // return intensity.a;
-    vec3 maskedColor = color * detail * dirt * (1-crack.a);
-    maskedColor = crack.rgb*crack.a + maskedColor.rgb;
+    vec3 maskedColor = color * detail * dirt * (1.0 - crack.a);
+    maskedColor = crack.rgb * crack.a + maskedColor.rgb;
 
     vec4 outColor;
-    outColor.rgb = (intensity * sunColor) * maskedColor + intensity.a*expandedNormal.a*dot(sunColor, 0.33);
+    outColor.rgb = (intensity * sunColor) * maskedColor + intensity.a * expandedNormal.a * dot(sunColor, 0.333);
     outColor.a = detail.a;
     return outColor;
 }
@@ -741,7 +699,6 @@ technique OnePassbasedetaildirtcrackndetailncrack
     pass p0
     {
         AlphaBlendEnable = FALSE;
-        //ZWriteEnable = FALSE;
         ZFunc = LESSEQUAL;
         AlphaTestEnable = <alphaTest>;
         AlphaRef = 50;
@@ -753,39 +710,36 @@ technique OnePassbasedetaildirtcrackndetailncrack
     }
 }
 
-struct appdata_BaseDetailDirtCrackLMndetailncrack {
-    float4	Pos : POSITION;
-    float4  BlendIndices : BLENDINDICES;
-    float3	Normal : NORMAL;
-    float2	TexCoordDiff : TEXCOORD0;
-    float2	TexCoordDetail : TEXCOORD1;
-    float2	TexCoordDirt : TEXCOORD2;
-    float2	TexCoordCrack : TEXCOORD3;
-    float2	TexCoordLMap : TEXCOORD4;
-    float3 Tan		: TANGENT;
-    // float3 Binorm	: BINORMAL;
+struct appdata_BaseDetailDirtCrackLMndetailncrack
+{
+    float4 Pos            : POSITION;
+    float4 BlendIndices   : BLENDINDICES;
+    float3 Normal         : NORMAL;
+    float2 TexCoordDiff   : TEXCOORD0;
+    float2 TexCoordDetail : TEXCOORD1;
+    float2 TexCoordDirt   : TEXCOORD2;
+    float2 TexCoordCrack  : TEXCOORD3;
+    float2 TexCoordLMap   : TEXCOORD4;
+    float3 Tan            : TANGENT;
 };
 
-struct VS_OUT_BaseDetailDirtCrackLMndetailncrack {
-    float4 HPos		: POSITION;
-    float2 Tex0Diff		: TEXCOORD0;
-    float2 Tex1Detail	: TEXCOORD1;
-    float2 Tex2Dirt		: TEXCOORD2;
-    float2 Tex3Crack	: TEXCOORD3;
-    float2 Tex4LMap		: TEXCOORD4;
-    float3 LightVec		: TEXCOORD5;
-    float3 HalfVec		: TEXCOORD6;
+struct VS_OUT_BaseDetailDirtCrackLMndetailncrack
+{
+    float4 HPos       : POSITION;
+    float2 Tex0Diff   : TEXCOORD0;
+    float2 Tex1Detail : TEXCOORD1;
+    float2 Tex2Dirt   : TEXCOORD2;
+    float2 Tex3Crack  : TEXCOORD3;
+    float2 Tex4LMap   : TEXCOORD4;
+    float3 LightVec   : TEXCOORD5;
+    float3 HalfVec    : TEXCOORD6;
 };
 
 VS_OUT_BaseDetailDirtCrackLMndetailncrack vsBaseDetailDirtCrackLMndetailncrack(appdata_BaseDetailDirtCrackLMndetailncrack input)
 {
     VS_OUT_BaseDetailDirtCrackLMndetailncrack Out;
 
-    // Compensate for lack of UBYTE4 on Geforce3
-    //int4 IndexVector = D3DCOLORtoUBYTE4(input.BlendIndices);
-    //int IndexArray[4] = (int[4])IndexVector;
-
-    float3 Pos = input.Pos;//mul(input.Pos, mOneBoneSkinning[IndexArray[0]]);
+    float3 Pos = input.Pos;
     Out.HPos = mul(float4(Pos.xyz, 1.0f), viewProjMatrix);
 
     // Pass-through texcoords
@@ -806,15 +760,15 @@ float4 psBaseDetailDirtCrackLMndetailncrack(VS_OUT_BaseDetailDirtCrackLMndetailn
     vec4 detail = tex2D(samplerWrap1, indata.Tex1Detail);
     vec4 dirt = tex2D(samplerWrap2, indata.Tex2Dirt);
     vec4 crack = tex2D(samplerWrap3, indata.Tex3Crack);
-    vec4 expandedNormal = tex2D(samplerWrap4, indata.Tex1Detail) * (1-crack.a);
+    vec4 expandedNormal = tex2D(samplerWrap4, indata.Tex1Detail) * (1.0 - crack.a);
     vec4 expandedCrackNormal = tex2D(samplerWrap5, indata.Tex3Crack) * crack.a;
     expandedNormal = expandedNormal + expandedCrackNormal;
-    expandedNormal.xyz = (expandedNormal.xyz * 2) - 1;
+    expandedNormal.xyz = (expandedNormal.xyz * 2.0) - 1.0;
     vec2 intensityuv = float2(dot(normalize(indata.LightVec),expandedNormal), dot(normalize(indata.HalfVec),expandedNormal));
     vec4 intensity = tex2D(samplerClamp6, intensityuv);
     vec4 lightmap = tex2D(samplerWrap7, indata.Tex4LMap);
     intensity *= lightmap.a;
-    vec3 maskedColor = color * detail * dirt * (1-crack.a);
+    vec3 maskedColor = color * detail * dirt * (1.0 - crack.a);
     maskedColor = crack.rgb*crack.a + maskedColor.rgb;
 
     vec4 outColor;
@@ -828,7 +782,6 @@ technique OnePassbasedetaildirtcrackLMndetailncrack
     pass p0
     {
         AlphaBlendEnable = FALSE;
-        // ZWriteEnable = FALSE;
         ZFunc = LESSEQUAL;
         AlphaTestEnable = <alphaTest>;
         AlphaRef = 50;
@@ -842,31 +795,29 @@ technique OnePassbasedetaildirtcrackLMndetailncrack
 
 
 
-struct appdata_LightmapAndSunndetail {
-    float4	Pos : POSITION;
-    float3  Normal : NORMAL;
-    float2	TexCoordNormalDetailMap : TEXCOORD0;
-    float2	TexCoordLMap : TEXCOORD1;
-    float3  Tan : TANGENT;
+struct appdata_LightmapAndSunndetail
+{
+    float4 Pos                     : POSITION;
+    float3 Normal                  : NORMAL;
+    float2 TexCoordNormalDetailMap : TEXCOORD0;
+    float2 TexCoordLMap            : TEXCOORD1;
+    float3 Tan                     : TANGENT;
 };
 
-struct VS_OUT_LightmapAndSunndetail {
-    float4 HPos		: POSITION;
-    float2 Tex0Normal	: TEXCOORD0;
-    float2 Tex1LMap		: TEXCOORD1;
-    float3 LightVec		: TEXCOORD2;
-    float3 HalfVec		: TEXCOORD3;
+struct VS_OUT_LightmapAndSunndetail
+{
+    float4 HPos       : POSITION;
+    float2 Tex0Normal : TEXCOORD0;
+    float2 Tex1LMap   : TEXCOORD1;
+    float3 LightVec   : TEXCOORD2;
+    float3 HalfVec    : TEXCOORD3;
 };
 
 VS_OUT_LightmapAndSunndetail vsLightmapAndSunndetail(appdata_LightmapAndSunndetail input)
 {
     VS_OUT_LightmapAndSunndetail Out;
 
-    // Compensate for lack of UBYTE4 on Geforce3
-    //int4 IndexVector = D3DCOLORtoUBYTE4(input.BlendIndices);
-    //int IndexArray[4] = (int[4])IndexVector;
-
-    float3 Pos = input.Pos;//mul(input.Pos, mOneBoneSkinning[IndexArray[0]]);
+    float3 Pos = input.Pos;
     Out.HPos = mul(float4(Pos.xyz, 1.0f), viewProjMatrix);
 
     // Pass-through texcoords
@@ -881,14 +832,14 @@ VS_OUT_LightmapAndSunndetail vsLightmapAndSunndetail(appdata_LightmapAndSunndeta
 vec4 psLightmapAndSunndetail(VS_OUT_LightmapAndSunndetail indata) : COLOR
 {
     vec4 expandedNormal = tex2D(samplerWrap0, indata.Tex0Normal);
-    expandedNormal.xyz = (expandedNormal.xyz * 2) - 1;
-    vec2 intensityuv = float2(dot(normalize(indata.LightVec),expandedNormal), dot(normalize(indata.HalfVec),expandedNormal));
+    expandedNormal.xyz = (expandedNormal.xyz * 2.0) - 1.0;
+    vec2 intensityuv = float2(dot(normalize(indata.LightVec), expandedNormal), dot(normalize(indata.HalfVec), expandedNormal));
     vec4 intensity = tex2D(samplerClamp1, intensityuv);
     vec4 lightmap = tex2D(samplerWrap2, indata.Tex1LMap);
     intensity *= lightmap.a;
 
     vec4 outColor;
-    outColor.rgb = (intensity * sunColor + lightmap) + intensity.a*expandedNormal.a*dot(sunColor, 0.33);
+    outColor.rgb = (intensity * sunColor + lightmap) + intensity.a * expandedNormal.a * dot(sunColor, 0.333);
     outColor.a = 1.0f;
     return outColor;
 }
@@ -924,33 +875,31 @@ technique LightmapAndSunndetail
     }
 }
 
-struct appdata_LightmapAndSunndetailncrack {
-    float4	Pos : POSITION;
-    float3  Normal : NORMAL;
-    float2	TexCoordNormalDetailMap : TEXCOORD0;
-    float2	TexCoordNormalCrackMap : TEXCOORD1;
-    float2	TexCoordLMap : TEXCOORD2;
-    float3  Tan : TANGENT;
+struct appdata_LightmapAndSunndetailncrack
+{
+    float4 Pos                     : POSITION;
+    float3 Normal                  : NORMAL;
+    float2 TexCoordNormalDetailMap : TEXCOORD0;
+    float2 TexCoordNormalCrackMap  : TEXCOORD1;
+    float2 TexCoordLMap            : TEXCOORD2;
+    float3 Tan                     : TANGENT;
 };
 
-struct VS_OUT_LightmapAndSunndetailncrack {
-    float4 HPos		: POSITION;
-    float2 Tex0Crack	: TEXCOORD0;
-    float2 Tex1Normal	: TEXCOORD1;
-    float2 Tex2LMap		: TEXCOORD2;
-    float3 LightVec		: TEXCOORD3;
-    float3 HalfVec		: TEXCOORD4;
+struct VS_OUT_LightmapAndSunndetailncrack
+{
+    float4 HPos       : POSITION;
+    float2 Tex0Crack  : TEXCOORD0;
+    float2 Tex1Normal : TEXCOORD1;
+    float2 Tex2LMap   : TEXCOORD2;
+    float3 LightVec   : TEXCOORD3;
+    float3 HalfVec    : TEXCOORD4;
 };
 
 VS_OUT_LightmapAndSunndetailncrack vsLightmapAndSunndetailncrack(appdata_LightmapAndSunndetailncrack input)
 {
     VS_OUT_LightmapAndSunndetailncrack Out;
 
-    // Compensate for lack of UBYTE4 on Geforce3
-    //int4 IndexVector = D3DCOLORtoUBYTE4(input.BlendIndices);
-    //int IndexArray[4] = (int[4])IndexVector;
-
-    float3 Pos = input.Pos;//mul(input.Pos, mOneBoneSkinning[IndexArray[0]]);
+    float3 Pos = input.Pos;
     Out.HPos = mul(float4(Pos.xyz, 1.0f), viewProjMatrix);
 
     // Pass-through texcoords
@@ -966,10 +915,10 @@ VS_OUT_LightmapAndSunndetailncrack vsLightmapAndSunndetailncrack(appdata_Lightma
 vec4 psLightmapAndSunndetailncrack(VS_OUT_LightmapAndSunndetailncrack indata) : COLOR
 {
     vec4 crack = tex2D(samplerWrap0, indata.Tex0Crack);
-    vec4 expandedNormal = tex2D(samplerWrap1, indata.Tex1Normal) * (1-crack.a);
+    vec4 expandedNormal = tex2D(samplerWrap1, indata.Tex1Normal) * (1.0 - crack.a);
     vec4 expandedCrackNormal = tex2D(samplerWrap2, indata.Tex0Crack) * crack.a;
     expandedNormal = expandedNormal + expandedCrackNormal;
-    expandedNormal.xyz = (expandedNormal.xyz * 2) - 1;
+    expandedNormal.xyz = (expandedNormal.xyz * 2.0) - 1.0;
 
     vec2 intensityuv = float2(dot(normalize(indata.LightVec),expandedNormal), dot(normalize(indata.HalfVec),expandedNormal));
     vec4 intensity = tex2D(samplerClamp3, intensityuv);
@@ -1036,41 +985,39 @@ void vsBumpSpecularBlinnPointLight(vec3 Normal, vec3 Tan, vec3 Pos, int Index, o
     LightVec = mul(lvec, worldI);
     float lightDist = length(LightVec);
     lightDist *= lightPosAndAttSqrInv.w;
-    LightDist = vec2(lightDist,0);
+    LightDist = vec2(lightDist, 0.0);
 
     // Transform eye pos to tangent space
     vec3 worldEyeVec = eyePos - worldPos;
     vec3 tanEyeVec = mul(worldEyeVec, worldI);
 
-    HalfVec = (LightVec + normalize(tanEyeVec))*0.5;
+    HalfVec = (LightVec + normalize(tanEyeVec)) * 0.5;
 }
 
 
 
-struct appdata_vsBumpSpecularPointLightndetail {
-    float4	Pos : POSITION;
-    float4  Normal : NORMAL;
-    float2	TexCoordNormalDetailMap : TEXCOORD0;
-    float3  Tan : TANGENT;
+struct appdata_vsBumpSpecularPointLightndetail
+{
+    float4 Pos                     : POSITION;
+    float4 Normal                  : NORMAL;
+    float2 TexCoordNormalDetailMap : TEXCOORD0;
+    float3 Tan                     : TANGENT;
 };
 
-struct VS_OUT_vsBumpSpecularPointLightndetail {
-    float4 HPos			: POSITION;
-    float2 Tex0Normal	: TEXCOORD0;
-    float3 LightVec		: TEXCOORD1;
-    float3 HalfVec		: TEXCOORD2;
-    float2 LightDist : TEXCOORD3;
+struct VS_OUT_vsBumpSpecularPointLightndetail
+{
+    float4 HPos       : POSITION;
+    float2 Tex0Normal : TEXCOORD0;
+    float3 LightVec   : TEXCOORD1;
+    float3 HalfVec    : TEXCOORD2;
+    float2 LightDist  : TEXCOORD3;
 };
 
 VS_OUT_vsBumpSpecularPointLightndetail vsBumpSpecularPointLightndetail(appdata_vsBumpSpecularPointLightndetail input)
 {
     VS_OUT_vsBumpSpecularPointLightndetail Out;
 
-    // Compensate for lack of UBYTE4 on Geforce3
-    // int4 IndexVector = D3DCOLORtoUBYTE4(input.BlendIndices);
-    // int IndexArray[4] = (int[4])IndexVector;
-
-    float3 wPos = input.Pos;//mul(input.Pos, mOneBoneSkinning[IndexArray[0]]);
+    float3 wPos = input.Pos;
     Out.HPos = mul(float4(wPos.xyz, 1.0f), viewProjMatrix);
 
     Out.Tex0Normal = input.TexCoordNormalDetailMap;
@@ -1083,14 +1030,14 @@ VS_OUT_vsBumpSpecularPointLightndetail vsBumpSpecularPointLightndetail(appdata_v
 vec4 psBumpSpecularPointLightndetail(VS_OUT_vsBumpSpecularPointLightndetail indata) : COLOR
 {
     vec4 normalmap = tex2D(samplerWrap0, indata.Tex0Normal);
-    vec3 expandedNormal = (normalmap.xyz - 0.5) * 2; //bx2
+    vec3 expandedNormal = normalmap.xyz * 2.0 - 1.0;
 
     vec3 normalizedLVec = normalize(indata.LightVec);
     vec2 intensityuv = float2(dot(normalizedLVec,expandedNormal), dot(indata.HalfVec,expandedNormal));
     vec4 intensity = tex2D(samplerClamp1, intensityuv);
 
     vec4 radialAtt = tex1D(samplerClamp2, indata.LightDist.r);
-    return radialAtt * intensity * lightColor + intensity.a*normalmap.a*dot(lightColor, 0.33);
+    return radialAtt * intensity * lightColor + intensity.a * normalmap.a*dot(lightColor, 0.33);
 }
 
 technique PointLightndetail
@@ -1122,32 +1069,30 @@ technique PointLightndetail
     }
 }
 
-struct appdata_vsBumpSpecularPointLightndetailncrack {
-    float4	Pos : POSITION;
-    float4  Normal : NORMAL;
-    float2	TexCoordNormalDetailMap : TEXCOORD0;
-    float2	TexCoordNormalCrackMap : TEXCOORD1;
-    float3  Tan : TANGENT;
+struct appdata_vsBumpSpecularPointLightndetailncrack
+{
+    float4 Pos                     : POSITION;
+    float4 Normal                  : NORMAL;
+    float2 TexCoordNormalDetailMap : TEXCOORD0;
+    float2 TexCoordNormalCrackMap  : TEXCOORD1;
+    float3 Tan                     : TANGENT;
 };
 
-struct VS_OUT_vsBumpSpecularPointLightndetailncrack {
-    float4 HPos			: POSITION;
-    float2 Tex0Normal	: TEXCOORD0;
-    float2 Tex1NormalCrack	: TEXCOORD1;
-    float3 LightVec		: TEXCOORD2;
-    float3 HalfVec		: TEXCOORD3;
-    float2 LightDist : TEXCOORD4;
+struct VS_OUT_vsBumpSpecularPointLightndetailncrack
+{
+    float4 HPos            : POSITION;
+    float2 Tex0Normal      : TEXCOORD0;
+    float2 Tex1NormalCrack : TEXCOORD1;
+    float3 LightVec        : TEXCOORD2;
+    float3 HalfVec         : TEXCOORD3;
+    float2 LightDist       : TEXCOORD4;
 };
 
 VS_OUT_vsBumpSpecularPointLightndetailncrack vsBumpSpecularPointLightndetailncrack(appdata_vsBumpSpecularPointLightndetailncrack input)
 {
     VS_OUT_vsBumpSpecularPointLightndetailncrack Out;
 
-    // Compensate for lack of UBYTE4 on Geforce3
-    // int4 IndexVector = D3DCOLORtoUBYTE4(input.BlendIndices);
-    // int IndexArray[4] = (int[4])IndexVector;
-
-    float3 wPos = input.Pos;//mul(input.Pos, mOneBoneSkinning[IndexArray[0]]);
+    float3 wPos = input.Pos;
     Out.HPos = mul(float4(wPos.xyz, 1.0f), viewProjMatrix);
 
     Out.Tex0Normal = input.TexCoordNormalDetailMap;
@@ -1161,10 +1106,10 @@ VS_OUT_vsBumpSpecularPointLightndetailncrack vsBumpSpecularPointLightndetailncra
 vec4 psBumpSpecularPointLightndetailncrack(VS_OUT_vsBumpSpecularPointLightndetailncrack indata) : COLOR
 {
     vec4 crack = tex2D(samplerWrap0, indata.Tex1NormalCrack);
-    vec4 expandedNormal = tex2D(samplerWrap1, indata.Tex0Normal) * (1-crack.a);
+    vec4 expandedNormal = tex2D(samplerWrap1, indata.Tex0Normal) * (1.0 - crack.a);
     vec4 expandedCrackNormal = tex2D(samplerWrap2, indata.Tex1NormalCrack) * crack.a;
     expandedNormal = expandedNormal + expandedCrackNormal;
-    expandedNormal.xyz = (expandedNormal.xyz * 2) - 1;
+    expandedNormal.xyz = (expandedNormal.xyz * 2.0) - 1.0;
 
     vec3 normalizedLVec = normalize(indata.LightVec);
     vec2 intensityuv = float2(dot(normalizedLVec,expandedNormal), dot(indata.HalfVec,expandedNormal));

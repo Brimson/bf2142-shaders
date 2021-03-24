@@ -42,7 +42,7 @@ sampler TexMapSamplerWrap = sampler_state
 struct VS_SHAPE
 {
     float4 Position : POSITION;
-    float4 Diffuse : COLOR0;
+    float4 Diffuse  : COLOR0;
 };
 
 struct VS_TS0
@@ -55,13 +55,13 @@ struct VS_TS3
 {
     float4 Position : POSITION;
     float2 TexCoord : TEXCOORD0;
-    float4 Diffuse : COLOR0;
+    float4 Diffuse  : COLOR0;
 };
 
 struct VS_SHAPETEXTURE
 {
     float4 Position : POSITION;
-    float4 Diffuse : COLOR0;
+    float4 Diffuse  : COLOR0;
     float4 Selector : COLOR1;
     float2 TexCoord : TEXCOORD0;
 };
@@ -69,7 +69,7 @@ struct VS_SHAPETEXTURE
 struct VS_TEXTURE
 {
     float4 Position : POSITION;
-    float4 Diffuse : COLOR0;
+    float4 Diffuse  : COLOR0;
     float2 TexCoord : TEXCOORD0;
 };
 
@@ -170,11 +170,11 @@ VS_TS3 VSTS2_0(float3 Position : POSITION)
 VS_TS3 VSTS3_0(float3 Position : POSITION)
 {
     VS_TS3 Out = (VS_TS3)0;
-    Out.Position = mul( float4(Position.xy, 0.0f, 1.0), WorldView);
+    Out.Position = mul(float4(Position.xy, 0.0f, 1.0), WorldView);
     float4 texPos = float4(Position.xy + sin(Time + 0.2) * 240.5, 0.0, 1.0);
     Out.TexCoord.x = (mul(texPos, TexGenS) + sin(Time * 0.1) * 0.1) * 0.8 + 0.1;
     Out.TexCoord.y = (mul(texPos, TexGenT) + cos(Time * 0.12 + 0.2) * 0.1) * 0.8 + 0.1;
-    float a = sin(Time) * 0.15+ 0.4 + cos(Time * 33.0) * 0.03 + 0.03;
+    float a = sin(Time) * 0.15 + 0.4 + cos(Time * 33.0) * 0.03 + 0.03;
     Out.Diffuse = float4(1.0, 1.0, 1.0, a);
     return Out;
 }

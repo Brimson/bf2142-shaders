@@ -88,11 +88,9 @@ PS2FB_Combine psDx9_Tinnitus(VS2PS_Quad2 indata)
     accum += sample1 * 0.25;
     accum += sample2 * 0.125;
     accum += sample3 * 0.0675;
-
     accum = lerp(accum,backbuffer,backbufferLerpbias);
 
     outdata.Col0 = accum;
-
     return outdata;
 }
 
@@ -159,7 +157,7 @@ technique Glow
 vec4 psDx9_Fog(VS2PS_Quad indata) : COLOR
 {
     vec3 wPos = tex2D(sampler0, indata.TexCoord0);
-    scalar uvCoord =  saturate((wPos.zzzz - fogStartAndEnd.r) / fogStartAndEnd.g);//fogColorAndViewDistance.a);
+    scalar uvCoord =  saturate((wPos.zzzz - fogStartAndEnd.r) / fogStartAndEnd.g);
     return saturate(vec4(fogColor.rgb,uvCoord));
     return tex2D(sampler1, vec2(uvCoord, 0.0)) * fogColor.rgbb;
 }

@@ -124,9 +124,9 @@ vec4 RoadCompiledPS(VS2PS indata) : COLOR0
 
 struct VS2PSDx9
 {
-    vec4 Pos : POSITION;
+    vec4 Pos          : POSITION;
     vec3 Tex0AndZFade : TEXCOORD0;
-    vec2 Tex1 : TEXCOORD1;
+    vec2 Tex1         : TEXCOORD1;
 };
 
 VS2PSDx9 RoadCompiledVSDx9(APP2VS input)

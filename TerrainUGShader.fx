@@ -38,14 +38,14 @@ vec4 psDynamicShadowmap(VS2PS_DynamicShadowmap indata) : COLOR
     vec4 samples;
     indata.ShadowTex.xy = clamp(indata.ShadowTex.xy, vViewportMap.xy, vViewportMap.zw);
     samples.x = tex2D(sampler2Point, indata.ShadowTex);
-    samples.y = tex2D(sampler2Point, indata.ShadowTex + vec2(texel.x, 0));
-    samples.z = tex2D(sampler2Point, indata.ShadowTex + vec2(0, texel.y));
+    samples.y = tex2D(sampler2Point, indata.ShadowTex + vec2(texel.x, 0.0));
+    samples.z = tex2D(sampler2Point, indata.ShadowTex + vec2(0.0, texel.y));
     samples.w = tex2D(sampler2Point, indata.ShadowTex + texel);
 
     vec4 cmpbits = samples >= saturate(indata.ShadowTex.z);
-    scalar avgShadowValue = dot(cmpbits, vec4(0.25, 0.25, 0.25, 0.25));
+    scalar avgShadowValue = dot(cmpbits, 0.25);
 
-    return 1-saturate(4-indata.ShadowTex.z)+avgShadowValue.x;
+    return 1.0 - saturate(4.0 - indata.ShadowTex.z) + avgShadowValue.x;
 }
 
 VS2PS_DynamicShadowmap vsDynamicShadowmap(APP2VS_BM_Dx9 indata)
