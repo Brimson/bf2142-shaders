@@ -90,7 +90,7 @@ VS_OUTPUT basicVertexShader
     #if _HASSHADOW_
         Out.TexShadow = calcShadowProjection(vec4(inPos.xyz, 1.0));
     #else
-        Out.Color.rgb += OverGrowthAmbient / CEXP(1);
+        Out.Color.rgb += OverGrowthAmbient / exp(1.0);
     #endif
 
     Out.Color = Out.Color * 0.5;
@@ -100,7 +100,7 @@ VS_OUTPUT basicVertexShader
 
 vec4 basicPixelShader(VS_OUTPUT VsOut) : COLOR
 {
-    vec3 vertexColor = CEXP(VsOut.Color);
+    vec3 vertexColor = exp(VsOut.Color);
 
     #ifdef BASEDIFFUSEONLY
         vec4 diffuseMap = tex2D(DiffuseMapSampler, VsOut.Tex0);
@@ -153,29 +153,29 @@ string InstanceParameters[] =
     "OverGrowthAmbient"
 };
 
+// WIP: Need to fix overly bright ambient!
+
+float4 basicPixelShader_other(VS_OUTPUT input) : COLOR
+{
+    float4 diffuseMap = tex2D(DiffuseMapSampler, input.Tex0);
+    float4 detailMap = tex2D(DetailMapSampler, input.Tex1);
+    float4 output;
+    output.xyz = diffuseMap * detailMap;
+    output.xyz = output * input.Color * 2.0;
+    output.w = input.Color.w;
+    return output;
+}
+
 technique defaultTechnique
 {
     pass P0
     {
-        vertexShader = compile VSMODEL basicVertexShader();
+        VertexShader = compile vs_2_0 basicVertexShader();
         #if 1
             TextureTransFormFlags[2] = PROJECTED;
-            pixelShader = compile PSMODEL basicPixelShader();
+            PixelShader = compile ps_2_0 basicPixelShader();
         #else
-            Sampler[0] = (DiffuseMapSampler);
-            Sampler[1] = (DetailMapSampler);
-            pixelShader	= asm
-            {
-                    ps_1_3
-                    def c0, 4, 4, 4, 2
-                    tex t0
-                    tex t1
-                    mul_x2 r0.xyz, t0, t1
-                    add r1.xyz, v0, v0
-                    mul_x2 r0.xyz, r0, r1
-                + mov_x2 r0.w, v0.w
-                    //mul r0, r0, c0
-            };
+            PixelShader = compile ps_2_0 basicPixelShader_other();
         #endif
 
         #ifdef ENABLE_WIREFRAME
