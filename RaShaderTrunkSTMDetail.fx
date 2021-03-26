@@ -90,7 +90,7 @@ VS_OUTPUT basicVertexShader
     #if _HASSHADOW_
         Out.TexShadow = calcShadowProjection(vec4(inPos.xyz, 1.0));
     #else
-        Out.Color.rgb += OverGrowthAmbient / exp(1.0);
+        Out.Color.rgb += OverGrowthAmbient / CEXP(1);
     #endif
 
     Out.Color = Out.Color * 0.5;
@@ -100,7 +100,7 @@ VS_OUTPUT basicVertexShader
 
 vec4 basicPixelShader(VS_OUTPUT VsOut) : COLOR
 {
-    vec3 vertexColor = exp(VsOut.Color);
+    vec3 vertexColor = CEXP(VsOut.Color);
 
     #ifdef BASEDIFFUSEONLY
         vec4 diffuseMap = tex2D(DiffuseMapSampler, VsOut.Tex0);
@@ -153,17 +153,11 @@ string InstanceParameters[] =
     "OverGrowthAmbient"
 };
 
-// WIP: Need to fix overly bright ambient!
-
 float4 basicPixelShader_other(VS_OUTPUT input) : COLOR
 {
-    float4 diffuseMap = tex2D(DiffuseMapSampler, input.Tex0);
-    float4 detailMap = tex2D(DetailMapSampler, input.Tex1);
-    float4 output;
-    output.xyz = diffuseMap * detailMap;
-    output.xyz = output * input.Color * 2.0;
-    output.w = input.Color.w;
-    return output;
+    float4 diffuseMap  = tex2D(DiffuseMapSampler, input.Tex0);
+    diffuseMap *= tex2D(DetailMapSampler, input.Tex1);
+    return float4(input.Color.rgb * diffuseMap.rgb * 4.0, input.Color.a * 2.0);
 }
 
 technique defaultTechnique
