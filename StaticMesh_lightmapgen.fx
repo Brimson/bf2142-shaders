@@ -1,21 +1,21 @@
 
 struct VS_OUT_LightmapGen
 {
-    vec4 HPos     : POSITION;
-    vec2 Tex0Diff : TEXCOORD0;
+    float4 HPos     : POSITION;
+    float2 Tex0Diff : TEXCOORD0;
 };
 
 struct appdata_LightmapGen
 {
-    vec4 Pos          : POSITION;
-    vec2 TexCoordDiff : TEXCOORD0;
+    float4 Pos          : POSITION;
+    float2 TexCoordDiff : TEXCOORD0;
 };
 
 VS_OUT_LightmapGen vsLightmapBase(appdata_LightmapGen input)
 {
     VS_OUT_LightmapGen Out;
 
-    vec4 Pos = input.Pos  * PosUnpack;
+    float4 Pos = input.Pos  * PosUnpack;
     Out.HPos = mul(float4(Pos.xyz, 1.0f), viewProjMatrix);
 
     // Pass-through texcoords
@@ -25,15 +25,15 @@ VS_OUT_LightmapGen vsLightmapBase(appdata_LightmapGen input)
 
 struct appdata_LightmapGen2
 {
-    vec4 Pos          : POSITION;
-    vec3 Normal       : NORMAL;
-    vec2 TexCoordDiff : TEXCOORD0;
+    float4 Pos          : POSITION;
+    float3 Normal       : NORMAL;
+    float2 TexCoordDiff : TEXCOORD0;
 };
 
 VS_OUT_LightmapGen vsLightmapBase2(appdata_LightmapGen2 input)
 {
     VS_OUT_LightmapGen Out;
-    vec4 Pos = input.Pos * PosUnpack;
+    float4 Pos = input.Pos * PosUnpack;
     Out.HPos = mul(float4(Pos.xyz, 1.0f), viewProjMatrix);
 
     // Pass-through texcoords

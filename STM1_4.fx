@@ -2,7 +2,7 @@
 #include "shaders/RaCommon.fx"
 #include "shaders/RaShaderSTMCommon.fx"
 
-#define skyNormal vec3(0.78, 0.52, 0.65)
+#define skyNormal float3(0.78, 0.52, 0.65)
 #define SPECULARCOLOR float3(0.3, 0.3, 0.35)
 
 #define  _PARALLAXDETAIL_ 1
@@ -18,32 +18,32 @@
 
 struct VS_IN
 {
-    vec4 Pos                  : POSITION;
-    vec3 Normal               : NORMAL;
+    float4 Pos                  : POSITION;
+    float3 Normal               : NORMAL;
     #ifdef PPD
-        vec3 Tan              : TANGENT;
+        float3 Tan              : TANGENT;
     #endif
-    vec4 TexSets[NUM_TEXSETS] : TEXCOORD0;
+    float4 TexSets[NUM_TEXSETS] : TEXCOORD0;
 };
 
 struct VS_OUT
 {
-    vec4 Pos             : POSITION0;
-    vec4 InvDot          : COLOR0;
-    scalar PointLightFog : COLOR1;
-    vec4 TanLightVec     : TEXCOORD0;
-    vec3 TanEyeVec       : TEXCOORD1;
-    vec2 TexBase         : TEXCOORD2;
-    vec2 TexLMap         : TEXCOORD3;
-    vec2 TexDetail       : TEXCOORD4;
-    vec2 TexDirt         : TEXCOORD5;
+    float4 Pos             : POSITION0;
+    float4 InvDot          : COLOR0;
+    float PointLightFog : COLOR1;
+    float4 TanLightVec     : TEXCOORD0;
+    float3 TanEyeVec       : TEXCOORD1;
+    float2 TexBase         : TEXCOORD2;
+    float2 TexLMap         : TEXCOORD3;
+    float2 TexDetail       : TEXCOORD4;
+    float2 TexDirt         : TEXCOORD5;
     #if (_SHADOW_)
-        vec4 TexShadow   : TEXCOORD6;
+        float4 TexShadow   : TEXCOORD6;
     #endif
     #if (_CRACK_)
-        vec2 TexCrack    : TEXCOORD7;
+        float2 TexCrack    : TEXCOORD7;
     #endif
-    scalar Fog           : FOG;
+    float Fog           : FOG;
 };
 
 // common vars
@@ -53,14 +53,14 @@ Light		Lights[NUM_LIGHTS];
 // common vertex shader methods
 //
 void
-calculateTangentVectors(vec3 Normal, vec3 Tan, vec3 objPos, vec3 objEyePos, out vec4 tanLVec, out vec3 tanEVec)
+calculateTangentVectors(float3 Normal, float3 Tan, float3 objPos, float3 objEyePos, out float4 tanLVec, out float3 tanEVec)
 {
     // Cross product to create BiNormal
-    vec3 binormal = normalize(cross(Tan, Normal));
+    float3 binormal = normalize(cross(Tan, Normal));
 
     // calculate the objI
-    mat3x3 TanBasis = mat3x3(Tan, binormal, Normal);
-    mat3x3 objI = transpose(TanBasis);
+    float3x3 TanBasis = float3x3(Tan, binormal, Normal);
+    float3x3 objI = transpose(TanBasis);
 
     // Transform light dir to tan space
     //$TODO: dependant on lighttype
@@ -69,24 +69,24 @@ calculateTangentVectors(vec3 Normal, vec3 Tan, vec3 objPos, vec3 objEyePos, out 
         tanLVec = float4(mul(Lights[0].pos.xyz - objPos, objI), Lights[0].attenuation);
     #else
         // direction
-        tanLVec = vec4(mul(-Lights[0].dir, objI), 1.0);
+        tanLVec = float4(mul(-Lights[0].dir, objI), 1.0);
     #endif
 
     // Transform eye pos to tangent space
-    vec3 objEyeVec = objEyePos - objPos;
+    float3 objEyeVec = objEyePos - objPos;
     tanEVec = mul(objEyeVec, objI);
 }
 
 void
-calculateNonTangentVectors(vec3 Normal, vec3 objPos, vec3 objEyePos, out vec4 tanLVec, out vec3 tanEVec)
+calculateNonTangentVectors(float3 Normal, float3 objPos, float3 objEyePos, out float4 tanLVec, out float3 tanEVec)
 {
     // Cross product to create BiNormal
     float3 Tan = float3(0,1,0);
-    vec3 binormal = normalize(cross(Tan, Normal));
+    float3 binormal = normalize(cross(Tan, Normal));
 
     // calculate the objI
-    mat3x3 TanBasis = mat3x3(Tan, binormal, Normal);
-    mat3x3 objI = transpose(TanBasis);
+    float3x3 TanBasis = float3x3(Tan, binormal, Normal);
+    float3x3 objI = transpose(TanBasis);
 
     // Transform light dir to tan space
     //$TODO: dependant on lighttype
@@ -95,11 +95,11 @@ calculateNonTangentVectors(vec3 Normal, vec3 objPos, vec3 objEyePos, out vec4 ta
         tanLVec = float4(mul(Lights[0].pos.xyz - objPos, objI), Lights[0].attenuation);
     #else
         // direction
-        tanLVec = vec4(Normal, saturate(dot(Normal, -Lights[0].dir)));
+        tanLVec = float4(Normal, saturate(dot(Normal, -Lights[0].dir)));
     #endif
 
     // Transform eye pos to tangent space
-    vec3 objEyeVec = objEyePos - objPos;
+    float3 objEyeVec = objEyePos - objPos;
     tanEVec = objEyeVec;
 }
 
@@ -140,7 +140,7 @@ VS_OUT vsStaticMesh(VS_IN indata)
     #endif
 
     #if _SHADOW_
-        vec4 TexShadow2 = mul(indata.Pos, ShadowProjMat);
+        float4 TexShadow2 = mul(indata.Pos, ShadowProjMat);
         Out.TexShadow = mul(indata.Pos, ShadowTrapMat);
         Out.TexShadow.z = (TexShadow2.z/TexShadow2.w) * Out.TexShadow.w;
     #endif
@@ -156,31 +156,31 @@ VS_OUT vsStaticMesh(VS_IN indata)
 
 
 #if _PARALLAXDETAIL_
-    vec2 calculateParallaxCoordinatesFromAlpha(vec2 inHeightTexCoords, sampler2D inHeightSampler, vec4 inScaleBias, vec3 inEyeVecNormalized)
+    float2 calculateParallaxCoordinatesFromAlpha(float2 inHeightTexCoords, sampler2D inHeightSampler, float4 inScaleBias, float3 inEyeVecNormalized)
     {
-        vec2 height = tex2D(inHeightSampler, inHeightTexCoords).aa;
-        vec2 eyeVecN = inEyeVecNormalized.xy * vec2(1,-1);
+        float2 height = tex2D(inHeightSampler, inHeightTexCoords).aa;
+        float2 eyeVecN = inEyeVecNormalized.xy * float2(1,-1);
 
         height = height * inScaleBias.xy + inScaleBias.wz;
         return inHeightTexCoords + height * eyeVecN.xy;
     }
 #endif
 
-vec3 getCompositeDiffuse(VS_OUT indata, vec3 normTanEyeVec, out scalar alpha)
+float3 getCompositeDiffuse(VS_OUT indata, float3 normTanEyeVec, out float alpha)
 {
-    vec3 totalDiffuse = 0;
+    float3 totalDiffuse = 0;
     alpha = 1;
 
     #if _BASE_
-        vec4 base = tex2D(DiffuseMapSampler, indata.TexBase);
+        float4 base = tex2D(DiffuseMapSampler, indata.TexBase);
         alpha = base.a;
         totalDiffuse = base.rgb;
     #endif
 
     #if _PARALLAXDETAIL_
-        vec4 detail = tex2D(DetailMapSampler, calculateParallaxCoordinatesFromAlpha(indata.TexDetail, DetailMapSampler, ParallaxScaleBias, normTanEyeVec));
+        float4 detail = tex2D(DetailMapSampler, calculateParallaxCoordinatesFromAlpha(indata.TexDetail, DetailMapSampler, ParallaxScaleBias, normTanEyeVec));
     #elif _DETAIL_
-        vec4 detail = tex2D(DetailMapSampler, indata.TexDetail);
+        float4 detail = tex2D(DetailMapSampler, indata.TexDetail);
     #endif
 
     #if (_DETAIL_|| _PARALLAXDETAIL_)
@@ -189,7 +189,7 @@ vec3 getCompositeDiffuse(VS_OUT indata, vec3 normTanEyeVec, out scalar alpha)
     #endif
 
     #if _DIRT_
-        vec3 dirt = tex2D(DirtMapSampler, indata.TexDirt);
+        float3 dirt = tex2D(DirtMapSampler, indata.TexDirt);
         totalDiffuse.rgb *= dirt;
     #endif
 
@@ -202,9 +202,9 @@ vec3 getCompositeDiffuse(VS_OUT indata, vec3 normTanEyeVec, out scalar alpha)
 }
 
 // This also includes the composite gloss map
-vec4 getCompositeNormals(VS_OUT indata, vec3 normTanEyeVec)
+float4 getCompositeNormals(VS_OUT indata, float3 normTanEyeVec)
 {
-    vec4 totalNormal = 0;
+    float4 totalNormal = 0;
 
     #if _NBASE_
         totalNormal = tex2D(NormalMapSampler, indata.TexBase);
@@ -217,8 +217,8 @@ vec4 getCompositeNormals(VS_OUT indata, vec3 normTanEyeVec)
     #endif
 
     #if _NCRACK_
-        vec4 cracknormal = tex2D(CrackNormalMapSampler, indata.TexCrack);
-        scalar crackmask = tex2D(CrackMapSampler, indata.TexCrack).a;
+        float4 cracknormal = tex2D(CrackNormalMapSampler, indata.TexCrack);
+        float crackmask = tex2D(CrackMapSampler, indata.TexCrack).a;
         totalNormal = lerp(totalNormal, cracknormal, crackmask);
     #endif
 
@@ -228,7 +228,7 @@ vec4 getCompositeNormals(VS_OUT indata, vec3 normTanEyeVec)
 }
 
 
-vec4 getLightmap(VS_OUT indata)
+float4 getLightmap(VS_OUT indata)
 {
     #if _LIGHTMAP_
         return  tex2D(LightMapSampler, indata.TexLMap);
@@ -237,13 +237,13 @@ vec4 getLightmap(VS_OUT indata)
     #endif
 }
 
-vec3 getDiffusePixelLighting(vec4 lightmap, vec3 compNormals, vec3 normalizedLightVec, VS_OUT indata)
+float3 getDiffusePixelLighting(float4 lightmap, float3 compNormals, float3 normalizedLightVec, VS_OUT indata)
 {
-    vec3 diffuse = saturate(dot(compNormals, normalizedLightVec)) * StaticSunColor;
-    vec3 bumpedSky = lightmap.b * dot(compNormals, skyNormal) * StaticSkyColor;
+    float3 diffuse = saturate(dot(compNormals, normalizedLightVec)) * StaticSunColor;
+    float3 bumpedSky = lightmap.b * dot(compNormals, skyNormal) * StaticSkyColor;
     #if _LIGHTMAP_
         // we add ambient here as well to get correct ambient for surfaces parallel to the sun
-        vec3 bumpedDiff = diffuse + bumpedSky*indata.InvDot.x;
+        float3 bumpedDiff = diffuse + bumpedSky*indata.InvDot.x;
         diffuse = lerp(bumpedSky * indata.InvDot.x, bumpedDiff, lightmap.g);
         diffuse += lightmap.r * SinglePointColor;
     #else
@@ -254,9 +254,9 @@ vec3 getDiffusePixelLighting(vec4 lightmap, vec3 compNormals, vec3 normalizedLig
     return diffuse;
 }
 
-float getSpecularPixelLighting(vec4 lightmap, vec4 compNormals, vec3 normalizedLightVec, vec3 normalizedEyeVec)
+float getSpecularPixelLighting(float4 lightmap, float4 compNormals, float3 normalizedLightVec, float3 normalizedEyeVec)
 {
-    vec3 halfVec = normalize(normalizedLightVec + normalizedEyeVec);
+    float3 halfVec = normalize(normalizedLightVec + normalizedEyeVec);
     half specular = pow(dot((compNormals.xyz), halfVec), 32) * compNormals.a;
 
     // mask
@@ -264,10 +264,10 @@ float getSpecularPixelLighting(vec4 lightmap, vec4 compNormals, vec3 normalizedL
     return specular;
 }
 
-vec3 getDiffusePointPixelLighting(VS_OUT indata, vec3 compNormal, vec3 normLightVec)
+float3 getDiffusePointPixelLighting(VS_OUT indata, float3 compNormal, float3 normLightVec)
 {
-    vec3 pointDiff = saturate(dot(compNormal.xyz, normLightVec)) * Lights[0].color;
-    scalar sat = 1.0 - saturate(dot(indata.TanLightVec.xyz, indata.TanLightVec.xyz) * indata.TanLightVec.w);
+    float3 pointDiff = saturate(dot(compNormal.xyz, normLightVec)) * Lights[0].color;
+    float sat = 1.0 - saturate(dot(indata.TanLightVec.xyz, indata.TanLightVec.xyz) * indata.TanLightVec.w);
     return saturate(pointDiff * sat) * indata.PointLightFog;//
 }
 
@@ -281,59 +281,59 @@ float4 psStaticMesh(VS_OUT indata) : COLOR
         return 0;
     #endif
 
-    vec3 normEyeVec = indata.TanEyeVec;
+    float3 normEyeVec = indata.TanEyeVec;
 
     #ifdef _USENORMALIZEDNORMALS
         normalize(normEyeVec);
     #endif
 
-    scalar alpha;
-    vec3 FinalColor =  getCompositeDiffuse(indata, normEyeVec, alpha);
+    float alpha;
+    float3 FinalColor =  getCompositeDiffuse(indata, normEyeVec, alpha);
 
     FinalColor *= 2.0;
 
     #ifdef PPD
-        vec4 compNormals = getCompositeNormals(indata, normEyeVec);
+        float4 compNormals = getCompositeNormals(indata, normEyeVec);
     #else
-        vec4 compNormals = float4(0.0, 0.0, 1.0, 0.0);
+        float4 compNormals = float4(0.0, 0.0, 1.0, 0.0);
     #endif
 
-    vec3 normLightVec = indata.TanLightVec.rgb;
+    float3 normLightVec = indata.TanLightVec.rgb;
 
     #ifdef _USENORMALIZEDNORMALS
         normalize(normLightVec);
     #endif
 
     #if _POINTLIGHT_
-        vec3 diffuse = getDiffusePointPixelLighting(indata, compNormals, normLightVec);
+        float3 diffuse = getDiffusePointPixelLighting(indata, compNormals, normLightVec);
         FinalColor.rgb = (FinalColor.rgb * diffuse);
     #else
-        vec4 lightmap = getLightmap(indata);
+        float4 lightmap = getLightmap(indata);
 
         #if _SHADOW_
-            vec2 texel = vec2(1.0/2048.0, 1.0/2048.0);
-            vec3 samples;
+            float2 texel = float2(1.0/2048.0, 1.0/2048.0);
+            float3 samples;
 
             samples.x = tex2Dproj(ShadowMapSampler, indata.TexShadow);
-            samples.y = tex2Dproj(ShadowMapSampler, indata.TexShadow + vec4(texel.x, 0, 0, 0));
-            samples.z = tex2Dproj(ShadowMapSampler, indata.TexShadow + vec4(0, texel.y, 0, 0));
+            samples.y = tex2Dproj(ShadowMapSampler, indata.TexShadow + float4(texel.x, 0, 0, 0));
+            samples.z = tex2Dproj(ShadowMapSampler, indata.TexShadow + float4(0, texel.y, 0, 0));
 
-            vec3 cmpbits = samples >= saturate(indata.TexShadow.z/indata.TexShadow.w);
-            scalar dirShadow = dot(cmpbits, 0.333);
+            float3 cmpbits = samples >= saturate(indata.TexShadow.z/indata.TexShadow.w);
+            float dirShadow = dot(cmpbits, 0.333);
 
             lightmap.g *= dirShadow;
         #else
-            const scalar dirShadow = 1.0;
+            const float dirShadow = 1.0;
         #endif
 
         #ifdef PPD
-            vec3 diffuse = getDiffusePixelLighting(lightmap, compNormals.rgb, normLightVec, indata);
+            float3 diffuse = getDiffusePixelLighting(lightmap, compNormals.rgb, normLightVec, indata);
         #else
-            vec3 diffuse = indata.InvDot.y * StaticSunColor;
-            vec3 bumpedSky = lightmap.b * skyNormal.z * StaticSkyColor;
+            float3 diffuse = indata.InvDot.y * StaticSunColor;
+            float3 bumpedSky = lightmap.b * skyNormal.z * StaticSkyColor;
             #if _LIGHTMAP_
                 // we add ambient here as well to get correct ambient for surfaces parallel to the sun
-                vec3 bumpedDiff = bumpedSky * indata.InvDot.x + diffuse;
+                float3 bumpedDiff = bumpedSky * indata.InvDot.x + diffuse;
                 diffuse = lerp(bumpedSky * indata.InvDot.x, bumpedDiff, lightmap.g);
                 diffuse += lightmap.r * SinglePointColor;
             #else
@@ -342,7 +342,7 @@ float4 psStaticMesh(VS_OUT indata) : COLOR
             #endif
         #endif
 
-            scalar specular = getSpecularPixelLighting(lightmap, compNormals, normLightVec, normEyeVec);
+            float specular = getSpecularPixelLighting(lightmap, compNormals, normLightVec, normEyeVec);
             FinalColor.rgb = (FinalColor.rgb * diffuse) + (specular * SPECULARCOLOR);
     #endif
 

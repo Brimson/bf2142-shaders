@@ -1,7 +1,5 @@
 #line 2 "TreeMesh.fx"
 
-#include "shaders/datatypes.fx"
-
 float4x4 mvpMatrix : WorldViewProjection; // : register(vs_2_0, c0);
 float4x4 worldIMatrix : WorldI;           // : register(vs_2_0, c4);
 float4x4 viewInverseMatrix : ViewI;       // : register(vs_2_0, c8);
@@ -244,27 +242,27 @@ OUT_vsBumpSpecularHemiAndSunPV vsBumpSpecularHemiAndSunPV
     Out.HPos = mul(float4(input.Pos.xyz, 1.0f), ViewProj);
 
     // Hemi lookup values
-    vec3 AlmostNormal = input.Normal.xyz;
+    float3 AlmostNormal = input.Normal.xyz;
     Out.GroundUVAndLerp.xy = (input.Pos + (HeightmapSize * 0.5) + AlmostNormal).xz / HeightmapSize;
     Out.GroundUVAndLerp.z = AlmostNormal.y * 0.5 + 0.5;
 
     // Cross product to create BiNormal
-    vec3 binormal = normalize(cross(input.Tan, input.Normal));
+    float3 binormal = normalize(cross(input.Tan, input.Normal));
 
     // Need to calculate the WorldI based on each matBone skinning world matrix
-    mat3x3 TanBasis = mat3x3(input.Tan.xyz, binormal, input.Normal.xyz);
+    float3x3 TanBasis = float3x3(input.Tan.xyz, binormal, input.Normal.xyz);
 
     // Pass-through texcoords
     Out.NormalMap = input.TexCoord;
 
     // Transform Light dir to Object space, lightdir is already in object space.
-    vec3 normalizedTanLightVec = normalize(mul(-LightDir, TanBasis));
+    float3 normalizedTanLightVec = normalize(mul(-LightDir, TanBasis));
 
     Out.LightVec = normalizedTanLightVec;
 
     // Transform eye pos to tangent space
-    vec3 worldEyeVec = ViewInv[3].xyz - input.Pos.xyz;
-    vec3 tanEyeVec = mul(worldEyeVec, TanBasis);
+    float3 worldEyeVec = ViewInv[3].xyz - input.Pos.xyz;
+    float3 tanEyeVec = mul(worldEyeVec, TanBasis);
 
     Out.HalfVec = normalize(normalizedTanLightVec + normalize(tanEyeVec));
 
@@ -276,18 +274,18 @@ float4 psBumpSpecularHemiAndSunPV(  OUT_vsBumpSpecularHemiAndSunPV indata,
                                     uniform float4 AmbientColor,
                                     uniform float4 SunColor) : COLOR
 {
-    vec4 normalmap = tex2D(sampler0, indata.NormalMap);
-    vec3 expandedNormal = normalmap.xyz * 2.0 - 1.0;
-    vec4 diffuse = tex2D(sampler3, indata.NormalMap);
-    vec2 intensityuv = float2(dot(indata.LightVec, expandedNormal), dot(indata.HalfVec, expandedNormal));
+    float4 normalmap = tex2D(sampler0, indata.NormalMap);
+    float3 expandedNormal = normalmap.xyz * 2.0 - 1.0;
+    float4 diffuse = tex2D(sampler3, indata.NormalMap);
+    float2 intensityuv = float2(dot(indata.LightVec, expandedNormal), dot(indata.HalfVec, expandedNormal));
 
-    vec4 intensity = tex2D(sampler2, intensityuv);
-    scalar realintensity = intensity.b + intensity.a * normalmap.a;
+    float4 intensity = tex2D(sampler2, intensityuv);
+    float realintensity = intensity.b + intensity.a * normalmap.a;
     realintensity *= SunColor;
 
-    vec4 groundcolor = tex2D(sampler1, indata.GroundUVAndLerp.xy);
-    vec4 hemicolor = lerp(groundcolor, SkyColor, indata.GroundUVAndLerp.z - hemiLerpBias);
-    vec4 result = AmbientColor * hemicolor + (realintensity * groundcolor.a * groundcolor.a);
+    float4 groundcolor = tex2D(sampler1, indata.GroundUVAndLerp.xy);
+    float4 hemicolor = lerp(groundcolor, SkyColor, indata.GroundUVAndLerp.z - hemiLerpBias);
+    float4 result = AmbientColor * hemicolor + (realintensity * groundcolor.a * groundcolor.a);
     result.a = diffuse.a;
     return result;
 }
@@ -399,7 +397,7 @@ float4 psBumpSpecularPointLight(OUT_vsBumpSpecularPointLight indata,
 {
     float4 normalmap = tex2D(sampler0, indata.NormalMap);
     float3 expandedNormal = normalmap.xyz * 2.0 - 1.0;
-    vec4 diffuse = tex2D(sampler3, indata.NormalMap);
+    float4 diffuse = tex2D(sampler3, indata.NormalMap);
 
     float3 normalizedLVec = normalize(indata.LightVec);
     float2 intensityuv = float2(dot(normalizedLVec,expandedNormal), dot(indata.HalfVec,expandedNormal));
@@ -407,7 +405,7 @@ float4 psBumpSpecularPointLight(OUT_vsBumpSpecularPointLight indata,
     realintensity *= LightColor;
 
     float attenuation = saturate(1.0 - dot(indata.ObjectLightVec, indata.ObjectLightVec) * AttenuationSqrInv);
-    vec4 result = attenuation * realintensity;
+    float4 result = attenuation * realintensity;
     result.a = diffuse.a;
     return result;
 }

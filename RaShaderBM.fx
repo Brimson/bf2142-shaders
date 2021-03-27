@@ -117,47 +117,47 @@
 
 struct BMVariableVSInput
 {
-    vec4 Pos            : POSITION;
-    vec3 Normal         : NORMAL;
-    vec4 BlendIndices   : BLENDINDICES;
-    vec2 TexDiffuse     : TEXCOORD0;
-    vec2 TexUVRotCenter : TEXCOORD1;
-    vec3 Tan            : TANGENT;
+    float4 Pos            : POSITION;
+    float3 Normal         : NORMAL;
+    float4 BlendIndices   : BLENDINDICES;
+    float2 TexDiffuse     : TEXCOORD0;
+    float2 TexUVRotCenter : TEXCOORD1;
+    float3 Tan            : TANGENT;
 };
 
 struct BMVariableVSOutput
 {
-    vec4 HPos : POSITION;
+    float4 HPos : POSITION;
 
     #if _POINTLIGHT_ || !_HASPERPIXELLIGHTING_
-        vec4 SpecularLightOrPointFog : COLOR1;
+        float4 SpecularLightOrPointFog : COLOR1;
     #endif
 
     #if !_HASPERPIXELLIGHTING_
-        vec4 DiffuseLight : COLOR0;
+        float4 DiffuseLight : COLOR0;
     #endif
 
-    vec2 TexDiffuse : TEXCOORD0;
+    float2 TexDiffuse : TEXCOORD0;
 
     #if MAX_INTERPS
-        vec4 Interpolated[MAX_INTERPS] : TEXCOORD1;
+        float4 Interpolated[MAX_INTERPS] : TEXCOORD1;
     #endif
 
     float Fog : FOG;
 };
 
-mat4x3 getSkinnedWorldMatrix(BMVariableVSInput input)
+float4x3 getSkinnedWorldMatrix(BMVariableVSInput input)
 {
     int4 IndexVector = D3DCOLORtoUBYTE4(input.BlendIndices);
     int IndexArray[4] = (int[4])IndexVector;
     return GeomBones[IndexArray[0]];
 }
 
-mat3x3 getSkinnedUVMatrix(BMVariableVSInput input)
+float3x3 getSkinnedUVMatrix(BMVariableVSInput input)
 {
     int4 IndexVector = D3DCOLORtoUBYTE4(input.BlendIndices);
     int IndexArray[4] = (int[4])IndexVector;
-    return (mat3x3)UserData.uvMatrix[IndexArray[3]];
+    return (float3x3)UserData.uvMatrix[IndexArray[3]];
 }
 
 float getBinormalFlipping(BMVariableVSInput input)
@@ -167,65 +167,65 @@ float getBinormalFlipping(BMVariableVSInput input)
     return 1.0f + IndexArray[2] * -2.0f;
 }
 
-vec4 getWorldPos(BMVariableVSInput input)
+float4 getWorldPos(BMVariableVSInput input)
 {
-    vec4 unpackedPos = input.Pos * PosUnpack;
-    return vec4(mul(unpackedPos, getSkinnedWorldMatrix(input)), 1.0);
+    float4 unpackedPos = input.Pos * PosUnpack;
+    return float4(mul(unpackedPos, getSkinnedWorldMatrix(input)), 1.0);
 }
 
-vec3 getWorldNormal(BMVariableVSInput input)
+float3 getWorldNormal(BMVariableVSInput input)
 {
-    vec3 unpackedNormal = input.Normal * NormalUnpack.x + NormalUnpack.y;
+    float3 unpackedNormal = input.Normal * NormalUnpack.x + NormalUnpack.y;
     return mul(unpackedNormal, getSkinnedWorldMatrix(input)); //tl: We don't scale/shear objects
 }
 
-vec4 calcGroundUVAndLerp(BMVariableVSInput input)
+float4 calcGroundUVAndLerp(BMVariableVSInput input)
 {
-    vec4 GroundUVAndLerp = 0.0;
+    float4 GroundUVAndLerp = 0.0;
     GroundUVAndLerp.xy	= ((getWorldPos(input) + (HemiMapConstants.z * 0.5) + getWorldNormal(input)).xz - HemiMapConstants.xy) / HemiMapConstants.z;
     GroundUVAndLerp.y	= 1.0 - GroundUVAndLerp.y;
 
     // localHeight scale, 1 for top and 0 for bottom
-    scalar localHeight = (getWorldPos(input).y - GeomBones[0][3][1]) * InvHemiHeightScale;
+    float localHeight = (getWorldPos(input).y - GeomBones[0][3][1]) * InvHemiHeightScale;
 
-    scalar offset     = (localHeight * 2.0 - 1.0) + HeightOverTerrain;
+    float offset     = (localHeight * 2.0 - 1.0) + HeightOverTerrain;
     offset            = clamp(offset, -2.0 * (1.0 - HeightOverTerrain), 0.8); // For TL: seems like taking this like away doesn't change much, take it out?
     GroundUVAndLerp.z = clamp((getWorldNormal(input).y + offset) * 0.5 + 0.5, 0.0, 0.9);
 
     return GroundUVAndLerp;
 }
 
-vec4 calcUVRotation(BMVariableVSInput input)
+float4 calcUVRotation(BMVariableVSInput input)
 {
     // TODO: (ROD) Gotta rotate the tangent space as well as the uv
-    vec2 uv = mul(vec3(input.TexUVRotCenter * TexUnpack, 1.0), getSkinnedUVMatrix(input)).xy + input.TexDiffuse * TexUnpack;
-    return vec4(uv.xy, 0.0, 1.0);
+    float2 uv = mul(float3(input.TexUVRotCenter * TexUnpack, 1.0), getSkinnedUVMatrix(input)).xy + input.TexDiffuse * TexUnpack;
+    return float4(uv.xy, 0.0, 1.0);
 }
 
-mat3x3 createWorld2TanMat(BMVariableVSInput input)
+float3x3 createWorld2TanMat(BMVariableVSInput input)
 {
     // Cross product * flip to create BiNormal
     float flip = getBinormalFlipping(input);
-    vec3 unpackedNormal = input.Normal * NormalUnpack.x + NormalUnpack.y;
-    vec3 unpackedTan = input.Tan * NormalUnpack.x + NormalUnpack.y;
-    vec3 binormal = normalize(cross(unpackedTan, unpackedNormal)) * flip;
+    float3 unpackedNormal = input.Normal * NormalUnpack.x + NormalUnpack.y;
+    float3 unpackedTan = input.Tan * NormalUnpack.x + NormalUnpack.y;
+    float3 binormal = normalize(cross(unpackedTan, unpackedNormal)) * flip;
 
     // Need to calculate the WorldI based on each matBone skinning world matrix
-    mat3x3 TanBasis = mat3x3(unpackedTan, binormal, unpackedNormal);
+    float3x3 TanBasis = float3x3(unpackedTan, binormal, unpackedNormal);
 
     // Calculate WorldTangent directly... inverse is the transpose for affine rotations
-    mat3x3 worldI = transpose(mul(TanBasis, getSkinnedWorldMatrix(input)));
+    float3x3 worldI = transpose(mul(TanBasis, getSkinnedWorldMatrix(input)));
 
     return worldI;
 }
 
 // NOTE: This returns un-normalized for point, because point needs to be attenuated.
-vec3 getLightVec(BMVariableVSInput input)
+float3 getLightVec(BMVariableVSInput input)
 {
     #if _POINTLIGHT_
         return (Lights[0].pos - getWorldPos(input).xyz);
     #else
-        vec3 lvec = -Lights[0].dir;
+        float3 lvec = -Lights[0].dir;
         #if _HASCOCKPIT_
             // tl: Skin lighting vector to part to create static cockpit lighting
             lvec = mul(lvec, getSkinnedWorldMatrix(input));
@@ -238,7 +238,7 @@ BMVariableVSOutput vs(BMVariableVSInput input)
 {
     BMVariableVSOutput Out = (BMVariableVSOutput)0;
 
-    vec4 worldPos = getWorldPos(input);
+    float4 worldPos = getWorldPos(input);
     Out.HPos = mul(worldPos, ViewProjection); // output HPOS
 
     #if _HASUVANIMATION_
@@ -259,12 +259,12 @@ BMVariableVSOutput vs(BMVariableVSInput input)
         Out.Interpolated[__OCCSHADOWINTERPIDX] = calcShadowProjection(getWorldPos(input), -0.003, true);
     #endif
 
-    vec3 worldEyeVec = normalize(WorldSpaceCamPos.xyz - getWorldPos(input).xyz);
+    float3 worldEyeVec = normalize(WorldSpaceCamPos.xyz - getWorldPos(input).xyz);
 
     #if _HASPERPIXELLIGHTING_ && _HASNORMALMAP_ // Do tangent space bumped pixel lighting
-        mat3x3 world2TanMat = createWorld2TanMat(input);
-        vec3 tanEyeVec = mul(worldEyeVec, world2TanMat);
-        vec3 tanLightVec = mul(getLightVec(input), world2TanMat);
+        float3x3 world2TanMat = createWorld2TanMat(input);
+        float3 tanEyeVec = mul(worldEyeVec, world2TanMat);
+        float3 tanLightVec = mul(getLightVec(input), world2TanMat);
         Out.Interpolated[__LVECINTERPIDX].xyz = tanLightVec;
         Out.Interpolated[__HVECINTERPIDX].xyz = normalize(tanLightVec) + normalize(tanEyeVec);
         #if !_USEPERPIXELNORMALIZE_ // normalize HVec as well because pixel shader won't
@@ -281,12 +281,12 @@ BMVariableVSOutput vs(BMVariableVSInput input)
             Out.Interpolated[__WNORMALINTERPIDX].xyz = normalize(Out.Interpolated[__WNORMALINTERPIDX].xyz);
         #endif
     #else // Do vertex lighting
-        scalar ndotl = dot(getLightVec(input), getWorldNormal(input));
-        scalar vdotr = dot(reflect(-getLightVec(input), getWorldNormal(input)), worldEyeVec);
-        vec4 lighting = lit(ndotl, vdotr, SpecularPower);
+        float ndotl = dot(getLightVec(input), getWorldNormal(input));
+        float vdotr = dot(reflect(-getLightVec(input), getWorldNormal(input)), worldEyeVec);
+        float4 lighting = lit(ndotl, vdotr, SpecularPower);
 
         #if _POINTLIGHT_
-            scalar attenuation = length(Lights[0].pos - getWorldPos(input)) * Lights[0].attenuation;
+            float attenuation = length(Lights[0].pos - getWorldPos(input)) * Lights[0].attenuation;
             lighting.yz *= attenuation;
         #endif
 
@@ -320,24 +320,24 @@ BMVariableVSOutput vs(BMVariableVSInput input)
     return Out;
 }
 
-vec4 ps(BMVariableVSOutput input) : COLOR
+float4 ps(BMVariableVSOutput input) : COLOR
 {
     #if _FINDSHADER_
         return 1;
     #endif
-        vec4 outColor = (vec4)1;
+        float4 outColor = (float4)1;
 
-        vec4 texDiffuse = tex2D(DiffuseMapSampler, input.TexDiffuse);
+        float4 texDiffuse = tex2D(DiffuseMapSampler, input.TexDiffuse);
 
     #ifdef DIFFUSE_CHANNEL
         return texDiffuse;
     #endif
 
     #if _HASPERPIXELLIGHTING_
-        vec3 normal = 0;
+        float3 normal = 0;
 
         #if _HASNORMALMAP_
-            vec4 tanNormal = tex2D(NormalMapSampler, input.TexDiffuse);
+            float4 tanNormal = tex2D(NormalMapSampler, input.TexDiffuse);
             tanNormal.xyz = tanNormal.xyz * 2.0 - 1.0;
             #if _USERENORMALIZEDTEXTURES_
                 tanNormal.xyz = normalize(tanNormal.xyz);
@@ -351,13 +351,13 @@ vec4 ps(BMVariableVSOutput input) : COLOR
         #endif
 
         #ifdef NORMAL_CHANNEL
-            return vec4(normal* 0.5 + 0.5, 1.0);
+            return float4(normal* 0.5 + 0.5, 1.0);
         #endif
 
-        vec3 lightVec = input.Interpolated[__LVECINTERPIDX];
+        float3 lightVec = input.Interpolated[__LVECINTERPIDX];
 
         #if _POINTLIGHT_
-            scalar attenuation = 1.0 - saturate(dot(lightVec,lightVec) * Lights[0].attenuation);
+            float attenuation = 1.0 - saturate(dot(lightVec,lightVec) * Lights[0].attenuation);
         #endif
 
         //tl: don't normalize if lvec is world space sun direction
@@ -365,22 +365,22 @@ vec4 ps(BMVariableVSOutput input) : COLOR
             lightVec = fastNormalize(lightVec);
         #endif
 
-        vec4 dot3Light = saturate(dot(lightVec, normal));
+        float4 dot3Light = saturate(dot(lightVec, normal));
 
-        vec3 halfVec = input.Interpolated[__HVECINTERPIDX];
+        float3 halfVec = input.Interpolated[__HVECINTERPIDX];
 
         #if _USEPERPIXELNORMALIZE_
             halfVec = fastNormalize(halfVec, (NVIDIA || RAPATH < 1) ? NRMMATH : NRMCUBE);
         #endif
 
-        vec3 specular = tex2D(SpecLUT64Sampler, dot(halfVec, normal));
+        float3 specular = tex2D(SpecLUT64Sampler, dot(halfVec, normal));
 
         #if _HASCOLORMAPGLOSS_
-            scalar gloss = texDiffuse.a;
+            float gloss = texDiffuse.a;
         #elif !_HASSTATICGLOSS_ && _HASNORMALMAP_
-            scalar gloss = tanNormal.a;
+            float gloss = tanNormal.a;
         #else
-            scalar gloss = StaticGloss;
+            float gloss = StaticGloss;
         #endif
 
         #if !_POINTLIGHT_
@@ -390,45 +390,45 @@ vec4 ps(BMVariableVSOutput input) : COLOR
         specular *= gloss;
 
         #ifdef SHADOW_CHANNEL
-            return vec4(dot3Light+specular, 1.0);
+            return float4(dot3Light+specular, 1.0);
         #endif
 
     #else
-        vec3 dot3Light = input.DiffuseLight.rgb * 2.0;
-        vec3 specular = input.SpecularLightOrPointFog.rgb * 2.0;
+        float3 dot3Light = input.DiffuseLight.rgb * 2.0;
+        float3 specular = input.SpecularLightOrPointFog.rgb * 2.0;
 
         #if _HASCOLORMAPGLOSS_
-            vec3 gloss = texDiffuse.a;
+            float3 gloss = texDiffuse.a;
         #else
-            vec3 gloss = StaticGloss;
+            float3 gloss = StaticGloss;
         #endif
         specular *= gloss;
     #endif //perpixlight
 
     #if _HASSHADOW_
-        scalar dirShadow = getShadowFactor(ShadowMapSampler, input.Interpolated[__SHADOWINTERPIDX]).r;
+        float dirShadow = getShadowFactor(ShadowMapSampler, input.Interpolated[__SHADOWINTERPIDX]).r;
     #else
-        scalar dirShadow = 1.0f;
+        float dirShadow = 1.0f;
     #endif
 
     #if _HASSHADOWOCCLUSION_
-        scalar dirOccShadow = getShadowFactor(ShadowOccluderMapSampler, input.Interpolated[__OCCSHADOWINTERPIDX]);
+        float dirOccShadow = getShadowFactor(ShadowOccluderMapSampler, input.Interpolated[__OCCSHADOWINTERPIDX]);
     #else
-        scalar dirOccShadow = 1.0f;
+        float dirOccShadow = 1.0f;
     #endif
 
     #if _USEHEMIMAP_
-        vec4 groundcolor = tex2D(HemiMapSampler, input.Interpolated[__HEMINTERPIDX].xy);
-        vec3 hemicolor = lerp(groundcolor, HemiMapSkyColor, input.Interpolated[__HEMINTERPIDX].z) * HemiMapConstantColor.xyz;
+        float4 groundcolor = tex2D(HemiMapSampler, input.Interpolated[__HEMINTERPIDX].xy);
+        float3 hemicolor = lerp(groundcolor, HemiMapSkyColor, input.Interpolated[__HEMINTERPIDX].z) * HemiMapConstantColor.xyz;
         #if _HASHEMIOCCLUSION_
             dirOccShadow = groundcolor.a;
         #endif
     #elif _HASPERPIXELLIGHTING_
-        scalar hemicolor = Lights[0].color.w;
+        float hemicolor = Lights[0].color.w;
     #else
         //tl: by setting this to 0, hlsl will remove it from the compiled code (in an addition).
         //    for non-hemi'ed materials, a static ambient will be added to sun color in vertex shader
-        const vec3 hemicolor = 0.0;
+        const float3 hemicolor = 0.0;
     #endif
 
     // killing both spec and dot3 if we are in shadows
@@ -436,9 +436,9 @@ vec4 ps(BMVariableVSOutput input) : COLOR
     specular *= dirShadow * dirOccShadow;
 
     #if _HASGIMAP_
-        vec4 GI = tex2D(GIMapSampler, input.TexDiffuse);
+        float4 GI = tex2D(GIMapSampler, input.TexDiffuse);
     #else
-        const vec4 GI = 1.0;
+        const float4 GI = 1.0;
     #endif
 
     #if _POINTLIGHT_
@@ -447,15 +447,15 @@ vec4 ps(BMVariableVSOutput input) : COLOR
         outColor.rgb = hemicolor + dot3Light;
     #endif
 
-    vec4 diffuseCol = texDiffuse;
+    float4 diffuseCol = texDiffuse;
 
     #if _FRESNELVALUES_
         // tl: Will hlsl auto-distribute these into pre/vs/ps, or leave them as they are?
-        scalar fres = input.Interpolated[__ENVMAPINTERPIDX].w;
+        float fres = input.Interpolated[__ENVMAPINTERPIDX].w;
 
         #if _HASENVMAP_
             // NOTE: eyePos.w is just a reflection scaling value. Why do we have this besides the reflectivity (gloss map)data?
-            vec3 envmapColor = texCUBE(CubeMapSampler, input.Interpolated[__ENVMAPINTERPIDX].xyz);
+            float3 envmapColor = texCUBE(CubeMapSampler, input.Interpolated[__ENVMAPINTERPIDX].xyz);
             diffuseCol.rgb = lerp(diffuseCol, envmapColor, gloss * 0.25);
         #endif
 

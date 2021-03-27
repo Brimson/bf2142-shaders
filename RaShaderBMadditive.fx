@@ -48,31 +48,31 @@ string InstanceParameters[] =
 
 struct VS_IN
 {
-    vec4 Pos          : POSITION;
-    vec3 Normal       : NORMAL;
-    vec4 BlendIndices : BLENDINDICES;
-    vec2 Tex          : TEXCOORD0;
+    float4 Pos          : POSITION;
+    float3 Normal       : NORMAL;
+    float4 BlendIndices : BLENDINDICES;
+    float2 Tex          : TEXCOORD0;
 };
 
 struct VS_OUT
 {
-    vec4 Pos   : POSITION0;
-    vec2 Tex   : TEXCOORD0;
-    scalar Fog : FOG;
+    float4 Pos   : POSITION0;
+    float2 Tex   : TEXCOORD0;
+    float Fog : FOG;
 };
 
-mat4x3 getSkinnedWorldMatrix(VS_IN input)
+float4x3 getSkinnedWorldMatrix(VS_IN input)
 {
     int4 IndexVector = D3DCOLORtoUBYTE4(input.BlendIndices);
     int IndexArray[4] = (int[4])IndexVector;
     return GeomBones[IndexArray[0]];
 }
 
-mat3x3 getSkinnedUVMatrix(VS_IN input)
+float3x3 getSkinnedUVMatrix(VS_IN input)
 {
     int4 IndexVector = D3DCOLORtoUBYTE4(input.BlendIndices);
     int IndexArray[4] = (int[4])IndexVector;
-    return (mat3x3)UserData.uvMatrix[IndexArray[3]];
+    return (float3x3)UserData.uvMatrix[IndexArray[3]];
 }
 
 float getBinormalFlipping(VS_IN input)
@@ -82,10 +82,10 @@ float getBinormalFlipping(VS_IN input)
     return 1.0f + IndexArray[2] * -2.0f;
 }
 
-vec4 getWorldPos(VS_IN input)
+float4 getWorldPos(VS_IN input)
 {
-    vec4 unpackedPos = input.Pos * PosUnpack;
-    return vec4(mul(unpackedPos, getSkinnedWorldMatrix(input)), 1);
+    float4 unpackedPos = input.Pos * PosUnpack;
+    return float4(mul(unpackedPos, getSkinnedWorldMatrix(input)), 1);
 }
 
 
@@ -95,7 +95,7 @@ vec4 getWorldPos(VS_IN input)
 VS_OUT vs(VS_IN indata)
 {
     VS_OUT Out = (VS_OUT)0;
-    vec4 worldPos = getWorldPos(indata);
+    float4 worldPos = getWorldPos(indata);
     Out.Pos = mul(worldPos, ViewProjection);
     Out.Fog = calcFog(Out.Pos.w);
     Out.Tex = indata.Tex * TexUnpack + frac(GlobalTime * simpleUVTranslation);
@@ -104,7 +104,7 @@ VS_OUT vs(VS_IN indata)
 
 float4 ps(VS_OUT indata) : COLOR
 {
-    vec4 outCol = tex2D(DiffuseMapSampler, indata.Tex);
+    float4 outCol = tex2D(DiffuseMapSampler, indata.Tex);
     outCol.a *= Transparency.a;
     return outCol;
 }

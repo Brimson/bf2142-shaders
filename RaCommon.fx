@@ -3,7 +3,6 @@
 */
 
 #include "shaders/RaDefines.fx"
-#include "shaders/dataTypes.fx"
 
 #ifdef DISABLE_DIFFUSEMAP
     #ifdef DISABLE_BUMPMAP
@@ -14,9 +13,9 @@
 #endif
 
 #ifdef DRAW_ONLY_SPEC
-    #define DEFAULT_DIFFUSE_MAP_COLOR vec4(0,0,0,1)
+    #define DEFAULT_DIFFUSE_MAP_COLOR float4(0,0,0,1)
 #else
-    #define DEFAULT_DIFFUSE_MAP_COLOR vec4(1,1,1,1)
+    #define DEFAULT_DIFFUSE_MAP_COLOR float4(1,1,1,1)
 #endif
 
 // VARIABLES
@@ -36,25 +35,25 @@ bool alphaBlendEnable = true;
 int alphaRef = 20;
 int CullMode = 3; // D3DCULL_CCW
 
-scalar GlobalTime;
-scalar WindSpeed = 0;
+float GlobalTime;
+float WindSpeed = 0;
 
-vec4 HemiMapConstants;
+float4 HemiMapConstants;
 
-//tl: This is a scalar replicated to a vec4 to make 1.3 shaders more efficient (they can't access .rg directly)
-vec4 Transparency = 1.0f;
+//tl: This is a float replicated to a float4 to make 1.3 shaders more efficient (they can't access .rg directly)
+float4 Transparency = 1.0f;
 
-mat4x4 World : World;
-mat4x4 ViewProjection;
-mat4x4 WorldViewProjection;
+float4x4 World : World;
+float4x4 ViewProjection;
+float4x4 WorldViewProjection;
 
 bool AlphaTest	= false;
 
-vec4 FogRange : fogRange;
-vec4 FogColor : fogColor;
+float4 FogRange : fogRange;
+float4 FogColor : fogColor;
 
 
-scalar calcFog(scalar w)
+float calcFog(float w)
 {
     half2 fogVals = w * FogRange.xy + FogRange.zw;
     half close = max(fogVals.y, FogColor.w);
@@ -71,41 +70,41 @@ scalar calcFog(scalar w)
     #endif
 #endif
 
-#define NO_VAL vec3(1.0, 1.0, 0.0)
+#define NO_VAL float3(1.0, 1.0, 0.0)
 
-vec4 showChannel
+float4 showChannel
 (
-    vec3 diffuse = NO_VAL,
-    vec3 normal = NO_VAL,
-    scalar specular = 0.0,
-    scalar alpha = 0.0,
-    vec3 shadow = 0.0,
-    vec3 environment = NO_VAL)
+    float3 diffuse = NO_VAL,
+    float3 normal = NO_VAL,
+    float specular = 0.0,
+    float alpha = 0.0,
+    float3 shadow = 0.0,
+    float3 environment = NO_VAL)
 {
-    vec4 returnVal = vec4(0.0, 1.0, 1.0, 0.0);
+    float4 returnVal = float4(0.0, 1.0, 1.0, 0.0);
 
     #ifdef DIFFUSE_CHANNEL
-        returnVal = vec4(diffuse, 1.0);
+        returnVal = float4(diffuse, 1.0);
     #endif
 
     #ifdef NORMAL_CHANNEL
-        returnVal = vec4(normal, 1.0);
+        returnVal = float4(normal, 1.0);
     #endif
 
     #ifdef SPECULAR_CHANNEL
-        returnVal = vec4(specular, specular, specular, 1.0);
+        returnVal = float4(specular, specular, specular, 1.0);
     #endif
 
     #ifdef ALPHA_CHANNEL
-        returnVal = vec4(alpha, alpha, alpha, 1.0);
+        returnVal = float4(alpha, alpha, alpha, 1.0);
     #endif
 
     #ifdef ENVIRONMENT_CHANNEL
-        returnVal = vec4(environment, 1.0);
+        returnVal = float4(environment, 1.0);
     #endif
 
     #ifdef SHADOW_CHANNEL
-        returnVal = vec4(shadow, 1.0);
+        returnVal = float4(shadow, 1.0);
     #endif
 
     return returnVal;
@@ -119,9 +118,9 @@ vec4 showChannel
 #define SHADOWVERSION 0
 #endif
 
-mat4x4 	ShadowProjMat : ShadowProjMatrix;
-mat4x4 	ShadowOccProjMat : ShadowOccProjMatrix;
-mat4x4 	ShadowTrapMat : ShadowTrapMatrix;
+float4x4 	ShadowProjMat : ShadowProjMatrix;
+float4x4 	ShadowOccProjMat : ShadowOccProjMatrix;
+float4x4 	ShadowTrapMat : ShadowTrapMatrix;
 
 texture ShadowMap : SHADOWMAP;
 sampler ShadowMapSampler
@@ -153,10 +152,10 @@ sampler ShadowOccluderMapSampler
 };
 
 //tl: Make _sure_ pos and matrices are in same space!
-vec4 calcShadowProjection(vec4 pos, uniform scalar BIAS = -0.003, uniform bool ISOCCLUDER = false)
+float4 calcShadowProjection(float4 pos, uniform float BIAS = -0.003, uniform bool ISOCCLUDER = false)
 {
-    vec4 texShadow1 =  mul(pos, ShadowTrapMat);
-    vec2 texShadow2;
+    float4 texShadow1 =  mul(pos, ShadowTrapMat);
+    float2 texShadow2;
 
     if(ISOCCLUDER)
         texShadow2 = mul(pos, ShadowOccProjMat).zw;
@@ -175,54 +174,54 @@ vec4 calcShadowProjection(vec4 pos, uniform scalar BIAS = -0.003, uniform bool I
 }
 
 //tl: Make _sure_ pos and matrices are in same space!
-vec4 calcShadowProjectionExact(vec4 pos, uniform scalar BIAS = -0.003)
+float4 calcShadowProjectionExact(float4 pos, uniform float BIAS = -0.003)
 {
-    vec4 texShadow1 = mul(pos, ShadowTrapMat);
-    vec2 texShadow2 = mul(pos, ShadowProjMat).zw;
+    float4 texShadow1 = mul(pos, ShadowTrapMat);
+    float2 texShadow2 = mul(pos, ShadowProjMat).zw;
     texShadow2.x += BIAS;
     texShadow1.z = texShadow2.x;
     return texShadow1;
 }
 
-vec4 getShadowFactorNV(sampler shadowSampler, vec4 shadowCoords, uniform int NSAMPLES = 4, uniform int VERSION = SHADOWVERSION)
+float4 getShadowFactorNV(sampler shadowSampler, float4 shadowCoords, uniform int NSAMPLES = 4, uniform int VERSION = SHADOWVERSION)
 {
     return tex2Dproj(shadowSampler, shadowCoords);
 }
 
-vec4 getShadowFactorExactNV(sampler shadowSampler, vec4 shadowCoords, uniform int NSAMPLES = 4, uniform int VERSION = SHADOWVERSION)
+float4 getShadowFactorExactNV(sampler shadowSampler, float4 shadowCoords, uniform int NSAMPLES = 4, uniform int VERSION = SHADOWVERSION)
 {
     shadowCoords.z *= shadowCoords.w;
     return tex2Dproj(shadowSampler, shadowCoords);
 }
 
-vec4 getShadowFactorExactOther(sampler shadowSampler, vec4 shadowCoords, uniform int NSAMPLES = 4, uniform int VERSION = SHADOWVERSION)
+float4 getShadowFactorExactOther(sampler shadowSampler, float4 shadowCoords, uniform int NSAMPLES = 4, uniform int VERSION = SHADOWVERSION)
 {
     if(NSAMPLES == 1)
     {
-        scalar samples = tex2Dproj(shadowSampler, shadowCoords).r;
+        float samples = tex2Dproj(shadowSampler, shadowCoords).r;
         return samples >= saturate(shadowCoords.z);
     }
     else
     {
-        vec2 texel = vec2(0.5 / 1024.0, 0.0);
-        vec4 samples = 0;
+        float2 texel = float2(0.5 / 1024.0, 0.0);
+        float4 samples = 0;
         samples.x = tex2Dproj(shadowSampler, shadowCoords).r;
         samples.y = tex2Dproj(shadowSampler, shadowCoords + texel.xyyy).r;
         samples.z = tex2Dproj(shadowSampler, shadowCoords + texel.yxyy).r;
         samples.w = tex2Dproj(shadowSampler, shadowCoords + texel.xxyy).r;
-        vec4 cmpbits = samples >= saturate(shadowCoords.z);
+        float4 cmpbits = samples >= saturate(shadowCoords.z);
         return dot(cmpbits, 0.25);
     }
 }
 
 //fks: special case for ATI heavy staticmesh-shaders with envmap
-vec4 getShadowFactorLow(sampler shadowSampler, vec4 shadowCoords, uniform int NSAMPLES = 1, uniform int VERSION = SHADOWVERSION)
+float4 getShadowFactorLow(sampler shadowSampler, float4 shadowCoords, uniform int NSAMPLES = 1, uniform int VERSION = SHADOWVERSION)
 {
     return (tex2Dproj(shadowSampler, shadowCoords) >= saturate(shadowCoords.z));
 }
 
 // Currently fixed to 3 or 4.
-vec4 getShadowFactor(sampler shadowSampler, vec4 shadowCoords, uniform int NSAMPLES = 4, uniform int VERSION = SHADOWVERSION)
+float4 getShadowFactor(sampler shadowSampler, float4 shadowCoords, uniform int NSAMPLES = 4, uniform int VERSION = SHADOWVERSION)
 {
     #if NVIDIA
         return getShadowFactorNV(shadowSampler, shadowCoords, NSAMPLES, VERSION);
@@ -231,7 +230,7 @@ vec4 getShadowFactor(sampler shadowSampler, vec4 shadowCoords, uniform int NSAMP
     #endif
 }
 
-vec4 getShadowFactorExact(sampler shadowSampler, vec4 shadowCoords, uniform int NSAMPLES = 4, uniform int VERSION = SHADOWVERSION)
+float4 getShadowFactorExact(sampler shadowSampler, float4 shadowCoords, uniform int NSAMPLES = 4, uniform int VERSION = SHADOWVERSION)
 {
     #if NVIDIA
         return getShadowFactorExactNV(shadowSampler, shadowCoords, NSAMPLES, VERSION);
@@ -267,7 +266,7 @@ sampler NormalizationCubeSampler = sampler_state
 #define NRMCUBE		1
 #define NRMMATH		2
 #define NRMCHEAP	3
-vec3 fastNormalize(vec3 invec, uniform int preferMethod = NRMDONTCARE)
+float3 fastNormalize(float3 invec, uniform int preferMethod = NRMDONTCARE)
 {
     return normalize(invec);
 }

@@ -1,9 +1,8 @@
-#include "shaders/dataTypes.fx"
 
 #define nbase 0x1
 #define ndetail 0x10
 
-// common staticMesh samplers
+// Common staticMesh samplers
 texture	LightMap;
 sampler LightMapSampler = sampler_state
 {
@@ -100,16 +99,16 @@ sampler CubeMapSampler = sampler_state
     AddressW  = WRAP;
 };
 
-vec4   ObjectSpaceCamPos;
-vec4   PosUnpack;
-scalar TexUnpack;
-vec2   NormalUnpack;
-vec4   LightMapOffset;
+float4   ObjectSpaceCamPos;
+float4   PosUnpack;
+float TexUnpack;
+float2   NormalUnpack;
+float4   LightMapOffset;
 bool   AlphaBlendEnable;
-vec4   StaticSkyColor;
-vec4   StaticSpecularColor;
-vec4   PointColor;
-vec4   StaticSunColor;
-vec4   SinglePointColor;
-vec4   ParallaxScaleBias;
-scalar StaticGloss;
+float4   StaticSkyColor;
+float4   StaticSpecularColor;
+float4   PointColor;
+float4   StaticSunColor;
+float4   SinglePointColor;
+float4   ParallaxScaleBias;
+float StaticGloss;

@@ -7,26 +7,25 @@
     #define _HASSHADOW_ 0
 #endif
 
-#include "shaders/dataTypes.fx"
 #include "shaders/RaCommon.fx"
 
-vec4   OverGrowthAmbient;
+float4   OverGrowthAmbient;
 Light  Lights[1];
-vec4   PosUnpack;
-vec2   NormalUnpack;
-scalar TexUnpack;
-scalar ObjRadius = 2;
+float4   PosUnpack;
+float2   NormalUnpack;
+float TexUnpack;
+float ObjRadius = 2;
 
 struct VS_OUTPUT
 {
-    vec4 Pos   : POSITION0;
-    vec2 Tex0  : TEXCOORD0;
-    vec3 tex1  : TEXCOORD1;
+    float4 Pos   : POSITION0;
+    float2 Tex0  : TEXCOORD0;
+    float3 tex1  : TEXCOORD1;
     #if _HASSHADOW_
-        vec4 TexShadow : TEXCOORD2;
+        float4 TexShadow : TEXCOORD2;
     #endif
-    vec4 Color : COLOR0;
-    scalar Fog : FOG;
+    float4 Color : COLOR0;
+    float Fog : FOG;
 };
 
 texture	DiffuseMap;
@@ -57,9 +56,9 @@ string reqVertexElement[] =
 
 VS_OUTPUT basicVertexShader
 (
-    vec4 inPos  : POSITION0,
-    vec3 normal : NORMAL,
-    vec2 tex0   : TEXCOORD0
+    float4 inPos  : POSITION0,
+    float3 normal : NORMAL,
+    float2 tex0   : TEXCOORD0
 )
 {
     VS_OUTPUT Out = (VS_OUTPUT)0;
@@ -70,7 +69,7 @@ VS_OUTPUT basicVertexShader
         inPos.xyz +=  sin((GlobalTime / (ObjRadius + inPos.y)) * WindSpeed) * (ObjRadius + inPos.y) * (ObjRadius + inPos.y) / LEAF_MOVEMENT;// *  WindSpeed / 16384;//clamp(abs(inPos.z * inPos.x), 0, WindSpeed);
     #endif
 
-    Out.Pos	= mul(vec4(inPos.xyz, 1.0), WorldViewProjection);
+    Out.Pos	= mul(float4(inPos.xyz, 1.0), WorldViewProjection);
 
     Out.Fog	= calcFog(Out.Pos.w);
     Out.Tex0.xy = tex0;
@@ -84,10 +83,10 @@ VS_OUTPUT basicVertexShader
     #endif
 
     #ifdef _POINTLIGHT_
-        vec3 lightVec = vec3(Lights[0].pos.xyz - inPos);
+        float3 lightVec = float3(Lights[0].pos.xyz - inPos);
         float LdotN	= 1.0;
     #else
-        scalar LdotN = saturate((dot(normal, -Lights[0].dir) + 0.6) / 1.4);
+        float LdotN = saturate((dot(normal, -Lights[0].dir) + 0.6) / 1.4);
     #endif
 
     #ifdef OVERGROWTH
@@ -100,7 +99,7 @@ VS_OUTPUT basicVertexShader
     Out.tex1 = 0.0;
 
     #if _HASSHADOW_
-        Out.TexShadow = calcShadowProjection(vec4(inPos.xyz, 1.0));
+        Out.TexShadow = calcShadowProjection(float4(inPos.xyz, 1.0));
         Out.tex1 = CEXP(OverGrowthAmbient.rgb) * 0.5;
     #elif !defined(_POINTLIGHT_)
         Out.tex1 = OverGrowthAmbient.rgb * 1/CEXP(1);
@@ -122,21 +121,21 @@ VS_OUTPUT basicVertexShader
     return Out;
 }
 
-vec4 basicPixelShader(VS_OUTPUT VsOut) : COLOR
+float4 basicPixelShader(VS_OUTPUT VsOut) : COLOR
 {
-    vec4 diffuseMap = tex2D(DiffuseMapSampler, VsOut.Tex0.xy);
+    float4 diffuseMap = tex2D(DiffuseMapSampler, VsOut.Tex0.xy);
 
     #if _HASSHADOW_
-        vec4 vertexColor = vec4(VsOut.Color.rgb, VsOut.Color.a * 2.0);
+        float4 vertexColor = float4(VsOut.Color.rgb, VsOut.Color.a * 2.0);
         vertexColor.rgb *= getShadowFactor(ShadowMapSampler, VsOut.TexShadow, 1, 20);
         vertexColor.rgb += VsOut.tex1;
     #else
-        vec4 vertexColor = vec4(VsOut.Color.rgb, VsOut.Color.a*2);
+        float4 vertexColor = float4(VsOut.Color.rgb, VsOut.Color.a*2);
         vertexColor.rgb += VsOut.tex1;
     #endif
 
     //tl: use compressed color register to avoid this being compiled as a 2.0 shader.
-    vec4 outCol = diffuseMap * vertexColor * 2.0;
+    float4 outCol = diffuseMap * vertexColor * 2.0;
 
     return outCol;
 };

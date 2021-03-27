@@ -1,17 +1,17 @@
 #line 2 "RoadCompiled.fx"
 #include "shaders/raCommon.fx"
 
-mat4x4	mWorldViewProj : WorldViewProjection;
-scalar fTexBlendFactor : TexBlendFactor;
-vec2 vFadeoutValues : FadeOut;
-vec4 vLocalEyePos : LocalEye;
-vec4 vCameraPos : CAMERAPOS;
-scalar vScaleY : SCALEY;
-vec4 vSunColor : SUNCOLOR;
-vec4 vGIColor : GICOLOR;
+float4x4	mWorldViewProj : WorldViewProjection;
+float fTexBlendFactor : TexBlendFactor;
+float2 vFadeoutValues : FadeOut;
+float4 vLocalEyePos : LocalEye;
+float4 vCameraPos : CAMERAPOS;
+float vScaleY : SCALEY;
+float4 vSunColor : SUNCOLOR;
+float4 vGIColor : GICOLOR;
 
-vec4 vTexProjOffset : TEXPROJOFFSET;
-vec4 vTexProjScale : TEXPROJSCALE;
+float4 vTexProjOffset : TEXPROJOFFSET;
+float4 vTexProjScale : TEXPROJSCALE;
 
 texture detail0 : TEXLAYER3;
 texture detail1 : TEXLAYER4;
@@ -55,22 +55,22 @@ sampler sampler2 = sampler_state
 
 struct APP2VS
 {
-    vec4 Pos : POSITION;
-    vec2 Tex0 : TEXCOORD0;
-    vec2 Tex1 : TEXCOORD1;
-    scalar Alpha : TEXCOORD2;
+    float4 Pos : POSITION;
+    float2 Tex0 : TEXCOORD0;
+    float2 Tex1 : TEXCOORD1;
+    float Alpha : TEXCOORD2;
 };
 
 struct VS2PS
 {
-    vec4 Pos : POSITION;
-    vec3 Tex0AndZFade : TEXCOORD0;
-    vec2 Tex1 : TEXCOORD1;
-    vec4 PosTex : TEXCOORD2;
-    scalar Fog : FOG;
+    float4 Pos : POSITION;
+    float3 Tex0AndZFade : TEXCOORD0;
+    float2 Tex1 : TEXCOORD1;
+    float4 PosTex : TEXCOORD2;
+    float Fog : FOG;
 };
 
-vec4 projToLighting(vec4 hPos)
+float4 projToLighting(float4 hPos)
 {
     /*
         tl: This has been rearranged optimally (I believe) into 1 MUL and 1 MAD,
@@ -79,7 +79,7 @@ vec4 projToLighting(vec4 hPos)
             ProjScale is screen->texture scale/invert operation
         tex = (hpos.x * 0.5 + 0.5 + htexel, hpos.y * -0.5 + 0.5 + htexel, hpos.z, hpos.w)
     */
-    vec4 tex;
+    float4 tex;
     tex = hPos * vTexProjScale + (vTexProjOffset * hPos.w);
     return tex;
 }
@@ -88,10 +88,10 @@ VS2PS RoadCompiledVS(APP2VS input)
 {
     VS2PS outdata;
 
-    vec4 wPos = input.Pos;
+    float4 wPos = input.Pos;
 
-    scalar cameraDist = length(vLocalEyePos - input.Pos);
-    scalar interpVal = saturate(cameraDist * vFadeoutValues.x - vFadeoutValues.y);
+    float cameraDist = length(vLocalEyePos - input.Pos);
+    float interpVal = saturate(cameraDist * vFadeoutValues.x - vFadeoutValues.y);
     wPos.y += 0.01;
 
     outdata.Pos = mul(wPos, mWorldViewProj);
@@ -108,14 +108,14 @@ VS2PS RoadCompiledVS(APP2VS input)
     return outdata;
 }
 
-vec4 RoadCompiledPS(VS2PS indata) : COLOR0
+float4 RoadCompiledPS(VS2PS indata) : COLOR0
 {
-    vec4 t0 = tex2D(sampler0, indata.Tex0AndZFade);
-    vec4 t1 = tex2D(sampler1, indata.Tex1.xy * 0.1);
-    vec4 accumlights = tex2Dproj(sampler2, indata.PosTex);
-    vec4 light = ((accumlights.w * vSunColor * 2.0) + accumlights) * 2.0;
+    float4 t0 = tex2D(sampler0, indata.Tex0AndZFade);
+    float4 t1 = tex2D(sampler1, indata.Tex1.xy * 0.1);
+    float4 accumlights = tex2Dproj(sampler2, indata.PosTex);
+    float4 light = ((accumlights.w * vSunColor * 2.0) + accumlights) * 2.0;
 
-    vec4 final;
+    float4 final;
     final.rgb = lerp(t1, t0, fTexBlendFactor);
     final.a = t0.a * indata.Tex0AndZFade.z;
     final.rgb *= light.xyz;
@@ -124,9 +124,9 @@ vec4 RoadCompiledPS(VS2PS indata) : COLOR0
 
 struct VS2PSDx9
 {
-    vec4 Pos          : POSITION;
-    vec3 Tex0AndZFade : TEXCOORD0;
-    vec2 Tex1         : TEXCOORD1;
+    float4 Pos          : POSITION;
+    float3 Tex0AndZFade : TEXCOORD0;
+    float2 Tex1         : TEXCOORD1;
 };
 
 VS2PSDx9 RoadCompiledVSDx9(APP2VS input)
@@ -137,7 +137,7 @@ VS2PSDx9 RoadCompiledVSDx9(APP2VS input)
     outdata.Tex0AndZFade.xy = input.Tex0;
     outdata.Tex1 = input.Tex1;
 
-    vec3 dist = (vLocalEyePos - input.Pos);
+    float3 dist = (vLocalEyePos - input.Pos);
     outdata.Tex0AndZFade.z = dot(dist, dist);
     outdata.Tex0AndZFade.z = (outdata.Tex0AndZFade.z - vFadeoutValues.x) * vFadeoutValues.y;
     outdata.Tex0AndZFade.z = 1.0 - saturate(outdata.Tex0AndZFade.z);
@@ -145,12 +145,12 @@ VS2PSDx9 RoadCompiledVSDx9(APP2VS input)
     return outdata;
 }
 
-vec4 RoadCompiledPSDx9(VS2PSDx9 indata) : COLOR0
+float4 RoadCompiledPSDx9(VS2PSDx9 indata) : COLOR0
 {
-    vec4 t0 = tex2D(sampler0, indata.Tex0AndZFade);
-    vec4 t1 = tex2D(sampler1, indata.Tex1);
+    float4 t0 = tex2D(sampler0, indata.Tex0AndZFade);
+    float4 t1 = tex2D(sampler1, indata.Tex1);
 
-    vec4 final;
+    float4 final;
     final.rgb = lerp(t1, t0, fTexBlendFactor);
     final.a = t0.a * indata.Tex0AndZFade.z;
     return final;
@@ -195,7 +195,7 @@ technique roadcompiledFull
     }
 }
 
-vec4 RoadCompiledPS_LightingOnly(VS2PS indata) : COLOR0
+float4 RoadCompiledPS_LightingOnly(VS2PS indata) : COLOR0
 {
     return 0;
 }

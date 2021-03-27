@@ -3,12 +3,12 @@
 #define LIGHT_MUL float3(0.8, 0.8, 0.4)
 #define LIGHT_ADD float3(0.4, 0.4, 0.4)
 
-vec3	TerrainSunColor;
-vec2	RoadFadeOut;
-vec4	WorldSpaceCamPos;
+float3	TerrainSunColor;
+float2	RoadFadeOut;
+float4	WorldSpaceCamPos;
 
-vec4	PosUnpack;
-scalar	TexUnpack;
+float4	PosUnpack;
+float	TexUnpack;
 
 vector textureFactor = float4(1.0f, 1.0f, 1.0f, 1.0f);
 

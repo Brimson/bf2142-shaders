@@ -33,43 +33,43 @@
 
 struct SMVariableVSInput
 {
-    vec4   Pos          : POSITION;
-    vec3   Normal       : NORMAL;
-    scalar BlendWeights : BLENDWEIGHT;
-    vec4   BlendIndices : BLENDINDICES;
-    vec2   TexCoord0    : TEXCOORD0;
-    vec3   Tan          : TANGENT;
+    float4   Pos          : POSITION;
+    float3   Normal       : NORMAL;
+    float BlendWeights : BLENDWEIGHT;
+    float4   BlendIndices : BLENDINDICES;
+    float2   TexCoord0    : TEXCOORD0;
+    float3   Tan          : TANGENT;
 };
 
 struct SMVariableVSOutput
 {
-    vec4 Pos                : POSITION;
-    vec4 DiffuseAndHemiLerp : COLOR0;
-    vec4 Specular           : COLOR1;
-    vec2 Tex0               : TEXCOORD0;
-    vec3 GroundUVOrWPos     : TEXCOORD1;
+    float4 Pos                : POSITION;
+    float4 DiffuseAndHemiLerp : COLOR0;
+    float4 Specular           : COLOR1;
+    float2 Tex0               : TEXCOORD0;
+    float3 GroundUVOrWPos     : TEXCOORD1;
 
     #if _HASNORMALMAP_
-        vec3 LightVec       : TEXCOORD2;
+        float3 LightVec       : TEXCOORD2;
         #if _HASSHADOW_ || _HASSHADOWOCCLUSION_
-            vec4 ShadowMat  : TEXCOORD4;
+            float4 ShadowMat  : TEXCOORD4;
         #endif
     #elif _HASSHADOW_ || _HASSHADOWOCCLUSION_
-        vec4 ShadowMat      : TEXCOORD2;
+        float4 ShadowMat      : TEXCOORD2;
     #endif
 
-    vec4   HalfVecAndOccShadow : TEXCOORD3;
-    scalar Fog                 : FOG;
+    float4   HalfVecAndOccShadow : TEXCOORD3;
+    float Fog                 : FOG;
 
     #if _USEPERPIXELHEMIMAP_
         // Used only for per-pixel hemi
-        vec3 TexToWorld0 : TEXCOORD5;
-        vec3 TexToWorld1 : TEXCOORD6;
-        vec3 TexToWorld2 : TEXCOORD7;
+        float3 TexToWorld0 : TEXCOORD5;
+        float3 TexToWorld1 : TEXCOORD6;
+        float3 TexToWorld2 : TEXCOORD7;
     #endif
 };
 
-scalar getBlendWeight(SMVariableVSInput input, uniform int bone)
+float getBlendWeight(SMVariableVSInput input, uniform int bone)
 {
     if(bone == 0)
         return input.BlendWeights;
@@ -77,7 +77,7 @@ scalar getBlendWeight(SMVariableVSInput input, uniform int bone)
         return 1.0 - input.BlendWeights;
 }
 
-mat4x3 getBoneMatrix(SMVariableVSInput input, uniform int bone)
+float4x3 getBoneMatrix(SMVariableVSInput input, uniform int bone)
 {
     // Compensate for lack of UBYTE4 on Geforce3
     int4 IndexVector = D3DCOLORtoUBYTE4(input.BlendIndices);
@@ -92,16 +92,16 @@ float getBinormalFlipping(SMVariableVSInput input)
     return 1.0f + IndexArray[2] * -2.0f;
 }
 
-mat3x3 getTangentBasis(SMVariableVSInput input)
+float3x3 getTangentBasis(SMVariableVSInput input)
 {
     float flip = getBinormalFlipping(input);
-    vec3 binormal = normalize(cross(input.Tan, input.Normal)) * flip;
-    return mat3x3(input.Tan, binormal, input.Normal);
+    float3 binormal = normalize(cross(input.Tan, input.Normal)) * flip;
+    return float3x3(input.Tan, binormal, input.Normal);
 }
 
-vec3 skinPos(SMVariableVSInput input, vec4 Vec, uniform int numBones = NUMBONES)
+float3 skinPos(SMVariableVSInput input, float4 Vec, uniform int numBones = NUMBONES)
 {
-    vec3 skinnedPos = mul(Vec, getBoneMatrix(input, 0));
+    float3 skinnedPos = mul(Vec, getBoneMatrix(input, 0));
     if(numBones > 1)
     {
         skinnedPos *= getBlendWeight(input, 0);
@@ -110,9 +110,9 @@ vec3 skinPos(SMVariableVSInput input, vec4 Vec, uniform int numBones = NUMBONES)
     return skinnedPos;
 }
 
-vec3 skinVec(SMVariableVSInput input, vec3 Vec, uniform int numBones = NUMBONES)
+float3 skinVec(SMVariableVSInput input, float3 Vec, uniform int numBones = NUMBONES)
 {
-    vec3 skinnedVec = mul(Vec, getBoneMatrix(input, 0));
+    float3 skinnedVec = mul(Vec, getBoneMatrix(input, 0));
     if(numBones > 1)
     {
         skinnedVec *= getBlendWeight(input, 0);
@@ -121,9 +121,9 @@ vec3 skinVec(SMVariableVSInput input, vec3 Vec, uniform int numBones = NUMBONES)
     return skinnedVec;
 }
 
-vec3 skinVecToObj(SMVariableVSInput input, vec3 Vec, uniform int numBones = NUMBONES)
+float3 skinVecToObj(SMVariableVSInput input, float3 Vec, uniform int numBones = NUMBONES)
 {
-    vec3 skinnedVec = mul(Vec, transpose(getBoneMatrix(input, 0)));
+    float3 skinnedVec = mul(Vec, transpose(getBoneMatrix(input, 0)));
     if(numBones > 1)
     {
         skinnedVec *= getBlendWeight(input, 0);
@@ -133,31 +133,31 @@ vec3 skinVecToObj(SMVariableVSInput input, vec3 Vec, uniform int numBones = NUMB
     return skinnedVec;
 }
 
-vec3 skinVecToTan(SMVariableVSInput input, vec3 Vec, uniform int numBones = NUMBONES)
+float3 skinVecToTan(SMVariableVSInput input, float3 Vec, uniform int numBones = NUMBONES)
 {
-    mat3x3 tanBasis = getTangentBasis(input);
+    float3x3 tanBasis = getTangentBasis(input);
 
-    mat3x3 toTangent0 = transpose(mul(tanBasis, getBoneMatrix(input, 0)));
-    vec3 skinnedVec = mul(Vec, toTangent0);
+    float3x3 toTangent0 = transpose(mul(tanBasis, getBoneMatrix(input, 0)));
+    float3 skinnedVec = mul(Vec, toTangent0);
 
     if(numBones > 1)
     {
         skinnedVec *= getBlendWeight(input, 0);
-        mat3x3 toTangent1 = transpose(mul(tanBasis, getBoneMatrix(input, 1)));
+        float3x3 toTangent1 = transpose(mul(tanBasis, getBoneMatrix(input, 1)));
         skinnedVec += mul(Vec, toTangent1) * getBlendWeight(input, 1);
     }
 
     return skinnedVec;
 }
 
-vec4 skinPosition(SMVariableVSInput input)
+float4 skinPosition(SMVariableVSInput input)
 {
-    return vec4(skinPos(input, input.Pos), 1);
+    return float4(skinPos(input, input.Pos), 1);
 }
 
-vec3 skinNormal(SMVariableVSInput input, uniform int numBones = NUMBONES)
+float3 skinNormal(SMVariableVSInput input, uniform int numBones = NUMBONES)
 {
-    vec3 skinnedNormal = skinVec(input, input.Normal);
+    float3 skinnedNormal = skinVec(input, input.Normal);
     if(numBones > 1)
     {
         // Re-normalize skinned normal
@@ -166,33 +166,33 @@ vec3 skinNormal(SMVariableVSInput input, uniform int numBones = NUMBONES)
     return skinnedNormal;
 }
 
-vec4 getWorldPos(SMVariableVSInput input)
+float4 getWorldPos(SMVariableVSInput input)
 {
     return mul(skinPosition(input), World);
 }
 
-vec3 getWorldNormal(SMVariableVSInput input)
+float3 getWorldNormal(SMVariableVSInput input)
 {
     return mul(skinNormal(input), World);
 }
 
-vec4 calcGroundUVAndLerp(vec3 wPos, vec3 wNormal)
+float4 calcGroundUVAndLerp(float3 wPos, float3 wNormal)
 {
-    vec4 GroundUVAndLerp = 0;
+    float4 GroundUVAndLerp = 0;
     GroundUVAndLerp.xy	= ((wPos + (HemiMapConstants.z * 0.5) + wNormal).xz - HemiMapConstants.xy) / HemiMapConstants.z;
     GroundUVAndLerp.y	= 1.0 - GroundUVAndLerp.y;
 
     // localHeight scale, 1 for top and 0 for bottom
-    scalar localHeight = (wPos.y - (World[3][1] - 0.5)) * 0.5;
+    float localHeight = (wPos.y - (World[3][1] - 0.5)) * 0.5;
 
-    scalar offset     = (localHeight * 2.0 - 1.0) + HeightOverTerrain;
+    float offset     = (localHeight * 2.0 - 1.0) + HeightOverTerrain;
     offset            = clamp(offset, -2.0 * (1.0 - HeightOverTerrain), 0.8); // For TL: seems like taking this like away doesn't change much, take it out?
     GroundUVAndLerp.z = clamp((wNormal.y + offset) * 0.5 + 0.5, 0.0, 0.9);
 
     return GroundUVAndLerp;
 }
 
-vec3 skinLightVec(SMVariableVSInput input, vec3 lVec)
+float3 skinLightVec(SMVariableVSInput input, float3 lVec)
 {
     #if _OBJSPACENORMALMAP_ || !_HASNORMALMAP_
         return skinVecToObj(input, lVec, 1);
@@ -202,7 +202,7 @@ vec3 skinLightVec(SMVariableVSInput input, vec3 lVec)
 }
 
 // NOTE: This returns un-normalized for point, because point needs to be attenuated.
-vec3 getLightVec(SMVariableVSInput input)
+float3 getLightVec(SMVariableVSInput input)
 {
     #if _POINTLIGHT_
         return (Lights[0].pos - skinPosition(input).xyz);
@@ -215,7 +215,7 @@ SMVariableVSOutput vs(SMVariableVSInput input)
 {
     SMVariableVSOutput Out = (SMVariableVSOutput)0;
 
-    vec4 objSpacePosition = skinPosition(input);
+    float4 objSpacePosition = skinPosition(input);
 
     Out.Pos = mul(objSpacePosition, WorldViewProjection);
     Out.Tex0 = input.TexCoord0;
@@ -225,11 +225,11 @@ SMVariableVSOutput vs(SMVariableVSInput input)
         Out.DiffuseAndHemiLerp.w = Out.GroundUVOrWPos.z;
     #elif _USEPERPIXELHEMIMAP_
         #if _OBJSPACENORMALMAP_
-            mat3x3 objToTexture0 = getBoneMatrix(input, 0);
+            float3x3 objToTexture0 = getBoneMatrix(input, 0);
         #else
-            mat3x3 objToTexture0 = mul(getTangentBasis(input), getBoneMatrix(input, 0));
+            float3x3 objToTexture0 = mul(getTangentBasis(input), getBoneMatrix(input, 0));
         #endif
-        mat3x3 worldToTexture0 = mul(objToTexture0, World);
+        float3x3 worldToTexture0 = mul(objToTexture0, World);
         worldToTexture0 = transpose(worldToTexture0);
         Out.TexToWorld0 = worldToTexture0[0];
         Out.TexToWorld1 = worldToTexture0[1];
@@ -237,9 +237,9 @@ SMVariableVSOutput vs(SMVariableVSInput input)
         Out.GroundUVOrWPos = getWorldPos(input);
     #endif
 
-    vec3 objEyeVec = normalize(ObjectSpaceCamPos.xyz - objSpacePosition.xyz);
-    vec3 lVec = skinLightVec(input, getLightVec(input));
-    vec3 hVec = normalize(lVec) + normalize(skinLightVec(input, objEyeVec));
+    float3 objEyeVec = normalize(ObjectSpaceCamPos.xyz - objSpacePosition.xyz);
+    float3 lVec = skinLightVec(input, getLightVec(input));
+    float3 hVec = normalize(lVec) + normalize(skinLightVec(input, objEyeVec));
 
     #if _HASNORMALMAP_
         Out.LightVec = lVec;
@@ -249,7 +249,7 @@ SMVariableVSOutput vs(SMVariableVSInput input)
         #endif
         Out.HalfVecAndOccShadow.xyz = normalize(hVec);
     #else
-        vec4 lighting = lit(dot(normalize(lVec), input.Normal), dot(normalize(hVec), input.Normal), SpecularPower);
+        float4 lighting = lit(dot(normalize(lVec), input.Normal), dot(normalize(hVec), input.Normal), SpecularPower);
         Out.DiffuseAndHemiLerp.rgb = (lighting.y * Lights[0].color) * 0.5;
         #if _POINTLIGHT_
             Out.Specular.rgb = (lighting.z * Lights[0].color * 0.15) * 0.5;
@@ -269,31 +269,31 @@ SMVariableVSOutput vs(SMVariableVSInput input)
     return Out;
 }
 
-vec4 ps(SMVariableVSOutput input) : COLOR
+float4 ps(SMVariableVSOutput input) : COLOR
 {
     #if _HASNORMALMAP_
-        vec4 normal = tex2D(NormalMapSampler, input.Tex0);
+        float4 normal = tex2D(NormalMapSampler, input.Tex0);
         normal.xyz = normal.xyz * 2.0 - 1.0;
         #if _USERENORMALIZEDTEXTURES_
             normal.xyz = normalize(normal.xyz);
         #endif
 
         #ifdef NORMAL_CHANNEL
-            return vec4(normal.xyz * 0.5 + 0.5, 1.0);
+            return float4(normal.xyz * 0.5 + 0.5, 1.0);
         #endif
 
-        scalar gloss = normal.a;
-        vec3 lightVec = input.LightVec;
+        float gloss = normal.a;
+        float3 lightVec = input.LightVec;
 
         #if _POINTLIGHT_
-            scalar attenuation = 1.0 - saturate(length(lightVec) * Lights[0].attenuation);
+            float attenuation = 1.0 - saturate(length(lightVec) * Lights[0].attenuation);
             lightVec = normalize(lightVec);
         #else
-            const scalar attenuation = 1.0;
+            const float attenuation = 1.0;
         #endif
 
-        scalar dot3Light = saturate(dot(lightVec, normal));
-        scalar specular = pow(saturate(dot(normalize(input.HalfVecAndOccShadow.xyz), normal)), SpecularPower);
+        float dot3Light = saturate(dot(lightVec, normal));
+        float specular = pow(saturate(dot(normalize(input.HalfVecAndOccShadow.xyz), normal)), SpecularPower);
 
         specular *= gloss;
         dot3Light *= attenuation;
@@ -302,45 +302,45 @@ vec4 ps(SMVariableVSOutput input) : COLOR
 
     // Remember, optimize for HWSM and ps1.3 (yes, it can be done!)
     #if _HASSHADOW_
-        scalar dirShadow = getShadowFactor(ShadowMapSampler, input.ShadowMat);
+        float dirShadow = getShadowFactor(ShadowMapSampler, input.ShadowMat);
     #else
-        scalar dirShadow = 1.0;
+        float dirShadow = 1.0;
     #endif
 
     #if _HASSHADOWOCCLUSION_
-        vec4 shadowOccMat = input.ShadowMat;
+        float4 shadowOccMat = input.ShadowMat;
         shadowOccMat.z = input.HalfVecAndOccShadow.w;
-        scalar dirOccShadow = getShadowFactor(ShadowOccluderMapSampler, shadowOccMat, NUMOCCLUSIONSAMPLES);
+        float dirOccShadow = getShadowFactor(ShadowOccluderMapSampler, shadowOccMat, NUMOCCLUSIONSAMPLES);
         dirShadow *= dirOccShadow;
     #endif
 
     #if (_USEHEMIMAP_ && !_USEPERPIXELHEMIMAP_) || (_USEHEMIMAP_ && !_HASNORMALMAP_)
-        vec4 groundcolor = tex2D(HemiMapSampler, input.GroundUVOrWPos.xy);
-        vec3 hemicolor   = lerp(groundcolor, HemiMapSkyColor, input.DiffuseAndHemiLerp.w)* HemiMapConstantColor.xyz;
+        float4 groundcolor = tex2D(HemiMapSampler, input.GroundUVOrWPos.xy);
+        float3 hemicolor   = lerp(groundcolor, HemiMapSkyColor, input.DiffuseAndHemiLerp.w)* HemiMapConstantColor.xyz;
     #elif _USEPERPIXELHEMIMAP_ && !_NOTHING_
-        vec3 wNormal;
+        float3 wNormal;
         wNormal.x = dot(input.TexToWorld0, normal);
         wNormal.y = dot(input.TexToWorld1, normal);
         wNormal.z = dot(input.TexToWorld2, normal);
-        vec3 GroundUVAndLerp = calcGroundUVAndLerp(input.GroundUVOrWPos, wNormal);
-        vec4 groundcolor     = tex2D(HemiMapSampler, GroundUVAndLerp.xy);
-        vec3 hemicolor       = lerp(groundcolor, HemiMapSkyColor, GroundUVAndLerp.z)*HemiMapConstantColor.xyz;
+        float3 GroundUVAndLerp = calcGroundUVAndLerp(input.GroundUVOrWPos, wNormal);
+        float4 groundcolor     = tex2D(HemiMapSampler, GroundUVAndLerp.xy);
+        float3 hemicolor       = lerp(groundcolor, HemiMapSkyColor, GroundUVAndLerp.z)*HemiMapConstantColor.xyz;
     #else
-        const vec3 hemicolor = HemiMapConstantColor.xyz; // "old"  -- expose a per-level "static hemi" value (ambient mod)
-        vec4 groundcolor = 1.0;
+        const float3 hemicolor = HemiMapConstantColor.xyz; // "old"  -- expose a per-level "static hemi" value (ambient mod)
+        float4 groundcolor = 1.0;
     #endif
 
     #if _HASHEMIOCCLUSION_
         dirShadow *= groundcolor.a;
     #endif
 
-    vec4 diffuseTex = tex2D(DiffuseMapSampler, input.Tex0);
+    float4 diffuseTex = tex2D(DiffuseMapSampler, input.Tex0);
 
     #ifdef	DIFFUSE_CHANNEL
         return diffuseTex;
     #endif
 
-    vec4 outColor;
+    float4 outColor;
 
     #if _HASNORMALMAP_
         dot3Light *= dirShadow;
@@ -352,7 +352,7 @@ vec4 ps(SMVariableVSOutput input) : COLOR
             outColor.rgb = (dot3Light * Lights[0].color) + hemicolor;
         #endif
         #ifdef SHADOW_CHANNEL
-            return vec4(outColor.rgb, 1);
+            return float4(outColor.rgb, 1);
         #endif
         outColor.rgb *= diffuseTex;
         #if _POINTLIGHT_

@@ -41,67 +41,67 @@ sampler dsampler6Wrap = sampler_state {
 
 struct Hi_VS2PS_FullDetail
 {
-    vec4 Pos               : POSITION;
-    vec4 Tex0              : TEXCOORD0;
-    vec4 Tex1              : TEXCOORD1;
-    vec4 BlendValueAndFade : TEXCOORD2; // tl: texcoord because we don't want clamping
-    vec4 Tex3              : TEXCOORD3;
-    vec2 Tex5              : TEXCOORD4;
-    vec2 Tex6              : TEXCOORD5;
-    vec4 FogAndFade2       : COLOR0;
+    float4 Pos               : POSITION;
+    float4 Tex0              : TEXCOORD0;
+    float4 Tex1              : TEXCOORD1;
+    float4 BlendValueAndFade : TEXCOORD2; // tl: texcoord because we don't want clamping
+    float4 Tex3              : TEXCOORD3;
+    float2 Tex5              : TEXCOORD4;
+    float2 Tex6              : TEXCOORD5;
+    float4 FogAndFade2       : COLOR0;
 };
 
-vec4 Hi_PS_FullDetail(Hi_VS2PS_FullDetail indata) : COLOR
+float4 Hi_PS_FullDetail(Hi_VS2PS_FullDetail indata) : COLOR
 {
     #if LIGHTONLY
-        vec4 accumlights = tex2Dproj(sampler1ClampPoint, indata.Tex1);
-        vec4 light = 2 * accumlights.w * vSunColor + accumlights;
-        vec4 component = tex2D(sampler2Clamp, indata.Tex0.xy);
-        scalar chartcontrib = dot(vComponentsel, component);
+        float4 accumlights = tex2Dproj(sampler1ClampPoint, indata.Tex1);
+        float4 light = 2 * accumlights.w * vSunColor + accumlights;
+        float4 component = tex2D(sampler2Clamp, indata.Tex0.xy);
+        float chartcontrib = dot(vComponentsel, component);
         return chartcontrib*light;
     #else
         #if DEBUGTERRAIN
-            return vec4(0,0,1,1);
+            return float4(0,0,1,1);
         #endif
 
-        vec3 colormap = tex2D(sampler0Clamp, indata.Tex0.xy);
-        vec4 accumlights = tex2Dproj(sampler1Clamp, indata.Tex1);
+        float3 colormap = tex2D(sampler0Clamp, indata.Tex0.xy);
+        float4 accumlights = tex2Dproj(sampler1Clamp, indata.Tex1);
 
         //tl: 2* moved later in shader to avoid clamping at -+2.0 in ps1.4
-        vec3 light = 2*accumlights.w * vSunColor.rgb + accumlights.rgb;
+        float3 light = 2*accumlights.w * vSunColor.rgb + accumlights.rgb;
 
-        vec4 component = tex2D(sampler2Clamp, indata.Tex6);
-        scalar chartcontrib = dot(vComponentsel, component);
-        vec3 detailmap = tex2D(dsampler3Wrap, indata.Tex3.xy);
+        float4 component = tex2D(sampler2Clamp, indata.Tex6);
+        float chartcontrib = dot(vComponentsel, component);
+        float3 detailmap = tex2D(dsampler3Wrap, indata.Tex3.xy);
         #if HIGHTERRAIN
-            vec4 lowComponent = tex2D(sampler5Clamp, indata.Tex6);
-            vec4 yplaneLowDetailmap = tex2D(sampler4Wrap, indata.Tex5.xy);
-            vec4 xplaneLowDetailmap = tex2D(sampler4Wrap, indata.Tex3.xy);
-            vec4 zplaneLowDetailmap = tex2D(sampler4Wrap, indata.Tex0.wz);
-            scalar lowDetailmap = lerp(0.5, yplaneLowDetailmap.z, lowComponent.x*indata.FogAndFade2.y);
+            float4 lowComponent = tex2D(sampler5Clamp, indata.Tex6);
+            float4 yplaneLowDetailmap = tex2D(sampler4Wrap, indata.Tex5.xy);
+            float4 xplaneLowDetailmap = tex2D(sampler4Wrap, indata.Tex3.xy);
+            float4 zplaneLowDetailmap = tex2D(sampler4Wrap, indata.Tex0.wz);
+            float lowDetailmap = lerp(0.5, yplaneLowDetailmap.z, lowComponent.x*indata.FogAndFade2.y);
         #else
-            vec4 yplaneLowDetailmap = tex2D(ssampler4Wrap, indata.Tex5.xy);
+            float4 yplaneLowDetailmap = tex2D(ssampler4Wrap, indata.Tex5.xy);
 
             //tl: do lerp in 1 MAD by precalculating constant factor in vShader
-            scalar lowDetailmap = lerp(yplaneLowDetailmap.x, yplaneLowDetailmap.z, indata.BlendValueAndFade.y);
+            float lowDetailmap = lerp(yplaneLowDetailmap.x, yplaneLowDetailmap.z, indata.BlendValueAndFade.y);
         #endif
 
         #if HIGHTERRAIN
-            scalar mounten =    (xplaneLowDetailmap.y * indata.BlendValueAndFade.x) +
+            float mounten =    (xplaneLowDetailmap.y * indata.BlendValueAndFade.x) +
                                 (yplaneLowDetailmap.x * indata.BlendValueAndFade.y) +
                                 (zplaneLowDetailmap.y * indata.BlendValueAndFade.z)	;
 
             lowDetailmap *= (4 * lerp(0.5, mounten, lowComponent.z));
-            vec3 bothDetailmap = detailmap * lowDetailmap;
-            vec3 detailout = lerp(2*bothDetailmap, lowDetailmap, indata.BlendValueAndFade.w);
+            float3 bothDetailmap = detailmap * lowDetailmap;
+            float3 detailout = lerp(2*bothDetailmap, lowDetailmap, indata.BlendValueAndFade.w);
         #else
             //tl: lerp optimized to handle 2*c*low + (2-2c)*detail, factors sent from vs
-            vec3 detailout = lowDetailmap*indata.BlendValueAndFade.x + detailmap*indata.BlendValueAndFade.z;
+            float3 detailout = lowDetailmap*indata.BlendValueAndFade.x + detailmap*indata.BlendValueAndFade.z;
         #endif
 
-        vec3 outColor = detailout * colormap * light * 2;
-        vec3 fogOutColor = lerp(FogColor, outColor, indata.FogAndFade2.x);
-        return vec4(chartcontrib * fogOutColor, chartcontrib);
+        float3 outColor = detailout * colormap * light * 2;
+        float3 fogOutColor = lerp(FogColor, outColor, indata.FogAndFade2.x);
+        return float4(chartcontrib * fogOutColor, chartcontrib);
     #endif
 }
 
@@ -109,22 +109,22 @@ Hi_VS2PS_FullDetail Hi_VS_FullDetail(Shared_APP2VS_Default indata)
 {
     Hi_VS2PS_FullDetail outdata = (Hi_VS2PS_FullDetail)0;
 
-    vec4 wPos;
+    float4 wPos;
     wPos.xz = (indata.Pos0.xy * vScaleTransXZ.xy) + vScaleTransXZ.zw;
     wPos.yw = (indata.Pos1.xw * vScaleTransY.xy);
 
     #if DEBUGTERRAIN
         outdata.Pos = mul(wPos, mViewProj);
-        outdata.Tex0 = vec4(0,0,0,0);
-        outdata.Tex1 = vec4(0,0,0,0);
-        outdata.BlendValueAndFade = vec4(0,0,0,0);
-        outdata.Tex3 = vec4(0,0,0,0);
-        outdata.Tex5.xy = vec2(0,0);
-        outdata.FogAndFade2 = vec4(0,0,0,0);
+        outdata.Tex0 = float4(0,0,0,0);
+        outdata.Tex1 = float4(0,0,0,0);
+        outdata.BlendValueAndFade = float4(0,0,0,0);
+        outdata.Tex3 = float4(0,0,0,0);
+        outdata.Tex5.xy = float2(0,0);
+        outdata.FogAndFade2 = float4(0,0,0,0);
         return outdata;
     #endif
 
-    scalar yDelta, interpVal;
+    float yDelta, interpVal;
     geoMorphPosition(wPos, indata.MorphDelta, indata.Pos0.z, yDelta, interpVal);
 
     //tl: output HPos as early as possible.
@@ -133,11 +133,11 @@ Hi_VS2PS_FullDetail Hi_VS_FullDetail(Shared_APP2VS_Default indata)
     //tl: uncompress normal
     indata.Normal = indata.Normal * 2 - 1;
 
-    vec3 tex = vec3(indata.Pos0.y * vTexScale.z, wPos.y * vTexScale.y, indata.Pos0.x * vTexScale.x);
-    vec2 yPlaneTexCord = tex.zx;
+    float3 tex = float3(indata.Pos0.y * vTexScale.z, wPos.y * vTexScale.y, indata.Pos0.x * vTexScale.x);
+    float2 yPlaneTexCord = tex.zx;
     #if HIGHTERRAIN
-        vec2 xPlaneTexCord = tex.xy;
-        vec2 zPlaneTexCord = tex.zy;
+        float2 xPlaneTexCord = tex.xy;
+        float2 zPlaneTexCord = tex.zy;
     #endif
 
     outdata.Tex0.xy = (yPlaneTexCord*vColorLightTex.x) + vColorLightTex.y;
@@ -164,12 +164,12 @@ Hi_VS2PS_FullDetail Hi_VS_FullDetail(Shared_APP2VS_Default indata)
         //tl: optimized so we can do more advanced lerp in same number of instructions
         //    factors are 2c and (2-2c) which equals a lerp()*2
         //    Don't use w, it's harder to access from ps1.4
-        outdata.BlendValueAndFade.xz = interpVal * vec2(2, -2) + vec2(0, 2);
+        outdata.BlendValueAndFade.xz = interpVal * float2(2, -2) + float2(0, 2);
     #endif
 
     #if HIGHTERRAIN
         outdata.BlendValueAndFade.xyz = saturate(abs(indata.Normal) - vBlendMod);
-        scalar tot = dot(1, outdata.BlendValueAndFade.xyz);
+        float tot = dot(1, outdata.BlendValueAndFade.xyz);
         outdata.BlendValueAndFade.xyz /= tot;
     #elif MIDTERRAIN
         //tl: use squared yNormal as blend val. pre-multiply with fade value.
@@ -186,77 +186,77 @@ Hi_VS2PS_FullDetail Hi_VS_FullDetail(Shared_APP2VS_Default indata)
 
 struct Hi_VS2PS_FullDetailMounten
 {
-    vec4 Pos : POSITION;
-    vec4 Tex0 : TEXCOORD0;
-    vec4 Tex1 : TEXCOORD1;
-    vec4 BlendValueAndFade : TEXCOORD2; //tl: texcoord because we don't want clamping
+    float4 Pos : POSITION;
+    float4 Tex0 : TEXCOORD0;
+    float4 Tex1 : TEXCOORD1;
+    float4 BlendValueAndFade : TEXCOORD2; //tl: texcoord because we don't want clamping
     #if HIGHTERRAIN
-        vec4 Tex3 : TEXCOORD6;
+        float4 Tex3 : TEXCOORD6;
     #endif
-    vec2 Tex5 : TEXCOORD5;
-    vec4 Tex6 : TEXCOORD3;
-    vec2 Tex7 : TEXCOORD4;
-    vec4 FogAndFade2 : COLOR0;
+    float2 Tex5 : TEXCOORD5;
+    float4 Tex6 : TEXCOORD3;
+    float2 Tex7 : TEXCOORD4;
+    float4 FogAndFade2 : COLOR0;
 };
 
-vec4 Hi_PS_FullDetailMounten(Hi_VS2PS_FullDetailMounten indata) : COLOR
+float4 Hi_PS_FullDetailMounten(Hi_VS2PS_FullDetailMounten indata) : COLOR
 {
     #if LIGHTONLY
-        vec4 accumlights = tex2Dproj(sampler1ClampPoint, indata.Tex1);
-        vec4 light = 2 * accumlights.w * vSunColor + accumlights;
-        vec4 component = tex2D(sampler2Clamp, indata.Tex0.xy);
-        scalar chartcontrib = dot(vComponentsel, component);
+        float4 accumlights = tex2Dproj(sampler1ClampPoint, indata.Tex1);
+        float4 light = 2 * accumlights.w * vSunColor + accumlights;
+        float4 component = tex2D(sampler2Clamp, indata.Tex0.xy);
+        float chartcontrib = dot(vComponentsel, component);
         return chartcontrib*light;
     #else
         #if DEBUGTERRAIN
-            return vec4(1,0,0,1);
+            return float4(1,0,0,1);
         #endif
-        vec3 colormap = tex2D(sampler0Clamp, indata.Tex0.xy);
+        float3 colormap = tex2D(sampler0Clamp, indata.Tex0.xy);
 
-        vec4 accumlights = tex2Dproj(sampler1Clamp, indata.Tex1);
+        float4 accumlights = tex2Dproj(sampler1Clamp, indata.Tex1);
 
         //tl: 2* moved later in shader to avoid clamping at -+2.0 in ps1.4
-        vec3 light = 2*accumlights.w * vSunColor.rgb + accumlights.rgb;
+        float3 light = 2*accumlights.w * vSunColor.rgb + accumlights.rgb;
 
-        vec4 component = tex2D(sampler2Clamp, indata.Tex7);
-        scalar chartcontrib = dot(vComponentsel, component);
+        float4 component = tex2D(sampler2Clamp, indata.Tex7);
+        float chartcontrib = dot(vComponentsel, component);
 
         #if HIGHTERRAIN
-            vec3 yplaneDetailmap = tex2D(dsampler3Wrap, indata.Tex6.xy);
-            vec3 xplaneDetailmap = tex2D(dsampler6Wrap, indata.Tex0.wz);
-            vec3 zplaneDetailmap = tex2D(dsampler6Wrap, indata.Tex6.wz);
-            vec3 yplaneLowDetailmap = tex2D(sampler4Wrap, indata.Tex5.xy);
-            vec3 xplaneLowDetailmap = tex2D(sampler4Wrap, indata.Tex3.xy);
-            vec3 zplaneLowDetailmap = tex2D(sampler4Wrap, indata.Tex3.wz);
+            float3 yplaneDetailmap = tex2D(dsampler3Wrap, indata.Tex6.xy);
+            float3 xplaneDetailmap = tex2D(dsampler6Wrap, indata.Tex0.wz);
+            float3 zplaneDetailmap = tex2D(dsampler6Wrap, indata.Tex6.wz);
+            float3 yplaneLowDetailmap = tex2D(sampler4Wrap, indata.Tex5.xy);
+            float3 xplaneLowDetailmap = tex2D(sampler4Wrap, indata.Tex3.xy);
+            float3 zplaneLowDetailmap = tex2D(sampler4Wrap, indata.Tex3.wz);
 
-            vec3 lowComponent = tex2D(sampler5Clamp, indata.Tex7);
+            float3 lowComponent = tex2D(sampler5Clamp, indata.Tex7);
 
-            vec3 detailmap =    (xplaneDetailmap * indata.BlendValueAndFade.x) +
+            float3 detailmap =    (xplaneDetailmap * indata.BlendValueAndFade.x) +
                                 (yplaneDetailmap * indata.BlendValueAndFade.y) +
                                 (zplaneDetailmap * indata.BlendValueAndFade.z);
 
-            scalar lowDetailmap = lerp(0.5, yplaneLowDetailmap.z, lowComponent.x * indata.FogAndFade2.y);
-            scalar mounten =    (xplaneLowDetailmap.y * indata.BlendValueAndFade.x) +
+            float lowDetailmap = lerp(0.5, yplaneLowDetailmap.z, lowComponent.x * indata.FogAndFade2.y);
+            float mounten =    (xplaneLowDetailmap.y * indata.BlendValueAndFade.x) +
                                 (yplaneLowDetailmap.x * indata.BlendValueAndFade.y) +
                                 (zplaneLowDetailmap.y * indata.BlendValueAndFade.z);
             lowDetailmap *= (4 * lerp(0.5, mounten, lowComponent.z));
 
-            vec3 bothDetailmap = detailmap * lowDetailmap;
-            vec3 detailout = lerp(2*bothDetailmap, lowDetailmap, indata.BlendValueAndFade.w);
+            float3 bothDetailmap = detailmap * lowDetailmap;
+            float3 detailout = lerp(2*bothDetailmap, lowDetailmap, indata.BlendValueAndFade.w);
         #else
-            vec3 yplaneDetailmap = tex2D(ssampler3Wrap, indata.Tex6.xy);
-            vec3 yplaneLowDetailmap = tex2D(ssampler4Wrap, indata.Tex5.xy);
+            float3 yplaneDetailmap = tex2D(ssampler3Wrap, indata.Tex6.xy);
+            float3 yplaneLowDetailmap = tex2D(ssampler4Wrap, indata.Tex5.xy);
 
-            scalar lowDetailmap = lerp(yplaneLowDetailmap.x, yplaneLowDetailmap.z, indata.BlendValueAndFade.y);
+            float lowDetailmap = lerp(yplaneLowDetailmap.x, yplaneLowDetailmap.z, indata.BlendValueAndFade.y);
 
             //tl: lerp optimized to handle 2*c*low + (2-2c)*detail, factors sent from vs
             //tl: dont use detail mountains
-            vec3 detailout = lowDetailmap*indata.BlendValueAndFade.x + lowDetailmap*yplaneDetailmap*indata.BlendValueAndFade.z;
+            float3 detailout = lowDetailmap*indata.BlendValueAndFade.x + lowDetailmap*yplaneDetailmap*indata.BlendValueAndFade.z;
         #endif
 
-        vec3 outColor = detailout * colormap * light * 2;
-        vec3 fogOutColor = lerp(FogColor, outColor, indata.FogAndFade2.x);
-        return vec4(chartcontrib * fogOutColor, chartcontrib);
+        float3 outColor = detailout * colormap * light * 2;
+        float3 fogOutColor = lerp(FogColor, outColor, indata.FogAndFade2.x);
+        return float4(chartcontrib * fogOutColor, chartcontrib);
     #endif
 }
 
@@ -264,24 +264,24 @@ Hi_VS2PS_FullDetailMounten Hi_VS_FullDetailMounten(Shared_APP2VS_Default indata)
 {
     Hi_VS2PS_FullDetailMounten outdata;
 
-    vec4 wPos;
+    float4 wPos;
     wPos.xz = (indata.Pos0.xy * vScaleTransXZ.xy) + vScaleTransXZ.zw;
     //tl: Trans is always 0, and MADs cost more than MULs in certain cards.
     wPos.yw = indata.Pos1.xw * vScaleTransY.xy;
 
     #if DEBUGTERRAIN
         outdata.Pos = mul(wPos, mViewProj);
-        outdata.Tex0 = vec4(0,0,0,0);
-        outdata.Tex1 = vec4(0,0,0,0);
-        outdata.BlendValueAndFade = vec4(0,0,0,0);
-        outdata.Tex3 = vec4(0,0,0,0);
-        outdata.Tex5.xy = vec2(0,0);
-        outdata.Tex6 = vec4(0,0,0,0);
-        outdata.FogAndFade2 = vec4(0,0,0,0);
+        outdata.Tex0 = float4(0,0,0,0);
+        outdata.Tex1 = float4(0,0,0,0);
+        outdata.BlendValueAndFade = float4(0,0,0,0);
+        outdata.Tex3 = float4(0,0,0,0);
+        outdata.Tex5.xy = float2(0,0);
+        outdata.Tex6 = float4(0,0,0,0);
+        outdata.FogAndFade2 = float4(0,0,0,0);
         return outdata;
     #endif
 
-    scalar yDelta, interpVal;
+    float yDelta, interpVal;
     geoMorphPosition(wPos, indata.MorphDelta, indata.Pos0.z, yDelta, interpVal);
 
     //tl: output HPos as early as possible.
@@ -290,10 +290,10 @@ Hi_VS2PS_FullDetailMounten Hi_VS_FullDetailMounten(Shared_APP2VS_Default indata)
     //tl: uncompress normal
     indata.Normal = indata.Normal * 2 - 1;
 
-    vec3 tex = vec3(indata.Pos0.y * vTexScale.z, wPos.y * vTexScale.y, indata.Pos0.x * vTexScale.x);
-    vec2 xPlaneTexCord = tex.xy;
-    vec2 yPlaneTexCord = tex.zx;
-    vec2 zPlaneTexCord = tex.zy;
+    float3 tex = float3(indata.Pos0.y * vTexScale.z, wPos.y * vTexScale.y, indata.Pos0.x * vTexScale.x);
+    float2 xPlaneTexCord = tex.xy;
+    float2 yPlaneTexCord = tex.zx;
+    float2 zPlaneTexCord = tex.zy;
 
     outdata.Tex0.xy = (yPlaneTexCord*vColorLightTex.x) + vColorLightTex.y;
     outdata.Tex7 = (yPlaneTexCord*vDetailTex.x) + vDetailTex.y;
@@ -320,13 +320,13 @@ Hi_VS2PS_FullDetailMounten Hi_VS_FullDetailMounten(Shared_APP2VS_Default indata)
         //tl: optimized so we can do more advanced lerp in same number of instructions
         //    factors are 2c and (2-2c) which equals a lerp()*2
         //    Don't use w, it's harder to access from ps1.4
-        //    outdata.BlendValueAndFade.xz = interpVal * vec2(2, -2) + vec2(0, 2);
-        outdata.BlendValueAndFade.xz = interpVal * vec2(1, -2) + vec2(1, 2);
+        //    outdata.BlendValueAndFade.xz = interpVal * float2(2, -2) + float2(0, 2);
+        outdata.BlendValueAndFade.xz = interpVal * float2(1, -2) + float2(1, 2);
     #endif
 
     #if HIGHTERRAIN
             outdata.BlendValueAndFade.xyz = saturate(abs(indata.Normal) - vBlendMod);
-            scalar tot = dot(1, outdata.BlendValueAndFade.xyz);
+            float tot = dot(1, outdata.BlendValueAndFade.xyz);
             outdata.BlendValueAndFade.xyz /= tot;
     #else
         //tl: use squared yNormal as blend val. pre-multiply with fade value.
@@ -343,69 +343,69 @@ Hi_VS2PS_FullDetailMounten Hi_VS_FullDetailMounten(Shared_APP2VS_Default indata)
 
 struct Hi_VS2PS_FullDetailWithEnvMap
 {
-    vec4	Pos : POSITION;
-    vec4	Tex0 : TEXCOORD0;
-    vec4	Tex1 : TEXCOORD1;
-    vec4	Tex3 : TEXCOORD3;
-    vec4	BlendValueAndFade : COLOR0;
-    vec3	Tex5 : TEXCOORD2;
-    vec2	Tex6 : TEXCOORD5;
-    vec3	EnvMap : TEXCOORD4;
-    vec4	FogAndFade2 : COLOR1;
+    float4	Pos : POSITION;
+    float4	Tex0 : TEXCOORD0;
+    float4	Tex1 : TEXCOORD1;
+    float4	Tex3 : TEXCOORD3;
+    float4	BlendValueAndFade : COLOR0;
+    float3	Tex5 : TEXCOORD2;
+    float2	Tex6 : TEXCOORD5;
+    float3	EnvMap : TEXCOORD4;
+    float4	FogAndFade2 : COLOR1;
 };
 
-vec4 Hi_PS_FullDetailWithEnvMap(Hi_VS2PS_FullDetailWithEnvMap indata) : COLOR
+float4 Hi_PS_FullDetailWithEnvMap(Hi_VS2PS_FullDetailWithEnvMap indata) : COLOR
 {
     #if LIGHTONLY
-        vec4 accumlights = tex2Dproj(sampler1ClampPoint, indata.Tex1);
-        vec4 light = 2 * accumlights.w * vSunColor + accumlights;
-        vec4 component = tex2D(sampler2Clamp, indata.Tex0.xy);
-        scalar chartcontrib = dot(vComponentsel, component);
+        float4 accumlights = tex2Dproj(sampler1ClampPoint, indata.Tex1);
+        float4 light = 2 * accumlights.w * vSunColor + accumlights;
+        float4 component = tex2D(sampler2Clamp, indata.Tex0.xy);
+        float chartcontrib = dot(vComponentsel, component);
         return chartcontrib*light;
     #else
         #if DEBUGTERRAIN
-            return vec4(0,1,0,1);
+            return float4(0,1,0,1);
         #endif
-        vec3 colormap = tex2D(sampler0Clamp, indata.Tex0.xy);
+        float3 colormap = tex2D(sampler0Clamp, indata.Tex0.xy);
 
-        vec4 accumlights = tex2Dproj(sampler1Clamp, indata.Tex1);
+        float4 accumlights = tex2Dproj(sampler1Clamp, indata.Tex1);
 
         //tl: 2* moved later in shader to avoid clamping at -+2.0 in ps1.4
-        vec3 light = 2*accumlights.w * vSunColor.rgb + accumlights.rgb;
+        float3 light = 2*accumlights.w * vSunColor.rgb + accumlights.rgb;
 
-        vec4 component = tex2D(sampler2Clamp, indata.Tex6);
-        scalar chartcontrib = dot(vComponentsel, component);
-        vec4 detailmap = tex2D(dsampler3Wrap, indata.Tex3.xy);
+        float4 component = tex2D(sampler2Clamp, indata.Tex6);
+        float chartcontrib = dot(vComponentsel, component);
+        float4 detailmap = tex2D(dsampler3Wrap, indata.Tex3.xy);
 
         #if HIGHTERRAIN
-            vec4 lowComponent = tex2D(sampler5Clamp, indata.Tex6);
-            vec4 yplaneLowDetailmap = tex2D(sampler4Wrap, indata.Tex5.xy);
-            vec4 xplaneLowDetailmap = tex2D(sampler4Wrap, indata.Tex3.xy);
-            vec4 zplaneLowDetailmap = tex2D(sampler4Wrap, indata.Tex0.wz);
-            scalar lowDetailmap = lerp(0.5, yplaneLowDetailmap.z, lowComponent.x*indata.FogAndFade2.y);
+            float4 lowComponent = tex2D(sampler5Clamp, indata.Tex6);
+            float4 yplaneLowDetailmap = tex2D(sampler4Wrap, indata.Tex5.xy);
+            float4 xplaneLowDetailmap = tex2D(sampler4Wrap, indata.Tex3.xy);
+            float4 zplaneLowDetailmap = tex2D(sampler4Wrap, indata.Tex0.wz);
+            float lowDetailmap = lerp(0.5, yplaneLowDetailmap.z, lowComponent.x*indata.FogAndFade2.y);
         #else
-            vec4 yplaneLowDetailmap = tex2D(ssampler4Wrap, indata.Tex5.xy);
+            float4 yplaneLowDetailmap = tex2D(ssampler4Wrap, indata.Tex5.xy);
 
             //tl: do lerp in 1 MAD by precalculating constant factor in vShader
-            scalar lowDetailmap = 2*yplaneLowDetailmap.z * indata.BlendValueAndFade.y + indata.FogAndFade2.z;
+            float lowDetailmap = 2*yplaneLowDetailmap.z * indata.BlendValueAndFade.y + indata.FogAndFade2.z;
         #endif
 
         #if HIGHTERRAIN
-            scalar mounten =	(xplaneLowDetailmap.y * indata.BlendValueAndFade.x) +
+            float mounten =	(xplaneLowDetailmap.y * indata.BlendValueAndFade.x) +
                                 (yplaneLowDetailmap.x * indata.BlendValueAndFade.y) +
                                 (zplaneLowDetailmap.y * indata.BlendValueAndFade.z)	;
 
             lowDetailmap *= (4 * lerp(0.5, mounten, lowComponent.z));
-            vec3 bothDetailmap = detailmap * lowDetailmap;
-            vec3 detailout = lerp(2*bothDetailmap, lowDetailmap, indata.BlendValueAndFade.w);
+            float3 bothDetailmap = detailmap * lowDetailmap;
+            float3 detailout = lerp(2*bothDetailmap, lowDetailmap, indata.BlendValueAndFade.w);
         #else
             //tl: lerp optimized to handle 2*c*low + (2-2c)*detail, factors sent from vs
-            vec3 detailout = lowDetailmap*indata.BlendValueAndFade.x + 2*detailmap*indata.BlendValueAndFade.z;
+            float3 detailout = lowDetailmap*indata.BlendValueAndFade.x + 2*detailmap*indata.BlendValueAndFade.z;
         #endif
 
-        vec3 outColor = detailout * colormap * light;
+        float3 outColor = detailout * colormap * light;
 
-        vec4 envmapColor = texCUBE(sampler6Cube, indata.EnvMap);
+        float4 envmapColor = texCUBE(sampler6Cube, indata.EnvMap);
         #if HIGHTERRAIN
             outColor = lerp(outColor, envmapColor, detailmap.w * (1-indata.BlendValueAndFade.w)) * 2;
         #else
@@ -413,7 +413,7 @@ vec4 Hi_PS_FullDetailWithEnvMap(Hi_VS2PS_FullDetailWithEnvMap indata) : COLOR
         #endif
 
         outColor = lerp(FogColor, outColor, indata.FogAndFade2.x);
-        return vec4(chartcontrib * outColor, chartcontrib);
+        return float4(chartcontrib * outColor, chartcontrib);
     #endif
 }
 
@@ -421,23 +421,23 @@ Hi_VS2PS_FullDetailWithEnvMap Hi_VS_FullDetailWithEnvMap(Shared_APP2VS_Default i
 {
     Hi_VS2PS_FullDetailWithEnvMap outdata = (Hi_VS2PS_FullDetailWithEnvMap)0;
 
-    vec4 wPos;
+    float4 wPos;
     wPos.xz = (indata.Pos0.xy * vScaleTransXZ.xy) + vScaleTransXZ.zw;
     wPos.yw = (indata.Pos1.xw * vScaleTransY.xy);// + vScaleTransY.zw;
 
     #if DEBUGTERRAIN
         outdata.Pos = mul(wPos, mViewProj);
-        outdata.Tex0 = vec4(0,0,0,0);
-        outdata.Tex1 = vec4(0,0,0,0);
-        outdata.BlendValueAndFade = vec4(0,0,0,0);
-        outdata.Tex3 = vec4(0,0,0,0);
-        outdata.Tex5.xy = vec2(0,0);
-        outdata.EnvMap = vec3(0,0,0);
-        outdata.FogAndFade2 = vec4(0,0,0,0);
+        outdata.Tex0 = float4(0,0,0,0);
+        outdata.Tex1 = float4(0,0,0,0);
+        outdata.BlendValueAndFade = float4(0,0,0,0);
+        outdata.Tex3 = float4(0,0,0,0);
+        outdata.Tex5.xy = float2(0,0);
+        outdata.EnvMap = float3(0,0,0);
+        outdata.FogAndFade2 = float4(0,0,0,0);
         return outdata;
     #endif
 
-    scalar yDelta, interpVal;
+    float yDelta, interpVal;
     geoMorphPosition(wPos, indata.MorphDelta, indata.Pos0.z, yDelta, interpVal);
 
     //tl: output HPos as early as possible.
@@ -446,11 +446,11 @@ Hi_VS2PS_FullDetailWithEnvMap Hi_VS_FullDetailWithEnvMap(Shared_APP2VS_Default i
     //tl: uncompress normal
     indata.Normal = indata.Normal * 2 - 1;
 
-    vec3 tex = vec3(indata.Pos0.y * vTexScale.z, wPos.y * vTexScale.y, indata.Pos0.x * vTexScale.x);
-    vec2 yPlaneTexCord = tex.zx;
+    float3 tex = float3(indata.Pos0.y * vTexScale.z, wPos.y * vTexScale.y, indata.Pos0.x * vTexScale.x);
+    float2 yPlaneTexCord = tex.zx;
     #if HIGHTERRAIN
-        vec2 xPlaneTexCord = tex.xy;
-        vec2 zPlaneTexCord = tex.zy;
+        float2 xPlaneTexCord = tex.xy;
+        float2 zPlaneTexCord = tex.zy;
     #endif
 
     outdata.Tex0.xy = (yPlaneTexCord*vColorLightTex.x) + vColorLightTex.y;
@@ -477,12 +477,12 @@ Hi_VS2PS_FullDetailWithEnvMap Hi_VS_FullDetailWithEnvMap(Shared_APP2VS_Default i
         //tl: optimized so we can do more advanced lerp in same number of instructions
         //    factors are 2c and (2-2c) which equals a lerp()*2
         //    Don't use w, it's harder to access from ps1.4
-        outdata.BlendValueAndFade.xz = interpVal * vec2(2, -2) + vec2(0, 2);
+        outdata.BlendValueAndFade.xz = interpVal * float2(2, -2) + float2(0, 2);
     #endif
 
     #if HIGHTERRAIN
         outdata.BlendValueAndFade.xyz = saturate(abs(indata.Normal) - vBlendMod);
-        scalar tot = dot(1, outdata.BlendValueAndFade.xyz);
+        float tot = dot(1, outdata.BlendValueAndFade.xyz);
         outdata.BlendValueAndFade.xyz /= tot;
     #elif MIDTERRAIN
         //tl: use squared yNormal as blend val. pre-multiply with fade value.
@@ -497,7 +497,7 @@ Hi_VS2PS_FullDetailWithEnvMap Hi_VS_FullDetailWithEnvMap(Shared_APP2VS_Default i
     // Environment map
     // tl: no need to normalize, reflection works with long vectors,
     //     and cube maps auto-normalize.
-    outdata.EnvMap = reflect(wPos.xyz - vCamerapos.xyz, vec3(0,1,0));
+    outdata.EnvMap = reflect(wPos.xyz - vCamerapos.xyz, float3(0,1,0));
 
     return outdata;
 }
@@ -511,26 +511,26 @@ Hi_VS2PS_FullDetailWithEnvMap Hi_VS_FullDetailWithEnvMap(Shared_APP2VS_Default i
 
 struct Hi_VS2PS_PerPixelPointLight
 {
-    vec4 Pos    : POSITION;
-    vec3 wPos   : TEXCOORD0;
-    vec3 Normal : TEXCOORD1;
+    float4 Pos    : POSITION;
+    float3 wPos   : TEXCOORD0;
+    float3 Normal : TEXCOORD1;
 };
 
-vec4 Hi_PS_PerPixelPointLight(Hi_VS2PS_PerPixelPointLight indata) : COLOR
+float4 Hi_PS_PerPixelPointLight(Hi_VS2PS_PerPixelPointLight indata) : COLOR
 {
-    return vec4(calcPVPointTerrain(indata.wPos, indata.Normal), 0) * 0.5;
+    return float4(calcPVPointTerrain(indata.wPos, indata.Normal), 0) * 0.5;
 }
 
 Hi_VS2PS_PerPixelPointLight Hi_VS_PerPixelPointLight(Shared_APP2VS_Default indata)
 {
     Hi_VS2PS_PerPixelPointLight outdata;
 
-    vec4 wPos;
+    float4 wPos;
     wPos.xz = (indata.Pos0.xy * vScaleTransXZ.xy) + vScaleTransXZ.zw;
     //tl: Trans is always 0, and MADs cost more than MULs in certain cards.
     wPos.yw = indata.Pos1.xw * vScaleTransY.xy;
 
-    scalar yDelta, interpVal;
+    float yDelta, interpVal;
     geoMorphPosition(wPos, indata.MorphDelta, indata.Pos0.z, yDelta, interpVal);
 
     //tl: output HPos as early as possible.
@@ -546,13 +546,13 @@ Hi_VS2PS_PerPixelPointLight Hi_VS_PerPixelPointLight(Shared_APP2VS_Default indat
 }
 
 
-vec4 Hi_PS_DirectionalLightShadows(Shared_VS2PS_DirectionalLightShadows indata) : COLOR
+float4 Hi_PS_DirectionalLightShadows(Shared_VS2PS_DirectionalLightShadows indata) : COLOR
 {
-    vec4 lightmap = tex2D(sampler0Clamp, indata.Tex0);
+    float4 lightmap = tex2D(sampler0Clamp, indata.Tex0);
 
-    vec4 avgShadowValue = getShadowFactor(ShadowMapSampler, indata.ShadowTex);
+    float4 avgShadowValue = getShadowFactor(ShadowMapSampler, indata.ShadowTex);
 
-    vec4 light = saturate(lightmap.z * vGIColor * 2.0) * 0.5;
+    float4 light = saturate(lightmap.z * vGIColor * 2.0) * 0.5;
     if (avgShadowValue.z < lightmap.y)
         light.w = avgShadowValue.z;
     else

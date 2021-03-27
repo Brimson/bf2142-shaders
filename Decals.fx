@@ -2,17 +2,17 @@
 #include "shaders/RaCommon.fx"
 
 // UNIFORM INPUTS
-mat4x4 worldViewProjection : WorldViewProjection;
-mat4x3 instanceTransformations[10]: InstanceTransformations;
-mat4x4 shadowTransformations[10] : ShadowTransformations;
-vec4 shadowViewPortMaps[10] : ShadowViewPortMaps;
+float4x4 worldViewProjection : WorldViewProjection;
+float4x3 instanceTransformations[10]: InstanceTransformations;
+float4x4 shadowTransformations[10] : ShadowTransformations;
+float4 shadowViewPortMaps[10] : ShadowViewPortMaps;
 
-vec4 ambientColor : AmbientColor;
-vec4 sunColor : SunColor;
-vec4 sunDirection : SunDirection;
-vec4 worldCamPos : WorldCamPos;
+float4 ambientColor : AmbientColor;
+float4 sunColor : SunColor;
+float4 sunDirection : SunDirection;
+float4 worldCamPos : WorldCamPos;
 
-vec2 decalFadeDistanceAndInterval : DecalFadeDistanceAndInterval = vec2(100.f, 30.f);
+float2 decalFadeDistanceAndInterval : DecalFadeDistanceAndInterval = float2(100.f, 30.f);
 
 texture texture0: TEXLAYER0;
 texture texture1: HemiMapTexture;
@@ -52,22 +52,22 @@ sampler sampler2 = sampler_state
 
 struct appdata
 {
-    vec4 Pos                            : POSITION;
-    vec4 Normal                         : NORMAL;
-    vec4 Tangent                        : TANGENT;
-    vec4 Binormal                       : BINORMAL;
-    vec4 Color                          : COLOR;
-    vec4 TexCoordsInstanceIndexAndAlpha : TEXCOORD0;
+    float4 Pos                            : POSITION;
+    float4 Normal                         : NORMAL;
+    float4 Tangent                        : TANGENT;
+    float4 Binormal                       : BINORMAL;
+    float4 Color                          : COLOR;
+    float4 TexCoordsInstanceIndexAndAlpha : TEXCOORD0;
 };
 
 struct OUT_vsDecal
 {
-    vec4 HPos     : POSITION;
-    vec2 Texture0 : TEXCOORD0;
-    vec3 Color    : TEXCOORD1;
-    vec3 Diffuse  : TEXCOORD2;
-    vec4 Alpha    : COLOR0;
-    scalar Fog    : FOG;
+    float4 HPos     : POSITION;
+    float2 Texture0 : TEXCOORD0;
+    float3 Color    : TEXCOORD1;
+    float3 Diffuse  : TEXCOORD2;
+    float4 Alpha    : COLOR0;
+    float Fog    : FOG;
 };
 
 OUT_vsDecal vsDecal(appdata input)
@@ -76,13 +76,13 @@ OUT_vsDecal vsDecal(appdata input)
 
     int index = input.TexCoordsInstanceIndexAndAlpha.z;
 
-    vec3 Pos = mul(input.Pos, instanceTransformations[index]);
-    Out.HPos = mul(vec4(Pos.xyz, 1.0f), worldViewProjection);
+    float3 Pos = mul(input.Pos, instanceTransformations[index]);
+    Out.HPos = mul(float4(Pos.xyz, 1.0f), worldViewProjection);
 
-    vec3 worldNorm = mul(input.Normal.xyz, (mat3x3)instanceTransformations[index]);
+    float3 worldNorm = mul(input.Normal.xyz, (float3x3)instanceTransformations[index]);
     Out.Diffuse = saturate(dot(worldNorm, -sunDirection)) * sunColor;
 
-    scalar alpha = 1.0f - saturate((Out.HPos.z - decalFadeDistanceAndInterval.x) / decalFadeDistanceAndInterval.y);
+    float alpha = 1.0f - saturate((Out.HPos.z - decalFadeDistanceAndInterval.x) / decalFadeDistanceAndInterval.y);
     alpha *= input.TexCoordsInstanceIndexAndAlpha.w;
     Out.Alpha = alpha;
     Out.Color = input.Color;
@@ -94,10 +94,10 @@ OUT_vsDecal vsDecal(appdata input)
     return Out;
 }
 
-vec4 psDecal(OUT_vsDecal indata) : COLOR
+float4 psDecal(OUT_vsDecal indata) : COLOR
 {
-    vec3 lighting =  ambientColor + indata.Diffuse;
-    vec4 outColor = tex2D(sampler0, indata.Texture0);
+    float3 lighting =  ambientColor + indata.Diffuse;
+    float4 outColor = tex2D(sampler0, indata.Texture0);
 
     outColor.rgb *= indata.Color * lighting;
     outColor.a *= indata.Alpha;
@@ -108,26 +108,26 @@ vec4 psDecal(OUT_vsDecal indata) : COLOR
 
 struct OUT_vsDecalShadowed
 {
-    vec4 HPos        : POSITION;
-    vec2 Texture0    : TEXCOORD0;
-    vec4 TexShadow   : TEXCOORD1;
-    vec4 ViewPortMap : TEXCOORD2;
-    vec3 Color       : TEXCOORD3;
-    vec3 Diffuse     : TEXCOORD4;
-    vec4 Alpha       : COLOR0;
-    scalar Fog       : FOG;
+    float4 HPos        : POSITION;
+    float2 Texture0    : TEXCOORD0;
+    float4 TexShadow   : TEXCOORD1;
+    float4 ViewPortMap : TEXCOORD2;
+    float3 Color       : TEXCOORD3;
+    float3 Diffuse     : TEXCOORD4;
+    float4 Alpha       : COLOR0;
+    float Fog       : FOG;
 };
 
 struct OUT_vsDecalNormalMapped
 {
-    vec4 HPos       : POSITION;
-    vec2 Texture0   : TEXCOORD0;
-    vec3 TanHalfVec : TEXCOORD1;
-    vec3 TanSunDir  : TEXCOORD2;
-    vec3 TanEyeVec  : TEXCOORD4;
-    vec3 Color      : TEXCOORD3;
-    vec4 Alpha      : COLOR0;
-    scalar Fog      : FOG;
+    float4 HPos       : POSITION;
+    float2 Texture0   : TEXCOORD0;
+    float3 TanHalfVec : TEXCOORD1;
+    float3 TanSunDir  : TEXCOORD2;
+    float3 TanEyeVec  : TEXCOORD4;
+    float3 Color      : TEXCOORD3;
+    float4 Alpha      : COLOR0;
+    float Fog      : FOG;
 };
 
 OUT_vsDecalShadowed vsDecalShadowed(appdata input)
@@ -136,14 +136,14 @@ OUT_vsDecalShadowed vsDecalShadowed(appdata input)
 
     int index = input.TexCoordsInstanceIndexAndAlpha.z;
 
-    vec3 Pos = mul(input.Pos, instanceTransformations[index]);
-    Out.HPos = mul(vec4(Pos.xyz, 1.0f), worldViewProjection);
+    float3 Pos = mul(input.Pos, instanceTransformations[index]);
+    Out.HPos = mul(float4(Pos.xyz, 1.0f), worldViewProjection);
 
-    vec3 worldNorm = mul(input.Normal.xyz, (mat3x3)instanceTransformations[index]);
+    float3 worldNorm = mul(input.Normal.xyz, (float3x3)instanceTransformations[index]);
     Out.Diffuse = saturate(dot(worldNorm, -sunDirection)) * sunColor;
 
-    vec3 color = input.Color;
-    scalar alpha = 1.0f - saturate((Out.HPos.z - decalFadeDistanceAndInterval.x)/decalFadeDistanceAndInterval.y);
+    float3 color = input.Color;
+    float alpha = 1.0f - saturate((Out.HPos.z - decalFadeDistanceAndInterval.x)/decalFadeDistanceAndInterval.y);
     alpha *= input.TexCoordsInstanceIndexAndAlpha.w;
 
     Out.Alpha = alpha;
@@ -163,32 +163,32 @@ OUT_vsDecalNormalMapped vsDecalNormalMapped(appdata input)
 
     int index = input.TexCoordsInstanceIndexAndAlpha.z;
 
-    vec3 Pos = mul(input.Pos, instanceTransformations[index]);
-    vec3 Tan = normalize(mul(input.Tangent.xyz, (mat3x3)instanceTransformations[index]));
-    vec3 Binormal = normalize(mul(-input.Binormal.xyz, (mat3x3)instanceTransformations[index]));
-    vec3 worldNorm = normalize(mul(input.Normal.xyz, (mat3x3)instanceTransformations[index]));
-    Out.HPos = mul(vec4(Pos.xyz, 1.0f), worldViewProjection);
+    float3 Pos = mul(input.Pos, instanceTransformations[index]);
+    float3 Tan = normalize(mul(input.Tangent.xyz, (float3x3)instanceTransformations[index]));
+    float3 Binormal = normalize(mul(-input.Binormal.xyz, (float3x3)instanceTransformations[index]));
+    float3 worldNorm = normalize(mul(input.Normal.xyz, (float3x3)instanceTransformations[index]));
+    Out.HPos = mul(float4(Pos.xyz, 1.0f), worldViewProjection);
 
     float3x3 worldTanMatrix = float3x3(input.Tangent.xyz, -input.Binormal.xyz, input.Normal.xyz);
 
-    vec3 sunDir = mul(-sunDirection, instanceTransformations[index]);
+    float3 sunDir = mul(-sunDirection, instanceTransformations[index]);
 
-    mat3x3 worldI = transpose(mul(worldTanMatrix, instanceTransformations[index]));
+    float3x3 worldI = transpose(mul(worldTanMatrix, instanceTransformations[index]));
 
-    scalar alpha = 1.0f - saturate((Out.HPos.z - decalFadeDistanceAndInterval.x)/decalFadeDistanceAndInterval.y);
+    float alpha = 1.0f - saturate((Out.HPos.z - decalFadeDistanceAndInterval.x)/decalFadeDistanceAndInterval.y);
     alpha *= input.TexCoordsInstanceIndexAndAlpha.w;
     Out.Alpha = alpha;
 
     Out.Color = input.Color;
     Out.TanSunDir = normalize(mul(-sunDirection, worldI));
 
-    vec3 centerPos = mul(Pos.xyz, instanceTransformations[index]);
-    vec3 centerEyeVec = normalize(mul((worldCamPos - centerPos), worldI));
+    float3 centerPos = mul(Pos.xyz, instanceTransformations[index]);
+    float3 centerEyeVec = normalize(mul((worldCamPos - centerPos), worldI));
 
-    vec3 tanEyeVec = normalize(mul((worldCamPos - Pos), worldI));
+    float3 tanEyeVec = normalize(mul((worldCamPos - Pos), worldI));
     Out.TanEyeVec = tanEyeVec;
 
-    vec3 halfVec = normalize(Out.TanSunDir + tanEyeVec);
+    float3 halfVec = normalize(Out.TanSunDir + tanEyeVec);
     Out.TanHalfVec = halfVec;
 
     Out.Texture0 = input.TexCoordsInstanceIndexAndAlpha.xy;
@@ -197,30 +197,30 @@ OUT_vsDecalNormalMapped vsDecalNormalMapped(appdata input)
     return Out;
 }
 
-vec4 psDecalShadowed(	OUT_vsDecalShadowed indata) : COLOR
+float4 psDecalShadowed(	OUT_vsDecalShadowed indata) : COLOR
 {
-    scalar dirShadow = 1.0;
-    vec4 outColor = tex2D(sampler0, indata.Texture0);
+    float dirShadow = 1.0;
+    float4 outColor = tex2D(sampler0, indata.Texture0);
     outColor.rgb *=  indata.Color;
     outColor.a *= indata.Alpha;
-    vec3 lighting = ambientColor.rgb + indata.Diffuse * dirShadow;
+    float3 lighting = ambientColor.rgb + indata.Diffuse * dirShadow;
     outColor.rgb *= lighting;
     return outColor;
 }
 
-vec4 psDecalNormalMapped(	OUT_vsDecalNormalMapped indata) : COLOR
+float4 psDecalNormalMapped(	OUT_vsDecalNormalMapped indata) : COLOR
 {
-    vec2 newTexCoord = indata.Texture0;
-    vec4 norm = tex2D(sampler2, vec2(newTexCoord.x, newTexCoord.y));
+    float2 newTexCoord = indata.Texture0;
+    float4 norm = tex2D(sampler2, float2(newTexCoord.x, newTexCoord.y));
     norm.rgb = normalize((norm.rgb * 2.0) - 1.0);
-    vec3 sun = normalize(vec3(indata.TanSunDir.x, -indata.TanSunDir.y, indata.TanSunDir.z));
+    float3 sun = normalize(float3(indata.TanSunDir.x, -indata.TanSunDir.y, indata.TanSunDir.z));
     float light = saturate(dot(norm.rgb, sun));
-    float spec = saturate(dot(norm.rgb, normalize(vec3(indata.TanHalfVec.x, -indata.TanHalfVec.y, indata.TanHalfVec.z))));
+    float spec = saturate(dot(norm.rgb, normalize(float3(indata.TanHalfVec.x, -indata.TanHalfVec.y, indata.TanHalfVec.z))));
     spec *= spec * spec;
 
-    vec4 outColor = tex2D(sampler0, newTexCoord);
+    float4 outColor = tex2D(sampler0, newTexCoord);
 
-    vec4 finalColor = outColor;
+    float4 finalColor = outColor;
     finalColor.a *= indata.Alpha;
     finalColor.rgb *= (ambientColor.rgb + light * sunColor.rgb + spec*norm.a);
     return finalColor;

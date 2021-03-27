@@ -35,30 +35,30 @@ string InstanceParameters[] = {
 
 struct BMVariableVSInput
 {
-    vec4 Pos            : POSITION;
-    vec3 Normal         : NORMAL;
-    vec4 BlendIndices   : BLENDINDICES;
-    vec2 TexDiffuse     : TEXCOORD0;
-    vec2 TexUVRotCenter : TEXCOORD1;
-    vec3 Tan            : TANGENT;
+    float4 Pos            : POSITION;
+    float3 Normal         : NORMAL;
+    float4 BlendIndices   : BLENDINDICES;
+    float2 TexDiffuse     : TEXCOORD0;
+    float2 TexUVRotCenter : TEXCOORD1;
+    float3 Tan            : TANGENT;
 };
 
 struct BMVariableVSOutput
 {
-    vec4 HPos : POSITION;
+    float4 HPos : POSITION;
 };
 
-mat4x3 getSkinnedWorldMatrix(BMVariableVSInput input)
+float4x3 getSkinnedWorldMatrix(BMVariableVSInput input)
 {
     int4 IndexVector = D3DCOLORtoUBYTE4(input.BlendIndices);
     int IndexArray[4] = (int[4])IndexVector;
     return GeomBones[IndexArray[0]];
 }
 
-vec4 getWorldPos(BMVariableVSInput input)
+float4 getWorldPos(BMVariableVSInput input)
 {
-    vec4 unpackedPos = input.Pos * PosUnpack;
-    return vec4(mul(unpackedPos, getSkinnedWorldMatrix(input)), 1.0);
+    float4 unpackedPos = input.Pos * PosUnpack;
+    return float4(mul(unpackedPos, getSkinnedWorldMatrix(input)), 1.0);
 }
 
 BMVariableVSOutput vs(BMVariableVSInput input)

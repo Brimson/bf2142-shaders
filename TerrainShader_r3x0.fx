@@ -4,20 +4,20 @@
 
 struct APP2VS_vsDx9_zFill
 {
-    vec4 Pos0       : POSITION0;
-    vec4 Pos1       : POSITION1;
-    vec4 MorphDelta : POSITION2;
+    float4 Pos0       : POSITION0;
+    float4 Pos1       : POSITION1;
+    float4 MorphDelta : POSITION2;
 };
 
-vec4 vsDx9_zFill(APP2VS_vsDx9_zFill indata) : POSITION
+float4 vsDx9_zFill(APP2VS_vsDx9_zFill indata) : POSITION
 {
-    vec4 wPos;
+    float4 wPos;
     wPos.xz = (indata.Pos0.xy * vScaleTransXZ.xy) + vScaleTransXZ.zw;
     wPos.yw = (indata.Pos1.xw * vScaleTransY.xy) + vScaleTransY.zw;
 
-    scalar cameraDist = length(wPos.xz - vCamerapos.xz) + vCamerapos.w;
-    scalar interpVal = saturate(cameraDist * vNearFarMorphLimits.x - vNearFarMorphLimits.y);
-    scalar yDelta = dot(vMorphDeltaSelector, indata.MorphDelta) * interpVal;
+    float cameraDist = length(wPos.xz - vCamerapos.xz) + vCamerapos.w;
+    float interpVal = saturate(cameraDist * vNearFarMorphLimits.x - vNearFarMorphLimits.y);
+    float yDelta = dot(vMorphDeltaSelector, indata.MorphDelta) * interpVal;
     wPos.y -= yDelta * vScaleTransY.x;
 
     return mul(wPos, mViewProj);
@@ -25,55 +25,55 @@ vec4 vsDx9_zFill(APP2VS_vsDx9_zFill indata) : POSITION
 
 struct APP2VS_detailDiffuse
 {
-    vec4 Pos0       : POSITION0;
-    vec4 Pos1       : POSITION1;
-    vec4 MorphDelta : POSITION2;
-    vec2 TexCoord0  : TEXCOORD0;
-    vec3 Normal     : NORMAL;
+    float4 Pos0       : POSITION0;
+    float4 Pos1       : POSITION1;
+    float4 MorphDelta : POSITION2;
+    float2 TexCoord0  : TEXCOORD0;
+    float3 Normal     : NORMAL;
 };
 
 struct VS2PS_vsDx9_detailDiffuse
 {
-    vec4 Pos               : POSITION;
-    vec4 Tex0              : TEXCOORD0;
-    vec2 Tex2              : TEXCOORD2;
-    vec4 BlendValueAndFade : COLOR0;
-    vec4 Tex3              : TEXCOORD3;
+    float4 Pos               : POSITION;
+    float4 Tex0              : TEXCOORD0;
+    float2 Tex2              : TEXCOORD2;
+    float4 BlendValueAndFade : COLOR0;
+    float4 Tex3              : TEXCOORD3;
 };
 
-vec4 psDx9_detailDiffuse(VS2PS_vsDx9_detailDiffuse indata) : COLOR
+float4 psDx9_detailDiffuse(VS2PS_vsDx9_detailDiffuse indata) : COLOR
 {
     #ifndef USE_PLANE_MAPPING
-        vec4 colormap = tex2D(sampler0Clamp, indata.Tex0.xy);
-        vec4 component = tex2D(sampler1Clamp, indata.Tex0.xy);
-        vec4 detailmap = 2.0 * tex2D(sampler2Wrap, indata.Tex1.zw);
-        vec4 lowDetailmap = 2.0 * tex2D(sampler3Wrap, indata.Tex2);
+        float4 colormap = tex2D(sampler0Clamp, indata.Tex0.xy);
+        float4 component = tex2D(sampler1Clamp, indata.Tex0.xy);
+        float4 detailmap = 2.0 * tex2D(sampler2Wrap, indata.Tex1.zw);
+        float4 lowDetailmap = 2.0 * tex2D(sampler3Wrap, indata.Tex2);
 
-        scalar chartcontrib = dot(vComponentsel, component);
-        vec4 detailout = ((detailmap * (1-indata.BlendValueAndFade.w)) + (lowDetailmap.z * indata.BlendValueAndFade.w));
+        float chartcontrib = dot(vComponentsel, component);
+        float4 detailout = ((detailmap * (1-indata.BlendValueAndFade.w)) + (lowDetailmap.z * indata.BlendValueAndFade.w));
         return chartcontrib * detailout * colormap;
 
     #else
 
-        vec4 colormap = tex2D(sampler0Clamp, indata.Tex0.xy);
-        vec4 component = tex2D(sampler1Clamp, indata.Tex0.xy);
-        vec4 lowComponent = tex2D(sampler4Clamp, indata.Tex0.xy);
-        vec4 detailmap = tex2D(sampler2Wrap, indata.Tex0.zw);
-        vec4 yplaneLowDetailmap = 2*tex2D(sampler3Wrap, indata.Tex2);
-        vec4 xplaneLowDetailmap = 2*tex2D(sampler3Wrap, indata.Tex3.xy);
-        vec4 zplaneLowDetailmap = 2*tex2D(sampler3Wrap, indata.Tex3.zw);
-        vec3 blendValue = indata.BlendValueAndFade.xyz;
+        float4 colormap = tex2D(sampler0Clamp, indata.Tex0.xy);
+        float4 component = tex2D(sampler1Clamp, indata.Tex0.xy);
+        float4 lowComponent = tex2D(sampler4Clamp, indata.Tex0.xy);
+        float4 detailmap = tex2D(sampler2Wrap, indata.Tex0.zw);
+        float4 yplaneLowDetailmap = 2*tex2D(sampler3Wrap, indata.Tex2);
+        float4 xplaneLowDetailmap = 2*tex2D(sampler3Wrap, indata.Tex3.xy);
+        float4 zplaneLowDetailmap = 2*tex2D(sampler3Wrap, indata.Tex3.zw);
+        float3 blendValue = indata.BlendValueAndFade.xyz;
 
-        scalar chartcontrib = dot(vComponentsel, component);
+        float chartcontrib = dot(vComponentsel, component);
 
-        scalar color = lerp(1, yplaneLowDetailmap.z, saturate(lowComponent.x+lowComponent.y));
-        scalar totBlendValue = dot(blendValue.xyz, 1.0);
-        scalar blue = (xplaneLowDetailmap.y * blendValue.x/totBlendValue) + (yplaneLowDetailmap.x * blendValue.y/totBlendValue) + (zplaneLowDetailmap.y * blendValue.z/totBlendValue);
+        float color = lerp(1, yplaneLowDetailmap.z, saturate(lowComponent.x+lowComponent.y));
+        float totBlendValue = dot(blendValue.xyz, 1.0);
+        float blue = (xplaneLowDetailmap.y * blendValue.x/totBlendValue) + (yplaneLowDetailmap.x * blendValue.y/totBlendValue) + (zplaneLowDetailmap.y * blendValue.z/totBlendValue);
         color *= lerp(1, blue, lowComponent.z);
 
-        vec4 lowDetailmap = color;
-        vec4 bothDetailmap = detailmap * lowDetailmap;
-        vec4 detailout = 2 * lerp(bothDetailmap, 0.5 * lowDetailmap, indata.BlendValueAndFade.w);
+        float4 lowDetailmap = color;
+        float4 bothDetailmap = detailmap * lowDetailmap;
+        float4 detailout = 2 * lerp(bothDetailmap, 0.5 * lowDetailmap, indata.BlendValueAndFade.w);
 
         return chartcontrib * detailout * colormap;
     #endif
@@ -83,13 +83,13 @@ VS2PS_vsDx9_detailDiffuse vsDx9_detailDiffuse(APP2VS_detailDiffuse indata)
 {
     VS2PS_vsDx9_detailDiffuse outdata;
 
-    vec4 wPos;
+    float4 wPos;
     wPos.xz = (indata.Pos0.xy * vScaleTransXZ.xy) + vScaleTransXZ.zw;
     wPos.yw = (indata.Pos1.xw * vScaleTransY.xy) + vScaleTransY.zw;
 
-    scalar cameraDist = length(wPos.xz - vCamerapos.xz) + vCamerapos.w;
-    scalar interpVal = saturate(cameraDist * vNearFarMorphLimits.x - vNearFarMorphLimits.y);
-    scalar yDelta = dot(vMorphDeltaSelector, indata.MorphDelta) * interpVal;
+    float cameraDist = length(wPos.xz - vCamerapos.xz) + vCamerapos.w;
+    float interpVal = saturate(cameraDist * vNearFarMorphLimits.x - vNearFarMorphLimits.y);
+    float yDelta = dot(vMorphDeltaSelector, indata.MorphDelta) * interpVal;
     wPos.y -= yDelta * vScaleTransY.x;
 
     float3 tex = float3(indata.Pos0.y * vTexScale.z, -((indata.Pos1.x - yDelta) * vTexScale.y) , indata.Pos0.x * vTexScale.x);
@@ -120,59 +120,59 @@ VS2PS_vsDx9_detailDiffuse vsDx9_detailDiffuse(APP2VS_detailDiffuse indata)
 
 struct APP2VS_detailDiffuseMounten
 {
-    vec4 Pos0       : POSITION0;
-    vec4 Pos1       : POSITION1;
-    vec4 MorphDelta : POSITION2;
-    vec2 TexCoord0  : TEXCOORD0;
-    vec3 Normal     : NORMAL;
+    float4 Pos0       : POSITION0;
+    float4 Pos1       : POSITION1;
+    float4 MorphDelta : POSITION2;
+    float2 TexCoord0  : TEXCOORD0;
+    float3 Normal     : NORMAL;
 };
 
 struct VS2PS_vsDx9_detailDiffuseMounten
 {
-    vec4 Pos               : POSITION;
-    vec4 Tex0              : TEXCOORD0;
-    vec2 Tex2              : TEXCOORD2;
-    vec4 BlendValueAndFade : COLOR0;
-    vec4 Tex3              : TEXCOORD3;
-    vec4 Tex5              : TEXCOORD6;
+    float4 Pos               : POSITION;
+    float4 Tex0              : TEXCOORD0;
+    float2 Tex2              : TEXCOORD2;
+    float4 BlendValueAndFade : COLOR0;
+    float4 Tex3              : TEXCOORD3;
+    float4 Tex5              : TEXCOORD6;
 };
 
-vec4 psDx9_detailDiffuseMounten(VS2PS_vsDx9_detailDiffuseMounten indata) : COLOR
+float4 psDx9_detailDiffuseMounten(VS2PS_vsDx9_detailDiffuseMounten indata) : COLOR
 {
     #ifndef USE_PLANE_MAPPING
-        vec4 colormap = tex2D(sampler0Clamp, indata.Tex0.xy);
-        vec4 component = tex2D(sampler1Clamp, indata.Tex0.xy);
-        vec4 detailmap = 2.0 * tex2D(sampler2Wrap, indata.Tex0.zw);
-        vec4 lowDetailmap = 2.0 * tex2D(sampler3Wrap, indata.Tex2);
-        scalar chartcontrib = dot(vComponentsel, component);
-        vec4 detailout = ((detailmap * (1-indata.ColorAndFadeLerp.w)) + (lowDetailmap.z * indata.ColorAndFadeLerp.w));
+        float4 colormap = tex2D(sampler0Clamp, indata.Tex0.xy);
+        float4 component = tex2D(sampler1Clamp, indata.Tex0.xy);
+        float4 detailmap = 2.0 * tex2D(sampler2Wrap, indata.Tex0.zw);
+        float4 lowDetailmap = 2.0 * tex2D(sampler3Wrap, indata.Tex2);
+        float chartcontrib = dot(vComponentsel, component);
+        float4 detailout = ((detailmap * (1-indata.ColorAndFadeLerp.w)) + (lowDetailmap.z * indata.ColorAndFadeLerp.w));
         return chartcontrib * detailout * colormap;
     #else
 
-        vec4 colormap = tex2D(sampler0Clamp, indata.Tex0.xy);
-        vec4 component = tex2D(sampler1Clamp, indata.Tex0.xy);
-        vec4 lowComponent = tex2D(sampler4Clamp, indata.Tex0.xy);
-        vec4 yplaneDetailmap = tex2D(sampler2Wrap, indata.Tex0.zw);
-        vec4 xplaneDetailmap = tex2D(sampler2Wrap, indata.Tex5.xy);
-        vec4 zplaneDetailmap = tex2D(sampler2Wrap, indata.Tex5.zw);
-        vec4 yplaneLowDetailmap = 2*tex2D(sampler3Wrap, indata.Tex2);
-        vec4 xplaneLowDetailmap = 2*tex2D(sampler3Wrap, indata.Tex3.xy);
-        vec4 zplaneLowDetailmap = 2*tex2D(sampler3Wrap, indata.Tex3.zw);
-        vec3 blendValue = indata.BlendValueAndFade.xyz;
+        float4 colormap = tex2D(sampler0Clamp, indata.Tex0.xy);
+        float4 component = tex2D(sampler1Clamp, indata.Tex0.xy);
+        float4 lowComponent = tex2D(sampler4Clamp, indata.Tex0.xy);
+        float4 yplaneDetailmap = tex2D(sampler2Wrap, indata.Tex0.zw);
+        float4 xplaneDetailmap = tex2D(sampler2Wrap, indata.Tex5.xy);
+        float4 zplaneDetailmap = tex2D(sampler2Wrap, indata.Tex5.zw);
+        float4 yplaneLowDetailmap = 2*tex2D(sampler3Wrap, indata.Tex2);
+        float4 xplaneLowDetailmap = 2*tex2D(sampler3Wrap, indata.Tex3.xy);
+        float4 zplaneLowDetailmap = 2*tex2D(sampler3Wrap, indata.Tex3.zw);
+        float3 blendValue = indata.BlendValueAndFade.xyz;
 
-        scalar chartcontrib = dot(vComponentsel, component);
+        float chartcontrib = dot(vComponentsel, component);
 
-        scalar color = lerp(1, yplaneLowDetailmap.z, saturate(lowComponent.x+lowComponent.y));
-        scalar totBlendValue = dot(blendValue.xyz, 1.0);
-        scalar blue = (xplaneLowDetailmap.y * blendValue.x/totBlendValue) + (yplaneLowDetailmap.x * blendValue.y/totBlendValue) + (zplaneLowDetailmap.y * blendValue.z/totBlendValue);
+        float color = lerp(1, yplaneLowDetailmap.z, saturate(lowComponent.x+lowComponent.y));
+        float totBlendValue = dot(blendValue.xyz, 1.0);
+        float blue = (xplaneLowDetailmap.y * blendValue.x/totBlendValue) + (yplaneLowDetailmap.x * blendValue.y/totBlendValue) + (zplaneLowDetailmap.y * blendValue.z/totBlendValue);
         color *= lerp(1, blue, lowComponent.z);
 
-        vec4 detailmap = (xplaneDetailmap * blendValue.x/totBlendValue) + (yplaneDetailmap * blendValue.y/totBlendValue) + (zplaneDetailmap * blendValue.z/totBlendValue);
+        float4 detailmap = (xplaneDetailmap * blendValue.x/totBlendValue) + (yplaneDetailmap * blendValue.y/totBlendValue) + (zplaneDetailmap * blendValue.z/totBlendValue);
 
-        vec4 lowDetailmap = color;
+        float4 lowDetailmap = color;
 
-        vec4 bothDetailmap = detailmap * lowDetailmap;
-        vec4 detailout = 2 * lerp(bothDetailmap, 0.5*lowDetailmap, indata.BlendValueAndFade.w);
+        float4 bothDetailmap = detailmap * lowDetailmap;
+        float4 detailout = 2 * lerp(bothDetailmap, 0.5*lowDetailmap, indata.BlendValueAndFade.w);
 
         return chartcontrib * detailout * colormap;
     #endif
@@ -182,13 +182,13 @@ VS2PS_vsDx9_detailDiffuseMounten vsDx9_detailDiffuseMounten(APP2VS_detailDiffuse
 {
     VS2PS_vsDx9_detailDiffuseMounten outdata;
 
-    vec4 wPos;
+    float4 wPos;
     wPos.xz = (indata.Pos0.xy * vScaleTransXZ.xy) + vScaleTransXZ.zw;
     wPos.yw = (indata.Pos1.xw * vScaleTransY.xy) + vScaleTransY.zw;
 
-    scalar cameraDist = length(wPos.xz - vCamerapos.xz) + vCamerapos.w;
-    scalar interpVal = saturate(cameraDist * vNearFarMorphLimits.x - vNearFarMorphLimits.y);
-    scalar yDelta = dot(vMorphDeltaSelector, indata.MorphDelta) * interpVal;
+    float cameraDist = length(wPos.xz - vCamerapos.xz) + vCamerapos.w;
+    float interpVal = saturate(cameraDist * vNearFarMorphLimits.x - vNearFarMorphLimits.y);
+    float yDelta = dot(vMorphDeltaSelector, indata.MorphDelta) * interpVal;
     wPos.y -= yDelta * vScaleTransY.x;
 
     float3 tex = float3(indata.Pos0.y * vTexScale.z, -(indata.Pos1.x - yDelta) * vTexScale.y, indata.Pos0.x * vTexScale.x);
@@ -223,45 +223,45 @@ VS2PS_vsDx9_detailDiffuseMounten vsDx9_detailDiffuseMounten(APP2VS_detailDiffuse
 
 struct APP2VS_diffuseLOD1Plus
 {
-    vec4 Pos0       : POSITION0;
-    vec4 Pos1       : POSITION1;
-    vec4 MorphDelta : POSITION2;
-    vec2 TexCoord0  : TEXCOORD0;
-    vec2 TexCoord1  : TEXCOORD1;
-    vec3 Normal     : NORMAL;
+    float4 Pos0       : POSITION0;
+    float4 Pos1       : POSITION1;
+    float4 MorphDelta : POSITION2;
+    float2 TexCoord0  : TEXCOORD0;
+    float2 TexCoord1  : TEXCOORD1;
+    float3 Normal     : NORMAL;
 };
 
 struct VS2PS_vsDx9_diffuseLOD1Plus
 {
-    vec4 Pos        : POSITION;
-    vec4 Tex0       : TEXCOORD0;
-    vec4 Tex2       : TEXCOORD2;
-    vec3 BlendValue : COLOR0;
+    float4 Pos        : POSITION;
+    float4 Tex0       : TEXCOORD0;
+    float4 Tex2       : TEXCOORD2;
+    float3 BlendValue : COLOR0;
 };
 
-vec4 psDx9_diffuseLOD1Plus(VS2PS_vsDx9_diffuseLOD1Plus indata) : COLOR
+float4 psDx9_diffuseLOD1Plus(VS2PS_vsDx9_diffuseLOD1Plus indata) : COLOR
 {
     #ifndef USE_PLANE_MAPPING
-        vec4 colormap = tex2D(sampler0Clamp, indata.Tex0.xy);
-        vec4 lowDetailmap = 2*tex2D(sampler3Wrap, indata.Tex0.zw);
+        float4 colormap = tex2D(sampler0Clamp, indata.Tex0.xy);
+        float4 lowDetailmap = 2*tex2D(sampler3Wrap, indata.Tex0.zw);
 
         return lowDetailmap.z * colormap;
 
     #else
 
-        vec4 colormap = tex2D(sampler0Clamp, indata.Tex0.xy);
-        vec4 lowComponent = tex2D(sampler2Clamp, indata.Tex0.xy);
-        vec4 yplaneLowDetailmap = 2*tex2D(sampler3Wrap, indata.Tex0.zw);
-        vec4 xplaneLowDetailmap = 2*tex2D(sampler3Wrap, indata.Tex2.xy);
-        vec4 zplaneLowDetailmap = 2*tex2D(sampler3Wrap, indata.Tex2.zw);
-        vec3 blendValue = indata.BlendValue;
+        float4 colormap = tex2D(sampler0Clamp, indata.Tex0.xy);
+        float4 lowComponent = tex2D(sampler2Clamp, indata.Tex0.xy);
+        float4 yplaneLowDetailmap = 2*tex2D(sampler3Wrap, indata.Tex0.zw);
+        float4 xplaneLowDetailmap = 2*tex2D(sampler3Wrap, indata.Tex2.xy);
+        float4 zplaneLowDetailmap = 2*tex2D(sampler3Wrap, indata.Tex2.zw);
+        float3 blendValue = indata.BlendValue;
 
-        scalar color = lerp(1, yplaneLowDetailmap.z, saturate(lowComponent.x+lowComponent.y));
-        scalar totBlendValue = dot(blendValue.xyz, 1.0);
-        scalar blue = (xplaneLowDetailmap.y * blendValue.x/totBlendValue) + (yplaneLowDetailmap.x * blendValue.y/totBlendValue) + (zplaneLowDetailmap.y * blendValue.z/totBlendValue);
+        float color = lerp(1, yplaneLowDetailmap.z, saturate(lowComponent.x+lowComponent.y));
+        float totBlendValue = dot(blendValue.xyz, 1.0);
+        float blue = (xplaneLowDetailmap.y * blendValue.x/totBlendValue) + (yplaneLowDetailmap.x * blendValue.y/totBlendValue) + (zplaneLowDetailmap.y * blendValue.z/totBlendValue);
 
         color *= lerp(1, blue, lowComponent.z);
-        vec4 lowDetailmap = color;
+        float4 lowDetailmap = color;
         return lowDetailmap * colormap;
     #endif
 }
@@ -270,13 +270,13 @@ VS2PS_vsDx9_diffuseLOD1Plus vsDx9_diffuseLOD1Plus(APP2VS_diffuseLOD1Plus indata)
 {
     VS2PS_vsDx9_diffuseLOD1Plus outdata;
 
-    vec4 wPos;
+    float4 wPos;
     wPos.xz = (indata.Pos0.xy * vScaleTransXZ.xy) + vScaleTransXZ.zw;
     wPos.yw = (indata.Pos1.xw * vScaleTransY.xy) + vScaleTransY.zw;
 
-    scalar cameraDist = length(wPos.xz - vCamerapos.xz) + vCamerapos.w;
-    scalar interpVal = saturate(cameraDist * vNearFarMorphLimits.x - vNearFarMorphLimits.y);
-    scalar yDelta = dot(vMorphDeltaSelector, indata.MorphDelta) * interpVal;
+    float cameraDist = length(wPos.xz - vCamerapos.xz) + vCamerapos.w;
+    float interpVal = saturate(cameraDist * vNearFarMorphLimits.x - vNearFarMorphLimits.y);
+    float yDelta = dot(vMorphDeltaSelector, indata.MorphDelta) * interpVal;
     wPos.y -= yDelta * vScaleTransY.x;
 
     float3 tex = float3(saturate(indata.Pos0.y * vTexScale.z), -(((indata.Pos1.x - yDelta) * vTexScale.y)) , saturate(indata.Pos0.x * vTexScale.x));
@@ -300,34 +300,34 @@ VS2PS_vsDx9_diffuseLOD1Plus vsDx9_diffuseLOD1Plus(APP2VS_diffuseLOD1Plus indata)
 
 struct APP2VS_detailLightmap
 {
-    vec4 Pos0       : POSITION0;
-    vec4 Pos1       : POSITION1;
-    vec4 MorphDelta : POSITION2;
-    vec2 TexCoord0  : TEXCOORD0;
-    vec3 Normal     : NORMAL;
+    float4 Pos0       : POSITION0;
+    float4 Pos1       : POSITION1;
+    float4 MorphDelta : POSITION2;
+    float2 TexCoord0  : TEXCOORD0;
+    float3 Normal     : NORMAL;
 };
 
 struct VS2PS_vsDx9_detailLightmap
 {
-    vec4 Pos     : POSITION;
-    vec2 Tex0    : TEXCOORD0;
-    vec3 wPos    : TEXCOORD1;
-    vec3 wNormal : TEXCOORD2;
+    float4 Pos     : POSITION;
+    float2 Tex0    : TEXCOORD0;
+    float3 wPos    : TEXCOORD1;
+    float3 wNormal : TEXCOORD2;
 };
 
 struct PS2FB_detailLightmap
 {
-    vec4 Col0 : COLOR0;
-    vec4 Col1 : COLOR1;
-    vec4 Col2 : COLOR2;
+    float4 Col0 : COLOR0;
+    float4 Col1 : COLOR1;
+    float4 Col2 : COLOR2;
 };
 
 PS2FB_detailLightmap psDx9_detailLightmap(VS2PS_vsDx9_detailLightmap indata)
 {
     PS2FB_detailLightmap outdata;
     outdata.Col0 = vSunColor.w*tex2D(sampler0Clamp, indata.Tex0);
-    outdata.Col1 = vec4(indata.wPos, 0.0);
-    outdata.Col2 = vec4(indata.wNormal, 0.0);
+    outdata.Col1 = float4(indata.wPos, 0.0);
+    outdata.Col2 = float4(indata.wNormal, 0.0);
     return outdata;
 }
 
@@ -335,13 +335,13 @@ VS2PS_vsDx9_detailLightmap vsDx9_detailLightmap(APP2VS_detailLightmap indata)
 {
     VS2PS_vsDx9_detailLightmap outdata;
 
-    vec4 wPos;
+    float4 wPos;
     wPos.xz = (indata.Pos0.xy * vScaleTransXZ.xy) + vScaleTransXZ.zw;
     wPos.yw = (indata.Pos1.xw * vScaleTransY.xy) + vScaleTransY.zw;
 
-    scalar cameraDist = length(wPos.xz - vCamerapos.xz) + vCamerapos.w;
-    scalar interpVal = saturate(cameraDist * vNearFarMorphLimits.x - vNearFarMorphLimits.y);
-    scalar yDelta = dot(vMorphDeltaSelector, indata.MorphDelta) * interpVal;
+    float cameraDist = length(wPos.xz - vCamerapos.xz) + vCamerapos.w;
+    float interpVal = saturate(cameraDist * vNearFarMorphLimits.x - vNearFarMorphLimits.y);
+    float yDelta = dot(vMorphDeltaSelector, indata.MorphDelta) * interpVal;
     wPos.y -= yDelta * vScaleTransY.x;
 
     outdata.Pos = mul(wPos, mViewProj);
@@ -355,35 +355,35 @@ VS2PS_vsDx9_detailLightmap vsDx9_detailLightmap(APP2VS_detailLightmap indata)
 
 struct APP2VS_fullMRT
 {
-    vec4 Pos0       : POSITION0;
-    vec4 Pos1       : POSITION1;
-    vec4 MorphDelta : POSITION2;
-    vec2 TexCoord0  : TEXCOORD0;
-    vec3 Normal     : NORMAL;
+    float4 Pos0       : POSITION0;
+    float4 Pos1       : POSITION1;
+    float4 MorphDelta : POSITION2;
+    float2 TexCoord0  : TEXCOORD0;
+    float3 Normal     : NORMAL;
 };
 
 struct VS2PS_fullMRT
 {
-    vec4 Pos       : POSITION;
-    vec2 TexCoord0 : TEXCOORD0;
-    vec3 wPos      : TEXCOORD1;
-    vec3 wNormal   : TEXCOORD2;
+    float4 Pos       : POSITION;
+    float2 TexCoord0 : TEXCOORD0;
+    float3 wPos      : TEXCOORD1;
+    float3 wNormal   : TEXCOORD2;
 };
 
 struct PS2FB_fullMRT
 {
-    vec4 Col0 : COLOR0;
-    vec4 Col1 : COLOR1;
-    vec4 Col2 : COLOR2;
+    float4 Col0 : COLOR0;
+    float4 Col1 : COLOR1;
+    float4 Col2 : COLOR2;
 };
 
 PS2FB_fullMRT psDx9_fullMRT(VS2PS_fullMRT indata)
 {
     PS2FB_fullMRT outdata;
-    vec4 lightmap = vSunColor.w * tex2D(sampler1Clamp, indata.TexCoord0);
+    float4 lightmap = vSunColor.w * tex2D(sampler1Clamp, indata.TexCoord0);
     outdata.Col0 = lightmap;
-    outdata.Col1 = vec4(indata.wPos, 0.0);
-    outdata.Col2 = vec4(indata.wNormal, 0.0);
+    outdata.Col1 = float4(indata.wPos, 0.0);
+    outdata.Col2 = float4(indata.wNormal, 0.0);
     return outdata;
 }
 
@@ -391,13 +391,13 @@ VS2PS_fullMRT vsDx9_fullMRT(APP2VS_fullMRT indata)
 {
     VS2PS_fullMRT outdata;
 
-    vec4 wPos;
+    float4 wPos;
     wPos.xz = (indata.Pos0.xy * vScaleTransXZ.xy) + vScaleTransXZ.zw;
     wPos.yw = (indata.Pos1.xw * vScaleTransY.xy) + vScaleTransY.zw;
 
-    scalar cameraDist = length(wPos.xz - vCamerapos.xz) + vCamerapos.w;
-    scalar interpVal = saturate(cameraDist * vNearFarMorphLimits.x - vNearFarMorphLimits.y);
-    scalar yDelta = dot(vMorphDeltaSelector, indata.MorphDelta) * interpVal;
+    float cameraDist = length(wPos.xz - vCamerapos.xz) + vCamerapos.w;
+    float interpVal = saturate(cameraDist * vNearFarMorphLimits.x - vNearFarMorphLimits.y);
+    float yDelta = dot(vMorphDeltaSelector, indata.MorphDelta) * interpVal;
     wPos.y -= yDelta * vScaleTransY.x;
 
     outdata.Pos = mul(wPos, mViewProj);

@@ -1,6 +1,5 @@
-#include "shaders/dataTypes.fx"
 
-// common BundledMesh samplers
+// Common BundledMesh samplers
 
 texture	HemiMap;
 sampler HemiMapSampler = sampler_state
@@ -61,8 +60,8 @@ sampler NormalMapSampler = sampler_state
     AddressV  = CLAMP;
 };
 
-vec4 ObjectSpaceCamPos;
-vec4 WorldSpaceCamPos;
+float4 ObjectSpaceCamPos;
+float4 WorldSpaceCamPos;
 
 bool AlphaBlendEnable = false;
 int  AlphaTestRef     = 0;
@@ -72,30 +71,30 @@ bool DoubleSided      = 2;
 int SrcBlend  = 5;
 int DestBlend = 6;
 
-vec2 simpleUVTranslation;
+float2 simpleUVTranslation;
 
-vec4 DiffuseColor;
-vec4 DiffuseColorAndAmbient;
-vec4 SpecularColor;
-scalar SpecularPower;
-vec4 StaticGloss;
-vec4 Ambient;
+float4 DiffuseColor;
+float4 DiffuseColorAndAmbient;
+float4 SpecularColor;
+float SpecularPower;
+float4 StaticGloss;
+float4 Ambient;
 
-vec4 HemiMapConstantColor;
-vec4 HemiMapSkyColor;
+float4 HemiMapConstantColor;
+float4 HemiMapSkyColor;
 
 float InvHemiHeightScale = 100.0;
 float HeightOverTerrain = 0.0;
 float Reflectivity;
 
-mat4x3 GeomBones[52];
+float4x3 GeomBones[52];
 
 struct
 {
-    mat4x4 uvMatrix[7]	: UVMatrix;
+    float4x4 uvMatrix[7]	: UVMatrix;
 } UserData;
 
 Light Lights[1];
-vec4 PosUnpack;
-scalar TexUnpack;
-vec2 NormalUnpack;
+float4 PosUnpack;
+float TexUnpack;
+float2 NormalUnpack;

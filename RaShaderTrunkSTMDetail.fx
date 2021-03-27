@@ -1,26 +1,25 @@
-#include "shaders/dataTypes.fx"
 #include "shaders/RaCommon.fx"
 
 #ifndef _HASSHADOW_
     #define _HASSHADOW_ 0
 #endif
 
-vec4   OverGrowthAmbient;
+float4   OverGrowthAmbient;
 Light  Lights[1];
-vec4   PosUnpack;
-vec2   NormalUnpack;
-scalar TexUnpack;
+float4   PosUnpack;
+float2   NormalUnpack;
+float TexUnpack;
 
 struct VS_OUTPUT
 {
-    vec4 Pos   : POSITION0;
-    vec2 Tex0  : TEXCOORD0;
-    vec2 Tex1  : TEXCOORD1;
+    float4 Pos   : POSITION0;
+    float2 Tex0  : TEXCOORD0;
+    float2 Tex1  : TEXCOORD1;
     #if _HASSHADOW_
-        vec4 TexShadow : TEXCOORD2;
+        float4 TexShadow : TEXCOORD2;
     #endif
-    vec4 Color : COLOR0;
-    scalar Fog : FOG;
+    float4 Color : COLOR0;
+    float Fog : FOG;
 };
 
 texture	DetailMap;
@@ -61,18 +60,18 @@ string reqVertexElement[] =
 
 VS_OUTPUT basicVertexShader
 (
-    vec4 inPos  : POSITION0,
-    vec3 normal : NORMAL,
-    vec2 tex0   : TEXCOORD0
+    float4 inPos  : POSITION0,
+    float3 normal : NORMAL,
+    float2 tex0   : TEXCOORD0
     #ifndef BASEDIFFUSEONLY
-        , vec2 tex1 : TEXCOORD1
+        , float2 tex1 : TEXCOORD1
     #endif
 )
 {
     VS_OUTPUT Out = (VS_OUTPUT)0;
 
     inPos  *= PosUnpack;
-    Out.Pos = mul(vec4(inPos.xyz, 1.0), WorldViewProjection);
+    Out.Pos = mul(float4(inPos.xyz, 1.0), WorldViewProjection);
 
     Out.Fog  = calcFog(Out.Pos.w);
     Out.Tex0 = tex0 * TexUnpack;
@@ -83,12 +82,12 @@ VS_OUTPUT basicVertexShader
 
     normal = normal * NormalUnpack.x + NormalUnpack.y;
 
-    scalar LdotN = saturate(dot(normal, -Lights[0].dir));
+    float LdotN = saturate(dot(normal, -Lights[0].dir));
     Out.Color.rgb = Lights[0].color * LdotN;
     Out.Color.a = Transparency;
 
     #if _HASSHADOW_
-        Out.TexShadow = calcShadowProjection(vec4(inPos.xyz, 1.0));
+        Out.TexShadow = calcShadowProjection(float4(inPos.xyz, 1.0));
     #else
         Out.Color.rgb += OverGrowthAmbient / CEXP(1);
     #endif
@@ -98,14 +97,14 @@ VS_OUTPUT basicVertexShader
     return Out;
 }
 
-vec4 basicPixelShader(VS_OUTPUT VsOut) : COLOR
+float4 basicPixelShader(VS_OUTPUT VsOut) : COLOR
 {
-    vec3 vertexColor = CEXP(VsOut.Color);
+    float3 vertexColor = CEXP(VsOut.Color);
 
     #ifdef BASEDIFFUSEONLY
-        vec4 diffuseMap = tex2D(DiffuseMapSampler, VsOut.Tex0);
+        float4 diffuseMap = tex2D(DiffuseMapSampler, VsOut.Tex0);
     #else
-        vec4 diffuseMap = tex2D(DiffuseMapSampler, VsOut.Tex0) * tex2D(DetailMapSampler, VsOut.Tex1);
+        float4 diffuseMap = tex2D(DiffuseMapSampler, VsOut.Tex0) * tex2D(DetailMapSampler, VsOut.Tex1);
     #endif
 
     #if _HASSHADOW_
@@ -114,7 +113,7 @@ vec4 basicPixelShader(VS_OUTPUT VsOut) : COLOR
     #endif
 
     //tl: use compressed color register to avoid this being compiled as a 2.0 shader.
-    vec4 outColor = vec4(vertexColor.rgb * diffuseMap * 4.0, VsOut.Color.a * 2.0);
+    float4 outColor = float4(vertexColor.rgb * diffuseMap * 4.0, VsOut.Color.a * 2.0);
 
     return outColor;
 };

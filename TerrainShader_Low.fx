@@ -2,14 +2,14 @@
 
 // -- Low Terrain
 
-vec4 Low_PS_DirectionalLightShadows(Shared_VS2PS_DirectionalLightShadows indata) : COLOR
+float4 Low_PS_DirectionalLightShadows(Shared_VS2PS_DirectionalLightShadows indata) : COLOR
 {
-    vec4 lightmap = tex2D(sampler0Clamp, indata.Tex0);
+    float4 lightmap = tex2D(sampler0Clamp, indata.Tex0);
 
-    scalar avgShadowValue = tex2Dproj(sampler2PointClamp, indata.ShadowTex);
+    float avgShadowValue = tex2Dproj(sampler2PointClamp, indata.ShadowTex);
     avgShadowValue = avgShadowValue == 1.f;
 
-    vec4 light = saturate(lightmap.z * vGIColor*2) * 0.5;
+    float4 light = saturate(lightmap.z * vGIColor*2) * 0.5;
     if (avgShadowValue < lightmap.y)
         light.w = 1-saturate(4-indata.Z.x)+avgShadowValue.x;
     else

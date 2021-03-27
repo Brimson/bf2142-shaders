@@ -1,4 +1,3 @@
-#include "shaders/dataTypes.fx"
 
 // common StaticMesh samplers
 
@@ -60,25 +59,25 @@ sampler NormalMapSampler = sampler_state
     MipMapLodBias = 0;
 };
 
-vec4 ObjectSpaceCamPos;
-vec4 WorldSpaceCamPos;
+float4 ObjectSpaceCamPos;
+float4 WorldSpaceCamPos;
 
 int  AlphaTestRef = 0;
 bool DepthWrite   = 1;
 bool DoubleSided  = 2;
 
-vec4   DiffuseColor;
-vec4   SpecularColor;
-scalar SpecularPower;
-scalar StaticGloss;
-vec4   Ambient;
+float4   DiffuseColor;
+float4   SpecularColor;
+float SpecularPower;
+float StaticGloss;
+float4   Ambient;
 
-vec4  HemiMapSkyColor;
-vec4  HemiMapConstantColor;
+float4  HemiMapSkyColor;
+float4  HemiMapConstantColor;
 float HeightOverTerrain = 0;
 
 float Reflectivity;
 
-mat4x3 MatBones[52];
+float4x3 MatBones[52];
 
 Light Lights[1];

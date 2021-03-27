@@ -3,7 +3,7 @@
 
 // UNIFORM INPUTS
 float4x4 viewProjMatrix : WorldViewProjection;
-vec4 globalScale : GlobalScale;
+float4 globalScale : GlobalScale;
 
 struct appdata
 {
@@ -24,7 +24,7 @@ float4 m_transparencyGraph : TRANSPARENCYGRAPH;
 
 float4 ageAndAlphaArray[52] : AgeAndAlphaArray;
 float lightmapIntensityOffset : LightmapIntensityOffset;
-mat4x3 mOneBoneSkinning[52]: matONEBONESKINNING;
+float4x3 mOneBoneSkinning[52]: matONEBONESKINNING;
 
 struct OUT_vsDiffuse
 {
@@ -49,7 +49,7 @@ OUT_vsDiffuse vsDiffuse
     int4 IndexVector = D3DCOLORtoUBYTE4(input.BlendIndices);
     int IndexArray[4] = (int[4])IndexVector;
 
-    vec3 Pos = mul(input.Pos * globalScale, mOneBoneSkinning[IndexArray[0]]);
+    float3 Pos = mul(input.Pos * globalScale, mOneBoneSkinning[IndexArray[0]]);
     Out.HPos = mul(float4(Pos.xyz, 1.0f), ViewProj);
 
     // Compute Cubic polynomial factors.
@@ -77,15 +77,15 @@ OUT_vsDiffuse vsDiffuse
 
 float4 psDiffuse(OUT_vsDiffuse indata) : COLOR
 {
-    vec4 outColor = tex2D(diffuseSampler, indata.DiffuseMap.xy) * indata.color;
-    vec4 tLut = tex2D(lutSampler, indata.GroundUV);
+    float4 outColor = tex2D(diffuseSampler, indata.DiffuseMap.xy) * indata.color;
+    float4 tLut = tex2D(lutSampler, indata.GroundUV);
     outColor.rgb *= calcParticleLighting(tLut.a, indata.LerpAndLMapIntOffset, indata.lightFactor.a);
     return outColor;
 }
 
 float4 psAdditive(OUT_vsDiffuse indata) : COLOR
 {
-    vec4 outColor = tex2D(diffuseSampler, indata.DiffuseMap.xy) * indata.color;
+    float4 outColor = tex2D(diffuseSampler, indata.DiffuseMap.xy) * indata.color;
     // mask with alpha since were doing an add
     outColor.rgb *= outColor.a;
     return outColor;

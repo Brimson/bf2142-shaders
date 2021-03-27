@@ -1,4 +1,3 @@
-#include "shaders/datatypes.fx"
 
 texture texture0 : TEXLAYER0;
 texture texture1 : TEXLAYER1;
@@ -8,10 +7,10 @@ texture texture4 : TEXLAYER4;
 texture texture5 : TEXLAYER5;
 texture texture6 : TEXLAYER6;
 
-scalar backbufferLerpbias : BACKBUFFERLERPBIAS;
-vec2 sampleoffset : SAMPLEOFFSET;
-vec2 fogStartAndEnd : FOGSTARTANDEND;
-vec3 fogColor : FOGCOLOR;
+float backbufferLerpbias : BACKBUFFERLERPBIAS;
+float2 sampleoffset : SAMPLEOFFSET;
+float2 fogStartAndEnd : FOGSTARTANDEND;
+float3 fogColor : FOGCOLOR;
 
 sampler sampler0 = sampler_state { Texture = (texture0); AddressU = CLAMP; AddressV = CLAMP; MinFilter = POINT; MagFilter = POINT; };
 sampler sampler1 = sampler_state { Texture = (texture1); AddressU = CLAMP; AddressV = CLAMP; MinFilter = POINT; MagFilter = POINT; };
@@ -28,39 +27,39 @@ sampler sampler3bilin = sampler_state { Texture = (texture3); AddressU = CLAMP; 
 sampler sampler4bilin = sampler_state { Texture = (texture4); AddressU = CLAMP; AddressV = CLAMP; MinFilter = LINEAR; MagFilter = LINEAR; };
 sampler sampler5bilin = sampler_state { Texture = (texture5); AddressU = CLAMP; AddressV = CLAMP; MinFilter = LINEAR; MagFilter = LINEAR; };
 
-scalar NPixels : NPIXLES = 1.0;
-vec2 ScreenSize : VIEWPORTSIZE = {800,600};
-scalar Glowness : GLOWNESS = 3.0;
-scalar Cutoff : cutoff = 0.8;
+float NPixels : NPIXLES = 1.0;
+float2 ScreenSize : VIEWPORTSIZE = {800,600};
+float Glowness : GLOWNESS = 3.0;
+float Cutoff : cutoff = 0.8;
 
 struct APP2VS_Quad
 {
-    vec2 Pos       : POSITION0;
-    vec2 TexCoord0 : TEXCOORD0;
+    float2 Pos       : POSITION0;
+    float2 TexCoord0 : TEXCOORD0;
 };
 
 struct VS2PS_Quad
 {
-    vec4 Pos       : POSITION;
-    vec2 TexCoord0 : TEXCOORD0;
+    float4 Pos       : POSITION;
+    float2 TexCoord0 : TEXCOORD0;
 };
 
 struct VS2PS_Quad2
 {
-    vec4 Pos       : POSITION;
-    vec2 TexCoord0 : TEXCOORD0;
-    vec2 TexCoord1 : TEXCOORD1;
+    float4 Pos       : POSITION;
+    float2 TexCoord0 : TEXCOORD0;
+    float2 TexCoord1 : TEXCOORD1;
 };
 
 struct PS2FB_Combine
 {
-    vec4 Col0 : COLOR0;
+    float4 Col0 : COLOR0;
 };
 
 VS2PS_Quad vsDx9_OneTexcoord(APP2VS_Quad indata)
 {
     VS2PS_Quad outdata;
-    outdata.Pos = vec4(indata.Pos.x, indata.Pos.y, 0.0, 1.0);
+    outdata.Pos = float4(indata.Pos.x, indata.Pos.y, 0.0, 1.0);
     outdata.TexCoord0 = indata.TexCoord0;
     return outdata;
 }
@@ -68,9 +67,9 @@ VS2PS_Quad vsDx9_OneTexcoord(APP2VS_Quad indata)
 VS2PS_Quad2 vsDx9_Tinnitus(APP2VS_Quad indata)
 {
     VS2PS_Quad2 outdata;
-    outdata.Pos = vec4(indata.Pos.x, indata.Pos.y, 0.0, 1.0);
+    outdata.Pos = float4(indata.Pos.x, indata.Pos.y, 0.0, 1.0);
     outdata.TexCoord0 = indata.TexCoord0;
-    outdata.TexCoord1 = vec2(indata.TexCoord0.x - sampleoffset.x, indata.TexCoord0.y - sampleoffset.y);
+    outdata.TexCoord1 = float2(indata.TexCoord0.x - sampleoffset.x, indata.TexCoord0.y - sampleoffset.y);
     return outdata;
 }
 
@@ -78,13 +77,13 @@ PS2FB_Combine psDx9_Tinnitus(VS2PS_Quad2 indata)
 {
     PS2FB_Combine outdata;
 
-    vec4 sample0 = tex2D(sampler0bilin, indata.TexCoord1);
-    vec4 sample1 = tex2D(sampler1bilin, indata.TexCoord1);
-    vec4 sample2 = tex2D(sampler2bilin, indata.TexCoord1);
-    vec4 sample3 = tex2D(sampler3bilin, indata.TexCoord1);
-    vec4 backbuffer = tex2D(sampler4, indata.TexCoord0);
+    float4 sample0 = tex2D(sampler0bilin, indata.TexCoord1);
+    float4 sample1 = tex2D(sampler1bilin, indata.TexCoord1);
+    float4 sample2 = tex2D(sampler2bilin, indata.TexCoord1);
+    float4 sample3 = tex2D(sampler3bilin, indata.TexCoord1);
+    float4 backbuffer = tex2D(sampler4, indata.TexCoord0);
 
-    vec4 accum = sample0 * 0.5;
+    float4 accum = sample0 * 0.5;
     accum += sample1 * 0.25;
     accum += sample2 * 0.125;
     accum += sample3 * 0.0675;
@@ -107,15 +106,15 @@ technique Tinnitus
     }
 }
 
-vec4 psDx9_Glow(VS2PS_Quad indata) : COLOR
+float4 psDx9_Glow(VS2PS_Quad indata) : COLOR
 {
     return tex2D(sampler0bilin, indata.TexCoord0);
 }
 
-vec4 psDx9_GlowMaterial(VS2PS_Quad indata) : COLOR
+float4 psDx9_GlowMaterial(VS2PS_Quad indata) : COLOR
 {
-    vec4 diffuse =  tex2D(sampler0bilin, indata.TexCoord0);
-    return vec4(diffuse.rgb * (1.0 - diffuse.a), 1.0);
+    float4 diffuse =  tex2D(sampler0bilin, indata.TexCoord0);
+    return float4(diffuse.rgb * (1.0 - diffuse.a), 1.0);
 }
 
 technique GlowMaterial
@@ -154,12 +153,12 @@ technique Glow
     }
 }
 
-vec4 psDx9_Fog(VS2PS_Quad indata) : COLOR
+float4 psDx9_Fog(VS2PS_Quad indata) : COLOR
 {
-    vec3 wPos = tex2D(sampler0, indata.TexCoord0);
-    scalar uvCoord =  saturate((wPos.zzzz - fogStartAndEnd.r) / fogStartAndEnd.g);
-    return saturate(vec4(fogColor.rgb,uvCoord));
-    return tex2D(sampler1, vec2(uvCoord, 0.0)) * fogColor.rgbb;
+    float3 wPos = tex2D(sampler0, indata.TexCoord0);
+    float uvCoord =  saturate((wPos.zzzz - fogStartAndEnd.r) / fogStartAndEnd.g);
+    return saturate(float4(fogColor.rgb,uvCoord));
+    return tex2D(sampler1, float2(uvCoord, 0.0)) * fogColor.rgbb;
 }
 
 technique Fog

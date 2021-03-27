@@ -11,10 +11,10 @@ uniform texture texture1: Texture1;
 uniform float4x4 viewMat : ViewMat;
 uniform float4x4 projMat : ProjMat;
 
-uniform scalar uvScale = rsqrt(2.0f);
-uniform vec4 hemiMapInfo : HemiMapInfo;
-uniform scalar hemiShadowAltitude : HemiShadowAltitude;
-uniform scalar alphaPixelTestRef : AlphaPixelTestRef = 0;
+uniform float uvScale = rsqrt(2.0f);
+uniform float4 hemiMapInfo : HemiMapInfo;
+uniform float hemiShadowAltitude : HemiShadowAltitude;
+uniform float alphaPixelTestRef : AlphaPixelTestRef = 0;
 
 const float OneOverShort = 1.0 / 32767.0;
 
@@ -48,12 +48,12 @@ sampler lutSampler = sampler_state
     MipFilter = FILTER_PARTICLE_MIP;
 };
 
-uniform vec3 effectSunColor : EffectSunColor;
-uniform vec3 effectShadowColor : EffectShadowColor;
+uniform float3 effectSunColor : EffectSunColor;
+uniform float3 effectShadowColor : EffectShadowColor;
 
-vec3 calcParticleLighting(scalar lm, scalar lmOffset, scalar lightFactor)
+float3 calcParticleLighting(float lm, float lmOffset, float lightFactor)
 {
     float lut = saturate(lm + lmOffset);
-    vec3 diffuse = lerp(effectShadowColor, effectSunColor, lut);
+    float3 diffuse = lerp(effectShadowColor, effectSunColor, lut);
     return lerp(1.0, diffuse, lightFactor);
 }

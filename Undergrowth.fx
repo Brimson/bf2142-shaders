@@ -199,7 +199,7 @@ float4 PShader
     else
         terrainShadow = 1.0;
 
-    vec3 pointColor;
+    float3 pointColor;
     if (pointLightEnable)
         pointColor = indata.LightAndScale.rgb;
     else
@@ -319,7 +319,7 @@ float4 PShader_Simple(
         color = base * indata.TerrainColor * 2.0;
     }
 
-    vec4 outcol;
+    float4 outcol;
     outcol.rgb = color;
     outcol.a = base.a * Transparency_x8.a * 4.0;
     outcol.a = outcol.a + outcol.a;

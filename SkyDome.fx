@@ -1,16 +1,15 @@
 #line 2 "SkyDome.fx"
-#include "shaders/datatypes.fx"
 
 // UNIFORM INPUTS
-mat4x4 viewProjMatrix : WorldViewProjection;
-vec4 texOffset : TEXOFFSET;
-vec4 texOffset2 : TEXOFFSET2;
+float4x4 viewProjMatrix : WorldViewProjection;
+float4 texOffset : TEXOFFSET;
+float4 texOffset2 : TEXOFFSET2;
 
-vec4 flareParams : FLAREPARAMS;
-vec4 underwaterFog : FogColor;
+float4 flareParams : FLAREPARAMS;
+float4 underwaterFog : FogColor;
 
-vec2 fadeOutDist : CLOUDSFADEOUTDIST;
-vec2 cloudLerpFactors : CLOUDLERPFACTORS;
+float2 fadeOutDist : CLOUDSFADEOUTDIST;
+float2 cloudLerpFactors : CLOUDLERPFACTORS;
 
 texture texture0: TEXLAYER0;
 texture texture1: TEXLAYER1;
@@ -48,46 +47,46 @@ sampler samplerWrap2 = sampler_state
 
 struct appdata
 {
-    vec4 Pos          : POSITION;
-    vec4 BlendIndices : BLENDINDICES;
-    vec2 TexCoord     : TEXCOORD0;
-    vec2 TexCoord1    : TEXCOORD1;
+    float4 Pos          : POSITION;
+    float4 BlendIndices : BLENDINDICES;
+    float2 TexCoord     : TEXCOORD0;
+    float2 TexCoord1    : TEXCOORD1;
 };
 
 struct appdataNoClouds
 {
-    vec4 Pos          : POSITION;
-    vec4 BlendIndices : BLENDINDICES;
-    vec2 TexCoord     : TEXCOORD0;
+    float4 Pos          : POSITION;
+    float4 BlendIndices : BLENDINDICES;
+    float2 TexCoord     : TEXCOORD0;
 };
 
 struct VS_OUTPUT
 {
-    vec4 HPos    : POSITION;
-    vec2 Tex0    : TEXCOORD0;
-    vec2 Tex1    : TEXCOORD1;
-    vec4 FadeOut : COLOR0;
+    float4 HPos    : POSITION;
+    float2 Tex0    : TEXCOORD0;
+    float2 Tex1    : TEXCOORD1;
+    float4 FadeOut : COLOR0;
 };
 
 struct VS_OUTPUTNoClouds
 {
-    vec4 HPos : POSITION;
-    vec2 Tex0 : TEXCOORD0;
+    float4 HPos : POSITION;
+    float2 Tex0 : TEXCOORD0;
 };
 
 struct VS_OUTPUTDualClouds
 {
-    vec4 HPos    : POSITION;
-    vec2 Tex0    : TEXCOORD0;
-    vec2 Tex1    : TEXCOORD1;
-    vec2 Tex2    : TEXCOORD2;
-    vec4 FadeOut : COLOR0;
+    float4 HPos    : POSITION;
+    float2 Tex0    : TEXCOORD0;
+    float2 Tex1    : TEXCOORD1;
+    float2 Tex2    : TEXCOORD2;
+    float4 FadeOut : COLOR0;
 };
 
 VS_OUTPUT vsSkyDome(appdata input)
 {
     VS_OUTPUT Out;
-    Out.HPos = mul(vec4(input.Pos.xyz, 1.0), viewProjMatrix);
+    Out.HPos = mul(float4(input.Pos.xyz, 1.0), viewProjMatrix);
     Out.Tex0 = input.TexCoord;
     Out.Tex1 = input.TexCoord1.xy + texOffset.xy;
     float dist = length(input.Pos.xyz);
@@ -99,7 +98,7 @@ VS_OUTPUT vsSkyDome(appdata input)
 VS_OUTPUTNoClouds vsSkyDomeNoClouds(appdataNoClouds input)
 {
     VS_OUTPUTNoClouds Out;
-    Out.HPos = mul(vec4(input.Pos.xyz, 1.0), viewProjMatrix);
+    Out.HPos = mul(float4(input.Pos.xyz, 1.0), viewProjMatrix);
     Out.Tex0 = input.TexCoord;
     return Out;
 }
@@ -107,7 +106,7 @@ VS_OUTPUTNoClouds vsSkyDomeNoClouds(appdataNoClouds input)
 VS_OUTPUTDualClouds vsSkyDomeDualClouds(appdata input)
 {
     VS_OUTPUTDualClouds Out;
-    Out.HPos = mul(vec4(input.Pos.xyz, 1.0), viewProjMatrix);
+    Out.HPos = mul(float4(input.Pos.xyz, 1.0), viewProjMatrix);
     Out.Tex0 = input.TexCoord;
     Out.Tex1 = input.TexCoord1.xy + texOffset.xy;
     Out.Tex2 = input.TexCoord1.xy + texOffset2.xy;
@@ -117,29 +116,29 @@ VS_OUTPUTDualClouds vsSkyDomeDualClouds(appdata input)
     return Out;
 }
 
-vec4 psSkyDome(VS_OUTPUT indata) : COLOR
+float4 psSkyDome(VS_OUTPUT indata) : COLOR
 {
-    vec4 sky = tex2D(samplerClamp, indata.Tex0);
-    vec4 cloud = tex2D(samplerWrap1, indata.Tex1) * indata.FadeOut;
-    return vec4(lerp(sky,cloud,cloud.a).rgb, 1);
+    float4 sky = tex2D(samplerClamp, indata.Tex0);
+    float4 cloud = tex2D(samplerWrap1, indata.Tex1) * indata.FadeOut;
+    return float4(lerp(sky,cloud,cloud.a).rgb, 1);
 }
 
-vec4 psSkyDomeUnderWater(VS_OUTPUT indata) : COLOR
+float4 psSkyDomeUnderWater(VS_OUTPUT indata) : COLOR
 {
     return underwaterFog;
 }
 
-vec4 psSkyDomeNoClouds(VS_OUTPUT indata) : COLOR
+float4 psSkyDomeNoClouds(VS_OUTPUT indata) : COLOR
 {
     return tex2D(samplerClamp, indata.Tex0);
 }
 
-vec4 psSkyDomeDualClouds(VS_OUTPUTDualClouds indata) : COLOR
+float4 psSkyDomeDualClouds(VS_OUTPUTDualClouds indata) : COLOR
 {
-    vec4 sky = tex2D(samplerClamp, indata.Tex0);
-    vec4 cloud = tex2D(samplerWrap1, indata.Tex1);
-    vec4 cloud2 = tex2D(samplerWrap2, indata.Tex2);
-    vec4 tmp = cloud * cloudLerpFactors.x + cloud2 * cloudLerpFactors.y;
+    float4 sky = tex2D(samplerClamp, indata.Tex0);
+    float4 cloud = tex2D(samplerWrap1, indata.Tex1);
+    float4 cloud2 = tex2D(samplerWrap2, indata.Tex2);
+    float4 tmp = cloud * cloudLerpFactors.x + cloud2 * cloudLerpFactors.y;
     tmp *=  indata.FadeOut;
     return lerp(sky, tmp, tmp.a);
 }
@@ -147,21 +146,21 @@ vec4 psSkyDomeDualClouds(VS_OUTPUTDualClouds indata) : COLOR
 VS_OUTPUTNoClouds vsSkyDomeSunFlare(appdataNoClouds input)
 {
     VS_OUTPUTNoClouds Out;
-    Out.HPos = mul(vec4(input.Pos.xyz, 1.0), viewProjMatrix);
+    Out.HPos = mul(float4(input.Pos.xyz, 1.0), viewProjMatrix);
     Out.Tex0 = input.TexCoord;
     return Out;
 }
 
-vec4 psSkyDomeSunFlare(VS_OUTPUT indata) : COLOR
+float4 psSkyDomeSunFlare(VS_OUTPUT indata) : COLOR
 {
-    vec3 rgb = tex2D(samplerClamp, indata.Tex0).rgb * flareParams[0];
-    return vec4(rgb, 1.0);
+    float3 rgb = tex2D(samplerClamp, indata.Tex0).rgb * flareParams[0];
+    return float4(rgb, 1.0);
 }
 
-vec4 psSkyDomeFlareOcclude(VS_OUTPUT indata) : COLOR
+float4 psSkyDomeFlareOcclude(VS_OUTPUT indata) : COLOR
 {
-    vec4 p = tex2D(samplerClamp, indata.Tex0);
-    return vec4(0.0, 1.0, 0.0, p.a);
+    float4 p = tex2D(samplerClamp, indata.Tex0);
+    return float4(0.0, 1.0, 0.0, p.a);
 }
 
 

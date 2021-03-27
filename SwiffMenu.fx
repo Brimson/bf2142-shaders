@@ -101,25 +101,25 @@ VS_SHAPETEXTURE VSShapeTexture(float3 Position : POSITION)
     return Out;
 }
 
-vec4 PSRegularWrap(VS_SHAPETEXTURE input) : COLOR
+float4 PSRegularWrap(VS_SHAPETEXTURE input) : COLOR
 {
-    vec4 color;
-    vec4 tex = tex2D( TexMapSamplerWrap, input.TexCoord );
+    float4 color;
+    float4 tex = tex2D( TexMapSamplerWrap, input.TexCoord );
     color.rgb = tex*input.Diffuse*input.Selector + input.Diffuse*(1-input.Selector);
     color.a = tex.a*input.Diffuse.a;
     return color;
 }
 
-vec4 PSRegularClamp(VS_SHAPETEXTURE input) : COLOR
+float4 PSRegularClamp(VS_SHAPETEXTURE input) : COLOR
 {
-    vec4 color;
-    vec4 tex = tex2D( TexMapSamplerClamp, input.TexCoord );
+    float4 color;
+    float4 tex = tex2D( TexMapSamplerClamp, input.TexCoord );
     color.rgb = tex * input.Diffuse * input.Selector + input.Diffuse * (1.0 - input.Selector);
     color.a = tex.a * input.Diffuse.a;
     return color;
 }
 
-vec4 PSDiffuse(VS_SHAPE input) : COLOR
+float4 PSDiffuse(VS_SHAPE input) : COLOR
 {
     return input.Diffuse;
 }
@@ -179,12 +179,12 @@ VS_TS3 VSTS3_0(float3 Position : POSITION)
     return Out;
 }
 
-vec4 PSTS0_0(VS_TS0 input) : COLOR
+float4 PSTS0_0(VS_TS0 input) : COLOR
 {
     return tex2D( TexMapSamplerWrap, input.TexCoord );
 }
 
-vec4 PSRegularTSX(VS_TS3 input) : COLOR
+float4 PSRegularTSX(VS_TS3 input) : COLOR
 {
     return tex2D( TexMapSamplerWrap, input.TexCoord ) * input.Diffuse;
 }

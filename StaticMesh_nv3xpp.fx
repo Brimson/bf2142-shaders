@@ -18,27 +18,27 @@ struct VS_OUT_Basendetail
     float3 HalfVec    : TEXCOORD3;
 };
 
-void vsBumpSpecularBlinn(vec3 Normal, vec3 Tan, vec3 Pos, int Index, out vec3 LightVec, out vec3 HalfVec)
+void vsBumpSpecularBlinn(float3 Normal, float3 Tan, float3 Pos, int Index, out float3 LightVec, out float3 HalfVec)
 {
     // Cross product to create BiNormal
-    vec3 binormal = normalize(cross(Tan, Normal));
+    float3 binormal = normalize(cross(Tan, Normal));
 
     // Need to calculate the WorldI based on each matBone skinning world matrix
-    mat3x3 TanBasis = mat3x3(Tan, binormal, Normal);
+    float3x3 TanBasis = float3x3(Tan, binormal, Normal);
 
     // Calculate WorldTangent directly... inverse is the transpose for affine rotations
-    mat3x3 worldI = TanBasis;
+    float3x3 worldI = TanBasis;
     worldI = transpose(mul(worldI, worldMatrix));
 
     // Transform Light dir to Object space
-    vec3 normalizedTanLightVec = normalize(mul(-lightDir, worldI));
+    float3 normalizedTanLightVec = normalize(mul(-lightDir, worldI));
 
     LightVec = normalizedTanLightVec;
 
     // Transform eye pos to tangent space
-    vec3 worldPos = mul(Pos, worldMatrix);
-    vec3 worldEyeVec = eyePos - worldPos;
-    vec3 tanEyeVec = mul(worldEyeVec, worldI);
+    float3 worldPos = mul(Pos, worldMatrix);
+    float3 worldEyeVec = eyePos - worldPos;
+    float3 tanEyeVec = mul(worldEyeVec, worldI);
 
     HalfVec = (normalizedTanLightVec + normalize(tanEyeVec))*0.5;
 }
@@ -47,7 +47,7 @@ VS_OUT_Basendetail vsBasendetail(appdata_Basendetail input)
 {
     VS_OUT_Basendetail Out;
 
-    vec3 Pos = input.Pos;
+    float3 Pos = input.Pos;
     Out.HPos = mul(float4(Pos.xyz, 1.0f), viewProjMatrix);
 
     // Pass-through texcoords
@@ -61,14 +61,14 @@ VS_OUT_Basendetail vsBasendetail(appdata_Basendetail input)
 
 float4 psBasendetail(VS_OUT_Basendetail indata) : COLOR
 {
-    vec4 color = tex2D(samplerWrap0, indata.Tex0Diff);
-    vec4 expandedNormal = tex2D(samplerWrap1, indata.Tex1Normal);
+    float4 color = tex2D(samplerWrap0, indata.Tex0Diff);
+    float4 expandedNormal = tex2D(samplerWrap1, indata.Tex1Normal);
     expandedNormal.xyz = (expandedNormal.xyz * 2) - 1;
 
-    vec2 intensityuv = float2(dot(normalize(indata.LightVec),expandedNormal), dot(normalize(indata.HalfVec),expandedNormal));
-    vec4 intensity = tex2D(samplerClamp2, intensityuv);
+    float2 intensityuv = float2(dot(normalize(indata.LightVec),expandedNormal), dot(normalize(indata.HalfVec),expandedNormal));
+    float4 intensity = tex2D(samplerClamp2, intensityuv);
 
-    vec4 outColor;
+    float4 outColor;
     outColor.rgb = intensity * sunColor * color + intensity.a*expandedNormal.a*dot(sunColor, 0.33);
     outColor.a = color.a;
     return outColor;
@@ -145,17 +145,17 @@ VS_OUT_BaseLMndetail vsBaseLMndetail(appdata_BaseLMndetail input)
 
 float4 psBaseLMndetail(VS_OUT_BaseLMndetail indata) : COLOR
 {
-    vec4 color = tex2D(samplerWrap0, indata.Tex0Diff);
+    float4 color = tex2D(samplerWrap0, indata.Tex0Diff);
 
-    vec4 expandedNormal = tex2D(samplerWrap1, indata.Tex0Diff);
+    float4 expandedNormal = tex2D(samplerWrap1, indata.Tex0Diff);
     expandedNormal.xyz = (expandedNormal.xyz * 2) - 1;
 
-    vec2 intensityuv = float2(dot(normalize(indata.LightVec),expandedNormal), dot(normalize(indata.HalfVec),expandedNormal));
-    vec4 intensity = tex2D(samplerClamp2, intensityuv);
-    vec4 lightmap = tex2D(samplerWrap3, indata.Tex1LMap);
+    float2 intensityuv = float2(dot(normalize(indata.LightVec),expandedNormal), dot(normalize(indata.HalfVec),expandedNormal));
+    float4 intensity = tex2D(samplerClamp2, intensityuv);
+    float4 lightmap = tex2D(samplerWrap3, indata.Tex1LMap);
     intensity *= lightmap.a;
 
-    vec4 outColor;
+    float4 outColor;
     outColor.rgb = ((intensity*sunColor) + lightmap) * color + (intensity.a*expandedNormal.a*dot(sunColor, 0.33));
     outColor.a = color.a;
     return outColor;
@@ -214,16 +214,16 @@ VS_OUT_BaseDetailndetail vsBaseDetailndetail(appdata_BaseDetailndetail input)
 
 float4 psBaseDetailndetail(VS_OUT_BaseDetailndetail indata) : COLOR
 {
-    vec4 color = tex2D(samplerWrap0, indata.Tex0Diff);
-    vec4 detail = tex2D(samplerWrap1, indata.Tex1Detail);
+    float4 color = tex2D(samplerWrap0, indata.Tex0Diff);
+    float4 detail = tex2D(samplerWrap1, indata.Tex1Detail);
 
-    vec4 expandedNormal = tex2D(samplerWrap2, indata.Tex1Detail);
+    float4 expandedNormal = tex2D(samplerWrap2, indata.Tex1Detail);
     expandedNormal.xyz = expandedNormal.xyz * 2.0 - 1.0;
 
-    vec2 intensityuv = float2(dot(normalize(indata.LightVec),expandedNormal), dot(normalize(indata.HalfVec),expandedNormal));
-    vec4 intensity = tex2D(samplerClamp3, intensityuv);
+    float2 intensityuv = float2(dot(normalize(indata.LightVec),expandedNormal), dot(normalize(indata.HalfVec),expandedNormal));
+    float4 intensity = tex2D(samplerClamp3, intensityuv);
 
-    vec4 outColor;
+    float4 outColor;
     outColor.rgb = intensity * sunColor * color * detail + intensity.a*expandedNormal.a*dot(sunColor, 0.33);
     outColor.a = detail.a;
     return outColor;
@@ -286,18 +286,18 @@ VS_OUT_BaseDetailLMndetail vsBaseDetailLMndetail(appdata_BaseDetailLMndetail inp
 
 float4 psBaseDetailLMndetail(VS_OUT_BaseDetailLMndetail indata) : COLOR
 {
-    vec4 color = tex2D(samplerWrap0, indata.Tex0Diff);
-    vec4 detail = tex2D(samplerWrap1, indata.Tex1Detail);
+    float4 color = tex2D(samplerWrap0, indata.Tex0Diff);
+    float4 detail = tex2D(samplerWrap1, indata.Tex1Detail);
 
-    vec4 expandedNormal = tex2D(samplerWrap2, indata.Tex1Detail);
+    float4 expandedNormal = tex2D(samplerWrap2, indata.Tex1Detail);
     expandedNormal.xyz = expandedNormal.xyz * 2.0 - 1.0;
 
-    vec2 intensityuv = float2(dot(normalize(indata.LightVec),expandedNormal), dot(normalize(indata.HalfVec),expandedNormal));
-    vec4 intensity = tex2D(samplerClamp3, intensityuv);
-    vec4 lightmap = tex2D(samplerWrap4, indata.Tex2LMap);
+    float2 intensityuv = float2(dot(normalize(indata.LightVec),expandedNormal), dot(normalize(indata.HalfVec),expandedNormal));
+    float4 intensity = tex2D(samplerClamp3, intensityuv);
+    float4 lightmap = tex2D(samplerWrap4, indata.Tex2LMap);
     intensity *= lightmap.a;
 
-    vec4 outColor;
+    float4 outColor;
     outColor.rgb = ((intensity * sunColor) + lightmap) * color * detail + intensity.a * expandedNormal.a * dot(sunColor, 0.33);
     outColor.a = detail.a;
     return outColor;
@@ -360,15 +360,15 @@ VS_OUT_BaseDetailDirtndetail vsBaseDetailDirtndetail(appdata_BaseDetailDirtndeta
 
 float4 psBaseDetailDirtndetail(VS_OUT_BaseDetailDirtndetail indata) : COLOR
 {
-    vec4 color = tex2D(samplerWrap0, indata.Tex0Diff);
-    vec4 detail = tex2D(samplerWrap1, indata.Tex1Detail);
-    vec4 dirt = tex2D(samplerWrap2, indata.Tex2Dirt);
-    vec4 expandedNormal = tex2D(samplerWrap3, indata.Tex1Detail);
+    float4 color = tex2D(samplerWrap0, indata.Tex0Diff);
+    float4 detail = tex2D(samplerWrap1, indata.Tex1Detail);
+    float4 dirt = tex2D(samplerWrap2, indata.Tex2Dirt);
+    float4 expandedNormal = tex2D(samplerWrap3, indata.Tex1Detail);
     expandedNormal.xyz = (expandedNormal.xyz * 2.0) - 1.0;
-    vec2 intensityuv = float2(dot(normalize(indata.LightVec),expandedNormal), dot(normalize(indata.HalfVec),expandedNormal));
-    vec4 intensity = tex2D(samplerClamp4, intensityuv);
+    float2 intensityuv = float2(dot(normalize(indata.LightVec),expandedNormal), dot(normalize(indata.HalfVec),expandedNormal));
+    float4 intensity = tex2D(samplerClamp4, intensityuv);
 
-    vec4 outColor;
+    float4 outColor;
     outColor.rgb = intensity * sunColor * color * detail * dirt + intensity.a*expandedNormal.a*dot(sunColor, 0.33);
     outColor.a = detail.a;
     return outColor;
@@ -434,19 +434,19 @@ VS_OUT_BaseDetailDirtLMndetail vsBaseDetailDirtLMndetail(appdata_BaseDetailDirtL
 
 float4 psBaseDetailDirtLMndetail(VS_OUT_BaseDetailDirtLMndetail indata) : COLOR
 {
-    vec4 color = tex2D(samplerWrap0, indata.Tex0Diff);
-    vec4 detail = tex2D(samplerWrap1, indata.Tex1Detail);
-    vec4 dirt = tex2D(samplerWrap2, indata.Tex2Dirt);
+    float4 color = tex2D(samplerWrap0, indata.Tex0Diff);
+    float4 detail = tex2D(samplerWrap1, indata.Tex1Detail);
+    float4 dirt = tex2D(samplerWrap2, indata.Tex2Dirt);
 
-    vec4 expandedNormal = tex2D(samplerWrap3, indata.Tex1Detail);
+    float4 expandedNormal = tex2D(samplerWrap3, indata.Tex1Detail);
     expandedNormal.xyz = (expandedNormal.xyz * 2.0) - 1.0;
 
-    vec2 intensityuv = float2(dot(normalize(indata.LightVec),expandedNormal), dot(normalize(indata.HalfVec),expandedNormal));
-    vec4 intensity = tex2D(samplerClamp4, intensityuv);
-    vec4 lightmap = tex2D(samplerWrap5, indata.Tex3LMap);
+    float2 intensityuv = float2(dot(normalize(indata.LightVec),expandedNormal), dot(normalize(indata.HalfVec),expandedNormal));
+    float4 intensity = tex2D(samplerClamp4, intensityuv);
+    float4 lightmap = tex2D(samplerWrap5, indata.Tex3LMap);
     intensity *= lightmap.a;
 
-    vec4 outColor;
+    float4 outColor;
     outColor.rgb = ((intensity * sunColor) + lightmap) * color * detail * dirt + intensity.a * expandedNormal.a * dot(sunColor, 0.333);
     outColor.a = detail.a;
     return outColor;
@@ -509,22 +509,22 @@ VS_OUT_BaseDetailCrackndetailncrack vsBaseDetailCrackndetailncrack(appdata_BaseD
 
 float4 psBaseDetailCrackndetailncrack(VS_OUT_BaseDetailCrackndetailncrack indata) : COLOR
 {
-    vec4 color = tex2D(samplerWrap0, indata.Tex0Diff);
-    vec4 detail = tex2D(samplerWrap1, indata.Tex1Detail);
-    vec4 crack = tex2D(samplerWrap2, indata.Tex2Crack);
+    float4 color = tex2D(samplerWrap0, indata.Tex0Diff);
+    float4 detail = tex2D(samplerWrap1, indata.Tex1Detail);
+    float4 crack = tex2D(samplerWrap2, indata.Tex2Crack);
 
-    vec4 expandedNormal = tex2D(samplerWrap3, indata.Tex1Detail) * (1.0 - crack.a);
-    vec4 expandedCrackNormal = tex2D(samplerWrap4, indata.Tex2Crack) * crack.a;
+    float4 expandedNormal = tex2D(samplerWrap3, indata.Tex1Detail) * (1.0 - crack.a);
+    float4 expandedCrackNormal = tex2D(samplerWrap4, indata.Tex2Crack) * crack.a;
     expandedNormal = expandedNormal + expandedCrackNormal;
     expandedNormal.xyz = expandedNormal.xyz * 2.0 - 1.0;
 
-    vec2 intensityuv = float2(dot(normalize(indata.LightVec),expandedNormal), dot(normalize(indata.HalfVec),expandedNormal));
-    vec4 intensity = tex2D(samplerClamp5, intensityuv);
+    float2 intensityuv = float2(dot(normalize(indata.LightVec),expandedNormal), dot(normalize(indata.HalfVec),expandedNormal));
+    float4 intensity = tex2D(samplerClamp5, intensityuv);
 
-    vec3 maskedColor = color * detail * (1.0 - crack.a);
+    float3 maskedColor = color * detail * (1.0 - crack.a);
     maskedColor = crack.rgb*crack.a + maskedColor.rgb;
 
-    vec4 outColor;
+    float4 outColor;
     outColor.rgb = intensity * sunColor * maskedColor + intensity.a*expandedNormal.a*dot(sunColor, 0.33);
     outColor.a = detail.a;
     return outColor;
@@ -590,24 +590,24 @@ VS_OUT_BaseDetailCrackLMndetailncrack vsBaseDetailCrackLMndetailncrack(appdata_B
 
 float4 psBaseDetailCrackLMndetailncrack(VS_OUT_BaseDetailCrackLMndetailncrack indata) : COLOR
 {
-    vec4 color = tex2D(samplerWrap0, indata.Tex0Diff);
-    vec4 detail = tex2D(samplerWrap1, indata.Tex1Detail);
-    vec4 crack = tex2D(samplerWrap2, indata.Tex2Crack);
+    float4 color = tex2D(samplerWrap0, indata.Tex0Diff);
+    float4 detail = tex2D(samplerWrap1, indata.Tex1Detail);
+    float4 crack = tex2D(samplerWrap2, indata.Tex2Crack);
 
-    vec4 expandedNormal = tex2D(samplerWrap3, indata.Tex1Detail) * (1.0 - crack.a);
-    vec4 expandedCrackNormal = tex2D(samplerWrap4, indata.Tex2Crack) * crack.a;
+    float4 expandedNormal = tex2D(samplerWrap3, indata.Tex1Detail) * (1.0 - crack.a);
+    float4 expandedCrackNormal = tex2D(samplerWrap4, indata.Tex2Crack) * crack.a;
     expandedNormal = expandedNormal + expandedCrackNormal;
     expandedNormal.xyz = (expandedNormal.xyz * 2.0) - 1.0;
 
-    vec2 intensityuv = float2(dot(normalize(indata.LightVec),expandedNormal), dot(normalize(indata.HalfVec),expandedNormal));
-    vec4 intensity = tex2D(samplerClamp5, intensityuv);
-    vec4 lightmap = tex2D(samplerWrap6, indata.Tex3LMap);
+    float2 intensityuv = float2(dot(normalize(indata.LightVec),expandedNormal), dot(normalize(indata.HalfVec),expandedNormal));
+    float4 intensity = tex2D(samplerClamp5, intensityuv);
+    float4 lightmap = tex2D(samplerWrap6, indata.Tex3LMap);
     intensity *= lightmap.a;
 
-    vec3 maskedColor = color * detail * (1-crack.a);
+    float3 maskedColor = color * detail * (1-crack.a);
     maskedColor = crack.rgb*crack.a + maskedColor.rgb;
 
-    vec4 outColor;
+    float4 outColor;
     outColor.rgb = (intensity* sunColor + lightmap) * maskedColor + intensity.a*expandedNormal.a * dot(sunColor, 0.33);
     outColor.a = detail.a;
     return outColor;
@@ -672,23 +672,23 @@ VS_OUT_BaseDetailDirtCrackndetailncrack vsBaseDetailDirtCrackndetailncrack(appda
 
 float4 psBaseDetailDirtCrackndetailncrack(VS_OUT_BaseDetailDirtCrackndetailncrack indata) : COLOR
 {
-    vec4 color = tex2D(samplerWrap0, indata.Tex0Diff);
-    vec4 detail = tex2D(samplerWrap1, indata.Tex1Detail);
-    vec4 dirt = tex2D(samplerWrap2, indata.Tex2Dirt);
-    vec4 crack = tex2D(samplerWrap3, indata.Tex3Crack);
+    float4 color = tex2D(samplerWrap0, indata.Tex0Diff);
+    float4 detail = tex2D(samplerWrap1, indata.Tex1Detail);
+    float4 dirt = tex2D(samplerWrap2, indata.Tex2Dirt);
+    float4 crack = tex2D(samplerWrap3, indata.Tex3Crack);
 
-    vec4 expandedNormal = tex2D(samplerWrap4, indata.Tex1Detail) * (1-crack.a);
-    vec4 expandedCrackNormal = tex2D(samplerWrap5, indata.Tex3Crack) * crack.a;
+    float4 expandedNormal = tex2D(samplerWrap4, indata.Tex1Detail) * (1-crack.a);
+    float4 expandedCrackNormal = tex2D(samplerWrap5, indata.Tex3Crack) * crack.a;
     expandedNormal = expandedNormal + expandedCrackNormal;
     expandedNormal.xyz = (expandedNormal.xyz * 2.0) - 1.0;
 
-    vec2 intensityuv = float2(dot(normalize(indata.LightVec),expandedNormal), dot(normalize(indata.HalfVec),expandedNormal));
-    vec4 intensity = tex2D(samplerClamp6, intensityuv);
+    float2 intensityuv = float2(dot(normalize(indata.LightVec),expandedNormal), dot(normalize(indata.HalfVec),expandedNormal));
+    float4 intensity = tex2D(samplerClamp6, intensityuv);
 
-    vec3 maskedColor = color * detail * dirt * (1.0 - crack.a);
+    float3 maskedColor = color * detail * dirt * (1.0 - crack.a);
     maskedColor = crack.rgb * crack.a + maskedColor.rgb;
 
-    vec4 outColor;
+    float4 outColor;
     outColor.rgb = (intensity * sunColor) * maskedColor + intensity.a * expandedNormal.a * dot(sunColor, 0.333);
     outColor.a = detail.a;
     return outColor;
@@ -756,22 +756,22 @@ VS_OUT_BaseDetailDirtCrackLMndetailncrack vsBaseDetailDirtCrackLMndetailncrack(a
 
 float4 psBaseDetailDirtCrackLMndetailncrack(VS_OUT_BaseDetailDirtCrackLMndetailncrack indata) : COLOR
 {
-    vec4 color = tex2D(samplerWrap0, indata.Tex0Diff);
-    vec4 detail = tex2D(samplerWrap1, indata.Tex1Detail);
-    vec4 dirt = tex2D(samplerWrap2, indata.Tex2Dirt);
-    vec4 crack = tex2D(samplerWrap3, indata.Tex3Crack);
-    vec4 expandedNormal = tex2D(samplerWrap4, indata.Tex1Detail) * (1.0 - crack.a);
-    vec4 expandedCrackNormal = tex2D(samplerWrap5, indata.Tex3Crack) * crack.a;
+    float4 color = tex2D(samplerWrap0, indata.Tex0Diff);
+    float4 detail = tex2D(samplerWrap1, indata.Tex1Detail);
+    float4 dirt = tex2D(samplerWrap2, indata.Tex2Dirt);
+    float4 crack = tex2D(samplerWrap3, indata.Tex3Crack);
+    float4 expandedNormal = tex2D(samplerWrap4, indata.Tex1Detail) * (1.0 - crack.a);
+    float4 expandedCrackNormal = tex2D(samplerWrap5, indata.Tex3Crack) * crack.a;
     expandedNormal = expandedNormal + expandedCrackNormal;
     expandedNormal.xyz = (expandedNormal.xyz * 2.0) - 1.0;
-    vec2 intensityuv = float2(dot(normalize(indata.LightVec),expandedNormal), dot(normalize(indata.HalfVec),expandedNormal));
-    vec4 intensity = tex2D(samplerClamp6, intensityuv);
-    vec4 lightmap = tex2D(samplerWrap7, indata.Tex4LMap);
+    float2 intensityuv = float2(dot(normalize(indata.LightVec),expandedNormal), dot(normalize(indata.HalfVec),expandedNormal));
+    float4 intensity = tex2D(samplerClamp6, intensityuv);
+    float4 lightmap = tex2D(samplerWrap7, indata.Tex4LMap);
     intensity *= lightmap.a;
-    vec3 maskedColor = color * detail * dirt * (1.0 - crack.a);
+    float3 maskedColor = color * detail * dirt * (1.0 - crack.a);
     maskedColor = crack.rgb*crack.a + maskedColor.rgb;
 
-    vec4 outColor;
+    float4 outColor;
     outColor.rgb = ((intensity*sunColor)+lightmap) * maskedColor + intensity.a*expandedNormal.a*dot(sunColor, 0.33);
     outColor.a = detail.a;
     return outColor;
@@ -829,16 +829,16 @@ VS_OUT_LightmapAndSunndetail vsLightmapAndSunndetail(appdata_LightmapAndSunndeta
     return Out;
 }
 
-vec4 psLightmapAndSunndetail(VS_OUT_LightmapAndSunndetail indata) : COLOR
+float4 psLightmapAndSunndetail(VS_OUT_LightmapAndSunndetail indata) : COLOR
 {
-    vec4 expandedNormal = tex2D(samplerWrap0, indata.Tex0Normal);
+    float4 expandedNormal = tex2D(samplerWrap0, indata.Tex0Normal);
     expandedNormal.xyz = (expandedNormal.xyz * 2.0) - 1.0;
-    vec2 intensityuv = float2(dot(normalize(indata.LightVec), expandedNormal), dot(normalize(indata.HalfVec), expandedNormal));
-    vec4 intensity = tex2D(samplerClamp1, intensityuv);
-    vec4 lightmap = tex2D(samplerWrap2, indata.Tex1LMap);
+    float2 intensityuv = float2(dot(normalize(indata.LightVec), expandedNormal), dot(normalize(indata.HalfVec), expandedNormal));
+    float4 intensity = tex2D(samplerClamp1, intensityuv);
+    float4 lightmap = tex2D(samplerWrap2, indata.Tex1LMap);
     intensity *= lightmap.a;
 
-    vec4 outColor;
+    float4 outColor;
     outColor.rgb = (intensity * sunColor + lightmap) + intensity.a * expandedNormal.a * dot(sunColor, 0.333);
     outColor.a = 1.0f;
     return outColor;
@@ -912,20 +912,20 @@ VS_OUT_LightmapAndSunndetailncrack vsLightmapAndSunndetailncrack(appdata_Lightma
     return Out;
 }
 
-vec4 psLightmapAndSunndetailncrack(VS_OUT_LightmapAndSunndetailncrack indata) : COLOR
+float4 psLightmapAndSunndetailncrack(VS_OUT_LightmapAndSunndetailncrack indata) : COLOR
 {
-    vec4 crack = tex2D(samplerWrap0, indata.Tex0Crack);
-    vec4 expandedNormal = tex2D(samplerWrap1, indata.Tex1Normal) * (1.0 - crack.a);
-    vec4 expandedCrackNormal = tex2D(samplerWrap2, indata.Tex0Crack) * crack.a;
+    float4 crack = tex2D(samplerWrap0, indata.Tex0Crack);
+    float4 expandedNormal = tex2D(samplerWrap1, indata.Tex1Normal) * (1.0 - crack.a);
+    float4 expandedCrackNormal = tex2D(samplerWrap2, indata.Tex0Crack) * crack.a;
     expandedNormal = expandedNormal + expandedCrackNormal;
     expandedNormal.xyz = (expandedNormal.xyz * 2.0) - 1.0;
 
-    vec2 intensityuv = float2(dot(normalize(indata.LightVec),expandedNormal), dot(normalize(indata.HalfVec),expandedNormal));
-    vec4 intensity = tex2D(samplerClamp3, intensityuv);
-    vec4 lightmap = tex2D(samplerWrap4, indata.Tex2LMap);
+    float2 intensityuv = float2(dot(normalize(indata.LightVec),expandedNormal), dot(normalize(indata.HalfVec),expandedNormal));
+    float4 intensity = tex2D(samplerClamp3, intensityuv);
+    float4 lightmap = tex2D(samplerWrap4, indata.Tex2LMap);
     intensity *= lightmap.a;
 
-    vec4 outColor;
+    float4 outColor;
     outColor.rgb = ((intensity*sunColor) + lightmap) + intensity.a*expandedNormal.a*dot(sunColor, 0.33);
     outColor.a = 1.0f;
     return outColor;
@@ -965,31 +965,31 @@ technique LightmapAndSunndetailncrack
 
 
 
-void vsBumpSpecularBlinnPointLight(vec3 Normal, vec3 Tan, vec3 Pos, int Index, out vec3 LightVec, out vec3 HalfVec, out vec2 LightDist)
+void vsBumpSpecularBlinnPointLight(float3 Normal, float3 Tan, float3 Pos, int Index, out float3 LightVec, out float3 HalfVec, out float2 LightDist)
 {
     // Cross product to create BiNormal
-    vec3 binormal = normalize(cross(Tan, Normal));
+    float3 binormal = normalize(cross(Tan, Normal));
 
     // Need to calculate the WorldI based on each matBone skinning world matrix
-    mat3x3 TanBasis = mat3x3(Tan, binormal, Normal);
+    float3x3 TanBasis = float3x3(Tan, binormal, Normal);
 
     // Calculate WorldTangent directly... inverse is the transpose for affine rotations
-    mat3x3 worldI = TanBasis;//mul(TanBasis, mOneBoneSkinning[Index]);
+    float3x3 worldI = TanBasis;//mul(TanBasis, mOneBoneSkinning[Index]);
     worldI = transpose(mul(worldI, worldMatrix));
 
     // Transform Light vec to Object space
-    vec3 worldPos = mul(Pos, worldMatrix);
+    float3 worldPos = mul(Pos, worldMatrix);
     float3 lvec = lightPosAndAttSqrInv.xyz-worldPos;
 
     // Transform Light dir to Object space
     LightVec = mul(lvec, worldI);
     float lightDist = length(LightVec);
     lightDist *= lightPosAndAttSqrInv.w;
-    LightDist = vec2(lightDist, 0.0);
+    LightDist = float2(lightDist, 0.0);
 
     // Transform eye pos to tangent space
-    vec3 worldEyeVec = eyePos - worldPos;
-    vec3 tanEyeVec = mul(worldEyeVec, worldI);
+    float3 worldEyeVec = eyePos - worldPos;
+    float3 tanEyeVec = mul(worldEyeVec, worldI);
 
     HalfVec = (LightVec + normalize(tanEyeVec)) * 0.5;
 }
@@ -1027,16 +1027,16 @@ VS_OUT_vsBumpSpecularPointLightndetail vsBumpSpecularPointLightndetail(appdata_v
     return Out;
 }
 
-vec4 psBumpSpecularPointLightndetail(VS_OUT_vsBumpSpecularPointLightndetail indata) : COLOR
+float4 psBumpSpecularPointLightndetail(VS_OUT_vsBumpSpecularPointLightndetail indata) : COLOR
 {
-    vec4 normalmap = tex2D(samplerWrap0, indata.Tex0Normal);
-    vec3 expandedNormal = normalmap.xyz * 2.0 - 1.0;
+    float4 normalmap = tex2D(samplerWrap0, indata.Tex0Normal);
+    float3 expandedNormal = normalmap.xyz * 2.0 - 1.0;
 
-    vec3 normalizedLVec = normalize(indata.LightVec);
-    vec2 intensityuv = float2(dot(normalizedLVec,expandedNormal), dot(indata.HalfVec,expandedNormal));
-    vec4 intensity = tex2D(samplerClamp1, intensityuv);
+    float3 normalizedLVec = normalize(indata.LightVec);
+    float2 intensityuv = float2(dot(normalizedLVec,expandedNormal), dot(indata.HalfVec,expandedNormal));
+    float4 intensity = tex2D(samplerClamp1, intensityuv);
 
-    vec4 radialAtt = tex1D(samplerClamp2, indata.LightDist.r);
+    float4 radialAtt = tex1D(samplerClamp2, indata.LightDist.r);
     return radialAtt * intensity * lightColor + intensity.a * normalmap.a*dot(lightColor, 0.33);
 }
 
@@ -1103,19 +1103,19 @@ VS_OUT_vsBumpSpecularPointLightndetailncrack vsBumpSpecularPointLightndetailncra
     return Out;
 }
 
-vec4 psBumpSpecularPointLightndetailncrack(VS_OUT_vsBumpSpecularPointLightndetailncrack indata) : COLOR
+float4 psBumpSpecularPointLightndetailncrack(VS_OUT_vsBumpSpecularPointLightndetailncrack indata) : COLOR
 {
-    vec4 crack = tex2D(samplerWrap0, indata.Tex1NormalCrack);
-    vec4 expandedNormal = tex2D(samplerWrap1, indata.Tex0Normal) * (1.0 - crack.a);
-    vec4 expandedCrackNormal = tex2D(samplerWrap2, indata.Tex1NormalCrack) * crack.a;
+    float4 crack = tex2D(samplerWrap0, indata.Tex1NormalCrack);
+    float4 expandedNormal = tex2D(samplerWrap1, indata.Tex0Normal) * (1.0 - crack.a);
+    float4 expandedCrackNormal = tex2D(samplerWrap2, indata.Tex1NormalCrack) * crack.a;
     expandedNormal = expandedNormal + expandedCrackNormal;
     expandedNormal.xyz = (expandedNormal.xyz * 2.0) - 1.0;
 
-    vec3 normalizedLVec = normalize(indata.LightVec);
-    vec2 intensityuv = float2(dot(normalizedLVec,expandedNormal), dot(indata.HalfVec,expandedNormal));
-    vec4 intensity = tex2D(samplerClamp3, intensityuv);
+    float3 normalizedLVec = normalize(indata.LightVec);
+    float2 intensityuv = float2(dot(normalizedLVec,expandedNormal), dot(indata.HalfVec,expandedNormal));
+    float4 intensity = tex2D(samplerClamp3, intensityuv);
 
-    vec4 radialAtt = tex1D(samplerClamp2, indata.LightDist.r);
+    float4 radialAtt = tex1D(samplerClamp2, indata.LightDist.r);
     return radialAtt * intensity * lightColor + intensity.a * expandedNormal.a * dot(lightColor, 0.33);
 }
 

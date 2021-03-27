@@ -69,7 +69,7 @@ float4 psBase(VS_OUT_Base indata) : COLOR
 
 float4 psBaseAT(VS_OUT_Base indata) : COLOR
 {
-    vec4 baseAT = 1.0;
+    float4 baseAT = 1.0;
     return baseAT.a;
 }
 

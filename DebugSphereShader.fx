@@ -48,7 +48,7 @@ float3 Diffuse(float3 Normal,uniform float4 lhtDir)
     // N.L Clamped
     CosTheta = max(0.0f, dot(Normal, lhtDir.xyz));
 
-    // propogate scalar result to vector
+    // propogate float result to vector
     return (CosTheta);
 }
 

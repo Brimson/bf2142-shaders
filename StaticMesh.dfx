@@ -1,5 +1,4 @@
 #line 2 "StaticMesh.dfx"
-#include "shaders/datatypes.fx"
 #include "shaders/commonSamplers.dfx"
 #include "shaders/common.dfx"
 
@@ -29,23 +28,23 @@ const dword _numSpotLights_     : LITERAL;
 const dword _numProjSpotLights_ : LITERAL;
 
 // Uniform VS Constant inputs!
-mat4x4  vsWorldViewProj       : register(vs_2_0, c0);
-vec4    vsLightmapOffset      : register(vs_2_0, c4);
-vec4    vsLightDirObjSpace    : register(vs_2_0, c5);
-vec4    vsEyePosObjSpace      : register(vs_2_0, c6);
-vec4    vsTexProjOffset       : register(vs_2_0, c7);
-mat4x4  vsShadowProjMat       : register(vs_2_0, c8);
-mat4x4  vsShadowTrapMat       : register(vs_2_0, c17);
-vec4    vsSunColor            : register(vs_2_0, c12) = vec4(1.2, 1.2, 1.1, 1.0);
-vec4    vsSkyColor            : register(vs_2_0, c13) = vec4(0.55, 0.55, 0.7, 1.0);
-vec4    vsLightPosObjSpace[3] : register(vs_2_0, c14);
+float4x4  vsWorldViewProj       : register(vs_2_0, c0);
+float4    vsLightmapOffset      : register(vs_2_0, c4);
+float4    vsLightDirObjSpace    : register(vs_2_0, c5);
+float4    vsEyePosObjSpace      : register(vs_2_0, c6);
+float4    vsTexProjOffset       : register(vs_2_0, c7);
+float4x4  vsShadowProjMat       : register(vs_2_0, c8);
+float4x4  vsShadowTrapMat       : register(vs_2_0, c17);
+float4    vsSunColor            : register(vs_2_0, c12) = float4(1.2, 1.2, 1.1, 1.0);
+float4    vsSkyColor            : register(vs_2_0, c13) = float4(0.55, 0.55, 0.7, 1.0);
+float4    vsLightPosObjSpace[3] : register(vs_2_0, c14);
 
 // Uniform PS Constant inputs!
-vec4 psSunColor          : register(c0) = vec4(1.2, 1.2, 1.1, 1.0);
-vec4 psParallaxScaleBias : register(c1);
-vec4 psViewPortMap       : register(c2);
-vec4 psSkyColor          : register(c3) = vec4(0.55, 0.55, 0.7, 1.0);
-vec4 psSkyNormal         : register(c4) = vec4(0.78, 0.52, 0.65, 1.0);
-vec3 psLightColors[3]    : register(c5);
+float4 psSunColor          : register(c0) = float4(1.2, 1.2, 1.1, 1.0);
+float4 psParallaxScaleBias : register(c1);
+float4 psViewPortMap       : register(c2);
+float4 psSkyColor          : register(c3) = float4(0.55, 0.55, 0.7, 1.0);
+float4 psSkyNormal         : register(c4) = float4(0.78, 0.52, 0.65, 1.0);
+float3 psLightColors[3]    : register(c5);
 
 #include "Shaders/StaticMesh_dx9.dfx"

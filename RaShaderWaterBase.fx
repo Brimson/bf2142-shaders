@@ -1,5 +1,4 @@
 
-#include "shaders/datatypes.fx"
 #include "shaders/raCommon.fx"
 
 // Affects how transparency is claculated depending on camera height.
@@ -22,24 +21,24 @@
 // Modifies heightalpha (for tweaking transparancy depending on depth)
 #define APOW 1.3
 
-vec4 LightMapOffset;
+float4 LightMapOffset;
 
-scalar WaterHeight;
+float WaterHeight;
 
 Light Lights[1];
 
-vec4 WorldSpaceCamPos;
-vec4 WaterScroll;
+float4 WorldSpaceCamPos;
+float4 WaterScroll;
 
-scalar WaterCycleTime;
+float WaterCycleTime;
 
-vec4   SpecularColor;
-scalar SpecularPower;
-vec4   WaterColor;
-vec4   PointColor;
+float4   SpecularColor;
+float SpecularPower;
+float4   WaterColor;
+float4   PointColor;
 
 #ifdef DEBUG
-    #define _WaterColor vec4(1,0,0,1)
+    #define _WaterColor float4(1,0,0,1)
 #else
     #define _WaterColor WaterColor
 #endif
@@ -110,27 +109,27 @@ sampler LightMapSampler = sampler_state
 
 struct VS_OUTPUT_WATER
 {
-    vec4 Pos   : POSITION;
-    scalar Fog : FOG;
+    float4 Pos   : POSITION;
+    float Fog : FOG;
     #ifdef USE_3DTEXTURE
-        vec3 Tex : TEXCOORD0;
+        float3 Tex : TEXCOORD0;
     #else
         #ifdef PS13
-            vec2 Tex0 : TEXCOORD0;
-            vec2 Tex1 : TEXCOORD3;
+            float2 Tex0 : TEXCOORD0;
+            float2 Tex1 : TEXCOORD3;
         #else
-            vec2 Tex : TEXCOORD0;
+            float2 Tex : TEXCOORD0;
         #endif
     #endif
 
     #ifndef NO_LIGHTMAP
-        vec2 lmtex : TEXCOORD1;
+        float2 lmtex : TEXCOORD1;
     #endif
 
-    vec3 Position : TEXCOORD2;
+    float3 Position : TEXCOORD2;
 
     #ifdef USE_SHADOWS
-        vec4 TexShadow : TEXCOORD3;
+        float4 TexShadow : TEXCOORD3;
     #endif
 };
 
@@ -181,13 +180,13 @@ string InstanceParameters[] =
 
 VS_OUTPUT_WATER waterVertexShader
 (
-    vec4 inPos : POSITION0,
-    vec2 lmtex : TEXCOORD1
+    float4 inPos : POSITION0,
+    float2 lmtex : TEXCOORD1
 )
 {
     VS_OUTPUT_WATER Out;
 
-    vec4 wPos = mul(inPos, World);
+    float4 wPos = mul(inPos, World);
     Out.Pos = mul(wPos, ViewProjection);
 
     #ifdef PIXEL_CAMSPACE
@@ -197,13 +196,13 @@ VS_OUTPUT_WATER waterVertexShader
     #endif
 
     #ifdef USE_3DTEXTURE
-        vec3 tex;
-        tex.xy = (wPos.xz / vec2(29.13, 31.81));
+        float3 tex;
+        tex.xy = (wPos.xz / float2(29.13, 31.81));
         tex.xy += (WaterScroll.xy * WaterCycleTime);
-        tex.z = WaterCycleTime * 10.0 + dot(tex.xy, vec2(0.7, 1.13));
+        tex.z = WaterCycleTime * 10.0 + dot(tex.xy, float2(0.7, 1.13));
     #else
-        vec2 tex;
-        tex.xy = (wPos.xz / vec2(99.13, 71.81));
+        float2 tex;
+        tex.xy = (wPos.xz / float2(99.13, 71.81));
     #endif
 
     #ifdef PS13
@@ -229,25 +228,25 @@ VS_OUTPUT_WATER waterVertexShader
     return Out;
 }
 
-#define INV_LIGHTDIR vec3(0.4, 0.5, 0.6)
+#define INV_LIGHTDIR float3(0.4, 0.5, 0.6)
 
-vec4 Water(in VS_OUTPUT_WATER VsData) : COLOR
+float4 Water(in VS_OUTPUT_WATER VsData) : COLOR
 {
-    vec4 finalColor;
+    float4 finalColor;
 
     #ifdef NO_LIGHTMAP // F85BD0
-        vec4 lightmap = PointColor;
+        float4 lightmap = PointColor;
     #else
-        vec4 lightmap = tex2D(LightMapSampler, VsData.lmtex);
+        float4 lightmap = tex2D(LightMapSampler, VsData.lmtex);
     #endif
 
     #ifdef USE_3DTEXTURE
-        vec3 TN = tex3D(WaterMapSampler, VsData.Tex);
+        float3 TN = tex3D(WaterMapSampler, VsData.Tex);
     #else
         #ifdef PS13
-            vec3 TN = tex2D(WaterMapSampler0, VsData.Tex0);
+            float3 TN = tex2D(WaterMapSampler0, VsData.Tex0);
         #else
-            vec3 TN = lerp(tex2D(WaterMapSampler0, VsData.Tex), tex2D(WaterMapSampler1, VsData.Tex), WaterCycleTime);
+            float3 TN = lerp(tex2D(WaterMapSampler0, VsData.Tex), tex2D(WaterMapSampler1, VsData.Tex), WaterCycleTime);
         #endif
     #endif
 
@@ -259,37 +258,37 @@ vec4 Water(in VS_OUTPUT_WATER VsData) : COLOR
 
     #ifdef USE_FRESNEL
         #ifdef FRESNEL_NORMALMAP
-            vec4 TN2 = vec4(TN, 1);
+            float4 TN2 = float4(TN, 1);
         #else
-            vec4 TN2 = vec4(0,1,0,0);
+            float4 TN2 = float4(0,1,0,0);
         #endif
     #endif
 
     #ifdef PIXEL_CAMSPACE
-        vec3 lookup = -(WorldSpaceCamPos - VsData.Position);
+        float3 lookup = -(WorldSpaceCamPos - VsData.Position);
     #else
-        vec3 lookup = VsData.Position;
+        float3 lookup = VsData.Position;
     #endif
 
-    vec3 reflection = reflect(lookup, TN);
-    vec3 envcol = texCUBE(CubeMapSampler, reflection);
+    float3 reflection = reflect(lookup, TN);
+    float3 envcol = texCUBE(CubeMapSampler, reflection);
 
     #ifdef USE_SPECULAR
-        scalar specular = saturate(dot(-Lights[0].dir, normalize(reflection)));
+        float specular = saturate(dot(-Lights[0].dir, normalize(reflection)));
         specular = pow(specular, SpecularPower) * SpecularColor.a;
     #endif
 
     #ifdef USE_FRESNEL
-        scalar fresnel = BASE_TRANSPARENCY - pow(dot(normalize(lookup), TN2), POW_TRANSPARENCY);
+        float fresnel = BASE_TRANSPARENCY - pow(dot(normalize(lookup), TN2), POW_TRANSPARENCY);
     #endif
 
-    scalar shadFac = lightmap.g;
+    float shadFac = lightmap.g;
 
     #ifdef USE_SHADOWS
         shadFac *= getShadowFactor(ShadowMapSampler, VsData.TexShadow);
     #endif
 
-    scalar lerpMod = -(1 - saturate(shadFac+SHADOW_FACTOR));
+    float lerpMod = -(1 - saturate(shadFac+SHADOW_FACTOR));
 
     #ifdef USE_SPECULAR
         finalColor.rgb = (specular * SpecularColor * shadFac) + lerp(_WaterColor, envcol, COLOR_ENVMAP_RATIO + lerpMod);

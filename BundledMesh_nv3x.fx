@@ -2,17 +2,17 @@
 
 struct VO_HemiAndSunShadows
 {
-    vec4 HPos            : POSITION;
-    vec2 TexCoord0       : TEXCOORD0;
-    vec3 LightVec        : TEXCOORD1;
-    vec3 HalfVec         : TEXCOORD2;
-    vec3 GroundUVAndLerp : TEXCOORD3;
-    vec4 EnvMap          : TEXCOORD4;
-    vec4 TexShadow1      : TEXCOORD5;
+    float4 HPos            : POSITION;
+    float2 TexCoord0       : TEXCOORD0;
+    float3 LightVec        : TEXCOORD1;
+    float3 HalfVec         : TEXCOORD2;
+    float3 GroundUVAndLerp : TEXCOORD3;
+    float4 EnvMap          : TEXCOORD4;
+    float4 TexShadow1      : TEXCOORD5;
     float Fog            : FOG;
 };
 
-vec3 CalcReflectionVector(vec3 ViewToPos, vec3 Normal)
+float3 CalcReflectionVector(float3 ViewToPos, float3 Normal)
 {
     return normalize(reflect(ViewToPos, Normal));
 }
@@ -30,17 +30,17 @@ VO_HemiAndSunShadows BasicShader (appdataAnimatedUV input)
 
     Out.TexCoord0 = input.TexCoord0;
 
-    vec3 Pos = mul(input.Pos, mOneBoneSkinning[IndexArray[0]]);
-    Out.HPos = mul(vec4(Pos.xyz, 1.0f), viewProjMatrix);
+    float3 Pos = mul(input.Pos, mOneBoneSkinning[IndexArray[0]]);
+    Out.HPos = mul(float4(Pos.xyz, 1.0f), viewProjMatrix);
 
     // Shadow
-    Out.TexShadow1 =  mul(vec4(Pos, 1.0), vpLightTrapezMat);
-    vec2 TexShadow2 = mul(vec4(Pos, 1.0), vpLightMat).zw;
+    Out.TexShadow1 =  mul(float4(Pos, 1.0), vpLightTrapezMat);
+    float2 TexShadow2 = mul(float4(Pos, 1.0), vpLightMat).zw;
     TexShadow2.x -= 0.003;
     Out.TexShadow1.z = (TexShadow2.x * Out.TexShadow1.w) / TexShadow2.y; // (zL*wT)/wL == zL/wL post homo
 
     // Hemi lookup values
-    vec3 AlmostNormal = mul(input.Normal, mOneBoneSkinning[IndexArray[0]]);
+    float3 AlmostNormal = mul(input.Normal, mOneBoneSkinning[IndexArray[0]]);
     Out.GroundUVAndLerp.xy = ((Pos + (hemiMapInfo.z * 0.5) + AlmostNormal * 1.0).xz - hemiMapInfo.xy) / hemiMapInfo.z;
     Out.GroundUVAndLerp.y  = 1.0 - Out.GroundUVAndLerp.y;
     Out.GroundUVAndLerp.z  = (AlmostNormal.y * 0.5) + 0.5;
@@ -48,21 +48,21 @@ VO_HemiAndSunShadows BasicShader (appdataAnimatedUV input)
 
     // Cross product * flip to create BiNormal
     float flip = 1.0;
-    vec3 binormal = normalize(cross(input.Tan, input.Normal)) * flip;
+    float3 binormal = normalize(cross(input.Tan, input.Normal)) * flip;
 
     // Need to calculate the WorldI based on each matBone skinning world matrix
-    mat3x3 TanBasis = mat3x3(input.Tan, binormal, input.Normal);
+    float3x3 TanBasis = float3x3(input.Tan, binormal, input.Normal);
 
     // Calculate WorldTangent directly... inverse is the transpose for affine rotations
-    mat3x3 worldI = transpose(mul(TanBasis, mOneBoneSkinning[IndexArray[0]]));
+    float3x3 worldI = transpose(mul(TanBasis, mOneBoneSkinning[IndexArray[0]]));
 
     // Transform Light dir to Object space
-    vec3 normalizedTanLightVec = normalize(mul(-lightDir, worldI));
+    float3 normalizedTanLightVec = normalize(mul(-lightDir, worldI));
     Out.LightVec = normalizedTanLightVec;
 
     // Transform eye pos to tangent space
-    vec3 worldEyeVec = normalize(Pos - eyePos.xyz);
-    vec3 tanEyeVec = mul(-worldEyeVec, worldI);
+    float3 worldEyeVec = normalize(Pos - eyePos.xyz);
+    float3 tanEyeVec = mul(-worldEyeVec, worldI);
 
     Out.HalfVec = normalize(normalizedTanLightVec + normalize(tanEyeVec));
     Out.Fog = calcFog(Out.HPos.w);
@@ -89,36 +89,36 @@ VO_HemiAndSunShadows vs_HemiAndSunShadowsAnimatedUV(appdataAnimatedUV input)
     int4 IndexVector = D3DCOLORtoUBYTE4(input.BlendIndices);
     int IndexArray[4] = (int[4])IndexVector;
 
-    mat3x3 tmp = uvMatrix[IndexArray[3]];
-    Out.TexCoord0 = mul(vec3(input.TexCoord1, 1.0), tmp).xy + input.TexCoord0;
+    float3x3 tmp = uvMatrix[IndexArray[3]];
+    Out.TexCoord0 = mul(float3(input.TexCoord1, 1.0), tmp).xy + input.TexCoord0;
     // TODO: (ROD) Gotta rotate the tangent space as well as the uv
 
     return Out;
 }
 
-vec4 ps_HemiAndSunShadows(VO_HemiAndSunShadows indata) : COLOR
+float4 ps_HemiAndSunShadows(VO_HemiAndSunShadows indata) : COLOR
 {
-    vec4 outColor = (vec4)1;
+    float4 outColor = (float4)1;
 
-    vec4 TN = tex2D(sampler0, indata.TexCoord0);
+    float4 TN = tex2D(sampler0, indata.TexCoord0);
     TN.rgb = normalize((TN.rgb * 2.0) - 1.0);
 
-    vec4 dot3Light = saturate(dot(normalize(indata.LightVec), TN));
+    float4 dot3Light = saturate(dot(normalize(indata.LightVec), TN));
 
-    vec3 specular = pow(dot(normalize(indata.HalfVec), TN), 64.0) * TN.a;
+    float3 specular = pow(dot(normalize(indata.HalfVec), TN), 64.0) * TN.a;
 
     // dynamic shadows
     {
-        scalar dirShadow = 1.0;
+        float dirShadow = 1.0;
 
-        vec2 texel = vec2(0.5 / 1024.0, 0.0)
-        vec4 samples;
+        float2 texel = float2(0.5 / 1024.0, 0.0)
+        float4 samples;
         samples.x = tex2Dproj(ShadowMapSampler, indata.TexShadow1);
         samples.y = tex2Dproj(ShadowMapSampler, indata.TexShadow1 + texel.xyyy);
         samples.z = tex2Dproj(ShadowMapSampler, indata.TexShadow1 + texel.yxyy);
         samples.w = tex2Dproj(ShadowMapSampler, indata.TexShadow1 + texel.xxyy);
 
-        vec4 cmpbits = samples >= saturate(indata.TexShadow1.z/indata.TexShadow1.w);
+        float4 cmpbits = samples >= saturate(indata.TexShadow1.z/indata.TexShadow1.w);
         dirShadow = dot(cmpbits, 0.25);
 
         // killing both spec and dot3 if we are in shadows
@@ -126,12 +126,12 @@ vec4 ps_HemiAndSunShadows(VO_HemiAndSunShadows indata) : COLOR
         specular *= dirShadow;
     }
 
-    vec4 TD = tex2D(sampler3, indata.TexCoord0);
+    float4 TD = tex2D(sampler3, indata.TexCoord0);
 
-    vec4 groundcolor = tex2D(sampler1, indata.GroundUVAndLerp.xy);
-    vec4 hemicolor = lerp(groundcolor, skyColor, indata.GroundUVAndLerp.z) * ambientColor;
+    float4 groundcolor = tex2D(sampler1, indata.GroundUVAndLerp.xy);
+    float4 hemicolor = lerp(groundcolor, skyColor, indata.GroundUVAndLerp.z) * ambientColor;
 
-    vec4 GI = tex2D(sampler2, indata.TexCoord0);
+    float4 GI = tex2D(sampler2, indata.TexCoord0);
 
     outColor.rgb = (hemicolor + (dot3Light * sunColor))  * TD * GI;
     outColor.rgb += specular * sunColor;
@@ -139,7 +139,7 @@ vec4 ps_HemiAndSunShadows(VO_HemiAndSunShadows indata) : COLOR
 
     // Environment map
     // NOTE: eyePos.w is just a reflection scaling value. Why do we have this besides the reflectivity (gloss map)data?
-    vec3 envmapColor = texCUBE(samplerCube4, indata.EnvMap.xyz) * TN.a * eyePos.w;
+    float3 envmapColor = texCUBE(samplerCube4, indata.EnvMap.xyz) * TN.a * eyePos.w;
     outColor.rgb    += (envmapColor * 2.0);
     outColor.a      += indata.EnvMap.w * TD.a;
 
@@ -160,7 +160,7 @@ vec4 ps_HemiAndSunShadows(VO_HemiAndSunShadows indata) : COLOR
     #endif
 
     #ifdef SPEC_LIGHT
-        outColor = vec4(specular, 1.0);
+        outColor = float4(specular, 1.0);
     #endif
 
     #ifdef DIFFUSE_MAP
@@ -206,12 +206,12 @@ technique HemiAndSun
 // Point Lights
 struct VO_PointLight
 {
-    vec4 HPos                : POSITION;
-    vec2 TexCoord0           : TEXCOORD0;
-    vec3 LightVec            : TEXCOORD1;
-    vec3 HalfVec             : TEXCOORD2;
-    vec4 EyeVecAndReflection : TEXCOORD7;
-    vec4 TexShadow           : TEXCOORD4;
+    float4 HPos                : POSITION;
+    float2 TexCoord0           : TEXCOORD0;
+    float3 LightVec            : TEXCOORD1;
+    float3 HalfVec             : TEXCOORD2;
+    float4 EyeVecAndReflection : TEXCOORD7;
+    float4 TexShadow           : TEXCOORD4;
     float Fog                : FOG;
 };
 
@@ -225,28 +225,28 @@ VO_PointLight BasicShaderPoint (appdataAnimatedUV input)
 
     Out.TexCoord0 = input.TexCoord0;
 
-    vec3 Pos = mul(input.Pos, mOneBoneSkinning[IndexArray[0]]);
-    Out.HPos = mul(vec4(Pos.xyz, 1.0f), viewProjMatrix);
+    float3 Pos = mul(input.Pos, mOneBoneSkinning[IndexArray[0]]);
+    Out.HPos = mul(float4(Pos.xyz, 1.0f), viewProjMatrix);
 
     // Cross product * flip to create BiNormal
     float flip = 1.0;
-    vec3 binormal = normalize(cross(input.Tan, input.Normal)) * flip;
+    float3 binormal = normalize(cross(input.Tan, input.Normal)) * flip;
 
     // Need to calculate the WorldI based on each matBone skinning world matrix
-    mat3x3 TanBasis = mat3x3(input.Tan, binormal, input.Normal);
+    float3x3 TanBasis = float3x3(input.Tan, binormal, input.Normal);
 
     // Calculate WorldTangent directly... inverse is the transpose for affine rotations
-    mat3x3 worldI = transpose(mul(TanBasis, mOneBoneSkinning[IndexArray[0]]));
+    float3x3 worldI = transpose(mul(TanBasis, mOneBoneSkinning[IndexArray[0]]));
 
     // Transform Light dir to Object space
-    scalar attenuation = 1.0 - saturate(dot(lightPos - Pos, lightPos - Pos) * attenuationSqrInv);
-    vec3 normalizedTanLightVec = normalize(mul(lightPos - Pos, worldI)) * attenuation ;
+    float attenuation = 1.0 - saturate(dot(lightPos - Pos, lightPos - Pos) * attenuationSqrInv);
+    float3 normalizedTanLightVec = normalize(mul(lightPos - Pos, worldI)) * attenuation ;
 
     Out.LightVec = normalizedTanLightVec;
 
     // Transform eye pos to tangent space
-    vec3 worldEyeVec = normalize(Pos - eyePos.xyz);
-    vec3 tanEyeVec = mul(-worldEyeVec, worldI);
+    float3 worldEyeVec = normalize(Pos - eyePos.xyz);
+    float3 tanEyeVec = mul(-worldEyeVec, worldI);
 
     Out.HalfVec = normalize(normalizedTanLightVec + normalize(tanEyeVec));
 
@@ -269,25 +269,25 @@ VO_PointLight vs_pointLightAnimated(appdataAnimatedUV input)
     int4 IndexVector = D3DCOLORtoUBYTE4(input.BlendIndices);
     int IndexArray[4] = (int[4])IndexVector;
 
-    mat3x3 tmp = uvMatrix[IndexArray[3]];
-    Out.TexCoord0 = mul(vec3(input.TexCoord1, 1.0), tmp).xy + input.TexCoord0;
+    float3x3 tmp = uvMatrix[IndexArray[3]];
+    Out.TexCoord0 = mul(float3(input.TexCoord1, 1.0), tmp).xy + input.TexCoord0;
 
     // TODO: (ROD) Gotta rotate the tangent space as well as the uv
     return Out;
 }
 
-vec4 ps_pointLight(VO_PointLight inData) : COLOR
+float4 ps_pointLight(VO_PointLight inData) : COLOR
 {
-    vec4 outColor = (vec4)0;
+    float4 outColor = (float4)0;
 
-    vec4 TN = tex2D(sampler0, inData.TexCoord0);
+    float4 TN = tex2D(sampler0, inData.TexCoord0);
     TN.rgb = TN.rgb * 2.0 - 1.0;
 
-    vec4 dot3Light = saturate(dot(inData.LightVec, TN));
+    float4 dot3Light = saturate(dot(inData.LightVec, TN));
 
-    vec3 specular = pow(dot(normalize(inData.HalfVec), TN), 128) * TN.a;
+    float3 specular = pow(dot(normalize(inData.HalfVec), TN), 128) * TN.a;
 
-    vec4 TD = tex2D(sampler3, inData.TexCoord0);
+    float4 TD = tex2D(sampler3, inData.TexCoord0);
 
     outColor.rgb = dot3Light * TD * lightColor;
 
@@ -304,7 +304,7 @@ vec4 ps_pointLight(VO_PointLight inData) : COLOR
     #endif
 
     #ifdef SPEC_LIGHT
-        outColor = vec4(specular, 1.0);
+        outColor = float4(specular, 1.0);
     #endif
 
     #ifdef DIFFUSE_MAP
