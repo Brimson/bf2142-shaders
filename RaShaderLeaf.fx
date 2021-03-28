@@ -8,6 +8,7 @@
 #endif
 
 #include "shaders/RaCommon.fx"
+#include "Shaders/Math.fx"
 
 float4   OverGrowthAmbient;
 Light  Lights[1];
@@ -69,7 +70,7 @@ VS_OUTPUT basicVertexShader
         inPos.xyz +=  sin((GlobalTime / (ObjRadius + inPos.y)) * WindSpeed) * (ObjRadius + inPos.y) * (ObjRadius + inPos.y) / LEAF_MOVEMENT;// *  WindSpeed / 16384;//clamp(abs(inPos.z * inPos.x), 0, WindSpeed);
     #endif
 
-    Out.Pos	= mul(float4(inPos.xyz, 1.0), WorldViewProjection);
+    Out.Pos	= mul1(inPos, WorldViewProjection);
 
     Out.Fog	= calcFog(Out.Pos.w);
     Out.Tex0.xy = tex0;

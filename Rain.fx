@@ -1,3 +1,4 @@
+#include "Shaders/Math.fx"
 
 float4x4 wvp : WORLDVIEWPROJ;
 
@@ -73,7 +74,7 @@ POINT_VSOUT vsPoint(VSINPUT input)
     output.pointSize = min(particleSize * rsqrt(pointScale[0] + pointScale[1] * camDist), maxParticleSize);
 
     // output the final texture coordinates and projected position
-    output.Pos = mul(float4(particlePos,1), wvp);
+    output.Pos = mul1(particlePos, wvp);
     output.TexCoord = input.TexCoord;
 
     return output;
@@ -127,7 +128,7 @@ LINE_VSOUT vsLine(VSINPUT input)
     float visibility = cellVisibility[input.Data.x];
     output.Color = float4(particleColor.rgb,particleColor.a*alpha*visibility);
 
-    output.Pos = mul(float4(particlePos, 1.0), wvp);
+    output.Pos = mul1(particlePos, wvp);
     output.TexCoord = input.TexCoord;
 
     return output;
@@ -174,7 +175,7 @@ CELL_VSOUT vsCells(VSINPUT input)
     float visibility = cellVisibility[input.Data.x];
 
     output.Color = float4(visibility, 1.0 - visibility, 1.0 - visibility, 1.0);
-    output.Pos = mul(float4(particlePos, 1.0), wvp);
+    output.Pos = mul1(particlePos, wvp);
     output.TexCoord = input.TexCoord;
     return output;
 }

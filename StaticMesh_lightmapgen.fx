@@ -1,3 +1,4 @@
+#include "Shaders/Math.fx"
 
 struct VS_OUT_LightmapGen
 {
@@ -16,7 +17,7 @@ VS_OUT_LightmapGen vsLightmapBase(appdata_LightmapGen input)
     VS_OUT_LightmapGen Out;
 
     float4 Pos = input.Pos  * PosUnpack;
-    Out.HPos = mul(float4(Pos.xyz, 1.0f), viewProjMatrix);
+    Out.HPos = mul1(Pos, viewProjMatrix);
 
     // Pass-through texcoords
     Out.Tex0Diff = input.TexCoordDiff * TexUnpack;
@@ -34,7 +35,7 @@ VS_OUT_LightmapGen vsLightmapBase2(appdata_LightmapGen2 input)
 {
     VS_OUT_LightmapGen Out;
     float4 Pos = input.Pos * PosUnpack;
-    Out.HPos = mul(float4(Pos.xyz, 1.0f), viewProjMatrix);
+    Out.HPos = mul1(Pos, viewProjMatrix);
 
     // Pass-through texcoords
     Out.Tex0Diff = input.TexCoordDiff * TexUnpack;

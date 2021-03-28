@@ -1,4 +1,5 @@
 #line 2 "SkinnedMesh_dx9.dfx"
+#include "Shaders/Math.fx"
 
 struct appdata_variable
 {
@@ -89,7 +90,7 @@ void skinSoldierForPP(uniform int NumBones, in appdata_variable indata, in float
         lightVec = lightVec - sPos;
     outdata.SkinnedLVec += mul(lightVec, mat) * LastWeight;
 
-    outdata.wPos = mul(float4(outdata.Pos.xyz, 1.0), mWorld);
+    outdata.wPos = mul1(outdata.Pos, mWorld);
     // Calculate HalfVector
     if (_hastangent_)
     {
@@ -129,7 +130,7 @@ void skinSoldierForPV(uniform int NumBones, in appdata_variable indata, TEMP_OUT
     outdata.Pos += mul(indata.Pos, mBoneArray[IndexArray[NumBones-1]]) * LastWeight;
     outdata.Normal += mul(indata.Normal, mBoneArray[IndexArray[NumBones-1]]) * LastWeight;
 
-    outdata.wPos = mul(float4(outdata.Pos.xyz, 1.0), mWorld);
+    outdata.wPos = mul1(outdata.Pos, mWorld);
 
     // Normalize normals
     outdata.Normal = normalize(Normal);
@@ -161,7 +162,7 @@ VS_OUT_variable vsSkinnedMesh(appdata_variable indata, uniform int NumBones)
     }
 
     // Transform position into view and then projection space
-    outdata.Pos = mul(float4(tempout.Pos.xyz, 1.0), mWorldViewProj);
+    outdata.Pos = mul1(tempout.Pos, mWorldViewProj);
 
     // Hemi lookup values
     outdata.GroundUVAndLerp.xy = (tempout.wPos + (heightmapSize * 0.5) + tempout.Normal).xz / heightmapSize;

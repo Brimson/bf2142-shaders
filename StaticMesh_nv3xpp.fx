@@ -1,4 +1,5 @@
 #line 2 "StaticMesh_nv3xpp.fx"
+#include "Shaders/Math.fx"
 
 struct appdata_Basendetail
 {
@@ -48,7 +49,7 @@ VS_OUT_Basendetail vsBasendetail(appdata_Basendetail input)
     VS_OUT_Basendetail Out;
 
     float3 Pos = input.Pos;
-    Out.HPos = mul(float4(Pos.xyz, 1.0f), viewProjMatrix);
+    Out.HPos = mul1(Pos, viewProjMatrix);
 
     // Pass-through texcoords
     Out.Tex0Diff = input.TexCoordDiff;
@@ -132,7 +133,7 @@ VS_OUT_BaseLMndetail vsBaseLMndetail(appdata_BaseLMndetail input)
     VS_OUT_BaseLMndetail Out;
 
     float3 Pos = input.Pos;
-    Out.HPos = mul(float4(Pos.xyz, 1.0f), viewProjMatrix);
+    Out.HPos = mul1(Pos, viewProjMatrix);
 
     // Pass-through texcoords
     Out.Tex0Diff = input.TexCoordDiff;
@@ -201,7 +202,7 @@ VS_OUT_BaseDetailndetail vsBaseDetailndetail(appdata_BaseDetailndetail input)
     VS_OUT_BaseDetailndetail Out;
 
     float3 Pos = input.Pos;
-    Out.HPos = mul(float4(Pos.xyz, 1.0f), viewProjMatrix);
+    Out.HPos = mul1(Pos, viewProjMatrix);
 
     // Pass-through texcoords
     Out.Tex0Diff = input.TexCoordDiff;
@@ -272,7 +273,7 @@ VS_OUT_BaseDetailLMndetail vsBaseDetailLMndetail(appdata_BaseDetailLMndetail inp
     VS_OUT_BaseDetailLMndetail Out;
 
     float3 Pos = input.Pos;
-    Out.HPos = mul(float4(Pos.xyz, 1.0f), viewProjMatrix);
+    Out.HPos = mul1(Pos, viewProjMatrix);
 
     // Pass-through texcoords
     Out.Tex0Diff = input.TexCoordDiff;
@@ -346,7 +347,7 @@ VS_OUT_BaseDetailDirtndetail vsBaseDetailDirtndetail(appdata_BaseDetailDirtndeta
     VS_OUT_BaseDetailDirtndetail Out;
 
     float3 Pos = input.Pos;
-    Out.HPos = mul(float4(Pos.xyz, 1.0f), viewProjMatrix);
+    Out.HPos = mul1(Pos, viewProjMatrix);
 
     // Pass-through texcoords
     Out.Tex0Diff = input.TexCoordDiff;
@@ -419,7 +420,7 @@ VS_OUT_BaseDetailDirtLMndetail vsBaseDetailDirtLMndetail(appdata_BaseDetailDirtL
     VS_OUT_BaseDetailDirtLMndetail Out;
 
     float3 Pos = input.Pos;
-    Out.HPos = mul(float4(Pos.xyz, 1.0f), viewProjMatrix);
+    Out.HPos = mul1(Pos, viewProjMatrix);
 
     // Pass-through texcoords
     Out.Tex0Diff = input.TexCoordDiff;
@@ -495,7 +496,7 @@ VS_OUT_BaseDetailCrackndetailncrack vsBaseDetailCrackndetailncrack(appdata_BaseD
     VS_OUT_BaseDetailCrackndetailncrack Out;
 
     float3 Pos = input.Pos;
-    Out.HPos = mul(float4(Pos.xyz, 1.0f), viewProjMatrix);
+    Out.HPos = mul1(Pos, viewProjMatrix);
 
     // Pass-through texcoords
     Out.Tex0Diff = input.TexCoordDiff;
@@ -575,7 +576,7 @@ VS_OUT_BaseDetailCrackLMndetailncrack vsBaseDetailCrackLMndetailncrack(appdata_B
     VS_OUT_BaseDetailCrackLMndetailncrack Out;
 
     float3 Pos = input.Pos;//mul(input.Pos, mOneBoneSkinning[IndexArray[0]]);
-    Out.HPos = mul(float4(Pos.xyz, 1.0f), viewProjMatrix);
+    Out.HPos = mul1(Pos, viewProjMatrix);
 
     // Pass-through texcoords
     Out.Tex0Diff = input.TexCoordDiff;
@@ -657,7 +658,7 @@ VS_OUT_BaseDetailDirtCrackndetailncrack vsBaseDetailDirtCrackndetailncrack(appda
     VS_OUT_BaseDetailDirtCrackndetailncrack Out;
 
     float3 Pos = input.Pos;
-    Out.HPos = mul(float4(Pos.xyz, 1.0f), viewProjMatrix);
+    Out.HPos = mul1(Pos, viewProjMatrix);
 
     // Pass-through texcoords
     Out.Tex0Diff = input.TexCoordDiff;
@@ -740,7 +741,7 @@ VS_OUT_BaseDetailDirtCrackLMndetailncrack vsBaseDetailDirtCrackLMndetailncrack(a
     VS_OUT_BaseDetailDirtCrackLMndetailncrack Out;
 
     float3 Pos = input.Pos;
-    Out.HPos = mul(float4(Pos.xyz, 1.0f), viewProjMatrix);
+    Out.HPos = mul1(Pos, viewProjMatrix);
 
     // Pass-through texcoords
     Out.Tex0Diff = input.TexCoordDiff;
@@ -818,7 +819,7 @@ VS_OUT_LightmapAndSunndetail vsLightmapAndSunndetail(appdata_LightmapAndSunndeta
     VS_OUT_LightmapAndSunndetail Out;
 
     float3 Pos = input.Pos;
-    Out.HPos = mul(float4(Pos.xyz, 1.0f), viewProjMatrix);
+    Out.HPos = mul1(Pos, viewProjMatrix);
 
     // Pass-through texcoords
     Out.Tex0Normal = input.TexCoordNormalDetailMap;
@@ -900,7 +901,7 @@ VS_OUT_LightmapAndSunndetailncrack vsLightmapAndSunndetailncrack(appdata_Lightma
     VS_OUT_LightmapAndSunndetailncrack Out;
 
     float3 Pos = input.Pos;
-    Out.HPos = mul(float4(Pos.xyz, 1.0f), viewProjMatrix);
+    Out.HPos = mul1(Pos, viewProjMatrix);
 
     // Pass-through texcoords
     Out.Tex0Crack = input.TexCoordNormalCrackMap;
@@ -1018,7 +1019,7 @@ VS_OUT_vsBumpSpecularPointLightndetail vsBumpSpecularPointLightndetail(appdata_v
     VS_OUT_vsBumpSpecularPointLightndetail Out;
 
     float3 wPos = input.Pos;
-    Out.HPos = mul(float4(wPos.xyz, 1.0f), viewProjMatrix);
+    Out.HPos = mul1(wPos, viewProjMatrix);
 
     Out.Tex0Normal = input.TexCoordNormalDetailMap;
 
@@ -1093,7 +1094,7 @@ VS_OUT_vsBumpSpecularPointLightndetailncrack vsBumpSpecularPointLightndetailncra
     VS_OUT_vsBumpSpecularPointLightndetailncrack Out;
 
     float3 wPos = input.Pos;
-    Out.HPos = mul(float4(wPos.xyz, 1.0f), viewProjMatrix);
+    Out.HPos = mul1(wPos, viewProjMatrix);
 
     Out.Tex0Normal = input.TexCoordNormalDetailMap;
     Out.Tex1NormalCrack = input.TexCoordNormalCrackMap;

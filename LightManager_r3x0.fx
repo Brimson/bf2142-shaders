@@ -1,3 +1,4 @@
+#include "Shaders/Math.fx"
 
 float4x4 mVP : VIEWPROJ;
 float4x4 mWVP : WORLDVIEWPROJ;
@@ -427,7 +428,7 @@ VS2PS_D3DXMesh vsDx9_PointLight(APP2VS_D3DXMesh indata)
     VS2PS_D3DXMesh outdata;
 
     float3 wPos = indata.Pos * LightAttenuationRange + LightWorldPos.xyz;
-    outdata.Pos = mul(float4(wPos, 1.0), mVP);
+    outdata.Pos = mul1(wPos, mVP);
 
     outdata.TexCoord0.xy = (outdata.Pos.xy / outdata.Pos.ww) * 0.5 + 0.5;
     outdata.TexCoord0.y = 1.0 - outdata.TexCoord0.y;
@@ -664,7 +665,7 @@ VS2PS_D3DXMesh2 vsDx9_PointLightGlow(APP2VS_D3DXMesh indata)
 
     float scale = LightAttenuationRange;
     float3 wPos = (indata.Pos*scale) + LightWorldPos.xyz;
-    outdata.Pos = mul(float4(wPos, 1.0), mVP);
+    outdata.Pos = mul1(wPos, mVP);
 
     outdata.wPos = dot(normalize(EyePos - LightWorldPos.xyz), normalize(wPos - LightWorldPos.xyz));
     outdata.wPos = outdata.wPos * outdata.wPos * outdata.wPos * outdata.wPos;
@@ -1066,7 +1067,7 @@ VS2PS_D3DXMesh vsDx9_BlitBackLightContribPoint(APP2VS_D3DXMesh indata)
     VS2PS_D3DXMesh outdata;
 
     float3 wPos = indata.Pos * LightAttenuationRange + LightWorldPos.xyz;
-    outdata.Pos = mul(float4(wPos, 1.0), mVP);
+    outdata.Pos = mul1(wPos, mVP);
 
     outdata.TexCoord0.xy = (outdata.Pos.xy / outdata.Pos.ww) * 0.5 + 0.5;
     outdata.TexCoord0.y = 1.0 - outdata.TexCoord0.y;

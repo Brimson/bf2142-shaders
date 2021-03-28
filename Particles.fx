@@ -1,5 +1,6 @@
 #line 2 "Particles.fx"
 #include "shaders/FXCommon.fx"
+#include "Shaders/Math.fx"
 
 // UNIFORM INPUTS
 // constant array
@@ -64,7 +65,7 @@ struct VS_PARTICLE_OUTPUT
 
 VS_PARTICLE_OUTPUT vsParticle(appdata input, uniform float4x4 myWV, uniform float4x4 myWP,  uniform TemplateParameters templ[10])
 {
-    float4 pos = mul(float4(input.pos.xyz, 1.0), myWV);
+    float4 pos = mul1(input.pos, myWV);
     VS_PARTICLE_OUTPUT Out = (VS_PARTICLE_OUTPUT)0;
 
     // Compute Cubic polynomial factors.
@@ -367,7 +368,7 @@ struct VS_HEAT_SHIMMER_OUTPUT
 
 VS_HEAT_SHIMMER_OUTPUT vsParticleHeatShimmer(appdata input, uniform float4x4 myWV, uniform float4x4 myWP,  uniform TemplateParameters templ[10])
 {
-    float4 pos = mul(float4(input.pos.xyz, 1.0), myWV);
+    float4 pos = mul1(input.pos, myWV);
     VS_HEAT_SHIMMER_OUTPUT Out = (VS_HEAT_SHIMMER_OUTPUT)0;
 
     // Compute Cubic polynomial factors.

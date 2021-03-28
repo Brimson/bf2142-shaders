@@ -1,3 +1,6 @@
+
+#include "Shaders/Math.fx"
+
 float4x4 mWorldViewProj : WorldViewProjection;
 bool zbuffer : ZBUFFER;
 
@@ -21,7 +24,7 @@ struct PS2FB
 VS2PS VShader(APP2VS indata, uniform float4x4 wvp)
 {
     VS2PS outdata;
-    outdata.Pos = mul(float4(indata.Pos.xyz, 1.0f), wvp);
+    outdata.Pos = mul1(indata.Pos, wvp);
     outdata.Diffuse.xyz = indata.Diffuse.xyz;
     outdata.Diffuse.w = 0.8f;
     return outdata;

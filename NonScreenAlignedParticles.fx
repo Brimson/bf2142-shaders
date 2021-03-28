@@ -1,5 +1,6 @@
 #line 2 "NonScreenAlignedParticles.fx"
 #include "shaders/FXCommon.fx"
+#include "Shaders/Math.fx"
 
 // constant array
 struct TemplateParameters
@@ -92,7 +93,7 @@ VS_PARTICLE_OUTPUT vsParticle(appdata input, uniform float4x4 myWV, uniform floa
     float3 scaledPos = input.displaceCoords * size + input.pos.xyz;
     scaledPos.y += rotation.w;
 
-    float4 pos = mul(float4(scaledPos, 1.0), myWV);
+    float4 pos = mul1(scaledPos, myWV);
     Out.HPos = mul(pos, myWP);
 
     // compute texcoords
@@ -294,7 +295,7 @@ VS_HEAT_SHIMMER_OUTPUT vsParticleHeatShimmer(appdata input, uniform float4x4 myW
     float3 scaledPos = input.displaceCoords * size + input.pos.xyz;
     scaledPos.y += rotation.w;
 
-    float4 pos = mul(float4(scaledPos, 1.0), myWV);
+    float4 pos = mul1(scaledPos, myWV);
     Out.HPos = mul(pos, myWP);
 
     // compute texcoords
@@ -319,7 +320,7 @@ VS_HEAT_SHIMMER_OUTPUT vsParticleHeatShimmer(appdata input, uniform float4x4 myW
 
 VS_HEAT_SHIMMER_OUTPUT vsParticleHeatShimmer1(appdata input, uniform float4x4 myWV, uniform float4x4 myWP,  uniform TemplateParameters templ[10])
 {
-    float4 pos = mul(float4(input.pos.xyz,1), myWV);
+    float4 pos = mul1(input.pos, myWV);
     VS_HEAT_SHIMMER_OUTPUT Out = (VS_HEAT_SHIMMER_OUTPUT)0;
 
     // Compute Cubic polynomial factors.

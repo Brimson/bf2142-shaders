@@ -1,4 +1,5 @@
 #line 2 "TerrainShader_nv3x.fx"
+#include "Shaders/Math.fx"
 
 // -- Basic morphed technique
 
@@ -860,7 +861,7 @@ STVS2PSNormal vsSTNormal(STAPP2VSNormal indata)
 {
     STVS2PSNormal outdata;
 
-    outdata.Pos.xz = mul(float4(indata.Pos0.xy,0,1), vSTTransXZ).xy;
+    outdata.Pos.xz = mul(float4(indata.Pos0.xy, 0.0, 1.0), vSTTransXZ).xy;
     outdata.Pos.yw = (indata.Pos1.xw * vScaleTransY.xy) + vScaleTransY.zw;
     outdata.Tex0 = indata.TexCoord0;
 
@@ -920,7 +921,7 @@ struct STVS2PSFast
 STVS2PSFast vsSTFast(STAPP2VSFast indata)
 {
     STVS2PSFast outdata;
-    outdata.Pos.xz = mul(float4(indata.Pos0.xy,0,1), vSTTransXZ).xy;
+    outdata.Pos.xz = mul(float4(indata.Pos0.xy, 0.0, 1.0), vSTTransXZ).xy;
     outdata.Pos.yw = (indata.Pos1.xw * vScaleTransY.xy) + vScaleTransY.zw;
     outdata.Tex0 = indata.TexCoord0;
     outdata.Pos = mul(outdata.Pos, mViewProj);

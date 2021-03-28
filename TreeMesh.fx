@@ -1,4 +1,5 @@
 #line 2 "TreeMesh.fx"
+#include "Shaders/Math.fx"
 
 float4x4 mvpMatrix : WorldViewProjection; // : register(vs_2_0, c0);
 float4x4 worldIMatrix : WorldI;           // : register(vs_2_0, c4);
@@ -170,7 +171,7 @@ VS_OUTPUT bumpSpecularVertexShaderBlinn1
     float4 matsEyePos = float4(0.0f, 0.0f, 1.0f, 0.0f);
     float4 worldPos = mul(matsEyePos, ViewInv);
 
-    float3 objPos = mul(float4(worldPos.xyz, 1.0f), WorldIT);
+    float3 objPos = mul1(worldPos.xyz, WorldIT);
     float3 tanPos = float3( dot(objPos, input.Tan),
                             dot(objPos, binormal),
                             dot(objPos, input.Normal));
@@ -239,7 +240,7 @@ OUT_vsBumpSpecularHemiAndSunPV vsBumpSpecularHemiAndSunPV
 {
     OUT_vsBumpSpecularHemiAndSunPV Out = (OUT_vsBumpSpecularHemiAndSunPV)0;
 
-    Out.HPos = mul(float4(input.Pos.xyz, 1.0f), ViewProj);
+    Out.HPos = mul1(input.Pos, ViewProj);
 
     // Hemi lookup values
     float3 AlmostNormal = input.Normal.xyz;
@@ -364,7 +365,7 @@ OUT_vsBumpSpecularPointLight vsBumpSpecularPointLight
 {
     OUT_vsBumpSpecularPointLight Out = (OUT_vsBumpSpecularPointLight)0;
 
-    Out.HPos = mul(float4(input.Pos.xyz, 1.0f), ViewProj);
+    Out.HPos = mul1(input.Pos, ViewProj);
 
     // Cross product to create BiNormal
     float3 binormal = normalize(cross(input.Tan, input.Normal));
@@ -470,7 +471,7 @@ OUT_vsBumpSpecularSpotLight vsBumpSpecularSpotLight
     OUT_vsBumpSpecularSpotLight Out = (OUT_vsBumpSpecularSpotLight)0;
 
     // Compensate for lack of UBYTE4 on Geforce3
-    Out.HPos = mul(float4(input.Pos.xyz, 1.0f), ViewProj);
+    Out.HPos = mul1(input.Pos, ViewProj);
 
     // Cross product to create BiNormal
     float3 binormal = normalize(cross(input.Tan, input.Normal));
@@ -575,7 +576,7 @@ OUT_vsBumpSpecularMulDiffuse vsBumpSpecularMulDiffuse
     OUT_vsBumpSpecularMulDiffuse Out = (OUT_vsBumpSpecularMulDiffuse)0;
 
     // Compensate for lack of UBYTE4 on Geforce3
-    Out.HPos = mul(float4(input.Pos.xyz, 1.0f), ViewProj);
+    Out.HPos = mul1(input.Pos, ViewProj);
 
     // Pass-through texcoords
     Out.DiffuseMap = input.TexCoord;

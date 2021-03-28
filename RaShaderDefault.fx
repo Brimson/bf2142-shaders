@@ -1,3 +1,4 @@
+#include "Shaders/Math.fx"
 
 float4x4 World;
 float4x4 ViewProjection;
@@ -13,7 +14,7 @@ string reqVertexElement[] =
 
 float4 vertexShader(float3 inPos: POSITION0) : POSITION0
 {
-    return mul(float4(inPos, 1.0), mul(World, ViewProjection));
+    return mul1(inPos, mul(World, ViewProjection));
 }
 
 float4 shader() : COLOR

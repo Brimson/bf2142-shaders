@@ -1,6 +1,7 @@
 #line 2 "StaticMesh.fx"
 
 #include "Shaders/commonVertexLight.fx"
+#include "Shaders/Math.fx"
 
 // UNIFORM INPUTS
 float4x4 viewProjMatrix : WorldViewProjection;
@@ -410,7 +411,7 @@ struct VS_OUTPUT3
 VS_OUTPUT3 VSimpleShader(appdata input, uniform float4x4 wvp)
 {
     VS_OUTPUT3 outdata;
-    outdata.HPos = mul(float4(input.Pos.xyz, 1.0), wvp);
+    outdata.HPos = mul1(input.Pos, wvp);
     outdata.TexCoord = input.TexCoord;
     return outdata;
 }
@@ -473,8 +474,7 @@ float4 calcShadowProjCoords(float4 Pos, float4x4 matTrap, float4x4 matLight)
 VS2PS_ShadowMap vsShadowMap(APPDATA_ShadowMap input)
 {
     VS2PS_ShadowMap Out;
-    float4 unpackPos = float4(input.Pos.xyz * PosUnpack, 1.0);
-    float4 wPos = mul(unpackPos, worldMatrix);
+    float4 wPos = mul1(input.Pos, worldMatrix);
     Out.Pos = calcShadowProjCoords(wPos, vpLightTrapezMat, vpLightMat);
     Out.PosZW.xy = Out.Pos.zw;
     return Out;
@@ -484,9 +484,7 @@ VS2PS_ShadowMapAlpha vsShadowMapAlpha(APPDATA_ShadowMap input)
 {
     VS2PS_ShadowMapAlpha Out;
 
-    float4 unpackPos = float4(input.Pos.xyz * PosUnpack, 1.0);
-    float4 wPos = mul(unpackPos, worldMatrix);
-
+    float4 wPos = mul1(input.Pos, worldMatrix);
     Out.Pos = calcShadowProjCoords(wPos, vpLightTrapezMat, vpLightMat);
     Out.PosZW.xy = Out.Pos.zw;
     Out.Tex = input.Tex * TexUnpack;

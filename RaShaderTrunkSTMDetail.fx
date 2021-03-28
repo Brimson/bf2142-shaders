@@ -1,4 +1,5 @@
 #include "shaders/RaCommon.fx"
+#include "Shaders/Math.fx"
 
 #ifndef _HASSHADOW_
     #define _HASSHADOW_ 0
@@ -71,7 +72,7 @@ VS_OUTPUT basicVertexShader
     VS_OUTPUT Out = (VS_OUTPUT)0;
 
     inPos  *= PosUnpack;
-    Out.Pos = mul(float4(inPos.xyz, 1.0), WorldViewProjection);
+    Out.Pos = mul1(inPos, WorldViewProjection);
 
     Out.Fog  = calcFog(Out.Pos.w);
     Out.Tex0 = tex0 * TexUnpack;

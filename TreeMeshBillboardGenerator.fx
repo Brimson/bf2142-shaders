@@ -1,4 +1,5 @@
 #line 2 "TreeMeshBillboardGenerator.fx"
+#include "Shaders/Math.fx"
 
 float4x4 mvpMatrix : WorldViewProjection; // : register(vs_2_0, c0);
 float4x4 worldIMatrix : WorldI;           // : register(vs_2_0, c4);
@@ -160,7 +161,7 @@ VS_OUTPUT bumpSpecularVertexShaderBlinn1
     float4 worldPos = mul(matsEyePos, ViewInv);
     //float4 worldPos = mul(EyePos, ViewInv);
 
-    float3 objPos = mul(float4(worldPos.xyz, 1.0f), WorldIT);
+    float3 objPos = mul1(worldPos, WorldIT);
     float3 tanPos = float3(	dot(objPos,input.Tan),
                             dot(objPos,binormal),
                             dot(objPos,input.Normal));

@@ -1,5 +1,7 @@
 // NEW SHADOW STUFF
 
+#include "Shaders/Math.fx"
+
 struct VO_HemiAndSunShadows
 {
     float4 HPos            : POSITION;
@@ -9,7 +11,7 @@ struct VO_HemiAndSunShadows
     float3 GroundUVAndLerp : TEXCOORD3;
     float4 EnvMap          : TEXCOORD4;
     float4 TexShadow1      : TEXCOORD5;
-    float Fog            : FOG;
+    float Fog              : FOG;
 };
 
 float3 CalcReflectionVector(float3 ViewToPos, float3 Normal)
@@ -31,11 +33,11 @@ VO_HemiAndSunShadows BasicShader (appdataAnimatedUV input)
     Out.TexCoord0 = input.TexCoord0;
 
     float3 Pos = mul(input.Pos, mOneBoneSkinning[IndexArray[0]]);
-    Out.HPos = mul(float4(Pos.xyz, 1.0f), viewProjMatrix);
+    Out.HPos = mul1(Pos, viewProjMatrix);
 
     // Shadow
-    Out.TexShadow1 =  mul(float4(Pos, 1.0), vpLightTrapezMat);
-    float2 TexShadow2 = mul(float4(Pos, 1.0), vpLightMat).zw;
+    Out.TexShadow1 =  mul1(Pos, vpLightTrapezMat);
+    float2 TexShadow2 = mul1(Pos, vpLightMat).zw;
     TexShadow2.x -= 0.003;
     Out.TexShadow1.z = (TexShadow2.x * Out.TexShadow1.w) / TexShadow2.y; // (zL*wT)/wL == zL/wL post homo
 
@@ -226,7 +228,7 @@ VO_PointLight BasicShaderPoint (appdataAnimatedUV input)
     Out.TexCoord0 = input.TexCoord0;
 
     float3 Pos = mul(input.Pos, mOneBoneSkinning[IndexArray[0]]);
-    Out.HPos = mul(float4(Pos.xyz, 1.0f), viewProjMatrix);
+    Out.HPos = mul1(Pos, viewProjMatrix);
 
     // Cross product * flip to create BiNormal
     float flip = 1.0;

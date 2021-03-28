@@ -1,4 +1,5 @@
 #include "shaders/RaCommon.fx"
+#include "Shaders/Math.fx"
 
 struct VS_OUTPUT
 {
@@ -34,7 +35,7 @@ float2 tex0	: TEXCOORD0
 )
 {
     VS_OUTPUT Out = (VS_OUTPUT)0;
-    Out.Pos = mul(float4(inPos, 1.0), mul(World, ViewProjection));
+    Out.Pos = mul1(inPos, mul(World, ViewProjection));
     Out.Fog = calcFog(Out.Pos.w);
     Out.Tex0 = tex0;
     return Out;

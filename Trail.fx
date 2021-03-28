@@ -1,5 +1,6 @@
 #line 2 "Trail.fx"
 #include "shaders/FXCommon.fx"
+#include "Shaders/Math.fx"
 
 // UNIFORM INPUTS
 uniform float3 eyePos : EyePos;
@@ -118,7 +119,7 @@ VS_TRAIL_OUTPUT vsTrail(appdata input, uniform float4x4 myWV, uniform float4x4 m
     float size = min(dot(tParameters.m_sizeGraph, pc), 1.0) * tParameters.m_uvRangeLMapIntensiyAndParticleMaxSize.w;
 
     // displace vertex
-    float4 pos = mul(float4(input.pos.xyz + size * (input.localCoords.xyz * input.texCoords.y), 1.0), myWV);
+    float4 pos = mul1(input.pos + size * (input.localCoords * input.texCoords.y), myWV);
     Out.HPos = mul(pos, myWP);
 
     float colorBlendFactor = min(dot(tParameters.m_colorBlendGraph, pc), 1.0);
@@ -318,7 +319,6 @@ struct VS_HEAT_SHIMMER_OUTPUT
 
 VS_HEAT_SHIMMER_OUTPUT vsParticleHeatShimmer(appdata input, uniform float4x4 myWV, uniform float4x4 myWP)//,  uniform TemplateParameters templ[10])
 {
-    //float4 pos = mul(float4(input.pos.xyz,1), myWV);
     VS_HEAT_SHIMMER_OUTPUT Out = (VS_HEAT_SHIMMER_OUTPUT)0;
 
     float age = input.intensityAgeAnimBlendFactorAndAlpha[1];
@@ -355,7 +355,7 @@ VS_HEAT_SHIMMER_OUTPUT vsParticleHeatShimmer(appdata input, uniform float4x4 myW
     float size = min(dot(tParameters.m_sizeGraph, pc), 1.0) * tParameters.m_uvRangeLMapIntensiyAndParticleMaxSize.w;
 
     // displace vertex
-    float4 pos = mul(float4(input.pos.xyz + size*(input.localCoords.xyz*input.texCoords.y), 1), myWV);
+    float4 pos = mul1(input.pos + size * (input.localCoords * input.texCoords.y), myWV);
     Out.HPos = mul(pos, myWP);
 
     // compute texcoords

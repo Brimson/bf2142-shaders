@@ -5,6 +5,7 @@
     initialized from the application.
 */
 #include "shaders/RaCommon.fx"
+#include "Shaders/Math.fx"
 
 bool AlphaBlendEnable = false;
 
@@ -53,7 +54,7 @@ VS_OUTPUT basicVertexShader
     int4 indexVector = D3DCOLORtoUBYTE4(blendIndices);
     int indexArray[4] = (int[4])indexVector;
 
-    Out.Pos = mul(float4(inPos, 1), mul(Bones[indexArray[0]], ViewProjection));
+    Out.Pos = mul1(inPos, mul(Bones[indexArray[0]], ViewProjection));
     Out.Fog = calcFog(Out.Pos.w);
     Out.Tex = tex0;
 

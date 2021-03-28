@@ -1,4 +1,6 @@
 
+#include "Shaders/Math.fx"
+
 struct OUT_vsDiffuseZ
 {
     float4 HPos     : POSITION;
@@ -58,7 +60,7 @@ OUT_vsDiffuseZ vsDiffuseZ(appdataDiffuseZ input, uniform float4x4 ViewProj)
     int IndexArray[4] = (int[4])IndexVector;
 
     float3 Pos = mul(input.Pos, mOneBoneSkinning[IndexArray[0]]);
-    Out.HPos = mul(float4(Pos.xyz, 1.0), ViewProj);
+    Out.HPos = mul1(Pos, ViewProj);
     // Pass-through texcoords
     Out.TexCoord = input.TexCoord;
     return Out;
@@ -74,7 +76,7 @@ OUT_vsDiffuseZ vsDiffuseZAnimatedUV(appdataDiffuseZAnimatedUV input, uniform flo
     int IndexArray[4] = (int[4])IndexVector;
 
     float3 Pos = mul(input.Pos, mOneBoneSkinning[IndexArray[0]]);
-    Out.HPos = mul(float4(Pos.xyz, 1.0), ViewProj);
+    Out.HPos = mul1(Pos, ViewProj);
 
     // Pass-through texcoords
 
@@ -95,8 +97,8 @@ OUT_vsFullMRT vsFullMRT(appdata input,
     int IndexArray[4] = (int[4])IndexVector;
 
     float3 Pos = mul(input.Pos, mOneBoneSkinning[IndexArray[0]]);
-    Out.HPos = mul(float4(Pos.xyz, 1.0), ViewProj);
-    Out.wPos = mul(float4(Pos.xyz, 1.0), viewMatrix);
+    Out.HPos = mul1(Pos, ViewProj);
+    Out.wPos = mul1(Pos, viewMatrix);
 
     // Hemi lookup values
     float3 AlmostNormal = mul(input.Normal, mOneBoneSkinning[IndexArray[0]]);
@@ -137,8 +139,8 @@ OUT_vsFullMRTAnimatedUV vsFullMRTAnimatedUV(appdataAnimatedUV input,
     Out.TexCoord1 = mul(float3(input.TexCoord1, 1.0), tmp).xy + input.TexCoord0;
 
     float3 Pos = mul(input.Pos, mOneBoneSkinning[IndexArray[0]]);
-    Out.HPos = mul(float4(Pos.xyz, 1.0), ViewProj);
-    Out.wPos = mul(float4(Pos.xyz, 1.0), viewMatrix);
+    Out.HPos = mul1(Pos, ViewProj);
+    Out.wPos = mul1(Pos, viewMatrix);
 
     // Hemi lookup values
     float3 AlmostNormal = mul(input.Normal, mOneBoneSkinning[IndexArray[0]]);
@@ -171,8 +173,8 @@ VS_OUTPUT_AlphaDX9 vsAlphaDX9DirectionalShadow(appdata input, uniform float4x4 V
     int IndexArray[4] = (int[4])IndexVector;
 
     float3 Pos = mul(input.Pos, mOneBoneSkinning[IndexArray[0]]);
-    Out.HPos = mul(float4(Pos.xyz, 1.0), ViewProj);
-    Out.wPos = mul(float4(Pos.xyz, 1.0), viewMatrix);
+    Out.HPos = mul1(Pos, ViewProj);
+    Out.wPos = mul1(Pos, viewMatrix);
     Out.Tex0 = float4(input.TexCoord.xy, 1.0, 1.0);
 
     // Hacked to only support 800/600

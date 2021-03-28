@@ -1,5 +1,7 @@
 #line 2 "BundledMesh.fx"
 
+#include "Shaders/Math.fx"
+
 // UNIFORM INPUTS
 float4x4 viewProjMatrix : WorldViewProjection;     // : register(vs_2_0, c0);
 float4x4 viewInverseMatrix : ViewI;                // : register(vs_2_0, c8);
@@ -207,7 +209,7 @@ VS_OUTPUT bumpSpecularVertexShaderBlinn1(   appdata input,
     int IndexArray[4] = (int[4])IndexVector;
 
     float3 Pos = mul(input.Pos, mOneBoneSkinning[IndexArray[0]]);
-    Out.HPos = mul(float4(Pos.xyz, 1.0f), ViewProj);
+    Out.HPos = mul1(Pos, ViewProj);
 
     // Cross product to create BiNormal
     float3 binormal = normalize(cross(input.Tan, input.Normal));
@@ -251,7 +253,7 @@ VS_OUTPUT20 bumpSpecularVertexShaderBlinn20(appdata input,
     int IndexArray[4] = (int[4])IndexVector;
 
     float3 Pos = mul(input.Pos, mOneBoneSkinning[IndexArray[0]]);
-    Out.HPos = mul(float4(Pos.xyz, 1.0), ViewProj);
+    Out.HPos = mul1(Pos, ViewProj);
 
     // Cross product to create BiNormal
     float3 binormal = normalize(cross(input.Tan, input.Normal));
@@ -324,7 +326,7 @@ VS_OUTPUT2 diffuseVertexShader(appdata input,
 
     // float3 Pos = input.Pos;
     float3 Pos = mul(input.Pos, mOneBoneSkinning[IndexArray[0]]);
-    Out.HPos = mul(float4(Pos.xyz, 1.0), ViewProj);
+    Out.HPos = mul1(Pos, ViewProj);
 
     float3 Normal = input.Normal;
     Normal = normalize(Normal);
@@ -489,7 +491,7 @@ VS_OUTPUT_Alpha vsAlpha(appdata input, uniform float4x4 ViewProj)
     int IndexArray[4] = (int[4])IndexVector;
 
     float3 Pos = mul(input.Pos, mOneBoneSkinning[IndexArray[0]]);
-    Out.HPos = mul(float4(Pos.xyz, 1.0), ViewProj);
+    Out.HPos = mul1(Pos, ViewProj);
 
     Out.DiffuseMap = input.TexCoord.xy;
 
@@ -522,7 +524,7 @@ VS_OUTPUT_AlphaEnvMap vsAlphaEnvMap(appdata input, uniform float4x4 ViewProj)
     int IndexArray[4] = (int[4])IndexVector;
 
     float3 Pos = mul(input.Pos, mOneBoneSkinning[IndexArray[0]]);
-    Out.HPos = mul(float4(Pos.xyz, 1.0), ViewProj);
+    Out.HPos = mul1(Pos, ViewProj);
 
     // Hacked to only support 800/600
     Out.TexPos.xy = (Out.HPos.xy / Out.HPos.w) * 0.5 + 0.5;
@@ -627,7 +629,7 @@ VS_OUTPUT_AlphaScope vsAlphaScope(appdata input, uniform float4x4 ViewProj)
     int IndexArray[4] = (int[4])IndexVector;
 
     float3 Pos = mul(input.Pos, mOneBoneSkinning[IndexArray[0]]);
-    Out.HPos = mul(float4(Pos.xyz, 1.0), ViewProj);
+    Out.HPos = mul1(Pos, ViewProj);
 
     float3 wNormal = mul(input.Normal, mOneBoneSkinning[IndexArray[0]]);
     float3 worldEyeVec = normalize(viewInverseMatrix[3].xyz - Pos);

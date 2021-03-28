@@ -1,3 +1,5 @@
+#include "Shaders/Math.fx"
+
 float4x4 mWorldViewProj : WorldViewProjection;
 
 texture basetex: TEXLAYER0
@@ -31,7 +33,7 @@ sampler diffuseSampler = sampler_state
 VS2PS VShader(APP2VS indata, uniform float4x4 wvp)
 {
     VS2PS outdata;
-    outdata.HPos = mul(float4(indata.Pos.xyz, 1.0f), wvp);
+    outdata.HPos = mul1(indata.Pos, wvp);
     outdata.Tex0 = indata.Tex0;
     return outdata;
 }

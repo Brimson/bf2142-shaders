@@ -1,4 +1,5 @@
 #include "shaders/RaCommon.fx"
+#include "Shaders/Math.fx"
 
 Light Lights[1];
 float4 OverGrowthAmbient;
@@ -40,7 +41,7 @@ VS_OUTPUT basicVertexShader
 {
     VS_OUTPUT Out = (VS_OUTPUT)0;
 
-    float4 wPos = mul(float4(inPos.xyz, 1),World);
+    float4 wPos = mul1(inPos,World);
     Out.Pos = mul(wPos, ViewProjection);
     Out.Fog = calcFog(Out.Pos.w);
     Out.Tex0 = tex0 / 32767.0f;

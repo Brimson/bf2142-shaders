@@ -1,3 +1,6 @@
+
+#include "Shaders/Math.fx"
+
 float4x4 mWorldViewProj : WorldViewProjection;
 float4x4 world : World;
 
@@ -61,7 +64,7 @@ VS2PS VShader(APP2VS indata,
     VS2PS outdata;
     float3 Pos;
     Pos = mul(indata.Pos, world);
-    outdata.Pos = mul(float4(Pos.xyz, 1.0f), wvp);
+    outdata.Pos = mul1(Pos, wvp);
 
     // Lighting. Shade (Ambient + etc.)
     outdata.Diffuse.xyz = materialAmbient.xyz + Diffuse(indata.Normal,lhtDir) * materialDiffuse.xyz;

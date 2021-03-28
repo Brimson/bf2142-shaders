@@ -1,3 +1,5 @@
+#include "Shaders/Math.fx"
+
 // Description: 1, 2 bone skinning
 // Author: Mats Dal
 
@@ -260,7 +262,7 @@ void skinSoldierForPPtangent(uniform int NumBones, in APP2VStangent indata, in f
     SkinnedLVec += mul(lightVec, mat) * LastWeight;
 
     // Calculate HalfVector
-    wPos = mul(float4(Pos.xyz, 1.0), mWorld);
+    wPos = mul1(Pos, mWorld);
     float3 tanEyeVec = mul(worldEyePos - wPos, mat);
     HalfVec = normalize(normalize(tanEyeVec) + SkinnedLVec);
 
@@ -318,7 +320,7 @@ void skinSoldierForPointPPtangent(uniform int NumBones, in APP2VStangent indata,
     SkinnedLVec += mul(localLVec, mat) * LastWeight;
 
     // Calculate HalfVector
-    float4 wPos = mul(float4(Pos.xyz, 1.0), mWorld);
+    float4 wPos = mul1(Pos, mWorld);
     float3 tanEyeVec = mul(worldEyePos - wPos, mat);
     HalfVec = normalize(normalize(tanEyeVec) + SkinnedLVec);
 
@@ -379,7 +381,7 @@ void skinSoldierForSpotPPtangent(uniform int NumBones, in APP2VStangent indata, 
     SkinnedLDir += mul(lightDir, mat) * LastWeight;
 
     // Calculate HalfVector
-    float4 wPos = mul(float4(Pos.xyz, 1.0), mWorld);
+    float4 wPos = mul1(Pos, mWorld);
     float3 tanEyeVec = mul(worldEyePos - wPos, mat);
     HalfVec = normalize(normalize(tanEyeVec) + SkinnedLVec);
 
@@ -441,10 +443,10 @@ VS2PS_PP VShader_HemiAndSunPP(APP2VS indata, uniform int NumBones)
     skinSoldierForPP(NumBones, indata, -sunLightDir, Pos, Normal, SkinnedLVec);
 
     // Transform position into view and then projection space
-    outdata.Pos = mul(float4(Pos.xyz, 1.0), mWorldViewProj);
+    outdata.Pos = mul1(Pos, mWorldViewProj);
 
     // Hemi lookup values
-    float4 wPos = mul(float4(Pos.xyz, 1.0), mWorld);
+    float4 wPos = mul1(Pos, mWorld);
     outdata.GroundUVAndLerp.xy = ((wPos + (hemiMapInfo.z * 0.5) + Normal).xz - hemiMapInfo.xy)/ hemiMapInfo.z;
     outdata.GroundUVAndLerp.y = 1.0 - outdata.GroundUVAndLerp.y;
     outdata.GroundUVAndLerp.z = Normal.y * 0.5 + 0.5;
@@ -478,16 +480,16 @@ VS2PS_PP_Shadow VShader_HemiAndSunAndShadowPP(APP2VS indata, uniform int NumBone
     skinSoldierForPP(NumBones, indata, -sunLightDir, Pos, Normal, SkinnedLVec);
 
     // Transform position into view and then projection space
-    outdata.Pos = mul(float4(Pos.xyz, 1.0), mWorldViewProj);
+    outdata.Pos = mul1(Pos, mWorldViewProj);
 
     // Shadow
-    outdata.ShadowTex =  mul(float4(Pos, 1.0), vpLightTrapezMat);
-    float2 TexShadow2 = mul(float4(Pos, 1.0), vpLightMat).zw;
+    outdata.ShadowTex =  mul1(Pos, vpLightTrapezMat);
+    float2 TexShadow2 = mul1(Pos, vpLightMat).zw;
     TexShadow2.x -= 0.007;
     outdata.ShadowTex.z = (TexShadow2.x*outdata.ShadowTex.w)/TexShadow2.y; // (zL*wT)/wL == zL/wL post homo
 
     // Hemi lookup values
-    float4 wPos = mul(float4(Pos.xyz, 1.0), mWorld);
+    float4 wPos = mul1(Pos, mWorld);
     outdata.GroundUVAndLerp.xy = ((wPos + (hemiMapInfo.z * 0.5) + Normal).xz - hemiMapInfo.xy)/ hemiMapInfo.z;
     outdata.GroundUVAndLerp.y = 1.0 - outdata.GroundUVAndLerp.y;
     outdata.GroundUVAndLerp.z = Normal.y * 0.5 + 0.5;
@@ -687,7 +689,7 @@ VS2PS_PP VShader_HemiAndSunPPtangent(APP2VStangent indata, uniform int NumBones)
     skinSoldierForPPtangent(NumBones, indata, -sunLightDir, Pos, Normal, SkinnedLVec, wPos, outdata.HalfVec);
 
     // Transform position into view and then projection space
-    outdata.Pos = mul(float4(Pos.xyz, 1.0), mWorldViewProj);
+    outdata.Pos = mul1(Pos, mWorldViewProj);
 
     // Hemi lookup values
     outdata.GroundUVAndLerp.xy = ((wPos + (hemiMapInfo.z * 0.5) + Normal).xz - hemiMapInfo.xy)/ hemiMapInfo.z;
@@ -711,7 +713,7 @@ VS2PS_PP_Shadow VShader_HemiAndSunAndShadowPPtangent(APP2VStangent indata, unifo
     skinSoldierForPPtangent(NumBones, indata, -sunLightDir, Pos, Normal, SkinnedLVec, wPos, outdata.HalfVec);
 
     // Transform position into view and then projection space
-    outdata.Pos = mul(float4(Pos.xyz, 1.0), mWorldViewProj);
+    outdata.Pos = mul1(Pos, mWorldViewProj);
 
     // Hemi lookup values
     outdata.GroundUVAndLerp.xy = ((wPos + (hemiMapInfo.z * 0.5) + Normal).xz - hemiMapInfo.xy)/ hemiMapInfo.z;
@@ -720,8 +722,8 @@ VS2PS_PP_Shadow VShader_HemiAndSunAndShadowPPtangent(APP2VStangent indata, unifo
     outdata.GroundUVAndLerp.z -= hemiMapInfo.w;
 
     // Shadow
-    outdata.ShadowTex =  mul(float4(Pos, 1.0), vpLightTrapezMat);
-    float2 TexShadow2 = mul(float4(Pos, 1.0), vpLightMat).zw;
+    outdata.ShadowTex =  mul1(Pos, vpLightTrapezMat);
+    float2 TexShadow2 = mul1(Pos, vpLightMat).zw;
     TexShadow2.x -= 0.007;
 
     outdata.ShadowTex.z = (TexShadow2.x * outdata.ShadowTex.w)/TexShadow2.y; 	// (zL*wT)/wL == zL/wL post homo
@@ -807,10 +809,10 @@ VS2PS_PV VShader_HemiAndSunPV(APP2VS indata, uniform int NumBones)
     skinSoldierForPV(NumBones, indata, Pos, Normal);
 
     // Transform position into view and then projection space
-    outdata.Pos = mul(float4(Pos.xyz, 1.0), mWorldViewProj);
+    outdata.Pos = mul1(Pos, mWorldViewProj);
 
     // Hemi lookup values
-    float4 wPos = mul(float4(Pos.xyz, 1.0), mWorld);
+    float4 wPos = mul1(Pos, mWorld);
     outdata.GroundUVAndLerp.xy = ((wPos + (hemiMapInfo.z * 0.5) + Normal).xz - hemiMapInfo.xy) / hemiMapInfo.z;
     outdata.GroundUVAndLerp.y = 1.0 - outdata.GroundUVAndLerp.y;
     outdata.GroundUVAndLerp.z = Normal.y * 0.5 + 0.5;
@@ -882,10 +884,10 @@ VS2PS_PVCOLOR VShader_HemiAndSunAndColorPV(APP2VS indata, uniform int NumBones)
     skinSoldierForPV(NumBones, indata, Pos, Normal);
 
     // Transform position into view and then projection space
-    outdata.Pos = mul(float4(Pos.xyz, 1.0), mWorldViewProj);
+    outdata.Pos = mul1(Pos, mWorldViewProj);
 
     // Hemi lookup values
-    float4 wPos = mul(float4(Pos.xyz, 1.0), mWorld);
+    float4 wPos = mul1(Pos, mWorld);
     outdata.GroundUVAndLerp.xy = ((wPos + (hemiMapInfo.z * 0.5) + Normal).xz - hemiMapInfo.xy) / hemiMapInfo.z;
     outdata.GroundUVAndLerp.y = 1.0 - outdata.GroundUVAndLerp.y;
     outdata.GroundUVAndLerp.z = Normal.y * 0.5 + 0.5;
@@ -935,16 +937,16 @@ VS2PS_PVCOLOR_SHADOW VShader_HemiAndSunAndShadowAndColorPV(APP2VS indata, unifor
     skinSoldierForPV(NumBones, indata, Pos, Normal);
 
     // Transform position into view and then projection space
-    outdata.Pos = mul(float4(Pos.xyz, 1.0), mWorldViewProj);
+    outdata.Pos = mul1(Pos, mWorldViewProj);
 
     // Shadow
-    outdata.ShadowTex =  mul(float4(Pos, 1.0), vpLightTrapezMat);
-    float2 TexShadow2 = mul(float4(Pos, 1.0), vpLightMat).zw;
+    outdata.ShadowTex =  mul1(Pos, vpLightTrapezMat);
+    float2 TexShadow2 = mul1(Pos, vpLightMat).zw;
     TexShadow2.x -= 0.007;
     outdata.ShadowTex.z = (TexShadow2.x*outdata.ShadowTex.w)/TexShadow2.y; // (zL*wT)/wL == zL/wL post homo
 
     // Hemi lookup values
-    float4 wPos = mul(float4(Pos.xyz, 1.0), mWorld);
+    float4 wPos = mul1(Pos, mWorld);
     outdata.GroundUVAndLerp.xy = ((wPos + (hemiMapInfo.z * 0.5) + Normal).xz - hemiMapInfo.xy) / hemiMapInfo.z;
     outdata.GroundUVAndLerp.y = 1.0 - outdata.GroundUVAndLerp.y;
     outdata.GroundUVAndLerp.z = Normal.y * 0.5 + 0.5;
@@ -1042,10 +1044,9 @@ VS2PS_PointLight_PV VShader_PointLightPV(APP2VS indata, uniform int NumBones)
     skinSoldierForPV(NumBones, indata, Pos, Normal);
 
     // Transform position into view and then projection space
-    outdata.Pos = mul(float4(Pos.xyz, 1.0), mWorldViewProj);
+    outdata.Pos = mul1(Pos, mWorldViewProj);
 
     // Lighting. Shade (Ambient + etc.)
-    // float4 wPos = mul(float4(Pos.xyz, 1.0), mWorld);
     float3 lvec = lightPos - Pos.xyz;
     float3 lvecNormalized = normalize(lvec);
 
@@ -1102,8 +1103,8 @@ VS2PS_PointLight_PP VShader_PointLightPP(APP2VS indata, uniform int NumBones)
     skinSoldierForPointPP(NumBones, indata, lightPos, Pos, Normal, SkinnedLVec);
 
     // Transform position into view and then projection space
-    outdata.Pos = mul(float4(Pos.xyz, 1.0), mWorldViewProj);
-    float4 wPos = mul(float4(Pos.xyz, 1.0), mWorld);
+    outdata.Pos = mul1(Pos, mWorldViewProj);
+    float4 wPos = mul1(Pos, mWorld);
 
     // [TS:040201] Please note that "normalize(worldEyePos-wPos") is in worldspace while "SkinnedLVec" is in SkinnedSpace/ObjectSpace can this be correct??
     // outdata.HalfVec = normalize(normalize(worldEyePos-wPos) + SkinnedLVec);
@@ -1160,7 +1161,7 @@ VS2PS_PointLight_PP VShader_PointLightPPtangent(APP2VStangent indata, uniform in
     skinSoldierForPointPPtangent(NumBones, indata, lightPos, Pos, Normal, SkinnedLVec,outdata.HalfVec);
 
     // Transform position into view and then projection space
-    outdata.Pos = mul(float4(Pos.xyz, 1.0), mWorldViewProj);
+    outdata.Pos = mul1(Pos, mWorldViewProj);
 
     float3 nrmSkinnedLVec = normalize(SkinnedLVec);
     outdata.SkinnedLVec.xyz = nrmSkinnedLVec;
@@ -1209,7 +1210,7 @@ VS2PS_SpotLight_PV VShader_SpotLightPV(APP2VS indata, uniform int NumBones)
     skinSoldierForPV(NumBones, indata, Pos, Normal);
 
     // Transform position into view and then projection space
-    outdata.Pos = mul(float4(Pos.xyz, 1.0f), mWorldViewProj);
+    outdata.Pos = mul1(Pos, mWorldViewProj);
 
     float3 lvec = lightPos - Pos.xyz;
     float3 lvecnorm = normalize(lvec);
@@ -1267,8 +1268,8 @@ VS2PS_SpotLight_PP VShader_SpotLightPP(APP2VS indata, uniform int NumBones)
     skinSoldierForSpotPP(NumBones, indata, lightPos, lightDir, Pos, Normal, SkinnedLVec, SkinnedLDir);
 
     // Transform position into view and then projection space
-    outdata.Pos = mul(float4(Pos.xyz, 1.0), mWorldViewProj);
-    float4 wPos = mul(float4(Pos.xyz, 1.0), mWorld);
+    outdata.Pos = mul1(Pos, mWorldViewProj);
+    float4 wPos = mul1(Pos, mWorld);
 
     //[TS:040201] Please note that "normalize(worldEyePos-wPos") is in worldspace while "SkinnedLVec" is in SkinnedSpace/ObjectSpace can this be correct??
     //outdata.HalfVec = normalize(normalize(worldEyePos-wPos) + SkinnedLVec);
@@ -1327,8 +1328,8 @@ VS2PS_SpotLight_PP VShader_SpotLightPPtangent(APP2VStangent indata, uniform int 
     skinSoldierForSpotPPtangent(NumBones, indata, lightPos, lightDir, Pos, Normal, SkinnedLVec, SkinnedLDir,outdata.HalfVec);
 
     // Transform position into view and then projection space
-    outdata.Pos = mul(float4(Pos.xyz, 1.0), mWorldViewProj);
-    float4 wPos = mul(float4(Pos.xyz, 1.0), mWorld);
+    outdata.Pos = mul1(Pos, mWorldViewProj);
+    float4 wPos = mul1(Pos, mWorld);
 
     // [TS:040201] Please note that "normalize(worldEyePos-wPos") is in worldspace while "SkinnedLVec" is in SkinnedSpace/ObjectSpace can this be correct??
     // outdata.HalfVec = normalize(normalize(worldEyePos-wPos) + SkinnedLVec);
@@ -1380,7 +1381,7 @@ VS2PS_MulDiffuse VShader_MulDiffuse(APP2VS indata, uniform int NumBones)
     skinSoldierForPV(NumBones, indata, Pos, Normal);
 
     // Transform position into view and then projection space
-    outdata.Pos = mul(float4(Pos.xyz, 1.0f), mWorldViewProj);
+    outdata.Pos = mul1(Pos, mWorldViewProj);
     outdata.Tex0 = indata.TexCoord0;
 
     return outdata;
@@ -1482,7 +1483,7 @@ VS2PS_Skinpreshadowed vsSkinpreshadowed(APP2VS indata, uniform int NumBones)
 
     outdata.ObjEyeVec = normalize(objectEyePos-Pos);
 
-    outdata.ShadowTex = mul(float4(Pos, 1.0), mLightVP);
+    outdata.ShadowTex = mul1(Pos, mLightVP);
     outdata.ShadowTex.z -= 0.007;
 
     outdata.Pos.xy = indata.TexCoord0 * float2(2.0, -2.0) - float2(1.0, -1.0);
@@ -1562,7 +1563,7 @@ VS2PS_PP vsSkinapply(APP2VS indata, uniform int NumBones)
     skinSoldierForPP(NumBones, indata, -sunLightDir, Pos, Normal, outdata.SkinnedLVec);
 
     // Transform position into view and then projection space
-    outdata.Pos = mul(float4(Pos.xyz, 1.0f), mWorldViewProj);
+    outdata.Pos = mul1(Pos, mWorldViewProj);
 
     // Hemi lookup values
     float4 wPos = mul(Pos, mWorld);
@@ -1712,8 +1713,8 @@ VS2PS_ShadowMap vsShadowMap(APP2VS indata)
     float3 Pos = mul(indata.Pos, mBoneArray[IndexArray[0]]) * BlendWeightsArray[0];
     Pos += mul(indata.Pos, mBoneArray[IndexArray[1]]) * (1-BlendWeightsArray[0]);
 
-    outdata.Pos = mul(float4(Pos.xyz, 1.0), vpLightTrapezMat);
-    float2 lightZW = mul(float4(Pos.xyz, 1.0), vpLightMat).zw;
+    outdata.Pos = mul1(Pos, vpLightTrapezMat);
+    float2 lightZW = mul1(Pos, vpLightMat).zw;
     outdata.Pos.z = (lightZW.x*outdata.Pos.w)/lightZW.y; // (zL*wT)/wL == zL/wL post homo
     outdata.PosZW = outdata.Pos.zw;
 
@@ -1746,8 +1747,8 @@ VS2PS_ShadowMapAlpha vsShadowMapAlpha(APP2VS indata)
     float3 Pos = mul(indata.Pos, mBoneArray[IndexArray[0]]) * BlendWeightsArray[0];
     Pos += mul(indata.Pos, mBoneArray[IndexArray[1]]) * (1-BlendWeightsArray[0]);
 
-    outdata.Pos = mul(float4(Pos.xyz, 1.0), vpLightTrapezMat);
-    float2 lightZW = mul(float4(Pos.xyz, 1.0), vpLightMat).zw;
+    outdata.Pos = mul1(Pos, vpLightTrapezMat);
+    float2 lightZW = mul1(Pos, vpLightMat).zw;
     outdata.Pos.z = (lightZW.x*outdata.Pos.w)/lightZW.y; // (zL * wT) / wL == zL/wL post homo
     outdata.Tex0PosZW.xy = indata.TexCoord0;
     outdata.Tex0PosZW.zw = outdata.Pos.zw;
@@ -1780,7 +1781,7 @@ VS2PS_ShadowMap vsShadowMapPoint(APP2VS indata)
     float3 Pos = mul(indata.Pos, mBoneArray[IndexArray[0]]) * BlendWeightsArray[0];
     Pos += mul(indata.Pos, mBoneArray[IndexArray[1]]) * (1-BlendWeightsArray[0]);
 
-    outdata.Pos = mul(float4(Pos.xyz, 1.0), mWorldViewProj);
+    outdata.Pos = mul1(Pos, mWorldViewProj);
 
     outdata.Pos.z *= paraboloidValues.x;
     float d = length(outdata.Pos.xyz);
@@ -1810,7 +1811,7 @@ VS2PS_ShadowMap vsShadowMapPointNV(APP2VS indata)
     float3 Pos = mul(indata.Pos, mBoneArray[IndexArray[0]]) * BlendWeightsArray[0];
     Pos += mul(indata.Pos, mBoneArray[IndexArray[1]]) * (1-BlendWeightsArray[0]);
 
-    outdata.Pos = mul(float4(Pos.xyz, 1.0), mWorldViewProj);
+    outdata.Pos = mul1(Pos, mWorldViewProj);
 
     outdata.Pos.z *= paraboloidValues.x;
 

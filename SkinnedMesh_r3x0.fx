@@ -1,4 +1,4 @@
-
+#include "Shaders/Math.fx"
 
 struct APP2VS_fullMRT
 {
@@ -416,7 +416,7 @@ VS2PS_fullMRTskinpreshadowed vsFullMRTskinpreshadowed(APP2VS_fullMRT indata, uni
     Pos += mul(indata.Pos, mBoneArray[IndexArray[1]]) * (1.0 - BlendWeightsArray[0]);
     outdata.ObjEyeVec = normalize(objectEyePos-Pos);
 
-    outdata.ShadowTex = mul(float4(Pos, 1.0), mLightVP);
+    outdata.ShadowTex = mul1(Pos, mLightVP);
     outdata.ShadowTex.xy = clamp(outdata.ShadowTex.xy, vViewportMap.xy, vViewportMap.zw);
 
     outdata.ShadowTex.z -= 0.007;

@@ -1,4 +1,5 @@
 #line 2 "lightGeom.fx"
+#include "Shaders/Math.fx"
 
 // UNIFORM INPUTS
 float4x4 wvpMat : WorldViewProj;
@@ -21,7 +22,7 @@ struct VS_OUTPUT
 VS_OUTPUT vsPointLight(appdata input, uniform float4x4 myWVP)
 {
     VS_OUTPUT Out;
-    Out.HPos = mul(float4(input.Pos.xyz, 1.0f), myWVP);
+    Out.HPos = mul1(input.Pos, myWVP);
     return Out;
 }
 
@@ -67,10 +68,10 @@ struct VS_SPOT_OUTPUT
 VS_SPOT_OUTPUT vsSpotLight(appdata input, uniform float4x4 myWVP, uniform float4x4 myWV, uniform float3 lightDir)
 {
     VS_SPOT_OUTPUT Out;
-    Out.HPos = mul(float4(input.Pos.xyz, 1.0f), myWVP);
+    Out.HPos = mul1(input.Pos, myWVP);
 
     // transform vertex
-    float3 vertPos = mul(float4(input.Pos.xyz, 1.0f), myWV);
+    float3 vertPos = mul1(input.Pos, myWV);
     Out.lightVec = -normalize(vertPos);
 
     // transform lightDir to objectSpace

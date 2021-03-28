@@ -1,4 +1,5 @@
 #include "shaders/RaCommon.fx"
+#include "Shaders/Math.fx"
 
 #define LIGHT_ADD float3(0.5, 0.5, 0.5)
 
@@ -55,7 +56,7 @@ VS_OUTPUT basicVertexShader
 {
     VS_OUTPUT Out = (VS_OUTPUT)0;
 
-    Out.Pos = mul(float4(inPos, 1.0), mul(World, ViewProjection));
+    Out.Pos = mul1(inPos, mul(World, ViewProjection));
     Out.Fog = calcFog(FogRange, Out.Pos.w);
     Out.Tex0 = tex0;
     Out.Tex1 = tex1;

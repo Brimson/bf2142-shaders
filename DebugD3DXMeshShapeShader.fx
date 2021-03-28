@@ -1,5 +1,7 @@
 #line 2 "DebugD3DXMeshShapeShader.fx"
 
+#include "Shaders/Math.fx"
+
 float4x4 mWorldViewProj : WorldViewProjection;
 float4x4 world : World;
 
@@ -69,9 +71,9 @@ VS2PS VShader(
 )
 {
     VS2PS outdata;
-     float3 Pos;
-     Pos = mul(indata.Pos, world);
-    outdata.Pos = mul(float4(Pos.xyz, 1.0f), wvp);
+    float3 Pos;
+    Pos = mul(indata.Pos, world);
+    outdata.Pos = mul1(Pos, wvp);
 
     // Lighting. Shade (Ambient + etc.)
     outdata.Diffuse.xyz = materialAmbient.xyz + Diffuse(indata.Normal,lhtDir) * materialDiffuse.xyz;
@@ -90,8 +92,8 @@ VS2PS CM_VShader(
     VS2PS outdata;
 
     float3 Pos;
-     Pos = mul(indata.Pos, world);
-    outdata.Pos = mul(float4(Pos.xyz, 1.0f), wvp);
+    Pos = mul(indata.Pos, world);
+    outdata.Pos = mul1(Pos, wvp);
 
     outdata.Diffuse.xyz = materialAmbient.xyz + 0.1f*Diffuse(indata.Normal,float4(-1.f,-1.f,1.f,0.f)) * materialDiffuse.xyz;
     outdata.Diffuse.w = 0.8f;
@@ -134,7 +136,7 @@ VS2PS VShader2(
     VS2PS outdata;
     float3 Pos;
     Pos = mul(indata.Pos, world);
-    outdata.Pos = mul(float4(Pos.xyz, 1.0f), wvp);
+    outdata.Pos = mul1(Pos, wvp);
     outdata.Diffuse.xyz = materialAmbient.xyz;
     outdata.Diffuse.w = 0.3f;
     return outdata;
@@ -152,7 +154,7 @@ VS2PS_Grid VShader_Grid(
 
     float3 Pos;
     Pos = mul(indata.Pos, world);
-    outdata.Pos = mul(float4(Pos.xyz, 1.0f), wvp);
+    outdata.Pos = mul1(Pos, wvp);
 
     // Lighting. Shade (Ambient + etc.)
     outdata.Diffuse.xyz = materialAmbient.xyz + Diffuse(indata.Normal,lhtDir) * materialDiffuse.xyz;

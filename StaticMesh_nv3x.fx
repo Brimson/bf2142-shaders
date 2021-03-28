@@ -1,4 +1,5 @@
 #line 2 "StaticMesh_nv3x.fx"
+#include "Shaders/Math.fx"
 
 // Light stuff
 
@@ -18,7 +19,7 @@ struct VS_OUT_Base2
 float4 vsZOnly(appdata_ZOnly input) : POSITION
 {
     float3 Pos = input.Pos;
-    return mul(float4(Pos.xyz, 1.0f), viewProjMatrix);
+    return mul1(Pos, viewProjMatrix);
 }
 
 float4 psZOnly() : COLOR
@@ -733,7 +734,7 @@ VS_OUT_PointLight vsPointLight(appdata_Light input)
     VS_OUT_PointLight Out;
 
     float3 wPos = input.Pos;
-    Out.HPos = mul(float4(wPos.xyz, 1.0f), viewProjMatrix);
+    Out.HPos = mul1(wPos.xyz, viewProjMatrix);
 
     float3 wNormal = input.Normal;
     Out.Color = float4(calcPVPoint(pointLight, wPos, wNormal), 1);
@@ -780,7 +781,7 @@ VS_OUT_SpotLight vsSpotLight(appdata_Light input)
     VS_OUT_SpotLight Out;
 
     float3 wPos = input.Pos;
-    Out.HPos = mul(float4(wPos.xyz, 1.0f), viewProjMatrix);
+    Out.HPos = mul1(wPos.xyz, viewProjMatrix);
 
     float3 wNormal = input.Normal;
     Out.Color = float4(calcPVSpot(spotLight, wPos, wNormal), 1);

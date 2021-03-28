@@ -1,4 +1,5 @@
 #line 2 "SkyDome.fx"
+#include "Shaders/Math.fx"
 
 // UNIFORM INPUTS
 float4x4 viewProjMatrix : WorldViewProjection;
@@ -86,7 +87,7 @@ struct VS_OUTPUTDualClouds
 VS_OUTPUT vsSkyDome(appdata input)
 {
     VS_OUTPUT Out;
-    Out.HPos = mul(float4(input.Pos.xyz, 1.0), viewProjMatrix);
+    Out.HPos = mul1(input.Pos, viewProjMatrix);
     Out.Tex0 = input.TexCoord;
     Out.Tex1 = input.TexCoord1.xy + texOffset.xy;
     float dist = length(input.Pos.xyz);
@@ -98,7 +99,7 @@ VS_OUTPUT vsSkyDome(appdata input)
 VS_OUTPUTNoClouds vsSkyDomeNoClouds(appdataNoClouds input)
 {
     VS_OUTPUTNoClouds Out;
-    Out.HPos = mul(float4(input.Pos.xyz, 1.0), viewProjMatrix);
+    Out.HPos = mul1(input.Pos, viewProjMatrix);
     Out.Tex0 = input.TexCoord;
     return Out;
 }
@@ -106,7 +107,7 @@ VS_OUTPUTNoClouds vsSkyDomeNoClouds(appdataNoClouds input)
 VS_OUTPUTDualClouds vsSkyDomeDualClouds(appdata input)
 {
     VS_OUTPUTDualClouds Out;
-    Out.HPos = mul(float4(input.Pos.xyz, 1.0), viewProjMatrix);
+    Out.HPos = mul1(input.Pos, viewProjMatrix);
     Out.Tex0 = input.TexCoord;
     Out.Tex1 = input.TexCoord1.xy + texOffset.xy;
     Out.Tex2 = input.TexCoord1.xy + texOffset2.xy;
@@ -146,7 +147,7 @@ float4 psSkyDomeDualClouds(VS_OUTPUTDualClouds indata) : COLOR
 VS_OUTPUTNoClouds vsSkyDomeSunFlare(appdataNoClouds input)
 {
     VS_OUTPUTNoClouds Out;
-    Out.HPos = mul(float4(input.Pos.xyz, 1.0), viewProjMatrix);
+    Out.HPos = mul1(input.Pos, viewProjMatrix);
     Out.Tex0 = input.TexCoord;
     return Out;
 }

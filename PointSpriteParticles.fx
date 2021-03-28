@@ -1,4 +1,5 @@
 #line 2 "PointSpriteParticles.fx"
+#include "Shaders/Math.fx"
 
 // UNIFORM INPUTS
 float4x4 wvpMat : WorldViewProj;
@@ -71,7 +72,7 @@ struct VS_POINTSPRITE_OUTPUT
 VS_POINTSPRITE_OUTPUT vsPointSprite(appdata input, uniform float4x4 myWVP, uniform TemplateParameters templ[10], uniform float scale, uniform float myHeightmapSize)
 {
     VS_POINTSPRITE_OUTPUT Out;
-    Out.HPos = mul(float4(input.pos.xyz, 1.0f), myWVP);
+    Out.HPos = mul1(input.pos, myWVP);
     Out.texCoords.xy = 0;
 
     // hemi lookup coords

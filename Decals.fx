@@ -1,5 +1,6 @@
 #line 2 "Decals.fx"
 #include "shaders/RaCommon.fx"
+#include "Shaders/Math.fx"
 
 // UNIFORM INPUTS
 float4x4 worldViewProjection : WorldViewProjection;
@@ -77,7 +78,7 @@ OUT_vsDecal vsDecal(appdata input)
     int index = input.TexCoordsInstanceIndexAndAlpha.z;
 
     float3 Pos = mul(input.Pos, instanceTransformations[index]);
-    Out.HPos = mul(float4(Pos.xyz, 1.0f), worldViewProjection);
+    Out.HPos = mul1(Pos, worldViewProjection);
 
     float3 worldNorm = mul(input.Normal.xyz, (float3x3)instanceTransformations[index]);
     Out.Diffuse = saturate(dot(worldNorm, -sunDirection)) * sunColor;
@@ -137,7 +138,7 @@ OUT_vsDecalShadowed vsDecalShadowed(appdata input)
     int index = input.TexCoordsInstanceIndexAndAlpha.z;
 
     float3 Pos = mul(input.Pos, instanceTransformations[index]);
-    Out.HPos = mul(float4(Pos.xyz, 1.0f), worldViewProjection);
+    Out.HPos = mul1(Pos, worldViewProjection);
 
     float3 worldNorm = mul(input.Normal.xyz, (float3x3)instanceTransformations[index]);
     Out.Diffuse = saturate(dot(worldNorm, -sunDirection)) * sunColor;
@@ -167,7 +168,7 @@ OUT_vsDecalNormalMapped vsDecalNormalMapped(appdata input)
     float3 Tan = normalize(mul(input.Tangent.xyz, (float3x3)instanceTransformations[index]));
     float3 Binormal = normalize(mul(-input.Binormal.xyz, (float3x3)instanceTransformations[index]));
     float3 worldNorm = normalize(mul(input.Normal.xyz, (float3x3)instanceTransformations[index]));
-    Out.HPos = mul(float4(Pos.xyz, 1.0f), worldViewProjection);
+    Out.HPos = mul1(Pos, worldViewProjection);
 
     float3x3 worldTanMatrix = float3x3(input.Tangent.xyz, -input.Binormal.xyz, input.Normal.xyz);
 

@@ -1,3 +1,5 @@
+#include "Shaders/Math.fx"
+
 // $ TL -- dbg
 
 struct VSTanOut
@@ -10,7 +12,7 @@ VSTanOut vsShowTanBasis(float4 Pos : POSITION, float4 Col : COLOR)
 {
     VSTanOut Out;
     float3 wPos = Pos; // mul(Pos, mOneBoneSkinning[0]);
-    Out.HPos = mul(float4(wPos.xyz, 1.0f), viewProjMatrix);
+    Out.HPos = mul1(wPos.xyz, viewProjMatrix);
     Out.Diffuse = Col;
     return Out;
 }

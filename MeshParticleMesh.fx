@@ -1,5 +1,6 @@
 #line 2 "MeshParticleMesh.fx"
 #include "shaders/FXCommon.fx"
+#include "Shaders/Math.fx"
 
 // UNIFORM INPUTS
 float4x4 viewProjMatrix : WorldViewProjection;
@@ -50,7 +51,7 @@ OUT_vsDiffuse vsDiffuse
     int IndexArray[4] = (int[4])IndexVector;
 
     float3 Pos = mul(input.Pos * globalScale, mOneBoneSkinning[IndexArray[0]]);
-    Out.HPos = mul(float4(Pos.xyz, 1.0f), ViewProj);
+    Out.HPos = mul1(Pos, ViewProj);
 
     // Compute Cubic polynomial factors.
     float age = ageAndAlphaArray[IndexArray[0]][0];
