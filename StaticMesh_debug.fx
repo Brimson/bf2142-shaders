@@ -1,5 +1,3 @@
-#include "Shaders/Math.fx"
-
 // $ TL -- dbg
 
 struct VSTanOut

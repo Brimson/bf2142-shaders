@@ -1,5 +1,4 @@
 #line 2 "StaticMesh_nv3xpp.fx"
-#include "Shaders/Math.fx"
 
 struct appdata_Basendetail
 {

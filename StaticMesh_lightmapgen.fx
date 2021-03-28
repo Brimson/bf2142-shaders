@@ -1,5 +1,3 @@
-#include "Shaders/Math.fx"
-
 struct VS_OUT_LightmapGen
 {
     float4 HPos     : POSITION;

@@ -1,5 +1,4 @@
 #line 2 "StaticMesh_nv3x.fx"
-#include "Shaders/Math.fx"
 
 // Light stuff
 

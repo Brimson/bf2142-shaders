@@ -26,7 +26,7 @@ float4x4  mViewProj: matVIEWPROJ;
 float4x4  mView: matVIEW;
 float4    vScaleTransXZ : SCALETRANSXZ;
 float4    vScaleTransY : SCALETRANSY;
-float  ScaleBaseUV : SCALEBASEUV;
+float     ScaleBaseUV : SCALEBASEUV;
 float4    vShadowTexCoordScaleAndOffset : SHADOWTEXCOORDSCALEANDOFFSET;
 
 float4 vMorphDeltaSelector : MORPHDELTASELECTOR;
